@@ -1,0 +1,140 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+         <a href="/configuracion/terceros/">Ubicacion</a>
+        <small>Registrar</small>
+      </h1>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <br>
+            <div class="tab-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form" action="/configuracion/ubicacion/editar/{{ ubicacion.id }}/" method="POST">
+                            <!-- comando django de seguridad -->
+                            {% csrf_token %}
+                        <input type="hidden" class="form-control" id="id"
+                                     min="1" max="99" name="id" value="{{ubicacion.id}}">
+                            <div>
+
+
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                           <label>Codigo</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                              <input type="text" class="form-control" id="codigo"
+                                                 name="codigo" placeholder="codigo" value="{{ ubicacion.codigo }}"
+                                                 style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                  required>
+                                          </div>
+                                      </div>
+                                    <div class="col-md-6">
+                                      <label>Descripcion</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
+                                            <input type="text" class="form-control" id="descripcion"
+                                             name="descripcion" placeholder="descripcion" value="{{ ubicacion.descripcion }}"
+                                             style="text-transform:uppercase;">
+                                      </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                    <label>Continente</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="continentes" onchange = "obtener_paises(this)" required>
+                                           <option value="" selected disabled></option>
+                                              {% for continentes in lista_continentes %}
+
+                                              <option value="{{continentes.id}}"
+                                                   {% if continentes.id == ubicacion.continentes_id %}selected{% endif %}>
+                                                   {{continentes.descripcion}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <label>Pais</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="paises" id="paises" onchange = "obtener_departamentos(this)" required>
+                                          {% for paises in lista_paises %}
+
+                                              <option value="{{paises.id}}"
+                                                   {% if paises.id == ubicacion.paises_id %}selected{% endif %}>
+                                                   {{paises.descripcion}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <label>Departamento</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="departamentos" id="departamentos"
+                                               onchange = "obtener_municipios(this)" required>
+                                          {% for departamentos in lista_departamentos %}
+
+                                              <option value="{{departamentos.id}}"
+                                                   {% if departamentos.id == ubicacion.departamentos_id %}selected{% endif %}>
+                                                   {{departamentos.descripcion}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                    </div>
+                                  </div>
+                                    <div class="col-md-4">
+                                    <label>Municipio</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="municipios" id="municipios" required>
+                                          {% for municipios in lista_municipios %}
+
+                                              <option value="{{municipios.id}}"
+                                                   {% if municipios.id == ubicacion.municipios_id %}selected{% endif %}>
+                                                   {{municipios.descripcion}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+
+                                </div>
+
+                                <br>
+
+
+                            <!-- /.box-body -->
+                            <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Editar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+                </div>
+                <!-- /.tab-pane -->
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/paises/">Paises</a>
+        <small>Editar Información</small>
+      </h1>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="paises">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/paises/editar/{{paises.id}}/" method="POST">
+                              {% csrf_token %}
+
+                              <input type="hidden" class="form-control" id="id" placeholder="CODIGO"
+                                     name="id" value="{{paises.id}}">
+
+                              <div class="row">
+                                  <div class="col-md-12">
+                                   <label>Continentes</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="continentes" required>
+                                           <option value="" selected disabled></option>
+                                              {% for continentes in lista_continentes %}
+
+                                              <option value="{{continentes.id}}"
+                                                   {% if continentes.id == paises.continentes_id %}selected{% endif %}>
+                                                   {{continentes.descripcion}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Codigo</label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="codigo"
+                                             name="codigo" placeholder="Codigo DIAN "
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              value = "{{paises.codigo}}" required>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Descripcion </label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="descripcion"
+                                             name="descripcion" placeholder="Descripcion "
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              value = "{{paises.descripcion}}" required>
+                                      </div>
+                                  </div>
+                              </div>
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Editar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla tipo identificacion existentes -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

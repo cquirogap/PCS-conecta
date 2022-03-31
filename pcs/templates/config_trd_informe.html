@@ -1,0 +1,185 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/trd/informe/">Informe Tablas de Retencion Documental</a>
+        <small>Informe</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Config</a></li>
+        <li><a href="#">solicitud</a></li>
+      </ol>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+          <form role="form" action="/configuracion/trd/informe/" method="POST">
+              {% csrf_token %}
+            <div class="tab-content">
+
+                <div class="active tab-pane" id="casos_estado">
+                <!-- Tabla casos existentes -->
+                <input type="hidden" class="form-control" id="id" placeholder="id"
+                                     name="id" value="{{user.id}}">
+                <input type="hidden" class="form-control" id="dependencia" placeholder="dependencia"
+                                     name="dependencia" value="{{permiso_usuario.dependencias_id}}">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                            <div class="box-header">
+                                <!-- Busqueda-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                   <label>Dependencia</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fas fa fa-group"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo_requerimiento" id="tipo_requerimiento"  required>
+                                           <option value="" selected disabled></option>
+                                              {% for dependencias in lista_dependencias %}
+                                              <option value="{{ dependencias.codigo }}">{{dependencias.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit"  class="btn btn-primary btn-block btn-flat" >
+                                            <span class="glyphicon glyphicon-search"></span>Generar Informe
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary btn-block btn-flat" onclick="tableToExcel('tblData', 'reporte')">
+                                            <span class="fa fa-download"></span>Exportar</button>
+                                    </div>
+                                </div>
+                                <!--/ Busqueda-->
+                            </div>
+                        <br>
+                        <table class="table table-fixed" id="tblData">
+                                    <thead>
+                                        <tr bgcolor="#b0c4de">
+
+                                            <th>Dependencia</th>
+                                            <th>Series y Tipos Documentales</th>
+                                            <th colspan="3">Codigo</th>
+                                            <th>Procedimiento</th>
+                                            <th colspan="2">Retencion Años</th>
+                                            <th colspan="4">Dispocicion Final</th>
+                                            <th>Soporte</th>
+
+                                        </tr>
+                                        <tr bgcolor="#b0c4de">
+
+                                            <th></th>
+                                            <th></th>
+                                            <th>D</th>
+                                            <th>S</th>
+                                            <th>SB</th>
+                                            <th></th>
+                                            <th>AG</th>
+                                            <th>AC</th>
+                                            <th>CT</th>
+                                            <th>E</th>
+                                            <th>I</th>
+                                            <th>S</th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       {% regroup lista_trd by dependencia as lista_dep %}
+                                         {% for dato in lista_dep %}
+                                             <tr>
+
+
+                                                <td>{{ dato.grouper  }}</td>
+                                             </tr>
+                                        {% regroup dato.list by serie as lista_serie %}
+                                    {% for serie in lista_serie %}
+                                        <tr>
+
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td bgcolor="#b0c4de">{{ serie.grouper }}</td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                            <td  bgcolor="#b0c4de"></td>
+                                        </tr>
+
+                                            {% regroup serie.list by subserie as lista_sub %}
+                                            {% for sub in lista_sub %}
+                                                <tr>
+                                                <td></td>
+
+                                                <td>{{ sub.grouper }}
+                                                    <br>
+                                                    <br>
+
+                                                {% for tipo in sub.list %}
+                                                    <li>{{ tipo.tipos_documentos.descripcion}}</li>
+                                                    <br>
+
+                                                 {% endfor %}
+                                                </td>
+                                                {% for tipo in sub.list %}
+                                                    <td>{{ tipo.dependencia.codigo }}</td>
+                                                    <td>{{ tipo.serie.id }}</td>
+                                                    <td>{{ tipo.subserie.id }}</td>
+                                                    <td>{{ tipo.subserie.proceso }}</td>
+                                                    <td>{{ tipo.subserie.retencionag }}</td>
+                                                    <td>{{ tipo.subserie.retencionac }}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>{{ tipo.subserie.soporte }}</td>
+                                                    {{ "<!--" }}
+                                                {% endfor %}
+                                                {{ "-->" }}
+                                                </tr>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endfor %}
+
+                                </ul>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                                    </tbody>
+                                  </table>
+
+                      </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <!-- Tabla existentes -->
+
+            </div>
+          </form>
+
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

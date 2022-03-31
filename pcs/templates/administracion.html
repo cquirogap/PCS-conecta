@@ -1,0 +1,61 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+      {% csrf_token %}
+      <h1><a href="#">Administración</a><small>End To End Technology</small></h1>
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>ACCESO DENEGADO!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+    </section>
+    <br>
+    <div class="col-md-12">
+          <div class="box box-solid">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                  <li data-target="#carousel-example-generic" data-slide-to="0" class=""></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1" class="activate"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+                </ol>
+                <div class="carousel-inner">
+                  <div class="item">
+                      <a href="https://compralonuestro.co/">
+                    <img src="{% static 'dist/img/BN_03.png'%}" alt="First slide"></a>
+                  </div>
+                  <div class="item">
+                      <a href="https://www.autor.com.co/">
+                    <img src="{% static 'dist/img/BN_02.png'%}"></a>
+                  </div>
+                  <div class="item active">
+                      <a href="https://www.pcsocial.org/">
+                    <img src="{% static 'dist/img/banner.png'%}" alt="Second slide"></a>
+                  </div>
+                </div>
+                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                  <span class="fa fa-angle-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                  <span class="fa fa-angle-right"></span>
+                </a>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+{% endblock %}
+
+

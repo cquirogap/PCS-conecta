@@ -1,0 +1,208 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/config/trd/">Matriz TRD</a>
+        <small>Actualizacion</small>
+      </h1>
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Config</a></li>
+        <li><a href="#">TRD</a></li>
+      </ol>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+          <form role="form" action="/configuracion/trd/registrar/" method="POST">
+              {% csrf_token %}
+            <div class="tab-content">
+                <!-- dcasos_estado -->
+                <div class="active tab-pane" id="casos_estado">
+                <!-- Tabla casos existentes -->
+                <div class="row">
+                    <div class="col-xs-12">
+
+                            <div class="box-header">
+                                <!-- Busqueda-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                   <label>Dependencia</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fas fa fa-group"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="dependencias" id="dependencias"  required>
+                                           <option value="" selected disabled></option>
+                                              {% for dependencias in lista_dependencias %}
+                                              <option value="{{ dependencias.codigo }}">{{dependencias.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+                                    <div class="col-md-6">
+                                   <label>Serie</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fas fa fa-file"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="series" id="series" onchange = "obtener_subseries(this)" required>
+                                           <option value="" selected disabled></option>
+                                              {% for series in lista_series %}
+                                              <option value="{{ series.id }}">{{series.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                     <div class="col-md-6">
+                                   <label>Subserie</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fas fa fa-file"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="subseries" id="subseries"  required>
+                                           <option value="" selected disabled></option>
+                                              {% for subseries in lista_subseries %}
+                                              <option value="{{ subseries.id }}">{{subseries.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+                                     <div class="col-md-6">
+                                                       <label>Soporte</label>
+                                                      <div class="input-group ">
+                                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                                            <select class="form-control select2 " style="width: 100%;" name="soporte" id="soporte">
+                                                                    <option value="papel">PAPEL</option>
+                                                                    <option value="electronico">ELECTRONICO </option>
+                                                            </select>
+                                                      </div>
+                                                  </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" id="busqueda_documentos_asignados_input" class="btn btn-primary btn-block btn-flat" >
+                                            <span class="glyphicon glyphicon-search"></span>Consultar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary btn-block btn-flat" >
+                                            <span class="fa fa-pencil"></span> Actualizar
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--/ Busqueda-->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="page-header">
+                                    </h4>
+                                </div>
+                            </div>
+                            <div id="documentos_asignados">
+                            <div class="row">
+                            <center>
+
+                                <center><h4 >Documentos asignados a estos parametros</h4> </center>
+                            </center>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body table-responsive no-padding">
+                              <table id="tabla_documentos_asignados" class="table table-hover">
+                                <thead>
+                                   <tr>
+                                        <th>Codigo</th>
+                                        <th>Descripcion</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Espacio para los datos que cargan -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+
+                                    </tr>
+                                </tfoot>
+                              </table>
+                            </div>
+                            <!-- /.box-body -->
+                            </div>
+                            <hr>
+                            <br>
+                            <div id="documentos">
+                            <div class="row">
+                            <center>
+
+                                <center><h4 >Documentos sin asignar a estos parametros</h4> </center>
+                            </center>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body table-responsive no-padding">
+                              <table id="tabla_documento_sin_asignar" class="table table-hover ">
+                                <thead>
+                                   <tr>
+                                        <th>Codigo</th>
+                                        <th>Descripcion</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+
+                                    </tr>
+                                </tfoot>
+                              </table>
+                            </div>
+                            <!-- /.box-body -->
+                            </div>
+                      </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <!-- Tabla existentes -->
+
+            </div>
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

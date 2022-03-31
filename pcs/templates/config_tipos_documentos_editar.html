@@ -1,0 +1,123 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/departamentos/">Tipo Documentos</a>
+        <small>Registrar Información</small>
+      </h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+            <br>
+            <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Alerta!</h4>{{ message }}
+             </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="terapia">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/tipos_documentos/editar/{{ tipos_documentos.id }}/" method="POST">
+                              {% csrf_token %}
+                              <input type="hidden" class="form-control" id="id" placeholder="id"
+                                     name="id" value="{{tipos_documentos.id}}">
+                              <div class="row">
+                                  <div class="col-md-8">
+                                   <label>Dependencia</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="dependencias" required>
+                                           <option value="" selected disabled></option>
+                                              {% for dependencia in lista_dependencias %}
+                                              <option value="{{dependencia.codigo}}"
+                                                   {% if dependencia.codigo == tipos_documentos.dependencias_id %}selected{% endif %}>
+                                                   {{dependencia.descripcion}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+                                  <div class="col-md-6">
+                                   <label>Tipo Radicado</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo_radicado" required>
+                                           <option value="" selected disabled></option>
+                                              {% for tipos_radicados in lista_tipos_radicados %}
+                                              <option value="{{tipos_radicados.id}}"
+                                                   {% if tipos_radicados.id == tipos_documentos.tipos_radicados_id %}selected{% endif %}>
+                                                   {{tipos_radicados.nombre_tr}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              </div>
+
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Descripcion </label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="descripcion"
+                                             name="descripcion" placeholder="Descripcion " value="{{ tipos_documentos.descripcion }}"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              required>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-4">
+                                     <label>Numero Dias de Tramite </label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="dias_tramite" value="{{ tipos_documentos.dias_tramite }}"
+                                             name="dias_tramite" placeholder="# Dias de tramite" min="1" max="999"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              required>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                     <label>Publicar para Radicacion</label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="publicar" required>
+                                            <option value="" selected disabled></option>
+                                            <option value="True"{% if tipos_documentos.publicar == 1 %}selected{% endif %}>Si</option>
+                                            <option value="False"{% if tipos_documentos.publicar == 0 %}selected{% endif %}>No</option>
+                                      </select>
+                                      </div>
+                                  </div>
+                              </div>
+
+
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Editar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla tipo identificacion existentes -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

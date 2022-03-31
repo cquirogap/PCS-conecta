@@ -1,0 +1,95 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/config/solicitud/">Solicitud de anulacion</a>
+        <small>Registro</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Config</a></li>
+        <li><a href="#">solicitud</a></li>
+      </ol>
+    </section>
+    <section class="invoice">
+
+      <!-- title row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="page-header">
+            <i class="fa fa-check"></i>Accion requerida completada
+            <small class="pull-right">{{ solicitar.fecha }}</small>
+
+          </h2>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- info row -->
+      <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+
+            <strong>Accion Requerida</strong><br>
+            <p>{{ solicitar.tipo_anulacion.descripcion }}</p>
+
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+            <strong>Usuario Origen</strong><br>
+            <p>{{ solicitar.usuario_origen.first_name }} {{ solicitar.usuario_origen.last_name }}</p>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+            <strong>Usuario Destino</strong><br>
+            <p>USUARIO ANULADOR</p>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <!-- Table row -->
+      <div class="row">
+        <div class="col-xs-12 table-responsive">
+          <table class="table table-striped">
+              <h4>Radicados Involucrados</h4>
+
+            <tbody>
+            <td>
+                {% for datos in solicitud %}
+
+                    {% if datos.radicado %}
+                        {{ datos.radicado_id }}<br>
+                    {% endif %}
+
+                    {% if datos.radicado_entrada %}
+                        {{ datos.radicado_entrada_id }}<br>
+
+                    {% endif %}
+                    {% if datos.radicado_salida %}
+                        {{ datos.radicado_salida_id }}<br>
+
+                    {% endif %}
+                    {% if datos.radicado_interno %}
+                        {{ datos.radicado_interno_id }}<br>
+                    {% endif %}
+
+                {% endfor %}
+            </td>
+            </tbody>
+          </table>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+
+    </section>
+
+                <div class="row">
+
+
+                      </div>
+
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+/*!
+ *   eNOVIOS custom login page
+ *   Author: julian  vega
+!*/
+/*
+ * Core: General Layout Style
+ * -------------------------
+ */
+
+body {
+    background-image: url("/static/img/novios_2.jpg") !important;
+    background-size: 120% 140% !important;
+}
+.content-wrapper {
+    background-color: #F8F8FA;
+}

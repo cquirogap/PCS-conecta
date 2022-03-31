@@ -1,0 +1,185 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/admin_anulacion/">Radicados</a>
+        <small>Anulacion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Anulacion</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="/configuracion/admin_anulacion/" data-toggle="tab">Anular Radicados</a></li>
+              <li><a href="/configuracion/paises/" >Actas</a></li>
+              <li><a href="/configuracion/reportes/" >Reportes</a></li>
+
+            </ul>
+          <form role="form" action="/configuracion/admin_anulacion/anular/" method="POST">
+            {% csrf_token %}
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="continentes">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box-header">
+                                <!-- Busqueda-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                                       <label>Fecha inicial</label>
+                                                      <div class="input-group ">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                            <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" required>
+                                                      </div>
+                                                  </div>
+                                    <div class="col-md-6">
+                                                       <label>Fecha final</label>
+                                                      <div class="input-group ">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                            <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" required>
+                                                      </div>
+                                                  </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                     <div class="col-md-6">
+                                                       <label>Tipo de Radicacion</label>
+                                                      <div class="input-group ">
+                                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                                            <select class="form-control select2 " style="width: 100%;" name="tipo_radicado" id="tipo_radicado" required >
+                                                                <option value="" selected disabled></option>
+                                                                <option value="Factura">Factura de Compra</option>
+                                                                <option value="Entrada">Entrada</option>
+                                                                <option value="Salida">Salida</option>
+                                                                <option value="Interno">Interno</option>
+                                                            </select>
+                                                      </div>
+                                                  </div>
+                                     <div class="col-md-6">
+                                                       <label>Dependencias</label>
+                                                      <div class="input-group ">
+                                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                                            <select class="form-control select2 " style="width: 100%;" name="dependencia" id="dependencia" required>
+                                                                <option value="todos" selected>TODAS LAS DEPENDENCIAS</option>
+                                                                  {% for dependencia in lista_dependencia %}
+                                                                  <option value="{{ dependencia.codigo }}">{{dependencia.descripcion}}</option>
+                                                                  {% endfor %}
+                                                            </select>
+                                                      </div>
+                                                  </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="button" id="busqueda_solicitud_dependencia_input" class="btn btn-primary btn-block btn-flat" >
+                                            <span class="glyphicon glyphicon-folder-open"></span>
+                                            <span class="glyphicon glyphicon-search"></span>Consultar
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <!--/ Busqueda-->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="page-header">
+                                    </h4>
+                                </div>
+                            </div>
+                            <div id="documentos asignados">
+                            <div class="row">
+                            <center>
+                                <center><h4 >Documentos con solicitud de anulacion</h4> </center>
+                            </center>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body table-responsive no-padding">
+                              <table id="tabla_solicitudes_anulacion" class="table table-hover">
+                                <thead>
+                                   <tr>
+                                        <th>Dependencia</th>
+                                        <th>Radicado</th>
+                                        <th>Fecha De Solicitud</th>
+                                        <th>Observacion del Solicitante</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Espacio para los datos que cargan -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+
+                                    </tr>
+                                </tfoot>
+                              </table>
+                            </div>
+                            <!-- /.box-body -->
+
+                            </div>
+
+                        <!-- /.box -->
+                    </div>
+                    </div>
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+
+    </div>
+    </div>
+
+    <center>
+        <center><h5 >Si estas seguro de ANULAR estos documentos escriba el numero de acta y presione aceptar</h5> </center>
+
+
+        <button type="submit" class="btn btn-warning">ACEPTAR</button>
+
+    </center>
+    </form>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

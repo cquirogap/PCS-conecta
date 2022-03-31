@@ -1,0 +1,115 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <h1> <a href="/configuracion/solicitud_catalogo_productos/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+</section>
+<section class="invoice">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+               Detalle  # {{ form_id }}
+            </h2>
+        </div>
+    </div>
+    <div class="row no-print">
+
+    </div>
+    {% for dato in lista_solicitud %}
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            No.Producto :<br>
+            <strong>{{dato.n_producto}}</strong><br><br>
+            Proveedor:<br>
+            <strong>{{ dato.proveedor }}</strong><br><br>
+            Stock Total:<br>
+            <strong>{{ dato.stock }}</strong><br><br>
+
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Nombre:<br>
+            <strong>{{dato.nombre}}</strong><br><br>
+            Unidad de Medida:<br>
+            <strong>{{ dato.unidad_medida }}</strong><br><br>
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Fecha de creacion:<br>
+            <strong>{{ dato.fecha_creacion }}</strong><br><br>
+            Articulos por Unidad:<br>
+            <strong>{{ dato.art_por_und }}</strong><br><br>
+        </div>
+    </div>
+    <hr>
+
+   <div class="box-header with-border">
+      <h2 class="page-header">Inventario</h2>
+   </div>
+   <div class="box-body">
+      <div class="table-responsive">
+         <table class="table no-margin">
+            <thead>
+               <tr>
+                  <th>Codigo Almacen</th>
+                  <th>Nombre Almacen</th>
+                  <th>Stock</th>
+                  <th>Comprometido</th>
+                  <th>Pedido</th>
+                  <th>Costo del Articulo</th>
+               </tr>
+            </thead>
+            <tbody>
+            {% for almacen in dato.almacenes %}
+               <tr>
+                  <td><a href="">{{almacen.codigo}}</a></td>
+                  <td>{{almacen.nombre}}</td>
+                  <td><span class="label label-success">{{almacen.stock}}</span></td>
+                  <td><span class="label label-info">{{almacen.compremetido}}</span></td>
+                  <td><span class="label label-warning">{{almacen.pedido}}</span></td>
+                  <td>{{almacen.costo}}</td>
+
+               </tr>
+            {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+
+     {% endfor %}
+    <div class="row no-print">
+
+    </div>
+</section>
+
+{% endblock %}

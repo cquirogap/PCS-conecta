@@ -1,0 +1,108 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <h1> <a href="/configuracion/solicitud_pagos_recibidos/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+</section>
+<section class="invoice">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+               Detalle  # {{ form_id }}
+            </h2>
+        </div>
+    </div>
+    <div class="row no-print">
+
+    </div>
+    {% for dato in lista_solicitud %}
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            N° :<br>
+            <strong>{{dato.n_pagos}}</strong><br><br>
+            Destinatario de Factura:<br>
+            <strong>{{ dato.destinatorio_factura }}</strong><br><br>
+
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Codigo:<br>
+            <strong>{{dato.codigo}}</strong><br><br>
+            Fecha de Contabilizacion:<br>
+            <strong>{{ dato.fecha_contabilizacion }}</strong><br><br>
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Nombre:<br>
+            <strong>{{ dato.nombre }}</strong><br><br>
+            Fecha del documento:<br>
+            <strong>{{ dato.fecha_vencimiento }}</strong><br><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Numero </th>
+                        <th>Tipo </th>
+                        <th>Descto </th>
+                        <th>Plazo</th>
+                        <th>Valor a Pagar($)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for articulo in dato.detalle %}
+                <tr>
+                    <td>{{ articulo.numero }}</td>
+                    <td>{% if articulo.tipo == 'it_PurchaseInvoice' %}Factura Proveedor
+                    {% elif articulo.tipo == 'it_PurchaseCreditNote' %}Notas Credito Provedor
+                    {% else %}{{articulo.tipo}}{% endif %}
+                    </td>
+                    <td>{{ articulo.descuento }}</td>
+                    <td>{{ articulo.plazo }}</td>
+                    <td>{{ articulo.total }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+     {% endfor %}
+    <div class="row no-print">
+
+    </div>
+</section>
+
+{% endblock %}

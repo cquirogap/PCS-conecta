@@ -1,0 +1,299 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/consecutivos/">Consecutivos y Carpetas</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Consecutivos</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#consecutivos" data-toggle="tab">Consecutivos</a></li>
+              <li ><a href="/configuracion/consecutivos/historial_carpeta/" >Historial Carpetas</a></li>
+              <li ><a href="/configuracion/consecutivos/historial/" >Historial Consecutivos</a></li>
+            </ul>
+            {% csrf_token %}
+            <div id="ActualizarConsecutivos" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="main-header">
+                                    <span class="close" data-dismiss="modal">&times;</span>
+                                    <div class="col-md-12">
+                                    <h2 class="page-header">
+                                    <strong>Actualizar Consecutivo</strong>
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form" action="/configuracion/consecutivos/actualizar/" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                    <input type="hidden" class="form-control" id="id" placeholder="id"
+                                     min="1" max="99" name="id" value="{{user.id}}">
+                                        <div class="row">
+
+                                  <div class="col-md-6">
+                                   <label>Año</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="ano" id="ano" required>
+                                           <option value="" selected disabled></option>
+
+                                              {% for anos in lista_anos %}
+                                              <option value="{{ anos.ano }}">{{ anos.ano }}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+                                  <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Dependencias</label>
+                                      <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="dependencia" id="dependencia" required>
+                                           <option value="" selected disabled></option>
+                                              {% for dependencias in lista_dependencias %}
+                                              <option value="{{ dependencias.codigo }}">{{ dependencias.descripcion }}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                                  </div>
+                              </div>
+
+
+                              </div>
+                                        <br>
+                                        <button type="submit" class="btn btn-block btn-primary btn-flat">Agregar</button>
+                                    </form>
+                                </div>
+
+                          </div>
+
+                        </div>
+                    </div>
+            <div id="ActualizarCarpetas" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="main-header">
+                                    <span class="close" data-dismiss="modal">&times;</span>
+                                    <div class="col-md-12">
+                                    <h2 class="page-header">
+                                    <strong>Actualizar Carpetas</strong>
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form" action="/configuracion/consecutivos/anos/actualizar/" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                    <input type="hidden" class="form-control" id="id" placeholder="id"
+                                     min="1" max="99" name="id" value="{{user.id}}">
+                                        <div class="row">
+
+                                  <div class="col-md-6">
+                                   <label>Año</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="ano" id="ano" required>
+                                           <option value="" selected disabled></option>
+
+                                              {% for anos in lista_anos %}
+                                              <option value="{{ anos.ano }}">{{ anos.ano }}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+                                  <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Dependencias</label>
+                                      <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="dependencia" id="dependencia" required>
+                                           <option value="" selected disabled></option>
+                                              {% for dependencias in lista_dependencias %}
+                                              <option value="{{ dependencias.codigo }}">{{ dependencias.descripcion }}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                                  </div>
+                              </div>
+
+
+                              </div>
+                                        <br>
+                                        <button type="submit" class="btn btn-block btn-primary btn-flat">Agregar</button>
+                                    </form>
+                                </div>
+
+                          </div>
+
+                        </div>
+                    </div>
+            <div class="modal modal-danger fade in" id="modal-danger" >
+          <div class="modal-dialog">
+              <form role="form" action="/configuracion/consecutivos/anos/" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Advertencia</h4>
+              </div>
+              <div class="modal-body">
+              <input type="hidden" class="form-control" id="id" placeholder="id"
+                     min="1" max="99" name="id" value="{{user.id}}">
+
+                <h5>Ingresa el año:</h5>
+                  <br>
+                  <div class="row">
+                  <div class="col-md-12">
+                      <div class="input-group ">
+                          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                          <input type="number" class="form-control" id="ano"
+                                 name="ano" placeholder="Año" min="1" max="9999"
+                                 style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                 required>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-outline">Continuar</button>
+                  </form>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="consecutivos">
+                    <br>
+                    <div class="row">
+                          <div class="col-md-3">
+                              <a href="/configuracion/consecutivos/registrar/">
+                                <button type="button" class="btn btn-primary">
+                                    <span class='glyphicon glyphicon-edit'></span> Registrar Consecutivos</button>
+                              </a>
+                          </div>
+                        <div class="col-md-3">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ActualizarConsecutivos">
+                            <span class='glyphicon glyphicon-edit'></span>Actualizar Consecutivos
+                        </button>
+                        </div>
+                        <div class="col-md-3">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-danger">
+                            <span class='glyphicon glyphicon-edit'></span>Crear Carpetas Del Año
+                        </button>
+                        </div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ActualizarCarpetas">
+                            <span class='glyphicon glyphicon-edit'></span>Actulizar Carpetas
+                        </button>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                  <h3 class="box-title">Consecutivos</h3>
+
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive no-padding">
+                                  <table id="consecutivos" class="table table-bordered table-hover dataTables">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Ano</th>
+                                            <th>Dependencia</th>
+                                            <th>Tipo Consecutivo</th>
+                                            <th>Secuencia</th>
+
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for consecutivos in lista_consecutivos %}
+                                            <tr>
+
+                                                <td>{{consecutivos.codigo}}</td>
+                                                <td>{{consecutivos.ano}}</td>
+                                                <td>{{consecutivos.dependencias.descripcion}}</td>
+                                                <td>{{consecutivos.tipo}}</td>
+                                                <td>{{consecutivos.secuencia}}</td>
+
+
+                                                <td><center><a class="btn btn-info btn-sm"
+                                                       href="/configuracion/consecutivos/borrar/{{consecutivos.codigo}}/"
+                                                       title="Eliminar ">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </a></center></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+
+
+
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

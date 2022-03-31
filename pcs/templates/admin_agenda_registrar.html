@@ -1,0 +1,124 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+      <h1><a href="/administracion/gestion/agenda/">Agendar</a><small>Registrar</small></h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Admin</a></li>
+        <li><a href="/administracion/gestion/agenda/">Agendar</a></li>
+      </ol>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+          <div class="tab-content">
+            <!-- casos_pacientes -->
+            <div>
+                <!-- Formulario casos_pacientes -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form" action="/gestion/ragenda/" method="POST" enctype="multipart/form-data">
+                            <!-- comando django de seguridad -->
+                            {% csrf_token %}
+                            <div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                           <label>Paciente</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <select class="form-control select2" style="width: 100%;"
+                                                  name="caso" required>
+                                                  <option value="" selected disabled></option>
+                                                  {% for casos in lista_casos %}
+                                                  <option value="{{ casos.id }}">
+                                                      {{casos.paciente.nombre_uno}} {{casos.paciente.nombre_dos}}
+                                                      {{casos.paciente.apellido_uno}} {{casos.paciente.apellido_dos}}
+                                                       --> CASO {{ casos.id }}
+                                                  </option>
+                                                  {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       <label>Fecha</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                          <input type="date" class="form-control" id="fecha" name="fecha" required>
+                                      </div>
+                                  </div>
+                                    <div class="col-md-6">
+                                      <label>Tiempo de ejecución</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-history"></i></span>
+                                            <select class="form-control select2" style="width: 100%;" name="tiempo"
+                                            onChange="a_hora(this.form)" >
+                                                <option value="1">DURANTE EL DIA</option>
+                                                <option value="2">ESTABLECER HORA</option>
+                                            </select>
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6" id='active_hora' style="display:none">
+                                       <label>Hora</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                          <input type="time" class="form-control" id="hora" name="hora" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-6">
+                                      <label>Actividad</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-navicon"></i></span>
+                                            <select class="form-control select2" style="width: 100%;" name="accion" required>
+                                                 {% for acciones in lista_acciones %}
+                                                <option value="{{ acciones.id }}">
+                                                    {{acciones.descripcion}}
+                                                </option>
+                                                  {% endfor %}
+                                            </select>
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                      <label>Responsable</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon" id='active_color' style="background-color:{{ color_usuario }};"><i class="fa fa-user-circle-o" ></i></span>
+                                            <select class="form-control select2" style="width: 100%;" name="responsable"  onChange="a_color(this.form)">
+                                                <option value="{{usuario_actual.id}}" selected>{{usuario_actual.first_name}} {{usuario_actual.last_name}}</option>
+                                                {% for usuarios in lista_usuarios %}
+                                                <option value="{{ usuarios.id }}" >
+                                                    {{usuarios.first_name}} {{usuarios.last_name}}
+                                                </option>
+                                                  {% endfor %}
+                                            </select>
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                            </div>
+                            <!-- /.box-body -->
+                            <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </div>
+    </section>
+
+{% endblock %}

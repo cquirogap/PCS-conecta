@@ -1,0 +1,105 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/estante/">Estante</a>
+        <small>Registrar Información</small>
+      </h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+            <br>
+            <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Alerta!</h4>{{ message }}
+             </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="terapia">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/estante/registrar/" method="POST">
+                              {% csrf_token %}
+                              <div class="row">
+                                  <div class="col-md-12">
+                                   <label>Ubicacion</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="ubicacion" required>
+                                           <option value="" selected disabled></option>
+                                              {% for ubicacion in lista_ubicacion %}
+                                              <option value="{{ ubicacion.id }}">{{ubicacion.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              <div class="col-md-12">
+                                   <label>Numero de Piso</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="piso" required>
+                                           <option value="" selected disabled></option>
+                                              {% for piso in lista_piso %}
+                                              <option value="{{ piso.id }}">{{piso.numero}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              <div class="col-md-12">
+                                   <label>Salon</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="salon" required>
+                                           <option value="" selected disabled></option>
+                                              {% for salon in lista_salon %}
+                                              <option value="{{ salon.id }}">{{salon.salon}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Estante</label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="estante"
+                                             name="estante" placeholder="Estante" min="1" max="999"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              required>
+                                      </div>
+                                  </div>
+                              </div>
+
+
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla tipo identificacion existentes -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

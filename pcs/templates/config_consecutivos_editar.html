@@ -1,0 +1,89 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/consecutivos/">Consecutivos</a>
+        <small>Editar Información</small>
+      </h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+            <br>
+            <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Alerta!</h4>{{ message }}
+             </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="terapia">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <form role="form" action="/configuracion/consecutivos/editar/{{ consecutivos.codigo }}/" method="POST">
+                              {% csrf_token %}
+                              <input type="hidden" class="form-control" id="id" placeholder="id"
+                                     name="id" value="{{consecutivos.codigo}}">
+                              <div class="row">
+                                  <div class="col-md-4">
+                                     <label>Ano </label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="ano"
+                                             name="ano" placeholder="Codigo Ano" min="1" max="9999" value="{{ consecutivos.ano }}"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              required>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                   <label>Dependencia</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="dependencias" required>
+                                              {% for dependencias in lista_dependencias %}
+                                              <option value="{{ dependencias.codigo }}">{{dependencias.descripcion}}</option>
+                                              {% endfor %}
+                                            <option value="{{ consecutivos.dependencias_id }}">{{consecutivos.dependencias.descripcion}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                                  <div class="col-md-4">
+                                   <label>Tipo Radicado</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipos_radicados" required>
+                                              {% for tipos_radicados in lista_tipos_radicados %}
+                                              <option value="{{ tipos_radicados.id }}">{{tipos_radicados.nombre_tr}}</option>
+                                              {% endfor %}
+                                            <option value="{{ consecutivos.tipos_radicados_id }}">{{consecutivos.tipos_radicados.nombre_tr}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              </div>
+
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla tipo identificacion existentes -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/consecutivos/">Consecutivos</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Consecutivos</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li ><a href="/configuracion/consecutivos/" >Consecutivos</a></li>
+              <li class="active"><a href="/configuracion/consecutivos/historial_carpeta/" >Historial Carpetas</a></li>
+              <li ><a href="/configuracion/consecutivos/historial/" >Historial Consecutivos</a></li>
+            </ul>
+            {% csrf_token %}
+
+
+
+
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="consecutivos">
+                    <br>
+
+
+
+            <div class="box-header">
+              <h3 class="box-title">Historico de Carpetas</h3>
+            </div>
+            <!-- /.box-header -->
+
+              <table class="table table-condensed">
+                  <thead>
+                  <tr>
+                      <th>Us.Origen</th>
+                      <th>Accion</th>
+                      <th>Carpeta año</th>
+                      <th>Carpeta dependencia</th>
+
+
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for carpeta in lista_carpetas %}
+                      <tr>
+                          <td>{{ carpeta.usuario_origen.first_name }} {{ carpeta.usuario_origen.last_name }}</td>
+                          <td>{{ carpeta.accion}}</td>
+                          <td>{{ carpeta.ano_id }}</td>
+                          <td>{{ carpeta.dependencias.descripcion }}</td>
+
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+
+            <!-- /.box-body -->
+
+
+
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

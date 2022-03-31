@@ -1,0 +1,108 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+     <section class="content-header">
+     {% csrf_token %}
+      <center>
+      <h1>
+         <i class="fa fa-book "></i> Agenda de trabajo
+      </h1>
+     {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+     <div class="box-body">
+            <a href="/gestion/agenda/registrar/">
+            <button type="button" class="btn btn-primary">
+                <span class='glyphicon glyphicon-edit'></span> Registrar Actividad</button>
+            </a>
+      </div>
+      </center>
+    </section>
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box">
+                            <div class="box-header">
+                                <!-- Busqueda-->
+                                <div class="row">
+                                <form role="form" >
+                                   <div class="col-md-6">
+                                       <label>Fecha {{hoy.isoformat}}</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                          <input type="month" class="form-control" id="fecha" name="fecha" value="{{hoy}}" required>
+                                      </div>
+                                  </div>
+                                   <div class="col-md-6">
+                                       <label>Responsable</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon" id='active_color' style="background-color:{{ color_usuario }};"><i class="fa fa-user-circle-o" ></i></span>
+                                            <select class="form-control select2" style="width: 100%;" name="responsable"  id="responsable" onChange="a_color(this.form)">
+                                                <option value="NA">TODOS</option>
+                                                <option value="{{usuario_actual.id}}" selected>{{usuario_actual.first_name}} {{usuario_actual.last_name}}</option>
+                                                {% for usuarios in lista_usuarios %}
+                                                <option value="{{ usuarios.id }}" >
+                                                    {{usuarios.first_name}} {{usuarios.last_name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                      </div>
+                                  </div>
+                                   <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                 </form >
+                                    <div class="col-md-12">
+                                        <button id="buscar_agenda_button" class="btn btn-primary btn-block btn-flat" >
+                                            Consultar
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--/ Busqueda-->
+                            </div>
+                        <!-- /.box -->
+                    </div>
+            <div class="box-body no-padding">
+              <!-- EL CALENDARIO -->
+              <div id="calendario_agenda_trabajo"></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /. box -->
+        </div>
+        <!-- /.col -->
+      </div>
+    </section>
+{% endblock %}

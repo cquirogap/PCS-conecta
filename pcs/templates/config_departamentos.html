@@ -1,0 +1,128 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/departamentos/">Departamentos</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Departamentos</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li><a href="/configuracion/continentes/" >Continentes</a></li>
+              <li><a href="/configuracion/paises/" >Paises</a></li>
+              <li class="active"><a href="#departamentos" data-toggle="tab">Departamentos</a></li>
+              <li><a href="/configuracion/municipios/" >Municipios</a></li>
+            </ul>
+            {% csrf_token %}
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="paises">
+                    <br>
+                    <div class="row">
+                          <div class="col-md-2">
+                              <a href="/configuracion/departamentos/registrar/">
+                                <button type="button" class="btn btn-primary">
+                                    <span class='glyphicon glyphicon-edit'></span> Registrar</button>
+                              </a>
+                          </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                  <h3 class="box-title">Departamentos</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive no-padding">
+                                  <table id="departamentos" class="table table-bordered table-hover dataTables">
+                                    <thead>
+                                        <tr>
+                                            <th>Pais</th>
+                                            <th>Codigo</th>
+                                            <th>Descripcion</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for departamentos in lista_departamentos %}
+                                            <tr>
+                                                <td>{{departamentos.paises.descripcion}}</td>
+                                                <td>{{departamentos.codigo}}</td>
+                                                <td>{{departamentos.descripcion}}</td>
+
+                                                <td><center><a class="btn btn-info btn-sm"
+                                                       href="/configuracion/departamentos/editar/{{departamentos.id}}/"
+                                                       title="Editar ">
+                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                </a></center></td>
+                                                <td><center><a class="btn btn-info btn-sm"
+                                                       href="/configuracion/departamentos/borrar/{{departamentos.id}}/"
+                                                       title="Eliminar ">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </a></center></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <!-- /.box-body -->
+                          </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

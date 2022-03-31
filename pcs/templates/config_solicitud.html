@@ -1,0 +1,127 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/config/solicitud/">Solicitud de anulacion</a>
+        <small>Registro</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Config</a></li>
+        <li><a href="#">solicitud</a></li>
+      </ol>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+          <form role="form" action="/configuracion/solicitud/" method="POST">
+              {% csrf_token %}
+            <div class="tab-content">
+
+                <div class="active tab-pane" id="casos_estado">
+                <!-- Tabla casos existentes -->
+                <input type="hidden" class="form-control" id="id" placeholder="id"
+                                     name="id" value="{{user.id}}">
+                <input type="hidden" class="form-control" id="dependencia" placeholder="dependencia"
+                                     name="dependencia" value="{{permiso_usuario.dependencias_id}}">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                            <div class="box-header">
+                                <!-- Busqueda-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                   <label>Seleccione la opcion que se ajuste a tu requerimiento</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fas fa fa-group"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo_requerimiento" id="tipo_requerimiento"  required>
+                                           <option value="" selected disabled></option>
+                                              {% for tipo_requerimiento in lista_tipos_requerimiento %}
+                                              <option value="{{ tipo_requerimiento.id }}">{{tipo_requerimiento.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" id="busqueda_documentos_asignados_input" class="btn btn-primary btn-block btn-flat" >
+                                            <span class="glyphicon glyphicon-search"></span>Consultar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary btn-block btn-flat" >
+                                            <span class="fa fa-pencil"></span> Realizar
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--/ Busqueda-->
+                            </div>
+                        <br>
+                            <div class="row">
+                        <div class="col-xs-12">
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive no-padding">
+                                  <table id="continentes" class="table table-bordered table-hover dataTables">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Asunto</th>
+                                            <th>Tipo de radicado</th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for datos in radicado %}
+                                            <tr>
+
+                                                <td>{{datos.codigo}}</td>
+                                                <td>{{datos.asunto}}</td>
+
+                                                <td>
+                                                    {% if datos.ruta_documento == '1'  %}<p>Factura</p>
+                                                    {% elif datos.ruta_documento == '2'  %}<p>Salida</p>
+                                                    {% elif datos.ruta_documento == '3'  %}<p>Entrada</p>
+                                                    {% elif datos.ruta_documento == '4'  %}<p>Interno</p>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox" id="radicado" name="radicado[]" value="{{ datos.codigo }}">
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <!-- /.box-body -->
+
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                      </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <!-- Tabla existentes -->
+
+            </div>
+          </form>
+
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

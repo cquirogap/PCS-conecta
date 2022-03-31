@@ -1,0 +1,206 @@
+{% extends 'base_app.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Encuentro matrimonial
+      </h1>
+    </section>
+
+    <!-- Contenido principal -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-3">
+          <!-- Imagen de Evento -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+                <img class="img-responsive" src="{% static "img/iglesia_2.jpg" %}">
+              <h3 class="profile-username text-center">Encuentro Novios</h3>
+              <p class="text-muted text-center">Viernes 27 de Enero</p>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Parejas</b> <a class="pull-right">40</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Confirmados</b> <a class="pull-right">30</a>
+                </li>
+              </ul>
+                <a href="#" class="btn btn-danger btn-block"><b>Cancelar</b></a>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+          <!-- About  Box -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Acerca del encuentro</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <strong><i class="fa fa-book margin-r-5"></i> Tematica</strong>
+
+              <p class="text-muted">
+                Bane was a member of the League of Shadows. And then he was excommunicated. And any man who is too extreme for Ra's Al Ghul, is not to be trifled with.
+              </p>
+
+              <hr>
+
+              <strong><i class="fa fa-map-marker margin-r-5"></i> Ubicación</strong>
+
+              <p class="text-muted">Cota, Cundimarca</p>
+
+              <hr>
+
+              <strong><i class="fa fa-file-text-o margin-r-5"></i> Encargado</strong>
+
+              <p>Rodrigo y Geidy Marcela Hernández Estrada. Pbro. Nelson Torres.</p>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+         <!-- Detalles Evento -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#activity" data-toggle="tab">Asistentes</a></li>
+              <li><a href="#timeline" data-toggle="tab">Recursos</a></li>
+              <li><a href="#settings" data-toggle="tab">Modificar</a></li>
+            </ul>
+            <div class="tab-content">
+              <!-- Asistentes Evento -->
+              <div class="active tab-pane" id="activity">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <div class="box">
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                          <table class="table table-hover">
+                            <tr>
+                              <th>Novio</th>
+                              <th>Novia</th>
+                              <th>Estado</th>
+                              <th>Cambiar</th>
+                            </tr>
+                            <tr>
+                                <td>Juan Perez</td>
+                                <td>Andrea Diaz</td>
+                                <td><span class="label label-success">Pagado</span></td>
+                                <td>
+                                    <span class="label label-success">Confirmar</span>
+                                    <span class="label label-danger">Cancelar</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Camilo Diaz</td>
+                                <td>Ana Rodriguez</td>
+                                <td><span class="label label-warning">Pendiente</span></td>
+                                <td>
+                                    <span class="label label-success">Confirmar</span>
+                                    <span class="label label-danger">Cancelar</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>David Suarez</td>
+                                <td>Alejandra Martinez</td>
+                                <td><span class="label label-success">Pagado</span></td>
+                                <td>
+                                    <span class="label label-success">Confirmar</span>
+                                    <span class="label label-danger">Cancelar</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Juan Perez</td>
+                                <td>Andrea Diaz</td>
+                                <td><span class="label label-danger">cancelado</span></td>
+                                <td>
+                                    <span class="label label-success">Confirmar</span>
+                                    <span class="label label-danger">Cancelar</span>
+                                </td>
+                            </tr>
+                              <tr>
+                                <td>Camilo Diaz</td>
+                                <td>Ana Rodriguez</td>
+                                <td><span class="label label-warning">Pendiente</span></td>
+                                <td>
+                                    <span class="label label-success">Confirmar</span>
+                                    <span class="label label-danger">Cancelar</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>David Suarez</td>
+                                <td>Alejandra Martinez</td>
+                                <td><span class="label label-success">Pagado</span></td>
+                                <td>
+                                    <span class="label label-success">Confirmar</span>
+                                    <span class="label label-danger">Cancelar</span>
+                                </td>
+                            </tr>
+                          </table>
+                        </div>
+                        <!-- /.box-body -->
+                      </div>
+                      <!-- /.box -->
+                    </div>
+                  </div>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="timeline">
+
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="settings">
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">Nombre</label>
+
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="inputName" placeholder="Nombre del encuentro">
+                    </div>
+                  </div>
+
+                  <!-- /.form group -->
+                  <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2 control-label">Fecha</label>
+
+                    <div class="col-sm-10">
+                      <input type="datetime-local" class="form-control" id="inputEmail" placeholder="Fecha">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputExperience" class="col-sm-2 control-label">Tematica</label>
+
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="inputExperience" placeholder="Tematica del  encuentro"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn bg-purple">Cambiar</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock content %}

@@ -1,0 +1,183 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/empresas/">Compañia</a>
+        <small>Registrar Información</small>
+      </h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+            <br>
+            <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Alerta!</h4>{{ message }}
+             </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <div class="tab-content">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <form role="form" action="/configuracion/empresas/registrar/" method="POST">
+                              <!-- comando django de seguridad -->
+                              {% csrf_token %}
+                              <br>
+                                <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Nombre </label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="text" class="form-control" id="nombre"
+                                                style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                name="nombre" placeholder="Nombre de la compañia "  required>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                           <label>NIT </label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="text" class="form-control" id="nit"
+                                                style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                name="nit" placeholder="NIT de la compañia "  required>
+                                          </div>
+                                      </div>
+
+                                </div>
+                              <br>
+                                <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Telefono  </label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="number" class="form-control" id="telefono"
+                                                style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                name="telefono" placeholder="Telefono de la compañia "   required>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                           <label>Telefono Movil </label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="number" class="form-control" id="movil"
+                                                style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                name="movil" placeholder="Movil de la compañia "   required>
+                                          </div>
+                                      </div>
+
+                                </div>
+                              <br>
+                                <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Responsable  </label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="text" class="form-control" id="responsable"
+                                                style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                name="responsable" placeholder="Responsable "   required>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                   <label>Tipo</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo" required>
+                                           <option value="" selected disabled></option>
+                                          <option value="Cliente">Cliente</option>
+                                          <option value="Proveedor">Proveedor</option>
+                                          <option value="pcs">PCS</option>
+
+                                      </select>
+                                  </div>
+                              </div>
+
+                                </div>
+                              <br>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                    <label>Continente</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="continentes" onchange = "obtener_paises(this)" required>
+                                           <option value="" selected disabled></option>
+                                              {% for continentes in lista_continentes %}
+                                              <option value="{{ continentes.id }}">{{continentes.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <label>Pais</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="paises" id="paises" onchange = "obtener_departamentos(this)" required>
+                                      </select>
+                                    </div>
+                                  </div>
+
+
+                              </div>
+                              <br>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                    <label>Departamento</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="departamentos" id="departamentos"
+                                               onchange = "obtener_municipios(this)" required>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-6">
+                                    <label>Municipio</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="municipios" id="municipios" required>
+                                      </select>
+                                    </div>
+                                  </div>
+                              </div>
+                              <br>
+                                <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Email  </label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="email" class="form-control" id="email"
+                                                name="email" placeholder="Email de la compañia "   required>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                           <label>Direccion </label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="text" class="form-control" id="direccion"
+                                                name="direccion" placeholder="Direccion de la compañia "   required>
+                                          </div>
+                                      </div>
+
+                                </div>
+                              <div>
+                                  <br>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                              </div>
+                          </form>
+                      </div>
+                  </form>
+                </div>
+                <!-- /.tab-pane -->
+                </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

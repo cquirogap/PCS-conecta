@@ -1,0 +1,175 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+         <a href="/configuracion/terceros/">Subseries</a>
+        <small>Editar</small>
+      </h1>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <br>
+            <div class="tab-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form" action="/configuracion/subseries/editar/{{subseries.id}}/" method="POST">
+                            <!-- comando django de seguridad -->
+                            {% csrf_token %}
+                            <input type="hidden" class="form-control" id="id" placeholder="id"
+                                     name="id" value="{{subseries.id}}">
+                            <div>
+                                <br>
+                                <div class="row">
+                                <div class="col-md-4">
+                                      <label>Codigo</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                            <input type="number" class="form-control" id="codigo" min="1" max="99999999999999999999999999"
+                                             name="codigo" placeholder="Codigo"
+                                             style="text-transform:uppercase;"
+                                             value="{{subseries.codigo}}"   >
+                                      </div>
+                                    </div>
+
+                                  <div class="col-md-6">
+                                    <label>Series</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="series"  required>
+                                           {% for series in lista_series %}
+
+                                              <option value="{{series.id}}"
+                                                   {% if subserie.id == subseries.series_id %}selected{% endif %}>
+                                                   {{series.descripcion}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                    </div>
+                                    </div>
+                              </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                           <label>Descripcion</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-building-o "></i></span>
+                                              <input type="text" class="form-control" id="descripcion"
+                                                 name="descripcion" placeholder="descripcion"
+                                                 style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                 value="{{subseries.descripcion}}" required>
+                                          </div>
+                                      </div>
+                                    <div class="col-md-6">
+                                      <label>Proceso</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                            <input type="text" class="form-control" id="proceso" min="1" max="99999999999999999999999999"
+                                             name="proceso" placeholder="proceso"
+                                             style="text-transform:uppercase;"
+                                             value="{{subseries.proceso}}"   >
+                                      </div>
+                                    </div>
+
+
+                                    <div class="col-md-7">
+                                      <label>Procedimiento</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                                            <input type="text" class="form-control" id="procedimiento"
+                                             name="procedimiento" placeholder="procedimiento"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                             value="{{subseries.procedimiento}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-5">
+                                      <label>Soporte</label>
+                                      <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="soporte"  required>
+                                          <option value="" selected disabled></option>
+                                          <option value="papel"{% if subseries.soporte == 'papel' %}selected{% endif %}>PAPEL</option>
+                                          <option value="electronico"{% if subseries.soporte == 'electronico' %}selected{% endif %}>ELECTRONICO</option>
+                                          <option value="digital"{% if subseries.soporte == 'digital' %}selected{% endif %}>DIGITAL</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       <label>Retencion ag</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                                          <input type="number" class="form-control" id="retencion_ag" min="1" max="99999999999999999999999999999999"
+                                             name="retencion_ag" placeholder="RETENCION AG"
+                                             onkeypress="return validarNumeros(event);"
+                                             value="{{subseries.retencionag}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-6">
+                                      <label>Retencion ac</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                                            <input type="number" class="form-control" id="retencion_ac" min="1" max="99999999999999999999999999999999"
+                                             name="retencion_ac" placeholder="RETENCION AC"
+                                            onkeypress="return validarNumeros(event);"
+                                             value="{{subseries.retencionac}}" >
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                            <div class="row">
+                            <div class="col-md-12">
+                                      <label>Observacion</label>
+                                      <small> Max 400 Caracteres</small>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                       <textarea id="observacion" name="observacion" class="form-control" rows="5" cols="30" required="">{{subseries.observacion}}</textarea>
+                                      </div>
+                                  </div>
+                            </div>
+                                <div class="row">
+                                </div>
+                                <br>
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                    <label>Dispocicion Final</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="dfinal"  required>
+                                           <option value="" selected disabled></option>
+                                           <option value="CONSERVACION TOTAL"{% if subseries.dispocicion_final == 'CONSERVACION TOTAL' %}selected{% endif %}>CONSERVACION TOTAL</option>
+                                           <option value="ELIMINACION"{% if subseries.dispocicion_final == 'ELIMINACION' %}selected{% endif %}>ELIMINACION</option>
+                                           <option value="MEDIO TECNICO"{% if subseries.dispocicion_final == 'MEDIO TECNICO' %}selected{% endif %}>MEDIO TECNICO</option>
+                                           <option value="SELECCION O MUESTREO"{% if subseries.dispocicion_final == 'SELECCION O MUESTREO' %}selected{% endif %}>SELECCION O MUESTREO</option>
+                                      </select>
+                                    </div>
+                                    </div>
+
+                                </div>
+                                <br>
+
+                                <br>
+
+                            </div>
+                            <!-- /.box-body -->
+                            <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+                </div>
+                <!-- /.tab-pane -->
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/departamentos/">Departamentos</a>
+        <small>Registrar Información</small>
+      </h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+            <br>
+            <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Alerta!</h4>{{ message }}
+             </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="terapia">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/departamentos/registrar/" method="POST">
+                              {% csrf_token %}
+                              <div class="row">
+                                  <div class="col-md-12">
+                                   <label>Paises</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="paises" required>
+                                           <option value="" selected disabled></option>
+                                              {% for paises in lista_paises %}
+                                              <option value="{{ paises.id }}">{{paises.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Codigo </label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="codigo"
+                                             name="codigo" placeholder="Codigo Dian" min="1" max="99"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              required>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Descripcion </label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="descripcion"
+                                             name="descripcion" placeholder="Descripcion "
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              required>
+                                      </div>
+                                  </div>
+                              </div>
+
+
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla tipo identificacion existentes -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

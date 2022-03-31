@@ -1,0 +1,108 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <h1> <a href="/configuracion/solicitud_devolucion/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+</section>
+<section class="invoice">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+               Detalle  # {{ form_id }}
+            </h2>
+        </div>
+    </div>
+    <div class="row no-print">
+
+    </div>
+    {% for dato in lista_solicitud %}
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            Cliente :<br>
+            <strong>{{ dato.nombre }}</strong><br><br>
+            Fecha de Contabilizacion:<br>
+            <strong>{{ dato.fecha_contabilizacion }}</strong><br><br>
+
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Estado:<br>
+            <strong></strong><br><br>
+            Fecha de Entrega:<br>
+            <strong>{{ dato.fecha_entrega }}</strong><br><br>
+        </div>
+        <div class="col-sm-4 invoice-col">
+            No. Solicitud:<br>
+            <strong>{{ form_id }}</strong><br><br>
+            Fecha del documento:<br>
+            <strong>{{ dato.fecha_documento }}</strong><br><br>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Numero de articulo</th>
+                        <th>Cantidad</th>
+                        <th>Precio por Unidad </th>
+                        <th>Indicador de Impuestos</th>
+                        <th>Codigo de Unidad de Medida</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for articulo in dato.articulos %}
+                <tr>
+                    <td>{{ articulo.numero }}</td>
+                    <td>{{ articulo.cantidad }}</td>
+                    <td>{{ articulo.precio_unidad }}</td>
+                    <td>{{ articulo.indicador_impuestos}}</td>
+                    <td>{{ articulo.codigo_unidad}}</td>
+                    <td>{{ articulo.total }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+     {% endfor %}
+    <div class="row no-print">
+
+    </div>
+</section>
+
+{% endblock %}

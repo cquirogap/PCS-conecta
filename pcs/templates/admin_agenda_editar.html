@@ -1,0 +1,302 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+      <h1><a href="/administracion/gestion/agenda/"><i class="fa fa-book "></i> Actividad Agendada</a></h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Admin</a></li>
+        <li><a href="/administracion/gestion/agenda/">Agendar</a></li>
+      </ol>
+    </section>
+    <br>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+          <div class="tab-content">
+            <!-- casos_pacientes -->
+            <div>
+                <!-- Formulario casos_pacientes -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form" action="/gestion/eagenda/" method="POST" enctype="multipart/form-data">
+                            <!-- comando django de seguridad -->
+                            {% csrf_token %}
+                            <div>
+                                 <div class="form-group">
+                                      <input type="hidden" class="form-control" id="id" name="id" value="{{data_agendas.id}}">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                           <label>Caso del Paciente</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <select class="form-control select2" style="width: 100%;"
+                                                  name="caso" required>
+                                                  {% for casos in lista_casos %}
+                                                  <option value="{{ casos.id }}" {% if casos.id == data_agendas.caso.id %}selected{% endif %}>
+                                                      {{casos.paciente.nombre_uno}} {{casos.paciente.nombre_dos}}
+                                                      {{casos.paciente.apellido_uno}} {{casos.paciente.apellido_dos}}
+                                                       --> CASO {{ casos.id }}
+                                                  </option>
+                                                  {% endfor %}
+                                              </select>
+                                          </div>
+                                      </div>
+                                    <div class="col-md-6">
+                                      <label>Acción</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-share"></i></span>
+                                            <select class="form-control select2" style="width: 100%;" name="accion" required>
+                                                 {% for acciones in lista_acciones %}
+                                                <option value="{{ acciones.id }}" {% if acciones.id == data_agendas.accion_id %}selected{% endif %}>
+                                                    {{acciones.descripcion}}
+                                                </option>
+                                                  {% endfor %}
+                                            </select>
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       <label>Fecha</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                          <input type="date" class="form-control" id="fecha" name="fecha" value="{{data_agendas.fecha.isoformat}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-6">
+                                      <label>Tiempo de ejecución</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-history"></i></span>
+                                            <select class="form-control select2" style="width: 100%;" name="tiempo"
+                                            onChange="a_hora(this.form)" >
+                                                <option value="1" {% if data_agendas.tiempo == 1 %}selected{% endif %}>DURANTE EL DIA</option>
+                                                <option value="2" {% if data_agendas.tiempo == 2 %}selected{% endif %}>ESTABLECER HORA</option>
+                                            </select>
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                                 <div class="row">
+                                    <div class="col-md-6" id='active_hora' style="display:{% if data_agendas.tiempo == 1 %}none{% else %}inline{% endif %}">
+                                       <label>Hora</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                          <input type="time" class="form-control" id="hora" name="hora" value="{{ data_agendas.hora.isoformat }}">
+                                      </div>
+                                  </div>
+                                    <div class="col-md-6">
+                                      <label>Responsable</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon" id='active_color' style="background-color:{{ color_usuario }};"><i class="fa fa-user-circle-o" ></i></span>
+                                            <select class="form-control select2" style="width: 100%;" name="responsable" id="responsable" onChange="a_color(this.form)" >
+                                                {% for usuarios in lista_usuarios %}
+                                                <option value="{{ usuarios.id }}" {% if usuarios.id == data_agendas.responsable_id %}selected{% endif %}>
+                                                    {{usuarios.first_name}} {{usuarios.last_name}}
+                                                </option>
+                                                  {% endfor %}
+                                            </select>
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                            </div>
+                            <!-- /.box-body -->
+                            <div>
+                              <button type="submit" class="btn btn-primary pull-left">Editar Actividad</button>
+
+                                <a href="/gestion/agenda/{{data_agendas.id}}/borrar/" class="btn btn-danger pull-right">Eliminar Actividad</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+    </div>
+    </div>
+    </section>
+    <div class="col-md-12">
+    <div class="nav-tabs-custom">
+    <div class="tab-content">
+    <section class="invoice">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+                Información Paciente
+            </h2>
+        </div>
+    </div>
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            Identificación paciente:<br>
+            <strong>{{ paciente.identificacion_personal }}</strong><br><br>
+            Nombres paciente:<br>
+            <strong>{{ paciente.nombre_uno }} {{ paciente.nombre_dos }}</strong><br><br>
+            Dirección de residencia paciente:<br>
+            <strong>{{ paciente.direccion_residencia }}</strong><br><br>
+            Telefonos paciente:<br>
+            <strong>{{ paciente.telefonos }}</strong><br><br>
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Tipo de Identificación:<br>
+            <strong>{{ paciente.tipo_identificacion.descripcion }}</strong><br><br>
+            Apellidos paciente:<br>
+            <strong>{{ paciente.apellido_uno }} {{ paciente.apellido_dos }}</strong><br><br>
+            Sector de residencia paciente:<br>
+            <strong>{{ paciente.pais.nombre }}, {{ paciente.departamento.nombre }}, {{ paciente.municipio.nombre }}</strong><br><br>
+            Email paciente:<br>
+            <strong>{{ paciente.email_personal }}</strong><br><br>
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Género:<br>
+            <strong>{{ paciente.sexo.descripcion }}</strong><br><br>
+            Edad:<br>
+            <strong>{{ paciente.edad }}</strong><br><br>
+            Mayor de edad:<br>
+            <strong>{{ paciente.mayor_edad.descripcion }}</strong><br><br>
+            Ocupacion paciente:<br>
+            <strong>{{ paciente.ocupacion }}</strong><br><br>
+        </div>
+        <div class="row">
+                  <div class="col-md-12">
+                       <hr><center></center>
+                  </div>
+                </div>
+        <div class="row no-print">
+                    <div class="col-xs-12">
+                        <a href="/usuarios/pacientes/paciente/{{ paciente.identificacion_personal }}/detalle/" class="btn btn-primary pull-right">Editar Informacion</a>
+                    </div>
+                </div>
+    </div>
+
+    </section>
+
+    {% if paciente.mayor_edad_id == 2 %}
+        <section class="invoice">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="page-header">
+                    Información Familiar
+                </h2>
+            </div>
+        </div>
+        <div class="row invoice-info">
+            <div class="col-sm-4 invoice-col">
+                Identificación familiar:<br>
+                <strong>{{ paciente.identificacion_familiar }}</strong><br><br>
+                Telefonos familiar:<br>
+                <strong>{{ paciente.telefonos_familiar }}</strong><br><br>
+                Parentesco:<br>
+                <strong>{{ paciente.telefonos_familiar }}</strong><br><br>
+            </div>
+            <div class="col-sm-4 invoice-col">
+                Nombres familiar:<br>
+                <strong>{{ paciente.nombre_uno_familiar }} {{ paciente.nombre_dos_familiar }}</strong><br><br>
+                Dirección de residencia familiar:<br>
+                <strong>{{ paciente.direccion_residencia_familiar }}</strong><br><br>
+            </div>
+            <div class="col-sm-4 invoice-col">
+                Apellidos familiar:<br>
+                <strong>{{ paciente.apellido_uno_familiar }} {{ paciente.apellido_dos_familiar }}</strong><br><br>
+                Sector de residencia familiar:<br>
+                <strong>{{ paciente.pais_familiar.nombre }}, {{ paciente.departamento_familiar.nombre }}, {{ paciente.municipio_familiar.nombre }}</strong><br><br>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="invoice">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="page-header">
+                    Información Caso # {{ caso.id }}
+                </h2>
+            </div>
+        </div>
+        <div class="row invoice-info">
+            <div class="col-sm-4 invoice-col">
+                Enfermedad o diagnóstico:<br>
+                <strong>{{ caso.enfermedad_establecida.descripcion }}</strong><br><br>
+                Otra enfermedad o diagnóstico :<br>
+                <strong>{{ caso.enfermedad }}</strong><br><br>
+                Estado actual:<br>
+                <strong>{{ caso.estado }}</strong><br><br>
+                Formula Medica:<br>
+                <strong><a href="{{ caso.docfile }}">Ver Ajunto</a></strong><br><br>
+                Fecha de estado pendiente:<br>
+                <strong>{{ caso.fecha_solicitudrv }}</strong><br><br>
+                Ir a Notificaciónes:<br>
+                <strong>
+                    <a href='/administracion/pacientes/casos/notificacion/?id={{ caso.id }}'>
+                        <button><span class='glyphicon glyphicon-list-alt'></span></button></a>
+                </strong><br><br>
+
+            </div>
+            <div class="col-sm-4 invoice-col">
+                Barrera de acceso :<br>
+                <strong>{{ caso.barreras.descripcion }}</strong><br><br>
+                Otra barrera de acceso :<br>
+                <strong>{{ caso.otras_barreras }}</strong><br><br>
+                Fecha de atencion EPS:<br>
+                <strong>{{ caso.fecha_atencion_eps }}</strong><br><br>
+                Documento Adjunto 2:<br>
+                <strong><a href="{{ caso.docfile2 }}">Ver Ajunto</a></strong><br><br>
+                Fecha de estado en proceso:<br>
+                <strong>{{ caso.fecha_enproceso_caso }}</strong><br><br>
+                Ir a Seguimientos:<br>
+                <strong>
+                    <a href='/administracion/pacientes/casos/seguimiento/?id={{ caso.id }}'>
+                        <button><span class='glyphicon glyphicon-random'></span></button></a>
+                </strong><br><br>
+            </div>
+            <div class="col-sm-4 invoice-col">
+                EPS :<br>
+                <strong>{{ caso.eps.nombre }}</strong><br><br>
+                Regimen:<br>
+                <strong>{{ caso.regimen }}</strong><br><br>
+                Nº de radicado:<br>
+                <strong>{{ caso.numero_pqr }}</strong><br><br>
+                Documento Adjunto 3:<br>
+                <strong><a href="{{ caso.docfile3 }}">Ver Ajunto</a></strong><br><br>
+                Fecha de estado de finalizado:<br>
+                <strong>{{ caso.fecha_finalizacion_caso }}</strong><br><br>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                   <hr><center></center>
+              </div>
+            </div>
+            <div class="row-sm-8 invoice-row">
+                <div class="col-sm-12 invoice-col">
+
+                <strong>Descripción del caso:</strong><br><br>
+                {{ caso.mensaje }}<br><br>
+
+            </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                   <hr><center></center>
+              </div>
+            </div>
+            <div class="row no-print">
+                <div class="col-xs-12">
+                    <a href="/usuarios/pacientes/casos/{{ caso.id }}/detalle/" class="btn btn-primary pull-right">Editar Caso</a>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    </div>
+    </div>
+    </div>
+
+
+          <!-- /.nav-tabs-custom -->
+
+
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+      <h1><a href="#">Entrega</a><small>Administración </small></h1>
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+
+          <div class="tab-content">
+            <form role="form" action="/configuracion/solicitud_entrega/" method="POST">
+            {% csrf_token %}
+              <br>
+                <input type="hidden" name="pagina" value=0>
+             <div class="row">
+                 <div class="col-md-6">
+                     <label>Fecha inicial</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ fecha_inicio }}" required>
+                     </div>
+                 </div>
+                 <div class="col-md-6">
+                     <label>Fecha final</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required>
+                     </div>
+                 </div>
+                 <div class="col-md-12">
+                     <br>
+                     <label>Estado</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-filter"></i></span>
+                         <select class="form-control select2 " style="width: 100%;" name="estado" id="estado_input">
+                             <option value="" selected disabled></option>
+                             <option value="bost_Open"{% if estado == "bost_Open" %}selected{% endif %}>Abierto</option>
+                             <option  value="bost_Close"{% if estado == "bost_Close" %}selected{% endif %}>Cerrado</option>
+                             <option value="tYES"{% if estado == "tYES" %}selected{% endif %}>Cancelado</option>
+                         </select>
+                     </div>
+                 </div>
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+                 <div class="col-md-12">
+                     <button type="submit"  class="btn btn-primary btn-block btn-flat" >
+                         <span class="glyphicon glyphicon-folder-open"></span>
+                         <span class="glyphicon glyphicon-search"></span>Consultar
+                     </button>
+                 </div>
+
+             </div>
+            </form>
+              <br>
+            <!-- Formula Medica -->
+            <div class="box">
+                  <div class="box-body">
+                      <table class="table table-bordered">
+                          <tbody><tr>
+                              <th>No.Pedido</th>
+                              <th>Fecha de Contabilizacion</th>
+                              <th>Fecha de Entrega</th>
+                              <th>Total</th>
+                              <th> </th>
+                          </tr>
+                          {% for dato in lista_prueba %}
+                                <tr>
+                                    <td>
+                                        {{ dato.n_pedido }}
+                                    </td>
+                                    <td>
+                                        {{dato.fecha_contabilizacion}}
+                                    </td>
+                                    <td>
+                                        {{dato.fecha_entrega}}
+                                    </td>
+                                    <td>
+                                        {{dato.total}}
+                                    </td>
+
+                                    <td><center><a class="btn btn-info "
+                                           href="/configuracion/solicitud_entrega/detalle/{{ dato.n_pedido }}"
+                                           title="Ver detalle ">
+                                        <i class="glyphicon glyphicon-folder-open"></i>
+                                        <i class="glyphicon glyphicon-zoom-in"></i>
+                                        <br> Detalle Pedido
+                                    </a></center></td>
+
+                                </tr>
+                                {% endfor %}
+                          </tbody></table>
+                  </div>
+                  <form role="form" action="/configuracion/solicitud_entrega/" method="POST">
+                  {% csrf_token %}
+                      <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio }}">
+                      <input type="hidden" name="fecha_fin" value="{{ fecha_fin }}">
+                      <input type="hidden" name="pagina" value="{{ pagina }}">
+                      <input type="hidden" name="estado" value="{{ estado }}">
+                  <div class="box-footer clearfix">
+                      <ul class="pagination pagination-sm no-margin pull-right">
+                          <p1>{{pagina}}-{{pagina_fin}}</p1>
+                          <button type="input" value="primera" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-double-left"></i></button>
+                          <button type="input" value="atras" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-left"></i></button>
+                          <button type="input" value="adelante" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-right"></i></button>
+                      </ul>
+                  </div>
+                  </form>
+              </div>
+
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

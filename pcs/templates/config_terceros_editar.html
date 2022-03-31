@@ -1,0 +1,234 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+         <a href="/configuracion/terceros/">Terceros</a>
+        <small>Registrar</small>
+      </h1>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <br>
+            <div class="tab-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form" action="/configuracion/terceros/editar/{{ terceros.id }}/" method="POST">
+                            <!-- comando django de seguridad -->
+                            {% csrf_token %}
+                            <input type="hidden" class="form-control" id="id"
+                                     min="1" max="99" name="id" value="{{terceros.id}}">
+                            <div>
+                                <br>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                  <label>Tipo de Persona</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo_tercero" required>
+                                            <option value="" selected disabled></option>
+                                            <option value="PN" {% if terceros.tipo_tercero == "PN" %}selected{% endif %}>Persona Natural
+                                                </option>
+                                            <option value="PJ" {% if terceros.tipo_tercero == "PJ" %}selected{% endif %}>Persona Juridica
+                                                </option>
+                                      </select>
+                                  </div>
+                              </div>
+                              </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                           <label>Nombre</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-building-o "></i></span>
+                                              <input type="text" class="form-control" id="nombre"
+                                                 name="nombre" placeholder="nombre del tercero"
+                                                 style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                 value="{{terceros.nombre}}" required>
+                                          </div>
+                                      </div>
+                                    <div class="col-md-4">
+                                      <label>NIT</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                            <input type="number" class="form-control" id="nit" min="1" max="99999999999999999999999999"
+                                             name="nit" placeholder="nit del tercero"
+                                             style="text-transform:uppercase;"
+                                             value="{{terceros.nit}}"   >
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <label>DV</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span>
+                                           <input type="number" class="form-control" id="dv" min="0" max="9"
+                                             name="dv" placeholder="dv de la entidad"
+                                             onkeypress="return validarNumeros(event);"
+                                             value="{{terceros.dv}}">
+                                      </div>
+                                  </div>
+
+                                    <div class="col-md-3">
+                                      <label>Sigla</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                                            <input type="text" class="form-control" id="sigla"
+                                             name="sigla" placeholder="sigla"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                             value="{{terceros.sigla}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-9">
+                                      <label>Dirección Principal</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-map-signs"></i></span>
+                                            <input type="text" class="form-control" id="direccion"
+                                             name="direccion" placeholder="direccion del tercero"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                             value="{{terceros.direccion}}" >
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                       <label>Teléfono</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                          <input type="number" class="form-control" id="telefono_entidad" min="1" max="99999999999999999999999999999999"
+                                             name="telefono" placeholder="telefono del tercero"
+                                             onkeypress="return validarNumeros(event);"
+                                             value="{{terceros.telefono}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-4">
+                                      <label>Teléfono 2</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                            <input type="number" class="form-control" id="telefono2" min="1" max="99999999999999999999999999999999"
+                                             name="telefono2" placeholder="otro telefono del tercero"
+                                            onkeypress="return validarNumeros(event);"
+                                             value="{{terceros.telefono2}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-4">
+                                       <label>Celular</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                          <input type="number" class="form-control" id="celular" min="1" max="99999999999999999999"
+                                             name="celular" placeholder="celular del tercero"
+                                             onkeypress="return validarNumeros(event);"
+                                             value="{{terceros.celular}}" >
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+
+
+                                </div>
+                                <br>
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                    <label>Continente</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="continentes" onchange = "obtener_paises(this)" required>
+                                           <option value="" selected disabled></option>
+                                              {% for continentes in lista_continentes %}
+                                              <option value="{{ continentes.id }}">{{continentes.descripcion}}</option>
+                                              {% endfor %}
+                                          <option value="{{ terceros.continentes_id }}" selected>{{ terceros.continentes.descripcion }}</option>
+                                      </select>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <label>Pais</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="paises" id="paises" onchange = "obtener_departamentos(this)" required>
+                                        <option value="" selected disabled></option>
+                                              {% for pais in lista_paises %}
+                                              <option value="{{ pais.id }}">{{pais.descripcion}}</option>
+                                              {% endfor %}
+                                        <option value="{{ terceros.paises_id }}" selected>{{ terceros.paises.descripcion }}</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <label>Departamento</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="departamentos" id="departamentos"
+                                               onchange = "obtener_municipios(this)" required>
+                                          <option value="" selected disabled></option>
+                                              {% for departamento in lista_departamentos %}
+                                              <option value="{{ departamento.id }}">{{departamento.descripcion}}</option>
+                                              {% endfor %}
+                                      <option value="{{ terceros.departamentos_id }}" selected>{{ terceros.departamentos.descripcion }}</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                    <div class="col-md-4">
+                                    <label>Municipio</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="municipios" id="municipios" required>
+                                          <option value="" selected disabled></option>
+                                              {% for municipios in lista_municipios %}
+                                              <option value="{{ municipios.id }}">{{municipios.descripcion}}</option>
+                                              {% endfor %}
+                                          <option value="{{ terceros.municipios_id }}" selected>{{ terceros.municipios.descripcion }}</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                      <label>Representante Legal</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                            <input type="text" class="form-control" id="representante_legal"
+                                             name="representante_legal" placeholder="Nombre "
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                             value="{{terceros.representante_legal}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-6">
+                                      <label>e-Mail</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                                            <input type="text" class="form-control" id="email"
+                                             name="email" placeholder="correo electronico "
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                             value="{{terceros.email}}" >
+                                      </div>
+                                  </div>
+                                </div>
+
+                                <br>
+                            </div>
+                            <!-- /.box-body -->
+                            <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+                </div>
+                <!-- /.tab-pane -->
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

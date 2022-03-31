@@ -1,0 +1,70 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/tipos_radicados/">Tipos de Radicados</a>
+        <small>Editar Información</small>
+      </h1>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="tipos_radicados">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/tipos_radicados/editar/{{tipos_radicados.id}}/" method="POST">
+                              {% csrf_token %}
+
+                              <input type="hidden" class="form-control" id="id" placeholder="CODIGO"
+                                     min="1" max="99" name="id" value="{{tipos_radicados.id}}">
+
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Nombre TR</label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="nombre_tr"
+                                             name="nombre_tr" placeholder="Nombre TR"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              value="{{tipos_radicados.nombre_tr}}"required>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                  <label>Genera Radicado de Salida?</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="genera_radicado_salida" required>
+                                            <option value="True"
+                                                 {% if tipos_radicados.genera_radicado_salida == True %}selected{% endif %}>Si</option>
+                                            <option value="False"
+                                                 {% if tipos_radicados.genera_radicado_salida == False %}selected{% endif %}>No</option>
+
+                                      </select>
+                                  </div>
+                              </div>
+                              </div>
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Editar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla tipo identificacion existentes -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+         <a href="/configuracion/terceros/">Subseries</a>
+        <small>Registrar</small>
+      </h1>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <br>
+            <div class="tab-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form" action="/configuracion/subseries/registrar/" method="POST">
+                            <!-- comando django de seguridad -->
+                            {% csrf_token %}
+                            <div>
+                                <br>
+                                <div class="row">
+                                <div class="col-md-6">
+                                      <label>Codigo</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                            <input type="number" class="form-control" id="codigo" min="1" max="99999999999999999999999999"
+                                             name="codigo" placeholder="Codigo"
+                                             style="text-transform:uppercase;"
+                                             value="{{subseries.codigo}}"   >
+                                      </div>
+                                    </div>
+
+                                  <div class="col-md-6">
+                                    <label>Series</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="series"  required>
+                                           <option value="" selected disabled></option>
+                                              {% for serie in series %}
+                                              <option value="{{ serie.id }}">{{serie.descripcion}}</option>
+                                              {% endfor %}
+                                      </select>
+                                    </div>
+                                    </div>
+                              </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                           <label>Descripcion</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-building-o "></i></span>
+                                              <input type="text" class="form-control" id="descripcion"
+                                                 name="descripcion" placeholder="descripcion"
+                                                 style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                 value="{{subseries.descripcion}}" required>
+                                          </div>
+                                      </div>
+                                    <div class="col-md-6">
+                                      <label>Proceso</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                            <input type="text" class="form-control" id="proceso" min="1" max="99999999999999999999999999"
+                                             name="proceso" placeholder="proceso"
+                                             style="text-transform:uppercase;"
+                                             value="{{subseries.proceso}}"   >
+                                      </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                      <label>Procedimiento</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                                            <input type="text" class="form-control" id="procedimiento"
+                                             name="procedimiento" placeholder="procedimiento"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                             value="{{subseries.procedimiento}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-6">
+                                      <label>Soporte</label>
+                                      <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="soporte"  required>
+                                          <option value="" selected disabled></option>
+                                          <option value="papel">PAPEL</option>
+                                          <option value="electronico">ELECTRONICO</option>
+                                          <option value="digital">DIGITAL</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       <label>Tiempo Archivo de Gestión(AG)</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                                          <input type="number" class="form-control" id="retencion_ag" min="1" max="99999999999999999999999999999999"
+                                             name="retencion_ag" placeholder="RETENCION AG"
+                                             onkeypress="return validarNumeros(event);"
+                                             value="{{subseries.retencion_ag}}" >
+                                      </div>
+                                  </div>
+                                    <div class="col-md-6">
+                                      <label>Tiempo Archivo Central(AC)</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                                            <input type="number" class="form-control" id="retencion_ac" min="1" max="99999999999999999999999999999999"
+                                             name="retencion_ac" placeholder="RETENCION AC"
+                                            onkeypress="return validarNumeros(event);"
+                                             value="{{subseries.retencion_ac}}" >
+                                      </div>
+                                  </div>
+                                </div>
+                                <br>
+                            <div class="row">
+                            <div class="col-md-12">
+                                      <label>Observacion</label>
+                                      <small> Max 400 Caracteres</small>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                       <textarea id="observacion" name="observacion" class="form-control" rows="5" cols="30" required=""></textarea>
+                                      </div>
+                                  </div>
+                            </div>
+                                <div class="row">
+                                </div>
+                                <br>
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                    <label>Disposición Final</label>
+                                    <div class="input-group ">
+                                      <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="dfinal"  required>
+                                           <option value="" selected disabled></option>
+                                           <option value="CONSERVACION TOTAL">CONSERVACION TOTAL</option>
+                                           <option value="ELIMINACION">ELIMINACION</option>
+                                           <option value="MEDIO TECNICO">MEDIO TECNICO</option>
+                                           <option value="SELECCION O MUESTREO">SELECCION O MUESTREO</option>
+                                      </select>
+                                    </div>
+                                    </div>
+
+                                </div>
+                                <br>
+
+                                <br>
+
+                            </div>
+                            <!-- /.box-body -->
+                            <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+                </div>
+                <!-- /.tab-pane -->
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

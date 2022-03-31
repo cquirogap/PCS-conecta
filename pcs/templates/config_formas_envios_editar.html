@@ -1,0 +1,102 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/formas_envios/">Formas de Envios</a>
+        <small>Editar Información</small>
+      </h1>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="formas_envios">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/formas_envios/editar/{{formas_envios.id}}/" method="POST">
+                              {% csrf_token %}
+
+                              <input type="hidden" class="form-control" id="id" placeholder="CODIGO"
+                                     name="id" value="{{formas_envios.id}}">
+
+                              <div class="row">
+                                  <div class="col-md-12">
+                                   <label>Tipos de Envios</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipos_envios" required>
+                                           <option value="" selected disabled></option>
+                                              {% for tipos_envios in lista_tipos_envios %}
+
+                                              <option value="{{tipos_envios.id}}"
+                                                   {% if tipos_envios.id == formas_envios.tipos_envios_id %}selected{% endif %}>
+                                                   {{tipos_envios.descripcion}}
+                                               </option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Nombre </label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="nombre_fe"
+                                             name="nombre_fe" placeholder="Nombre "
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              value = "{{formas_envios.nombre_fe}}" required>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                  <label>Esta Activa?</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="estado" required>
+                                            <option value="True"
+                                                 {% if formas_envios.estado == True %}selected{% endif %}>Si</option>
+                                            <option value="False"
+                                                 {% if formas_envios.estado == False %}selected{% endif %}>No</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                  <label>Genera Planilla?</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="genera_planilla" required>
+                                            <option value="True"
+                                                 {% if formas_envios.genera_planilla == True %}selected{% endif %}>Si</option>
+                                            <option value="False"
+                                                 {% if formas_envios.genera_planilla == False %}selected{% endif %}>No</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              </div>
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Editar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla tipo identificacion existentes -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

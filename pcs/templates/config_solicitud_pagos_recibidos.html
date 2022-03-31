@@ -1,0 +1,142 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+      <h1><a href="#">Pagos Recibidos</a><small>Administración </small></h1>
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+
+          <div class="tab-content">
+            <form role="form" action="/configuracion/solicitud_pagos_recibidos/" method="POST">
+            {% csrf_token %}
+              <br>
+             <div class="row">
+                 <div class="col-md-6">
+                     <label>Fecha inicial</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ fecha_inicio }}" required>
+                     </div>
+                 </div>
+                 <div class="col-md-6">
+                     <label>Fecha final</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required>
+                     </div>
+                 </div>
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+                 <div class="col-md-12">
+                     <button type="submit"  class="btn btn-primary btn-block btn-flat" >
+                         <span class="glyphicon glyphicon-folder-open"></span>
+                         <span class="glyphicon glyphicon-search"></span>Consultar
+                     </button>
+                 </div>
+
+             </div>
+            </form>
+              <br>
+            <!-- Formula Medica -->
+            <div class="tab-pane active" id="formula_paciente">
+                <!-- Formulario formula medica -->
+                <!-- Tabla formulas pacientes existentes -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                              <table id="formulas" class="table table-bordered table-hover dataTables">
+                                <thead>
+                                    <tr>
+                                        <th>No.Pago</th>
+                                        <th>Fecha de Contabilizacion</th>
+                                        <th>Fecha de Vencimiento</th>
+                                        <th>Importe Total</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for dato in lista_prueba %}
+                                <tr>
+                                    <td>
+                                        {{ dato.n_pedido }}
+                                    </td>
+                                    <td>
+                                        {{dato.fecha_contabilizacion}}
+                                    </td>
+                                    <td>
+                                        {{dato.fecha_vencimiento}}
+                                    </td>
+                                    <td>
+                                        {{dato.importe_total}}
+                                    </td>
+
+                                    <td><center><a class="btn btn-info "
+                                           href="/configuracion/solicitud_pagos_recibidos/detalle/{{ dato.n_pedido }}"
+                                           title="Ver detalle ">
+                                        <i class="glyphicon glyphicon-folder-open"></i>
+                                        <i class="glyphicon glyphicon-zoom-in"></i>
+                                        <br> Detalle Pago
+                                    </a></center></td>
+
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                            <!-- /.box-body -->
+                      </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+            </div>
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

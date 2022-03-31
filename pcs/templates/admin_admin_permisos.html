@@ -1,0 +1,216 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+      <h1><a href="/administracion/usuarios/administrador/">Permisos de Administrador</a><small>Editar Permisos</small></h1>
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+            <br>
+            <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Alerta!</h4>{{ message }}
+             </div>
+            {% endif %}
+        {% endfor %}
+
+    {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
+        <li><a href="#">Cuenta de Administrador</a></li>
+      </ol>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <div class="tab-content">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <form role="form" action="/administracion/usuarios/editar_permiso/" method="POST">
+                              <!-- comando django de seguridad -->
+                              {% csrf_token %}
+                              <br>
+                              <div class="form-group">
+                                      <input type="hidden" class="form-control" id="id"
+                                             name="id" value="{{data_permiso.id}}">
+                                      <input type="hidden" class="form-control" id="usuario"
+                                             name="usuario" value="{{data_permiso.usuario}}">
+                              </div>
+
+                              <div class="row">
+                                      <div class="col-md-12">
+                                           <label>MODULO USUARIOS </label>
+                                      </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Pacientes </label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="pacientes" required>
+                                                <option value="1" {% if data_permiso.pacientes == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.pacientes == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                           <label>Administrador</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="administrador" required>
+                                                <option value="1" {% if data_permiso.administrador == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.administrador == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                </div>
+                              <br>
+                              <div class="row">
+                                      <div class="col-md-12">
+                                           <label>MODULO DEFINICIONES</label>
+                                      </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Territorios</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="territorios" required>
+                                                <option value="1" {% if data_permiso.territorios == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.territorios == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                           <label>Entidades</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="entidades" required>
+                                                <option value="1" {% if data_permiso.entidades == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.entidades == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                </div>
+                              <br>
+                              <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Personas</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="personas" required>
+                                                <option value="1" {% if data_permiso.personas == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.personas == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                           <label>Salud</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="salud" required>
+                                                <option value="1" {% if data_permiso.salud == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.salud == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                </div>
+                              <br>
+                              <div class="row">
+                                      <div class="col-md-12">
+                                           <label>MODULO GESTION</label>
+                                      </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Entidad</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="gestion_entidad" required>
+                                                <option value="1" {% if data_permiso.gestion_entidad == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.gestion_entidad == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                           <label>Medicamentos</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="medicamento" required>
+                                                <option value="1" {% if data_permiso.medicamento == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.medicamento == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                </div>
+                              <br>
+                              <div class="row">
+                                      <div class="col-md-12">
+                                           <label>MODULO REPORTES</label>
+                                      </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Reportes Generales</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="reporte_general" required>
+                                                <option value="1" {% if data_permiso.reporte_general == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.reporte_general == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                           <label>Reportes Balances</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <select class="form-control select2 " style="width: 100%;" name="reporte_balance" required>
+                                                <option value="1" {% if data_permiso.reporte_balance == 1 %}selected{% endif %}>SI
+                                                </option>
+                                                <option value="0" {% if data_permiso.reporte_balance == 0 %}selected{% endif %}>NO
+                                                </option>
+                                            </select>
+                                          </div>
+                                      </div>
+                                </div>
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                </div>
+                <!-- /.tab-pane -->
+                </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

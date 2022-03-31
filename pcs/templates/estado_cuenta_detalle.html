@@ -1,0 +1,179 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <h1> <a href="/configuracion/solicitud_pagos_recibidos/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+</section>
+<section class="invoice">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+               Detalle   {{ form_id }}
+            </h2>
+        </div>
+    </div>
+    <div class="row no-print">
+
+    </div>
+    {% for dato in dato_empresa %}
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            Nombre :<br>
+            <strong>{{dato.nombre}}</strong><br><br>
+            Tipo:<br>
+            <strong>{{ dato.tipo }}</strong><br><br>
+
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Nit:<br>
+            <strong>{{ dato.nit }}</strong><br><br>
+            Email:<br>
+            <strong>{{ dato.email }}</strong><br><br>
+        </div>
+        <div class="col-sm-4 invoice-col">
+            telefono:<br>
+            <strong>{{ dato.contacto }}</strong><br><br>
+            Codigo de Empresa:<br>
+            <strong>{{ dato.codigo_em }}</strong><br><br>
+        </div>
+    </div>
+    {% endfor %}
+    <br>
+    <hr>
+    <input type="hidden" name="codigo_em" value="{{ codigo_em }}" id="codigo_em_input">
+    <div class="tab-content">
+            <form role="form" action="/configuracion/solicitud_estado_cuenta/detalle/{{codigo_em }}/" method="POST">
+            {% csrf_token %}
+              <br>
+                <input type="hidden" name="pagina" value=0>
+
+             <div class="row">
+                 <div class="col-md-6">
+                     <label>Fecha inicial</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" value="{{ fecha_inicio }}" required>
+                     </div>
+                 </div>
+                 <div class="col-md-6">
+                     <label>Fecha final</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" required>
+                     </div>
+                 </div>
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+                 <div class="col-md-12">
+                     <input type="hidden" name="check" id="check_input_n" value="no">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="si" name="check" id="check_input" {% if check == 'si' %} checked {% endif %} >
+                        <p>Visualizar solo operaciones no reconciliadas</p>
+                    </label>
+                </div>
+                     </div>
+
+
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+                 <div class="col-md-6">
+                     <button type="submit"  class="btn btn-primary btn-block btn-flat" >
+                         <span class="glyphicon glyphicon-folder-open"></span>
+                         <span class="glyphicon glyphicon-search"></span>Consultar
+                     </button>
+                 </div>
+                 <div class="col-md-6">
+                     <button type="button" id="buscar_estado_cuenta_excel_button"  class="btn btn-success btn-block btn-flat" >
+                         <span class="glyphicon glyphicon-folder-open"></span>
+                         <span class="glyphicon glyphicon-search"></span>Excel
+                     </button>
+                 </div>
+             </div>
+            </form>
+              <br>
+            <!-- Formula Medica -->
+              <div class="box">
+                  <div class="box-body">
+                      <table class="table table-bordered">
+                          <tbody><tr>
+                              <th>Info.detallada</th>
+                              <th>Fecha contabilizacion</th>
+                              <th>Fecha vencimiento</th>
+                              <th>Numero de origen </th>
+                              <th>Cargo(ML)</th>
+                              <th>Abono(ML)</th>
+                              <th>Saldo</th>
+                          </tr>
+                          {% for estado in lista_solicitud %}
+                <tr>
+                    <td>{{ estado.info }}</td>
+                    <td>{{ estado.fecha_contabilizacion }}</td>
+                    <td>{{ estado.fecha_vencimiento }}</td>
+                    <td>{{ estado.numero_origen }}</td>
+                    <td>{{ estado.credito}}</td>
+                    <td>{{ estado.debito }}</td>
+                    <td>{{ estado.saldo_debito }}</td>
+                </tr>
+                {% endfor %}
+                          </tbody></table>
+                  </div>
+                  <form role="form" action="/configuracion/solicitud_estado_cuenta/detalle/{{ codigo_em }}/" method="POST">
+                  {% csrf_token %}
+                      <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio }}">
+                      <input type="hidden" name="fecha_fin" value="{{ fecha_fin }}">
+                      <input type="hidden" name="pagina" value="{{ pagina }}">
+                      <input type="hidden" name="estado" value="{{ estado }}">
+                      <input type="hidden" name="check" value="{{ check }}">
+                  <div class="box-footer clearfix">
+                      <ul class="pagination pagination-sm no-margin pull-right">
+                          <p1>{{pagina}}-{{pagina_fin}}</p1>
+                          <button type="input" value="primera" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-double-left"></i></button>
+                          <button type="input" value="atras" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-left"></i></button>
+                          <button type="input" value="adelante" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-right"></i></button>
+                      </ul>
+                  </div>
+                  </form>
+              </div>
+          </div>
+
+    <div class="row no-print">
+
+    </div>
+</section>
+
+{% endblock %}
