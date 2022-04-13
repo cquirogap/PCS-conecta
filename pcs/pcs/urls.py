@@ -79,6 +79,7 @@ urlpatterns.extend(
         url(r'^configuracion/empresas/registrar/$', configuracion_views.config_empresas_registrar),
         url(r'^configuracion/empresas/editar/(?P<id>[-\w]+)/$', configuracion_views.config_empresas_editar),
         url(r'^configuracion/empresas/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_empresas_borrar),
+        url(r'^configuracion/historial_empresas/$', configuracion_views.config_historial_empresas),
 
 
         # Soportes

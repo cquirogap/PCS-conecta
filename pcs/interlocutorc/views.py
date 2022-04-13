@@ -73,6 +73,13 @@ def panel_administracion(request):
         current_user = request.user
         permisos = Permisos.objects.filter(usuario_id=current_user.id).first()
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        historial = HistoriaUsuario(
+            usuario_id=int(current_user.id),
+            empresa_id=int(usuario_datos.empresa_id),
+            accion='Logueo de Usuario',
+            fecha=timezone.now(),
+        )
+        historial.save()
         return render(request, "administracion.html", {'user': usuario_actual, 'permisos': permisos,'permiso_usuario': usuario_datos})
     else:
         pass

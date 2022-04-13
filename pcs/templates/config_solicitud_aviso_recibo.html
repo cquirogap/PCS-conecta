@@ -51,14 +51,33 @@
                      <label>Fecha inicial</label>
                      <div class="input-group ">
                          <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" value="{{ fecha_inicio }}" required>
+                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" value="{{ fecha_inicio }}" >
                      </div>
                  </div>
                  <div class="col-md-6">
                      <label>Fecha final</label>
                      <div class="input-group ">
                          <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" required>
+                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" >
+                     </div>
+                 </div>
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+                <div class="col-md-6">
+                    <label>Orden de Compra</label>
+                    <div class="input-group ">
+                        <span class="input-group-addon"><i class="fa fa-navicon  "></i></span>
+                        <input type="text" class="form-control" id="orden_compra"
+                               name="orden_compra" value="{{ orden_compra }}">
+                    </div>
+                </div>
+                 <div class="col-md-6">
+                     <label>Numero Factura</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-navicon "></i></span>
+                         <input type="text" class="form-control" id="factura"
+                                name="factura" value="{{ factura }}" >
                      </div>
                  </div>
 
@@ -200,6 +219,8 @@
                       <input type="hidden" name="fecha_fin" value="{{ fecha_fin }}">
                       <input type="hidden" name="pagina" value="{{ pagina }}">
                       <input type="hidden" name="estado" value="{{ estado }}">
+                      <input type="hidden" name="orden_compra" value="{{ orden_compra }}">
+                      <input type="hidden" name="factura" value="{{ factura }}">
                   <div class="box-footer clearfix">
                       <ul class="pagination pagination-sm no-margin pull-right">
                           <p1>{{pagina}}-{{pagina_fin}}</p1>

@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 
 
 
+
 class Tipos_radicados(models.Model):
     nombre_tr = models.CharField(max_length=20)
     genera_radicado_salida = models.BooleanField(default=True)

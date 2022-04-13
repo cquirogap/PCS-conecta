@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/perfiles/">Compañia</a>
+        <a href="/configuracion/historial_empresas/">Historial</a>
         <small>Configuracion</small>
       </h1>
 
@@ -52,60 +52,43 @@
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
               <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
-              <li class="active"><a href="#perfiles" data-toggle="tab">Compañia</a></li>
-              <li><a href="/configuracion/historial_empresas/" >Historial</a></li>
+              <li><a href="/configuracion/empresas/" >Compañia</a></li>
+              <li class="active"><a href="#" data-toggle="tab">Historial</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
                 <!-- barras de acceso -->
                 <div class="active tab-pane" id="perfiles">
                     <br>
-                    <div class="row">
-                          <div class="col-md-2">
-                              <a href="/configuracion/empresas/registrar/">
-                                <button type="button" class="btn btn-primary">
-                                    <span class='glyphicon glyphicon-edit'></span> Registrar</button>
-                              </a>
-                          </div>
-                    </div>
+
                     <br>
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                  <h3 class="box-title">Compañia</h3>
+                                  <h3 class="box-title">Historial</h3>
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body table-responsive no-padding">
                                   <table id="empresas" class="table table-bordered table-hover dataTables">
                                     <thead>
                                         <tr>
-                                            <th>Nit</th>
-                                            <th>Nombre</th>
-                                            <th>Telefono</th>
-                                            <th>Direccion</th>
-                                            <th></th>
-                                            <th></th>
+                                            <th>Usuario</th>
+                                            <th>Empresa</th>
+                                            <th>Accion</th>
+                                            <th>Fecha</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for empresas in lista_empresas %}
+                                        {% for historial in lista_historial %}
                                             <tr>
 
-                                                <td>{{empresas.nit}}</td>
-                                                <td>{{empresas.nombre}}</td>
-                                                <td>{{empresas.telefono}}</td>
-                                                <td>{{empresas.direccion}}</td>
-                                                <td><center><a class="btn btn-info btn-sm"
-                                                       href="/configuracion/empresas/editar/{{empresas.id}}/"
-                                                       title="Editar">
-                                                    <i class="glyphicon glyphicon-pencil"></i>
-                                                </a></center></td>
-                                                <td><center><a class="btn btn-info btn-sm"
-                                                       href="/configuracion/empresas/borrar/{{empresas.id}}/"
-                                                       title="Eliminar">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </a></center></td>
+                                                <td>{{historial.usuario.usuario}}</td>
+                                                <td>{{historial.usuario.empresa.nombre}}</td>
+                                                <td>{{historial.accion}}</td>
+                                                <td>{{historial.fecha}}</td>
+
+
                                             </tr>
                                         {% endfor %}
                                     </tbody>

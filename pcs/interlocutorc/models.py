@@ -51,3 +51,10 @@ class Usuarios_datos(models.Model):
     publico = models.BooleanField(default=True)
     creado = models.DateTimeField(null=True)
     modificado = models.DateTimeField(null=True)
+
+
+class HistoriaUsuario(models.Model):
+    usuario=models.ForeignKey(Usuarios_datos, default=1)
+    empresa=models.ForeignKey(Empresas, default=1)
+    accion=models.CharField(max_length=100, null=True)
+    fecha=models.DateField(null=True)
