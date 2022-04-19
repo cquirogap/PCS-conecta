@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <section class="content-header" xmlns="http://www.w3.org/1999/html">
-    <h1> <a href="/configuracion/solicitud_comprobante_egreso/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    <h1> <a href="/configuracion/solicitud_factura_deudores/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
     {% if messages %}
         {% for message in messages %}
             {% if message.tags %}
@@ -50,54 +50,50 @@
     {% for dato in lista_solicitud %}
     <div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-            N° :<br>
-            <strong>{{dato.n_pagos}}</strong><br><br>
-            Destinatario de Factura:<br>
-            <strong>{{ dato.destinatorio_factura }}</strong><br><br>
+            Cliente :<br>
+            <strong>{{ dato.nombre }}</strong><br><br>
+            Fecha de Contabilizacion:<br>
+            <strong>{{ dato.fecha_contabilizacion }}</strong><br><br>
 
         </div>
         <div class="col-sm-4 invoice-col">
-            Codigo:<br>
-            <strong>{{dato.codigo}}</strong><br><br>
-            Fecha de Contabilizacion:<br>
-            <strong>{{ dato.fecha_contabilizacion }}</strong><br><br>
+            Estado:<br>
+            <strong></strong><br><br>
+            Fecha de Entrega:<br>
+            <strong>{{ dato.fecha_entrega }}</strong><br><br>
         </div>
         <div class="col-sm-4 invoice-col">
-            Nombre:<br>
-            <strong>{{ dato.nombre }}</strong><br><br>
+            No. Solicitud:<br>
+            <strong>{{ form_id }}</strong><br><br>
             Fecha del documento:<br>
-            <strong>{{ dato.fecha_vencimiento }}</strong><br><br>
+            <strong>{{ dato.fecha_documento }}</strong><br><br>
         </div>
     </div>
+
+    <br>
     <div class="row">
         <div class="col-xs-12 table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>Tipo </th>
-                        <th>Doc.No </th>
-                        <th>Fecha</th>
-                        <th>No.Factura</th>
-                        <th>Valor a Pagar($)</th>
+                        <th>Numero de articulo</th>
+                        <th>Nombre de articulo</th>
+                        <th>Cantidad</th>
+                        <th>Precio por Unidad </th>
+                        <th>Indicador de Impuestos</th>
+                        <th>Codigo de Unidad de Medida</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                {% for articulo in dato.detalle %}
+                {% for articulo in dato.articulos %}
                 <tr>
                     <td>{{ articulo.numero }}</td>
-                    <td>{% if articulo.tipo == '18' %}Factura Proveedor
-                    {% elif articulo.tipo == '19' %}Notas Credito Provedor
-                    {% else %}{{articulo.tipo}}{% endif %}
-                    </td>
-                    <td><a {% if articulo.tipo == '18' %}href="/configuracion/solicitud_factura_proveedor/detalle/{{ articulo.doc_num }}"
-                    {% elif articulo.tipo == '19' %}href="/configuracion/solicitud_credito_proveedores/detalle/{{ articulo.doc_num }}"
-                    {% endif %}  type="button" class="btn btn-warning btn-flat"><i class="fa fa-mail-forward"></i></a> {{ articulo.doc_num }}</td>
-                    <td>{{ articulo.fecha }}</td>
-                    <td>{% if articulo.tipo == '18' %}{{ articulo.factura }}
-                    {% elif articulo.tipo == '19' %}{{ articulo.nota }}
-                    {% endif %}
-                        </td>
+                    <td>{{ articulo.nombre }}</td>
+                    <td>{{ articulo.cantidad }}</td>
+                    <td>{{ articulo.precio_unidad }}</td>
+                    <td>{{ articulo.indicador_impuestos}}</td>
+                    <td>{{ articulo.codigo_unidad}}</td>
                     <td>{{ articulo.total }}</td>
                 </tr>
                 {% endfor %}
@@ -105,7 +101,6 @@
             </table>
         </div>
     </div>
-    <br>
      {% endfor %}
     <div class="row no-print">
 
