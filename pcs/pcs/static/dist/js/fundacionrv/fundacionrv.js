@@ -1824,6 +1824,29 @@ $(function () {
 
 
 
+
+    var buscar_aviso_recibo_excel = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        orden_compra = $("#orden_compra").val() || "";
+        orden_compra = orden_compra.replace(/\s+/g, '');
+        factura = $("#factura").val() || "";
+        factura = factura.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/solicitud_aviso_recibo/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&orden_compra='+orden_compra+'&factura='+factura
+
+    }
+
+    $("#buscar_aviso_recibo_excel_button").click(
+       function (e) {
+           buscar_aviso_recibo_excel()
+       }
+    )
+
+
     var buscar_estado_cuenta_excel = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";

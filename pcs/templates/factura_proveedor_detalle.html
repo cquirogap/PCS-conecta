@@ -3,6 +3,7 @@
 {% block content %}
 <section class="content-header" xmlns="http://www.w3.org/1999/html">
     <h1> <a href="/configuracion/solicitud_factura_deudores/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+
     {% if messages %}
         {% for message in messages %}
             {% if message.tags %}
@@ -35,53 +36,98 @@
         {% endfor %}
       {% endif %}
 </section>
+
+<div id="printableArea">
 <section class="invoice">
     {% csrf_token %}
+    {% for dato in lista_solicitud %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <h2 class="page-header">
-               Detalle  # {{ form_id }}
+                 PCS
+                <small class="pull-right">NIT: 890985438-8</small>
             </h2>
         </div>
     </div>
+    <div class="row">
+   <div class="col-xs-8">
+      <p class="lead">SEÑOR(ES):</p>
+      <div class="col-sm-6 invoice-col">
+
+          <address>
+              <strong>NOMBRE: </strong>{{ datos_empresa.nombre }}<br>
+              <strong>NIT: </strong>{{ datos_empresa.nit }}<br>
+              <strong>DIRECCION: </strong>{{ datos_empresa.direccion }}<br>
+              <strong>CIUDAD: </strong>{{ datos_empresa.municipios.descripcion}}<br>
+
+          </address>
+      </div>
+      <div class="col-sm-6 invoice-col">
+          <address>
+              <strong></strong><br>
+              <strong></strong><br>
+              <strong></strong><br>
+              <strong>TELEFONO: </strong>{{ datos_empresa.telefono }}<br>
+          </address>
+      </div>
+
+   </div>
+
+   <div class="col-xs-4">
+      <div class="table-responsive">
+         <table class="table">
+            <tbody>
+               <tr>
+                  <th style="width:50%">FACTURA DE COMPRA:</th>
+                  <td></td>
+               </tr>
+               <tr>
+                  <th>NO.</th>
+                  <td>{{form_id}}</td>
+               </tr>
+
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="col-xs-12">
+       <table border="1" width="100%" height="100%">
+           <tr>
+               <th ><center>FECHA FACTURA</center></th>
+               <th ><center>FECHA VENCIMIENTO</center></th>
+               <th ><center>CONDICIONES DE PAGO</center></th>
+               <th ><center>FACT.PROVEEDOR</center></th>
+           </tr>
+           <tr>
+
+               <td><br><center>{{dato.fecha_documento}}</center>
+                   <br> </td>
+               <td><br><center>{{dato.fecha_entrega}}</center>
+                   <br></td>
+               <td><br><center>{{dato.comentarios}}</center>
+                   <br> </td>
+               <td><br><center>{{dato.referencia}}</center>
+                   <br> </td>
+           </tr>
+       </table>
+   </div>
+</div>
     <div class="row no-print">
 
     </div>
-    {% for dato in lista_solicitud %}
-    <div class="row invoice-info">
-        <div class="col-sm-4 invoice-col">
-            Cliente :<br>
-            <strong>{{ dato.nombre }}</strong><br><br>
-            Fecha de Contabilizacion:<br>
-            <strong>{{ dato.fecha_contabilizacion }}</strong><br><br>
 
-        </div>
-        <div class="col-sm-4 invoice-col">
-            Estado:<br>
-            <strong></strong><br><br>
-            Fecha de Entrega:<br>
-            <strong>{{ dato.fecha_entrega }}</strong><br><br>
-        </div>
-        <div class="col-sm-4 invoice-col">
-            No. Solicitud:<br>
-            <strong>{{ form_id }}</strong><br><br>
-            Fecha del documento:<br>
-            <strong>{{ dato.fecha_documento }}</strong><br><br>
-        </div>
-    </div>
 
+    <input type="hidden" id="solicitud_input" name="solicitud_input" value="{{ dato.n_pedido }}">
     <br>
     <div class="row">
         <div class="col-xs-12 table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Numero de articulo</th>
-                        <th>Nombre de articulo</th>
+                        <th>Codigo</th>
+                        <th>Descripcion</th>
                         <th>Cantidad</th>
                         <th>Precio por Unidad </th>
-                        <th>Indicador de Impuestos</th>
-                        <th>Codigo de Unidad de Medida</th>
                         <th>Total</th>
                     </tr>
                 </thead>
@@ -92,8 +138,6 @@
                     <td>{{ articulo.nombre }}</td>
                     <td>{{ articulo.cantidad }}</td>
                     <td>{{ articulo.precio_unidad }}</td>
-                    <td>{{ articulo.indicador_impuestos}}</td>
-                    <td>{{ articulo.codigo_unidad}}</td>
                     <td>{{ articulo.total }}</td>
                 </tr>
                 {% endfor %}
@@ -101,10 +145,59 @@
             </table>
         </div>
     </div>
-     {% endfor %}
-    <div class="row no-print">
+    <br><br>
+    <div class="row">
+   <div class="col-xs-8">
+       <table border="1" width="100%" height="100%">
+           <tr>
+               <th ><br>DETALLE DE RETENCIONES  <br>.</th>
+           </tr>
+           <tr>
 
-    </div>
-</section>
+               <td><br><br><center>{{dato.comentarios}}</center> <br></td>
+           </tr>
+       </table>
+
+   </div>
+
+   <div class="col-xs-4">
+      <div class="table-responsive">
+         <table class="table">
+            <tbody>
+               <tr>
+                  <th style="width:50%">SUBTOTAL:</th>
+                  <td>$ {{dato.subtotal}}</td>
+               </tr>
+               <tr>
+                  <th style="width:50%">DESCUENTO:</th>
+                  <td>$ {{dato.descuento}}</td>
+               </tr>
+               <tr>
+                  <th style="width:50%">VALOR NETO:</th>
+                  <td>$ {{dato.subtotal}}</td>
+               </tr>
+               <tr>
+                  <th>IVA</th>
+                  <td>$ {{dato.impuestos}}</td>
+               </tr>
+               <tr>
+                  <th>RETENCIONES</th>
+                  <td>$ {{ dato.retenciones }}</td>
+               </tr>
+                <tr>
+                  <th>TOTAL</th>
+                  <td>$ {{ dato.total }}</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+
+</div>
+</div>
+<button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right" style="margin-right: 5px;">
+        <i class="fa fa-download"></i> Generate PDF
+    </button>
+{% endfor %}
 
 {% endblock %}

@@ -233,6 +233,7 @@ urlpatterns.extend(
 
         #---------------------------------------TABLAS NO SAP---------------------------------------------------------------
         url(r'^configuracion/solicitud_aviso_recibo/$', configuracion_views.config_solicitud_aviso_recibo),
+        url(r'^configuracion/solicitud_aviso_recibo/excel_general/$', configuracion_views.reporte_aviso_recibo),
 
         #---------------------------------------FINANZAS-------------------------------------------------------------------
         url(r'^configuracion/solicitud_pagos_recibidos/$', configuracion_views.config_solicitud_pagos_recibidos),
