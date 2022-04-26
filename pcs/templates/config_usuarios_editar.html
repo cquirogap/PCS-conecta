@@ -72,6 +72,17 @@
                                   </div>
                                 </div>
                               <br>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                           <label>Contacto</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="number" class="form-control" id="telefono"
+                                                    name="telefono" placeholder="Telefono" value="{{usuarios_datos.telefono}}"  required>
+                                          </div>
+                                  </div>
+                              </div>
+                              <br>
                                 <div class="row">
                                       <div class="col-md-6">
 
@@ -104,73 +115,23 @@
                                   </div>
                               </div>
                                   <div class="col-md-6">
-                                   <label>Dependencia</label>
-                                   <div class="input-group ">
-                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
-                                      <select class="form-control select2 " style="width: 100%;" name="dependencias" required>
-
-                                              {% for dependencias in lista_dependencia %}
-                                              <option value="{{ dependencias.codigo }}">{{dependencias.descripcion}}</option>
-                                              {% endfor %}
-                                               <option value="{{ usuarios_datos.dependencias_id }}" selected >{{ usuarios_datos.dependencias.descripcion }}</option>
-                                      </select>
-                                   </div>
+                                           <label>Cargo</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="text" class="form-control" id="cargo"
+                                                    name="cargo" placeholder="Cargo" value="{{usuarios_datos.cargo}}"  required>
+                                          </div>
                                   </div>
                               </div>
 
                               <div class="row">
                                   <div class="col-md-6">
-                                           <label># Identificacion</label>
-                                          <div class="input-group ">
-                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
-                                                <input type="text" class="form-control" id="cedula"
-                                                    name="cedula" placeholder="# Identificacion" value="{{ usuarios_datos.cedula }}" required>
-                                          </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                     <label>Fecha Nacimiento</label>
-                                      <div class="input-group ">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                          <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ fecha_nacimiento }}" required>
-                                      </div>
-
-
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-md-6">
-                                           <label>Oficina Piso</label>
-                                          <div class="input-group ">
-                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
-                                                <input type="text" class="form-control" id="piso"
-                                                    name="piso" placeholder="# Piso"  required value="{{ usuarios_datos.piso }}">
-                                          </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                           <label># Extension</label>
-                                          <div class="input-group ">
-                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
-                                                <input type="text" class="form-control" id="extension"
-                                                    name="extension" placeholder="# Extension"  required value="{{ usuarios_datos.extension }}">
-                                          </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-md-6">
-                                           <label>Estado</label>
-                                          <div class="input-group ">
-                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
-                                                <input type="text" class="form-control" id="estado"
-                                                    name="estado" placeholder="Estado del Usuario"  required value="{{ usuarios_datos.estado}}">
-                                          </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                       <label>Usuario Publico?</label>
+                                       <label>Usuario Administrativo?</label>
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="publico" required>
-                                            <option value="1" {% if usuarios_datos.publico == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0"{% if usuarios_datos.publico == 0 %}selected{% endif %}>NO</option>
+                                            <option value="1" {% if usuarios_datos.admin == 1 %}selected{% endif %}>SI</option>
+                                            <option value="0"{% if usuarios_datos.admin == 0 %}selected{% endif %}>NO</option>
                                         </select>
                                       </div>
                                   </div>

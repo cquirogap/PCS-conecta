@@ -41,14 +41,9 @@ class Usuarios_datos(models.Model):
     usuario = models.ForeignKey(User, default=1)
 
     empresa = models.ForeignKey(Empresas, default=1)
-    dependencias = models.ForeignKey(Dependencias, default=1)
-    cedula = models.CharField(max_length=45, null=True)
-    fecha_nacimiento = models.DateField(null=True)
-    ubicacion = models.CharField(max_length=45, null=True)
-    piso = models.IntegerField(default=1)
-    extension = models.IntegerField(default=1)
-    estado = models.CharField(max_length=45, null=True)
-    publico = models.BooleanField(default=True)
+    telefono = models.CharField(max_length=45, null=True)
+    cargo = models.CharField(max_length=45, null=True)
+    admin = models.BooleanField(default=True)
     creado = models.DateTimeField(null=True)
     modificado = models.DateTimeField(null=True)
 

@@ -133,6 +133,7 @@ urlpatterns.extend(
         # Usuarios
         url(r'^configuracion/usuario/$', configuracion_views.config_fechas_festivos),
         url(r'^configuracion/usuarios/$', configuracion_views.config_usuarios),
+        url(r'^configuracion/usuarios/perfil/$', configuracion_views.config_usuarios_perfil),
         url(r'^configuracion/usuarios/registrar/$', configuracion_views.config_usuarios_registrar),
         url(r'^configuracion/usuarios/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_borrar),
         url(r'^configuracion/usuarios/editar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_editar),
@@ -163,14 +164,7 @@ urlpatterns.extend(
         url(r'^configuracion/trd/registrar/$', configuracion_views.config_trd_registrar),
         url(r'^configuracion/trd/informe/$', configuracion_views.config_trd_informa),
 
-        #Solicitud de anulacion
-        url(r'^configuracion/solicitud/$', configuracion_views.config_solicitud),
-        url(r'^configuracion/solicitud/detalle/$', configuracion_views.config_solicitud_detalle),
-        #Administrar Anulaciones
-        url(r'^configuracion/admin_anulacion/$', configuracion_views.config_admin_anulacion),
-        url(r'^configuracion/admin_anulacion/anular/$', configuracion_views.config_admin_anulacion_anular),
-        url(r'^configuracion/admin_anulacion/r_solicitud/$', configuracion_views.config_admin_anulacion_r_solicitud),
-        url(r'^configuracion/reportes/$', configuracion_views.config_reportes),
+
         #Ubicacion
         url(r'^configuracion/ubicacion/$', configuracion_views.config_ubicacion),
         url(r'^configuracion/ubicacion/registrar/$', configuracion_views.config_ubicacion_registrar),

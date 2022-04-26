@@ -114,53 +114,6 @@ class Atorizaciones(models.Model):
     def __unicode__(self):
         return str(self.descripcion)
 
-class Dependencias(models.Model):
-    codigo = models.CharField(max_length=8, primary_key=True, default=1)
-    codigopadre = models.CharField(max_length=8) # Codigo dependencia no es llave primaria
-    codigoterritorio = models.CharField(max_length=8)  # Codigo dependencia no es llave primaria
-    sigla = models.CharField(max_length=6)
-    descripcion = models.CharField(max_length=30)
-    estado = models.BooleanField(default=True)
-    continentes = models.ForeignKey(Continentes, default=1)
-    paises = models.ForeignKey(Paises, default=1)
-    departamentos = models.ForeignKey(Departamentos, default=1)
-    municipios = models.ForeignKey(Municipios, default=1)
-    direccion = models.CharField(max_length=50)
-    creado = models.DateTimeField(null=True)
-    modificado = models.DateTimeField(null=True)
-
-
-    def __unicode__(self):
-        return str(self.descripcion)
-
-class Dependencias_visibles(models.Model):
-    dependencias = models.ForeignKey(Dependencias, default=1)
-
-    def __unicode__(self):
-        return str(self.dependencias)
-
-class Consecutivos(models.Model):
-    codigo = models.CharField(max_length=200, primary_key=True, default=1)
-    ano = models.IntegerField(null=True)
-    dependencias = models.ForeignKey(Dependencias,null=True)
-    secuencia = models.CharField(null=True,max_length=6)
-    creado = models.DateTimeField(null=True)
-    modificado = models.DateTimeField(null=True)
-    tipo= models.CharField(max_length=50,default=1)
-    usuario_origen=models.ForeignKey(User,null=True)
-    accion=models.CharField(null=True,max_length=30)
-
-    def __unicode__(self):
-        return str(self.codigo)
-
-class Anos(models.Model):
-    ano = models.IntegerField(null=True)
-
-class CarpetaAno(models.Model):
-    ano=models.ForeignKey(Anos,null=True)
-    dependencias = models.ForeignKey(Dependencias,null=True)
-    usuario_origen=models.ForeignKey(User,null=True)
-    accion=models.CharField(null=True,max_length=50)
 
 
 
@@ -192,17 +145,6 @@ class Tipos_anulaciones(models.Model):
     def __unicode__(self):
         return str(self.descripcion)
 
-class Tipos_documentos(models.Model):
-    dependencias = models.ForeignKey(Dependencias, default=1)
-    tipos_radicados = models.ForeignKey(Tipos_radicados, default=1)
-    descripcion = models.CharField(max_length=40)
-    dias_tramite = models.IntegerField(null=True)
-    publicar = models.BooleanField(default=True)
-    creado = models.DateTimeField(null=True)
-    modificado = models.DateTimeField(null=True)
-
-    def __unicode__(self):
-        return str(self.descripcion)
 
 # Tabla Terceros
 class Terceros (models.Model):
@@ -255,37 +197,11 @@ class Subseries(models.Model):
     def __unicode__(self):
         return str(self.descripcion)
 
-class Matriz(models.Model):
-    dependencia = models.ForeignKey(Dependencias,default=1)
-    serie = models.ForeignKey(Series,default=1)
-    subserie = models.ForeignKey(Subseries,default=1)
-    soporte=models.CharField(max_length=30)
-    tipos_documentos=models.ForeignKey(Tipos_documentos,default=1)
-    estado=models.CharField(max_length=30,default='activo')
 
-class Trd(models.Model):
-    codigo = models.CharField(max_length=5)  # Codigo identificador de la TRD no es llave primaria
-    version = models.IntegerField(null=True)
-    administrativa = models.ForeignKey(Dependencias, related_name='administrativa')
-    productora = models.ForeignKey(Dependencias, related_name='productora')
-    series = models.ForeignKey(Series, default=1)
-    subseries = models.ForeignKey(Subseries, default=1)
-    descripcion = models.CharField(max_length=20)
-    acta = models.CharField(max_length=40)
-    fechaaprobacion = models.DateField(null=True)
-    observacion = models.CharField(max_length=600)
-    creado = models.DateTimeField(null=True)
-    modificado = models.DateTimeField(null=True)
 
-    def __unicode__(self):
-        return str(self.descripcion)
 
-class Trd_tiposdocumentos(models.Model):
-    trd = models.ForeignKey(Trd, default=1)
-    descripcion = models.CharField(max_length=20)
 
-    def __unicode__(self):
-        return str(self.descripcion)
+
 
 
 class Ubicacion(models.Model):

@@ -164,8 +164,12 @@
 
               <!-- Menu Footer-->
               <li class="user-footer">
-                <div class="text-center">
+                <div class="pull-left">
+                  <a href="/configuracion/usuarios/perfil/" class="btn btn-default btn-flat">Perfil</a>
+                </div>
+                <div class="pull-right">
                   <a href="/logout/" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                </div>
               </li>
             </ul>
           </li>
@@ -194,8 +198,12 @@
 
               <!-- Menu Footer-->
               <li class="user-footer">
-                <div class="text-center">
+                <div class="pull-left">
+                  <a href="/configuracion/usuarios/perfil/" class="btn btn-default btn-flat">Perfil</a>
+                </div>
+                <div class="pull-right">
                   <a href="/logout/" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                </div>
               </li>
             </ul>
           </li>
@@ -227,8 +235,12 @@
 
               <!-- Menu Footer-->
               <li class="user-footer">
-                <div class="text-center">
+                <div class="pull-left">
+                  <a href="/configuracion/usuarios/perfil/" class="btn btn-default btn-flat">Perfil</a>
+                </div>
+                <div class="pull-right">
                   <a href="/logout/" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                </div>
               </li>
             </ul>
           </li>
@@ -257,21 +269,21 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">BARRA DE NAVEGACION</li>
-
+        {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-gears"></i> <span>Configuracion</span>
           </a>
           <ul class="treeview-menu">
+
             <li><a href="/configuracion/continentes/"><i class="fa fa-circle-o"></i>Localizacion</a></li>
 
             <li><a href="/configuracion/usuarios/"><i class="fa fa-circle-o"></i>Usuarios</a></li>
 
-            <li><a href="/configuracion/dependencias/"><i class="fa fa-circle-o"></i>Dependencias</a></li>
 
           </ul>
         </li>
-
+        {% endif %}
 
 
         <li class="treeview">
