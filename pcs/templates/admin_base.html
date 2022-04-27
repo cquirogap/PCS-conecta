@@ -291,19 +291,19 @@
             <i class="fa fa-pencil"></i> <span>Comercial</span>
           </a>
           <ul class="treeview-menu">
-            {% if permiso_usuario.empresa.tipo == 'Proveedor' %}
+            {% if permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-circle-o"></i>Pedido</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cliente' %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_pedido/"><i class="fa fa-circle-o"></i>Orden de ventas</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cliente' %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_factura_deudores/"><i class="fa fa-circle-o"></i>Factura de Deudores</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cliente' %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_entrega/"><i class="fa fa-circle-o"></i>Entrega</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cliente' %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_devolucion/"><i class="fa fa-circle-o"></i>Devolucion</a></li>
             {% endif %}
             <li><a href="/configuracion/solicitud_catalogo_productos/"><i class="fa fa-circle-o"></i>Catalogo de Productos</a></li>
@@ -337,22 +337,22 @@
             <i class="fa fa-file-text"></i> <span>Finanzas</span>
           </a>
           <ul class="treeview-menu">
-            {% if permiso_usuario.empresa.tipo == 'Proveedor' %}
+            {% if permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_debito_proveedores/"><i class="fa fa-circle-o"></i>Notas Debito Proveedores</a></li>
             <li><a href="/configuracion/solicitud_credito_proveedores/"><i class="fa fa-circle-o"></i>Notas Credito Proveedores</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cliente' %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_pagos_recibidos/"><i class="fa fa-circle-o"></i>Comprobande de egreso</a></li>
-            {% elif permiso_usuario.empresa.tipo == 'Proveedor' %}
+            {% elif permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_comprobante_egreso/"><i class="fa fa-circle-o"></i>Comprobande de egreso</a></li>
             {% elif permiso_usuario.empresa.tipo == 'pcs' %}
             <li><a href="/configuracion/solicitud_comprobante_egreso_pcs/"><i class="fa fa-circle-o"></i>Comprobande de egreso</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cliente' %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_notas_debito/"><i class="fa fa-circle-o"></i>Notas Debito Clientes</a></li>
             <li><a href="/configuracion/solicitud_notas_credito/"><i class="fa fa-circle-o"></i>Notas Credito Clientes</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cliente' or permiso_usuario.empresa.tipo == 'Proveedor' %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_estado_cuenta/grupos/{{permiso_usuario.empresa.nit }}"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
             {% elif permiso_usuario.empresa.tipo == 'pcs' %}
             <li><a href="/configuracion/solicitud_estado_cuenta/"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
