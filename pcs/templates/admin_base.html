@@ -51,7 +51,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="/administracion/" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>e</b>PCS</span>
       <!-- logo for regular state and mobile devices -->
@@ -338,8 +338,8 @@
           </a>
           <ul class="treeview-menu">
             {% if permiso_usuario.empresa.tipo == 'Empresario' %}
-            <li><a href="/configuracion/solicitud_debito_proveedores/"><i class="fa fa-circle-o"></i>Notas Debito Proveedores</a></li>
-            <li><a href="/configuracion/solicitud_credito_proveedores/"><i class="fa fa-circle-o"></i>Notas Credito Proveedores</a></li>
+            <li><a href="/configuracion/solicitud_debito_proveedores/"><i class="fa fa-circle-o"></i>Notas Debito </a></li>
+            <li><a href="/configuracion/solicitud_credito_proveedores/"><i class="fa fa-circle-o"></i>Notas Credito </a></li>
             {% endif %}
             {% if permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_pagos_recibidos/"><i class="fa fa-circle-o"></i>Comprobande de egreso</a></li>
@@ -366,6 +366,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="/configuracion/solicitud_aviso_recibo/"><i class="fa fa-circle-o"></i>Aviso Recibo</a></li>
+            <li><a href="/configuracion/solicitud_inventarios/"><i class="fa fa-circle-o"></i>Inventarios</a></li>
           </ul>
         </li>
 

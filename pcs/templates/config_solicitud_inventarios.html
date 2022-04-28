@@ -1,0 +1,228 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+      <h1><a href="#">Inventarios</a><small>Administración </small></h1>
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+
+          <div class="tab-content">
+            <form role="form" action="/configuracion/solicitud_aviso_recibo/" method="POST">
+            {% csrf_token %}
+              <br>
+                <input type="hidden" name="pagina" value=0>
+             <div class="row">
+                 <div class="col-md-12">
+                     <label>Cliente</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                         <select class="form-control select2 " style="width: 100%;" name="cliente" required>
+                             <option value="" selected disabled></option>
+                             {% for empresas in dato_cliente %}
+                             <option value="{{ empresas.id }}">{{empresas.nombre}}</option>
+                             {% endfor %}
+                         </select>
+                     </div>
+                 </div>
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+                 <div class="col-md-6">
+                     <button type="submit"  class="btn btn-primary btn-block btn-flat" >
+                         <span class="glyphicon glyphicon-folder-open"></span>
+                         <span class="glyphicon glyphicon-search"></span>Consultar
+                     </button>
+                 </div>
+                 <div class="col-md-6">
+                     <button type="button" id="buscar_aviso_recibo_excel_button"  class="btn btn-success btn-block btn-flat" >
+                         <span class="glyphicon glyphicon-folder-open"></span>
+                         <span class="glyphicon glyphicon-search"></span>Excel
+                     </button>
+                 </div>
+             </div>
+            </form>
+              <br>
+            <!-- Formula Medica -->
+              <div class="box">
+                  <div class="box-body">
+                      <div class="col-xs-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead><tr>
+                                <th>Codigo</th>
+                              <th>Formato</th>
+                              <th>Fecha de Cargue</th>
+                              <th>Doc Referencia</th>
+                              <th>Cod Mensaje</th>
+                              <th>Fecha Doc</th>
+                              <th>Cod EAN</th>
+                              <th>Cod Cliente</th>
+                              <th>Nombre Cliente</th>
+                              <th>EAN Depend</th>
+                              <th>Dependencia</th>
+                              <th>EAN Articulo</th>
+                              <th>Codigo</th>
+                              <th>Descripcion</th>
+                              <th>Precio Art</th>
+                              <th>Cantidad</th>
+                              <th>Nro.Orden</th>
+                              <th>Nro.Factura</th>
+                              <th>Nro.Remision</th>
+                              <th>Cantidad enviada</th>
+                              <th>Cantidad Perdida</th>
+                              <th>Cantidad Aceptada</th>
+                              <th>Cantidad No Aceptada</th>
+                              <th>Cantidad Destruida</th>
+                              <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for dato in lista_prueba %}
+                                <tr>
+                                    <td>
+                                        {{ dato.codigo }}
+                                    </td>
+                                    <td>
+                                        {{dato.formato}}
+                                    </td>
+                                    <td>
+                                        {{dato.fecha_cargue}}
+                                    </td>
+                                    <td>
+                                        {{dato.doc_referencia}}
+                                    </td>
+                                    <td>
+                                        {{dato.cod_mensaje}}
+                                    </td>
+                                    <td>
+                                        {{dato.fecha_doc}}
+                                    </td>
+                                    <td>
+                                        {{dato.cod_ean}}
+                                    </td>
+                                    <td>
+                                        {{dato.cod_cliente}}
+                                    </td>
+                                    <td>
+                                        {{dato.nombre_cliente}}
+                                    </td>
+                                    <td>
+                                        {{dato.ean_depend}}
+                                    </td>
+                                    <td>
+                                        {{dato.dependencia}}
+                                    </td>
+                                    <td>
+                                        {{dato.ean_articulo}}
+                                    </td>
+                                    <td>
+                                        {{dato.codigo_art}}
+                                    </td>
+                                    <td>
+                                        {{dato.descripcion}}
+                                    </td>
+                                    <td>
+                                        {{dato.precio_articulo}}
+                                    </td>
+                                    <td>
+                                        {{dato.cantidad}}
+                                    </td>
+                                    <td>
+                                        {{dato.nro_orden}}
+                                    </td>
+                                    <td>
+                                        {{dato.nro_factura}}
+                                    </td>
+                                    <td>
+                                        {{dato.nro_remision}}
+                                    </td>
+                                    <td>
+                                        {{dato.cantidad_enviada}}
+                                    </td>
+                                    <td>
+                                        {{dato.cantidad_perdida}}
+                                    </td>
+                                    <td>
+                                        {{dato.cantidad_aceptada}}
+                                    </td>
+                                    <td>
+                                        {{dato.cantidad_recibida_no_acep}}
+                                    </td>
+                                    <td>
+                                        {{dato.cantidad_recibida_ser_dest}}
+                                    </td>
+
+
+
+                                </tr>
+                                {% endfor %}
+                        </tbody>
+                    </table></div>
+                  </div>
+                  <form role="form" action="/configuracion/solicitud_aviso_recibo/" method="POST">
+                  {% csrf_token %}
+                      <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio }}">
+                      <input type="hidden" name="fecha_fin" value="{{ fecha_fin }}">
+                      <input type="hidden" name="pagina" value="{{ pagina }}">
+                      <input type="hidden" name="estado" value="{{ estado }}">
+                      <input type="hidden" name="orden_compra" value="{{ orden_compra }}">
+                      <input type="hidden" name="factura" value="{{ factura }}">
+                  <div class="box-footer clearfix">
+                      <ul class="pagination pagination-sm no-margin pull-right">
+                          <p1>{{pagina}}-{{pagina_fin}}</p1>
+                          <button type="input" value="primera" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-double-left"></i></button>
+                          <button type="input" value="atras" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-left"></i></button>
+                          <button type="input" value="adelante" name="paginador" class="btn btn-default btn-flat"><i class="fa fa-angle-right"></i></button>
+                      </ul>
+                  </div>
+                  </form>
+              </div>
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}
