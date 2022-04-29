@@ -1847,6 +1847,22 @@ $(function () {
     )
 
 
+    var buscar_inventario_excel = function () {
+
+        cliente = $("#cliente_input").val() || "";
+        cliente = cliente.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/solicitud_inventarios/excel_general/?cliente='+cliente
+
+    }
+
+    $("#buscar_inventario_excel_button").click(
+       function (e) {
+           buscar_inventario_excel()
+       }
+    )
+
+
     var buscar_estado_cuenta_excel = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";
