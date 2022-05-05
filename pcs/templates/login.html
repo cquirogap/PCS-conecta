@@ -2,12 +2,14 @@
 {% load static %}
 
 {% block content %}
-<div class="login-box">
-  <div class="login-logo">
-      <a href=""><b style="color: white;font-size: 60px">CONECTA</b></a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
+
+<div class="split-login">
+  <div class="split-login-half split-login-left">
+    <div class="split-login-form">
+      <center><a href=""><b style="color: white;font-size: 60px">CONECTA</b></a></center>
+      <div class="login-form">
+
+       <div class="login-box-body">
     <p class="login-box-msg"><img src="{% static 'dist/img/logo_etet.jpg'%}" width="100%" height="100%"></p>
     <p class="login-box-msg">Inicia Sesión</p>
 
@@ -41,7 +43,15 @@
       </div>
     </form>
   </div>
-  <!-- /.login-box-body -->
+      </div>
+    </div>
+    <div class="split-login-footer">
+    </div>
+  </div>
+  <div class="split-login-half split-login-right"></div>
 </div>
+
+
+
 <!-- /.login-box -->
 {% endblock content %}

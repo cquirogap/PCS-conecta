@@ -115,8 +115,8 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Nombre de articulo</th>
                         <th>Numero de articulo</th>
+                        <th>Nombre de articulo</th>
                         <th>Cantidad</th>
                         <th>Precio por Unidad </th>
                         <th>Total</th>
@@ -125,11 +125,15 @@
                 <tbody>
                 {% for articulo in dato.articulos %}
                 <tr>
-                    <td>{{ articulo.nombre }}</td>
-                    <td>{{ articulo.numero }}</td>
-                    <td>{{ articulo.cantidad }}</td>
+                    <td>{{ articulo.numero }}<br>{% for detalle in articulo.detalledir %}
+                        <small>{{ detalle.Dependencia }}</small><br>{% endfor %}</td>
+                    <td>{{ articulo.nombre }} <br>{% for detalle in articulo.detalledir %}
+                        <small>{{ detalle.direccion }}</small><br>  {% endfor %}</td>
+                    <td>{{ articulo.cantidad }} <br>{% for detalle in articulo.detalledir %}
+                        <small>{{detalle.cantidad}}</small><br>{% endfor %} </td>
                     <td>{{ articulo.precio_unidad }}</td>
                     <td>{{ articulo.total }}</td>
+
                 </tr>
                 {% endfor %}
                 </tbody>

@@ -47,16 +47,26 @@
               <br>
                 <input type="hidden" name="pagina" value=0>
              <div class="row">
-                 <div class="col-md-12">
+                 <div class="col-md-6">
                      <label>Cliente</label>
                      <div class="input-group ">
                          <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
                          <select class="form-control select2 " style="width: 100%;" name="cliente" id="cliente_input" required>
                              <option value="" selected disabled></option>
                              {% for empresas in dato_cliente %}
-                             <option value="{{ empresas.id }}">{{ empresas.id }}-{{empresas.nombre}}</option>
+                             <option {% if  empresas.id == cliente %} selected {% endif %}
+                                     value="{{ empresas.id }}">{{ empresas.id }}-{{empresas.nombre}}
+                             </option>
                              {% endfor %}
+
                          </select>
+                     </div>
+                 </div>
+                 <div class="col-md-6">
+                     <label>Fecha Corte</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ hoy }}" >
                      </div>
                  </div>
                  <div class="col-md-12">
@@ -91,12 +101,11 @@
                       <div class="col-xs-12 table-responsive">
                         <table class="table table-striped">
                             <thead><tr>
-                                <th>EAN_Dependencia</th>
-                                <th>Dependencia</th>
+                                <th>EAN</th>
                                 <th>Descripcion</th>
                                 <th>Linea</th>
-                                <th>EAN</th>
-                                <th>Fecha Final <br> {{hoy}}</th>
+                                <th></th>
+
 
                     </tr>
                 </thead>
@@ -104,10 +113,7 @@
                 {% for dato in lista_prueba %}
                                 <tr>
                                     <td>
-                                        {{ dato.EAN_Dependencia }}
-                                    </td>
-                                    <td>
-                                        {{ dato.Dependencia }}
+                                        {{ dato.EAN }}
                                     </td>
                                     <td>
                                         {{ dato.Descripcion }}
@@ -115,12 +121,13 @@
                                     <td>
                                         {{ dato.Linea }}
                                     </td>
-                                    <td>
-                                        {{ dato.EAN }}
-                                    </td>
-                                    <td>
-                                        {{ dato.Cantidad }}
-                                    </td>
+                                    <td><center><a class="btn btn-info "
+                                           href="/configuracion/solicitud_inventarios/detalle/?ean={{ dato.EAN }}&fecha={{ hoy }}&cliente={{ cliente }}"
+                                           title="Ver detalle ">
+                                        <i class="glyphicon glyphicon-folder-open"></i>
+                                        <i class="glyphicon glyphicon-zoom-in"></i>
+                                        <br> Detalle Inventario
+                                    </a></center></td>
 
                                 </tr>
                                 {% endfor %}
@@ -129,12 +136,9 @@
                   </div>
                   <form role="form" action="/configuracion/solicitud_inventarios/" method="POST">
                   {% csrf_token %}
-                      <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio }}">
-                      <input type="hidden" name="fecha_fin" value="{{ fecha_fin }}">
+                      <input type="hidden" name="cliente" value="{{ cliente }}">
+                      <input type="hidden" name="fecha_fin" value="{{ hoy }}">
                       <input type="hidden" name="pagina" value="{{ pagina }}">
-                      <input type="hidden" name="estado" value="{{ estado }}">
-                      <input type="hidden" name="orden_compra" value="{{ orden_compra }}">
-                      <input type="hidden" name="factura" value="{{ factura }}">
                   <div class="box-footer clearfix">
                       <ul class="pagination pagination-sm no-margin pull-right">
                           <p1>{{pagina}}-{{pagina_fin}}</p1>

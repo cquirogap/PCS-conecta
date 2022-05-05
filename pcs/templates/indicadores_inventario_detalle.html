@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <section class="content-header" xmlns="http://www.w3.org/1999/html">
-    <h1><a href="javascript:history.back()"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    <h1> <a href="javascript:history.back()"><i class="fa fa-mail-forward"></i>Volver</a></h1>
     {% if messages %}
         {% for message in messages %}
             {% if message.tags %}
@@ -40,73 +40,55 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="page-header">
-               Detalle Comprobante de Egreso  # {{ form_id }}
+               Inventario Producto # {{ ean }}
             </h2>
         </div>
     </div>
     <div class="row no-print">
 
     </div>
-    {% for dato in lista_solicitud %}
+
     <div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-            N° :<br>
-            <strong>{{dato.n_pagos}}</strong><br><br>
-            Destinatario de Factura:<br>
-            <strong>{{ dato.destinatorio_factura }}</strong><br><br>
+            Producto :<br>
+            <strong>{{ nombre_prod }}</strong><br><br>
+            Linea:<br>
+            <strong>{{ linea }}</strong><br><br>
 
         </div>
         <div class="col-sm-4 invoice-col">
-            Codigo:<br>
-            <strong>{{dato.codigo}}</strong><br><br>
-            Fecha de Contabilizacion:<br>
-            <strong>{{ dato.fecha_contabilizacion }}</strong><br><br>
+            Cliente :<br>
+            <strong>{{ cliente }}</strong><br><br>
         </div>
         <div class="col-sm-4 invoice-col">
-            Nombre:<br>
-            <strong>{{ dato.nombre }}</strong><br><br>
-            Fecha del documento:<br>
-            <strong>{{ dato.fecha_vencimiento }}</strong><br><br>
+            Fecha Corte:<br>
+            <strong>{{ fecha }}</strong><br><br>
         </div>
     </div>
+
+    <br>
     <div class="row">
         <div class="col-xs-12 table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>Tipo </th>
-                        <th>Doc.No </th>
-                        <th>Fecha</th>
-                        <th>No.Factura</th>
-                        <th>Valor a Pagar($)</th>
+                        <th>Ean Dependencia</th>
+                        <th>Dependencia</th>
+                        <th>Cantidad</th>
                     </tr>
                 </thead>
                 <tbody>
-                {% for articulo in dato.detalle %}
+                {% for detalle in lista_detalle %}
                 <tr>
-                    <td>{{ articulo.numero }}</td>
-                    <td>{% if articulo.tipo == '18' %}Factura Proveedor
-                    {% elif articulo.tipo == '19' %}Notas Credito Provedor
-                    {% else %}{{articulo.tipo}}{% endif %}
-                    </td>
-                    <td><a {% if articulo.tipo == '18' %}href="/configuracion/solicitud_factura_proveedor/detalle/{{ articulo.doc_num }}"
-                    {% elif articulo.tipo == '19' %}href="/configuracion/solicitud_credito_proveedores/detalle/{{ articulo.doc_num }}"
-                    {% endif %}  type="button" class="btn btn-warning btn-flat"><i class="fa fa-mail-forward"></i></a> {{ articulo.doc_num }}</td>
-                    <td>{{ articulo.fecha }}</td>
-                    <td>{% if articulo.tipo == '18' %}{{ articulo.factura }}
-                    {% elif articulo.tipo == '19' %}{{ articulo.nota }}
-                    {% endif %}
-                        </td>
-                    <td>{{ articulo.total }}</td>
+                    <td>{{ detalle.EanDependencia }}</td>
+                    <td>{{ detalle.Dependencia }}</td>
+                    <td>{{ detalle.Cantidad }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    <br>
-     {% endfor %}
     <div class="row no-print">
 
     </div>

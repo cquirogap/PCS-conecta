@@ -231,6 +231,7 @@ urlpatterns.extend(
 
         url(r'^configuracion/solicitud_inventarios/$', configuracion_views.config_solicitud_inventarios),
         url(r'^configuracion/solicitud_inventarios/excel_general/$', configuracion_views.reporte_inventario),
+        url(r'^configuracion/solicitud_inventarios/detalle/$', configuracion_views.config_solicitud_inventarios_detalle),
         #---------------------------------------FINANZAS-------------------------------------------------------------------
         url(r'^configuracion/solicitud_pagos_recibidos/$', configuracion_views.config_solicitud_pagos_recibidos),
         url(r'^configuracion/solicitud_pagos_recibidos/detalle/(?P<form_id>\d+)/$', configuracion_views.pagos_recibidos_detalles),

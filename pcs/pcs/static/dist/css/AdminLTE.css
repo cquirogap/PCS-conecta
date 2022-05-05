@@ -4943,3 +4943,74 @@ table.text-center th {
     white-space: normal !important;
   }
 }
+
+
+
+
+
+
+.split-login{
+  background-image: url("/static/img/fondopcs.jpg");
+}
+.split-login-right {
+  display: none;
+}
+
+.split-login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.split-login-footer {
+  padding-bottom: 2rem;
+}
+
+.split-login-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.split-login {
+  background:  #043f74;
+  height: 100vh;
+  width: 100vw;
+  min-width: 400px;
+  min-height: 600px;
+}
+
+.login-form {
+  height: 400px;
+  width: 400px;
+  background: white;
+}
+
+body {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+@media (min-width: 1024px) {
+  .split-login {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .split-login-right {
+    display: initial;
+    background:white;
+    height: 100%;
+  }
+
+  .split-login-half {
+    width: 50%;
+  }
+}
