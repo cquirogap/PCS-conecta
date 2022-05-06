@@ -37,20 +37,21 @@
 </section>
 <section class="invoice">
     {% csrf_token %}
+    {% for dato in lista_solicitud %}
     <div class="row">
         <div class="col-md-12">
             <h2 class="page-header">
-               Detalle Comprobante de Egreso  # {{ form_id }}
+               Detalle Comprobante de Egreso  # {{ dato.n_pagos }}
             </h2>
         </div>
     </div>
     <div class="row no-print">
 
     </div>
-    {% for dato in lista_solicitud %}
+
     <div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-            N° :<br>
+            No.Pago :<br>
             <strong>{{dato.n_pagos}}</strong><br><br>
             Destinatario de Factura:<br>
             <strong>{{ dato.destinatorio_factura }}</strong><br><br>
