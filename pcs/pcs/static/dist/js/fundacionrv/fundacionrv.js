@@ -1865,6 +1865,26 @@ $(function () {
     )
 
 
+    var buscar_ventas_excel = function () {
+
+        cliente = $("#cliente_input").val() || "";
+        cliente = cliente.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/solicitud_ventas/excel_general/?cliente='+cliente+'&fecha_fin='+fecha_fin+'&fecha_inicio='+fecha_inicio
+
+    }
+
+    $("#buscar_ventas_excel_button").click(
+       function (e) {
+           buscar_ventas_excel()
+       }
+    )
+
+
     var buscar_estado_cuenta_excel = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";
