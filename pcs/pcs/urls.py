@@ -135,8 +135,12 @@ urlpatterns.extend(
         url(r'^configuracion/usuarios/$', configuracion_views.config_usuarios),
         url(r'^configuracion/usuarios/perfil/$', configuracion_views.config_usuarios_perfil),
         url(r'^configuracion/usuarios/registrar/$', configuracion_views.config_usuarios_registrar),
+        url(r'^registrar/usuarios_externos/$', configuracion_views.config_usuarios_registrar_externos),
+        url(r'^registrar/usuarios_externos_comp/$', configuracion_views.config_usuarios_registrar_externos_comp),
         url(r'^configuracion/usuarios/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_borrar),
         url(r'^configuracion/usuarios/editar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_editar),
+
+
         # Dependencias
         url(r'^configuracion/dependencias/$', configuracion_views.config_dependencias),
         url(r'^configuracion/dependencias/registrar/$', configuracion_views.config_dependencias_registrar),

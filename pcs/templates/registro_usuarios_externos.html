@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+        <div class="register-box-body">
+        <p class="login-box-msg"><img src="{% static 'dist/img/logo_etet.jpg'%}" width="25%" height="25%"></p>
+            <center ><h3><b>Registrarse a Conecta</b></h3></center>
+          <p class="login-box-msg"><center><h3><strong>*Favor diligenciar los datos completos del <u>Usuario</u>*</strong></h3></center></p>
+        </div>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+          <div class="tab-content">
+            <!-- Pacientes -->
+            <div class="active tab-pane" id="pacientes">
+                 <!-- Formulario Pacientes -->
+                <div class="row">
+                  <div class="col-md-12">
+                      <form role="form" action="/registrar/usuarios_externos/" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <input type="hidden" name="id" value="{{id}}">
+                          <div class="row">
+                              <div class="col-md-6">
+                                 <label>Empresa</label>
+                                 <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    <select class="form-control select2 " style="width: 100%;" name="empresa" id="empresa" readonly="readonly">
+                                        <option value="{{ nombre }}">{{nombre}}</option>
+                                      </select>
+                                  </select>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                 <label>Tipo de Empresa</label>
+                                 <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo" required>
+                                          <option selected value="{{tipo}}">{%if tipo == 'cSupplier'%}Empresario{% else %}Cadena{% endif %}</option>
+
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                   <hr><center><label>DATOS DE USUARIO</label></center>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                   <hr><center></center>
+                              </div>
+                          </div>
+                          <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Nombre Completo</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="text" class="form-control" id="nombres"
+                                                style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                                name="nombres" placeholder="Nombre Completo" value="{{nombres}}"  required>
+                                          </div>
+                                      </div>
+                                       <div class="col-md-6">
+                                      <label>Apellido Completo</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <input type="text" class="form-control" id="apellidos"
+                                        style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                        name="apellidos" placeholder="Apellido Completo"  value="{{apellidos}}" required>
+                                      </div>
+                                  </div>
+                                </div>
+                          <br>
+                          <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Usuario</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="text" class="form-control" id="nombre_usuario" value="{{usuario}}"
+                                                    name="nombre_usuario" placeholder="Nombre de usuario"  required>
+                                          </div>
+                                      </div>
+                                       <div class="col-md-6">
+                                      <label>Correo electrónico</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                                        <input type="email" class="form-control" id="email"
+                                        name="email" placeholder="Correo" value="{{email}}" required>
+                                      </div>
+                                  </div>
+                                </div>
+                          <br>
+                          <div class="row">
+                                  <div class="col-md-6">
+                                           <label>Contacto</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="number" class="form-control" id="telefono"
+                                                    name="telefono" placeholder="Telefono"  >
+                                          </div>
+                                  </div>
+                              <div class="col-md-6">
+                                           <label>Cargo</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                                                <input type="text" class="form-control" id="cargo"
+                                                    name="cargo" placeholder="Cargo"  required>
+                                          </div>
+                                  </div>
+                              </div>
+                          <br>
+                          <div class="row">
+                                      <div class="col-md-6">
+                                           <label>Contraseña</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <input type="password" class="form-control" id="password"
+                                                name="password" placeholder="Contraseña" minlength="5"  required>
+                                          </div>
+                                      </div>
+                                       <div class="col-md-6">
+                                      <label>Confirmar contraseña</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <input type="password" class="form-control" id="password2"
+                                                name="password2" placeholder="Contraseña" minlength="5" required>
+                                      </div>
+                                  </div>
+                                </div>
+                          <br>
+                          <div>
+                          </div>
+                          <!-- /.box-body -->
+                          <div>
+                            <div class="col-xs-12">
+                              <div class="checkbox icheck">
+                                <label>
+                                    <input id='acepta_terminos' name='acepta_terminos' type="checkbox" required> He leido y acepto  las
+                                    <b> POLÍTICAS DE DATOS PERSONALES </b>
+                                    <a href="https://www.pcsocial.org/politica-privacidad" >
+                                        <small>  Haga click aqui para leerlo.</small> </a>
+                                </label>
+                              </div>
+                            </div>
+                            <!-- /.col -->
+                            <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrarse</button>
+                            </div>
+                            <!-- /.col -->
+                          </div>
+                      </form>
+                  </div>
+                </div>
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+    </section>
+
+
+{% endblock %}
