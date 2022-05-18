@@ -84,3 +84,12 @@ def panel_administracion(request):
     else:
         pass
 
+def panel_ayuda(request):
+    # Render  administracion.html
+    if request.method == 'GET':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        return render(request, "ayuda.html", {'permiso_usuario': usuario_datos
+                                                        })
+    else:
+        pass

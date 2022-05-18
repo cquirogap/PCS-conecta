@@ -1,4 +1,39 @@
+jQuery(document).ready(function($) {
+  // Create Thumbnails
+  $('.video-link').each(function(index, el) {
+    $('#result').append('>>> ' + index + ':' + $(this).attr('data-source') + '<br>');
+  });
 
+  // Loading videos
+  $('#gm-video-player video').on('loadstart', function (event) {
+    $(this).addClass('loading');
+  });
+  $('#gm-video-player video').on('canplay', function (event) {
+    $(this).removeClass('loading');
+    $(this).attr('poster', '');
+  });
+
+  $('.video-link').on('click', function(event) {
+    event.preventDefault();
+    var video = $(this).attr('data-source');
+    $('.video-link img').removeClass('video-active');
+    $(this).find('img').addClass('video-active');
+    createVideo(video);
+  });
+});
+
+function createVideo (url) {
+  var newVideo = '<video width="320" height="240" controls> <source src="'+url+'" type="video/mp4">';
+  $('#gm-video-player').html(newVideo);
+}
+
+function createThumbnail (id) {
+  var canvas = document.createElement('canvas');
+  canvas.width = 160;
+  canvas.height = 120;
+  var context = canvas.getContext('2d');
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+}
 
 $(function () {
 

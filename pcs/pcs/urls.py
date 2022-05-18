@@ -35,6 +35,7 @@ urlpatterns.extend(
 
         # Administracion
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
+        url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
         #_______________________________________________ CONFIGURACION _____________________________________________
         # Continentes
         url(r'^configuracion/continentes/$', configuracion_views.config_continentes),

@@ -39,6 +39,7 @@
 <section class="invoice">
     {% csrf_token %}
     {% for dato in lista_solicitud %}
+    {% if lista_cliente %}
     {% for cliente in lista_cliente %}
     <div class="row">
         <div class="col-xs-12">
@@ -108,6 +109,74 @@
     </div>
 
     {% endfor %}
+    {% else %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                 PCS
+                <small class="pull-right">Orden de Compra {{ dato.n_pedido }}</small>
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+   <div class="col-xs-8">
+      <p class="lead">SEÑOR(ES):</p>
+      <div class="col-sm-6 invoice-col">
+
+          <address>
+              <strong>NOMBRE: </strong>{{ datos_empresa.nombre }}<br>
+              <strong>NIT: </strong>{{ datos_empresa.nit }}<br>
+              <strong>DIR.FACTURA: </strong>{{ dato.direccion }}<br>
+              <strong>CIUDAD: </strong>{{ datos_empresa.municipios.descripcion}}<br>
+
+          </address>
+      </div>
+      <div class="col-sm-6 invoice-col">
+          <address>
+              <strong></strong><br>
+              <strong></strong><br>
+              <strong></strong><br>
+              <strong>TELEFONO: </strong>{{ datos_empresa.telefono }}<br>
+          </address>
+      </div>
+
+   </div>
+
+   <div class="col-xs-4">
+      <div class="table-responsive">
+         <table class="table">
+            <tbody>
+               <tr>
+                  <th style="width:50%">Fecha  Expedicion:</th>
+                  <td>{{ dato.fecha_contabilizacion }}</td>
+               </tr>
+               <tr>
+                  <th>Fecha Vencimiento</th>
+                  <td>{{dato.fecha_entrega}}</td>
+               </tr>
+               <tr>
+                  <th>Cliente</th>
+                  <td>{{ cliente.codigo_cliente }}</td>
+               </tr>
+               <tr>
+                  <th></th>
+                  <td>{{cliente.cliente}}</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="col-xs-12">
+        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+         Observaciones: OC {{ cliente.numero_referencia }} - Fecha Min {{ cliente.fecha_minima }} - Fecha Max
+            {{ cliente.fecha_maxima }} Enviar a {{ cliente.destino }} - {{ cliente.direccion }}
+      </p>
+   </div>
+</div>
+    <div class="row no-print">
+
+    </div>
+    {% endif %}
     <input type="hidden" id="solicitud_input" name="solicitud_input" value="{{ dato.n_pedido }}">
     <br>
     <div class="row">
