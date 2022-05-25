@@ -78,6 +78,13 @@ class Tipos_identificacion(models.Model):
     def __unicode__(self):
         return str(self.descripcion)
 
+class PedidosAlmacenados(models.Model):
+    pedido = models.CharField(max_length=40)
+
+    def __unicode__(self):
+        return str(self.pedido)
+
+
 class Empresas(models.Model):
     nombre = models.CharField(max_length=30)
     nit = models.CharField(max_length=30)
