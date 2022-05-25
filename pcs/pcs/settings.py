@@ -140,5 +140,5 @@ EMAIL_HOST_PASSWORD = 'endtoend'
 
 
 CRONJOBS = [
-    ('*/2 * * * *', 'interlocutorc.views.tarea_correo_pedido')
+    ('*/1 * * * *', 'interlocutorc.views.tarea')
 ]
