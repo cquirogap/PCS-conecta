@@ -211,7 +211,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_factura_deudores/$', configuracion_views.config_solicitud_factura_deudores),
         url(r'^configuracion/solicitud_factura_deudores/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_detalle),
 
-        url(r'^configuracion/tarea/$', interlocutorc_views.tarea_correo_pedido),
+        url(r'^configuracion/tarea/$', interlocutorc_views.tarea),
 
         url(r'^configuracion/solicitud_factura_proveedor/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_proveedor),
         #---------------------------------------COMPRAS-------------------------------------------------------------------
