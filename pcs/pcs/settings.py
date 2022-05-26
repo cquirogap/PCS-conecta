@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import configuracion.views
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -140,5 +142,5 @@ EMAIL_HOST_PASSWORD = 'endtoend'
 
 
 CRONJOBS = [
-    ('*/1 * * * *', 'interlocutorc.views.tarea')
+    ('*/1 * * * *', 'configuracion.views.tarea')
 ]

@@ -96,11 +96,7 @@ def panel_ayuda(request):
         pass
 
 
-def tarea(request):
-    email = EmailMessage('TIENES UN NUEVO PEDIDO',
-                         'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link',
-                         to=['juansebastianduartes@gmail.com'])
-    email.send()
+
 
 def tarea_correo_pedido(request):
     pedidos_general = PedidosAlmacenados.objects.all().exists()
