@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import configuracion.views
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -41,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'configuracion',
     'interlocutorc',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +138,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'gestiondocumentaletet@gmail.com'
 EMAIL_HOST_PASSWORD = 'endtoend'
 
+CRONJOBS = [
+    ('*/2 * * * *', 'interlocutorc.views.tarea')
+]
