@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'configuracion',
     'interlocutorc',
-    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -140,7 +139,3 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'gestiondocumentaletet@gmail.com'
 EMAIL_HOST_PASSWORD = 'endtoend'
 
-
-CRONJOBS = [
-    ('*/1 * * * *', 'interlocutorc.views.tarea')
-]
