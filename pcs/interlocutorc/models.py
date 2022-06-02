@@ -52,4 +52,9 @@ class HistoriaUsuario(models.Model):
     usuario=models.ForeignKey(Usuarios_datos, default=1)
     empresa=models.ForeignKey(Empresas, default=1)
     accion=models.CharField(max_length=100, null=True)
-    fecha=models.DateField(null=True)
+    fecha=models.DateTimeField(null=True)
+
+
+class HistorialErrorTarea(models.Model):
+    accion=models.CharField(max_length=100, null=True)
+    fecha=models.DateTimeField(null=True)

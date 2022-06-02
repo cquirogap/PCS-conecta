@@ -71,6 +71,7 @@ def panel_administracion(request):
         return HttpResponseRedirect('/login/')
 
     if request.method == 'GET':
+        hoy=datetime.now()
         current_user = request.user
         permisos = Permisos.objects.filter(usuario_id=current_user.id).first()
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
@@ -78,7 +79,7 @@ def panel_administracion(request):
             usuario_id=int(current_user.id),
             empresa_id=int(usuario_datos.empresa_id),
             accion='Logueo de Usuario',
-            fecha=timezone.now(),
+            fecha=hoy,
         )
         historial.save()
         return render(request, "administracion.html", {'user': usuario_actual, 'permisos': permisos,'permiso_usuario': usuario_datos})
@@ -102,56 +103,64 @@ def tarea():
     pedido_al.save()
 
 
-def tarea_correo_pedido(request):
-    pedidos_general = PedidosAlmacenados.objects.all().exists()
-    estado = 'bost_Open'
-    url = "https://192.168.1.20:50000/b1s/v1/Login"
+def tarea_correo_pedido():
+    try:
+        pedidos_general = PedidosAlmacenados.objects.all().exists()
+        estado = 'bost_Open'
+        url = "https://192.168.1.20:50000/b1s/v1/Login"
 
-    payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
-    response = requests.request("POST", url, data=payload, verify=False)
+        response = requests.request("POST", url, data=payload, verify=False)
 
-    respuesta = ast.literal_eval(response.text)
-    url2 = "https://192.168.1.20:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode&$filter=DocumentStatus eq '" \
-           + estado + "'"
+        respuesta = ast.literal_eval(response.text)
+        url2 = "https://192.168.1.20:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode&$filter=DocumentStatus eq '" \
+               + estado + "'"
 
-    headers = {
-        'Prefer': 'odata.maxpagesize=999999',
-        'Cookie': 'B1SESSION=' + respuesta['SessionId']
-    }
-    response = requests.request("GET", url2, headers=headers, verify=False)
-    response = ast.literal_eval(response.text)
-    response = response['value']
-    for datos in response:
-        if pedidos_general==False:
-            pedido_al = PedidosAlmacenados(
-                pedido=datos['DocNum']
-            )
-            pedido_al.save()
-        else:
-            try:
-                pedido_almacenado=PedidosAlmacenados.objects.get(pedido=datos['DocNum'])
-                pass
-            except:
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = ast.literal_eval(response.text)
+        response = response['value']
+        for datos in response:
+            if pedidos_general==False:
+                pedido_al = PedidosAlmacenados(
+                    pedido=datos['DocNum']
+                )
+                pedido_al.save()
+            else:
                 try:
-                    url3 = "https://192.168.1.20:50000/b1s/v1/BusinessPartners?$select=EmailAddress&$filter=CardCode eq '" \
-                           + datos['CardCode'] + "'"
-                    response2 = requests.request("GET", url3, headers=headers, verify=False)
-                    response2 = ast.literal_eval(response2.text)
-                    response2 = response2['value']
-                    response2 = response2[0]
-                    response2 = response2['EmailAddress']
-                    email = EmailMessage('TIENES UN NUEVO PEDIDO',
-                                         'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link'
-                                         + '45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(datos['DocEntry']) + '/',
-                                         to=['juansebastianduartes@gmail.com'])
-                    email.send()
-                    pedido_al = PedidosAlmacenados(
-                        pedido=datos['DocNum']
-                    )
-                    pedido_al.save()
+                    pedido_almacenado=PedidosAlmacenados.objects.get(pedido=datos['DocNum'])
+                    pass
                 except:
-                    pedido_al = PedidosAlmacenados(
-                        pedido=datos['DocNum']
-                    )
-                    pedido_al.save()
+                    try:
+                        url3 = "https://192.168.1.20:50000/b1s/v1/BusinessPartners?$select=EmailAddress&$filter=CardCode eq '" \
+                               + datos['CardCode'] + "'"
+                        response2 = requests.request("GET", url3, headers=headers, verify=False)
+                        response2 = ast.literal_eval(response2.text)
+                        response2 = response2['value']
+                        response2 = response2[0]
+                        response2 = response2['EmailAddress']
+                        email = EmailMessage('TIENES UN NUEVO PEDIDO',
+                                             'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link'
+                                             + '45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(datos['DocEntry']) + '/',
+                                             to=['juansebastianduartes@gmail.com'])
+                        email.send()
+                        pedido_al = PedidosAlmacenados(
+                            pedido=datos['DocNum']
+                        )
+                        pedido_al.save()
+                    except:
+                        pedido_al = PedidosAlmacenados(
+                            pedido=datos['DocNum']
+                        )
+                        pedido_al.save()
+    except:
+        hoy=datetime.now()
+        errores = HistorialErrorTarea(
+            accion='Error de conexion',
+            fecha=hoy,
+        )
+        errores.save()
