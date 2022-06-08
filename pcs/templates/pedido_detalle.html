@@ -177,6 +177,16 @@
 
     </div>
     {% endif %}
+
+    {% if comentarios_iniciales != 'No' %}
+    <div class="row">
+    <div class="col-xs-12">
+        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+         <b>Informacion Adicional:</b>   {{comentarios_iniciales}}
+      </p>
+    </div>
+   </div>
+    {% endif %}
     <input type="hidden" id="solicitud_input" name="solicitud_input" value="{{ dato.n_pedido }}">
     <br>
     <div class="row">
