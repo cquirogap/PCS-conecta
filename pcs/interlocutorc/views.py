@@ -96,11 +96,12 @@ def panel_ayuda(request):
     else:
         pass
 
-def tarea():
-    pedido_al = PedidosAlmacenados(
-                pedido='4'
-            )
-    pedido_al.save()
+def tarea(request):
+    email = EmailMessage('TIENES UN NUEVO PEDIDO',
+                         'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link'
+                         + '45.56.118.44/configuracion/solicitud_pedido_orden/detalle/',
+                         to=['juansebastianduartes@gmail.com'])
+    email.send()
 
 
 def tarea_correo_pedido():

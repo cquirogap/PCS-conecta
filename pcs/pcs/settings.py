@@ -136,7 +136,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'gestiondocumentaletet@gmail.com'
-EMAIL_HOST_PASSWORD = 'endtoend'
+EMAIL_HOST_PASSWORD = 'ztwsxsdxzbpwappm'
 
 CRONJOBS = [
     ('*/2 * * * *', 'interlocutorc.views.tarea')
