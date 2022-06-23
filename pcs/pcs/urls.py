@@ -219,6 +219,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_pedido_orden/detalle/(?P<form_id>\d+)/$', configuracion_views.pedido_detalle),
         url(r'^configuracion/solicitud_pedido_orden/excel/$', configuracion_views.reporte_pedido_detalle),
         url(r'^configuracion/solicitud_pedido_orden/excel_general/$', configuracion_views.reporte_pedido),
+        url(r'^configuracion/solicitud_pedido_orden/excel_csv/$', configuracion_views.reporte_pedidos_csv),
 
         url(r'^configuracion/solicitud_catalogo_productos/$', configuracion_views.config_solicitud_catalogo_productos),
         url(r'^configuracion/solicitud_catalogo_productos/detalle/(?P<form_id>\d+)/$', configuracion_views.catalogo_productos_detalle),
