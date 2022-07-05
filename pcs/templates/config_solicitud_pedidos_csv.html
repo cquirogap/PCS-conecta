@@ -1,0 +1,91 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" xmlns="http://www.w3.org/1999/html">
+      <h1><a href="#">Orden de Compra</a><small>Administración </small></h1>
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+
+          <div class="tab-content">
+            <form role="form" action="/configuracion/solicitud_pedido_orden/excel_csv/" method="POST">
+            {% csrf_token %}
+              <br>
+                <input type="hidden" name="pagina" value=0>
+             <div class="row">
+                 <div class="col-md-6">
+                     <label>Fecha Inicio</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ hoy }}" >
+                     </div>
+                 </div>
+                 <div class="col-md-6">
+                     <label>Fecha Final</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ hoy }}" >
+                     </div>
+                 </div>
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+
+                 <div class="col-md-12">
+                     <br>
+                 </div>
+                 <div class="col-md-12">
+                     <button type="submit"  class="btn btn-success btn-block btn-flat" >
+                         <span class="glyphicon glyphicon-folder-open"></span>
+                         <span class="glyphicon glyphicon-search"></span>ARCHIVO .CSV
+                     </button>
+                 </div>
+             </div>
+            </form>
+              <br>
+
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

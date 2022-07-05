@@ -360,7 +360,9 @@
             <i class="fa fa-file-text"></i> <span>Logistico</span>
           </a>
           <ul class="treeview-menu">
-
+            {% if permiso_usuario.empresa.tipo == 'Empresario' %}
+            <li><a href="/configuracion/solicitud_pedido_orden/excel_csv/"><i class="fa fa-circle-o"></i>Orden de Compra</a></li>
+            {% endif %}
           </ul>
         </li>
 
