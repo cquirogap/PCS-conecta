@@ -2,7 +2,53 @@
 {% load static %}
 {% block content %}
 <section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <div id="ArchivoModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="main-header">
+                                    <span class="close" data-dismiss="modal">&times;</span>
+                                    <div class="col-md-12">
+                                    <h2 class="page-header">
+                                    <strong>Pedidos</strong>
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Cual es su problema?</p>
+                                    <form role="form" action="/radicados/salidas/imagen/" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                    <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo" required>
+                                           <option value="" selected disabled></option>
+                                          <option value="Cadena">Cadena</option>
+                                          <option value="Empresario">Empresario</option>
+                                          <option value="pcs">PCS</option>
+
+                                      </select>
+                                  </div>
+                                        <br>
+                                        <p>Comentarios Adicionales</p>
+                                        <textarea class="form-control" rows="3" placeholder="Comentarios Adicionales"></textarea>
+
+                                        <br>
+                                        <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                    </form>
+                                </div>
+
+                          </div>
+
+                        </div>
+                    </div>
+    <div class="pull-right">
+        <div class="block">
+     <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal" class="hovicon effect-1 sub-a" title="¿Tienes un problema con este pedido?">¿Tienes un problema?</a>
+    </div>
+    </div>
     <h1> <a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    <br><br>
+
+
     {% if messages %}
         {% for message in messages %}
             {% if message.tags %}
@@ -35,6 +81,7 @@
         {% endfor %}
       {% endif %}
 </section>
+
 <div id="printableArea">
 <section class="invoice">
     {% csrf_token %}
