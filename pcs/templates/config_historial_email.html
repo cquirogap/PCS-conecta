@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/historial_empresas/">Historial</a>
+        <a href="/configuracion/historial_email/">Historial</a>
         <small>Configuracion</small>
       </h1>
 
@@ -53,8 +53,8 @@
             <ul class="nav nav-tabs">
               <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
               <li><a href="/configuracion/empresas/" >Compañia</a></li>
-              <li class="active"><a href="#" data-toggle="tab">Historial</a></li>
-              <li><a href="/configuracion/historial_email/" >Envio Emails</a></li>
+              <li><a href="/configuracion/historial_empresas/" >Historial</a></li>
+              <li class="active"><a href="#" data-toggle="tab">Envio Emails</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
@@ -74,8 +74,6 @@
                                   <table id="empresas" class="table table-bordered table-hover dataTables">
                                     <thead>
                                         <tr>
-                                            <th>Usuario</th>
-                                            <th>Empresa</th>
                                             <th>Accion</th>
                                             <th>Fecha</th>
                                         </tr>
@@ -84,8 +82,6 @@
                                         {% for historial in lista_historial %}
                                             <tr>
 
-                                                <td>{{historial.usuario.usuario}}</td>
-                                                <td>{{historial.usuario.empresa.nombre}}</td>
                                                 <td>{{historial.accion}}</td>
                                                 <td>{{historial.fecha}}</td>
 

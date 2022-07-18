@@ -106,8 +106,8 @@ def tarea(request):
 
 def tarea_correo_pedido():
     try:
-        pedidos_general = PedidosAlmacenados.objects.all().exists()
         estado = 'bost_Open'
+        hoy=date.today()
         url = "https://192.168.1.20:50000/b1s/v1/Login"
 
         payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
@@ -115,8 +115,8 @@ def tarea_correo_pedido():
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode&$filter=DocumentStatus eq '" \
-               + estado + "'"
+        url2 = "https://192.168.1.20:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode&$filter=DocDate eq '" \
+               + str(hoy) + "'and CardCode eq 'P005050'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -126,38 +126,40 @@ def tarea_correo_pedido():
         response = ast.literal_eval(response.text)
         response = response['value']
         for datos in response:
-            if pedidos_general==False:
-                pedido_al = PedidosAlmacenados(
-                    pedido=datos['DocNum']
-                )
-                pedido_al.save()
-            else:
+            try:
+                pedido_almacenado=PedidosAlmacenados.objects.get(pedido=datos['DocNum'])
+                pass
+            except:
                 try:
-                    pedido_almacenado=PedidosAlmacenados.objects.get(pedido=datos['DocNum'])
-                    pass
-                except:
-                    try:
-                        url3 = "https://192.168.1.20:50000/b1s/v1/BusinessPartners?$select=EmailAddress&$filter=CardCode eq '" \
-                               + datos['CardCode'] + "'"
-                        response2 = requests.request("GET", url3, headers=headers, verify=False)
-                        response2 = ast.literal_eval(response2.text)
-                        response2 = response2['value']
-                        response2 = response2[0]
-                        response2 = response2['EmailAddress']
+                    dependencias='LOGISTICA Y DESPACHOS'
+                    url3 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + datos['CardCode'] + "'&dependencia='" + dependencias + "'"
+                    response2 = requests.request("GET", url3, headers=headers, verify=False)
+                    response2 = ast.literal_eval(response2.text)
+                    response2 = response2['value']
+                    response2 = response2[0]
+                    response2 = response2['E_MailL']
+                    response2=str(response2).split(";")
+                    for correos in response2:
                         email = EmailMessage('TIENES UN NUEVO PEDIDO',
-                                             'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link'
-                                             + '45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(datos['DocEntry']) + '/',
-                                             to=['juansebastianduartes@gmail.com'])
+                                                'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
+                                                + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(datos['DocEntry']) + '/',
+                                                to=['juansebastianduartes@gmail.com'])
                         email.send()
-                        pedido_al = PedidosAlmacenados(
-                            pedido=datos['DocNum']
-                        )
-                        pedido_al.save()
-                    except:
-                        pedido_al = PedidosAlmacenados(
-                            pedido=datos['DocNum']
-                        )
-                        pedido_al.save()
+                    pedido_al = PedidosAlmacenados(
+                        pedido=datos['DocNum']
+                    )
+                    pedido_al.save()
+                except:
+                    hoy = datetime.now()
+                    pedido_al = PedidosAlmacenados(
+                        pedido=datos['DocNum']
+                    )
+                    pedido_al.save()
+                    errores = HistorialErrorTarea(
+                        accion='No se encuentra correo para el pedido '+str(datos['DocNum']),
+                        fecha=hoy,
+                    )
+                    errores.save()
     except:
         hoy=datetime.now()
         errores = HistorialErrorTarea(

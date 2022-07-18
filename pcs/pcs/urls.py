@@ -81,6 +81,7 @@ urlpatterns.extend(
         url(r'^configuracion/empresas/editar/(?P<id>[-\w]+)/$', configuracion_views.config_empresas_editar),
         url(r'^configuracion/empresas/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_empresas_borrar),
         url(r'^configuracion/historial_empresas/$', configuracion_views.config_historial_empresas),
+        url(r'^configuracion/historial_email/$', configuracion_views.config_historial_email),
 
 
         # Soportes
@@ -211,7 +212,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_factura_deudores/$', configuracion_views.config_solicitud_factura_deudores),
         url(r'^configuracion/solicitud_factura_deudores/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_detalle),
 
-        url(r'^configuracion/tarea/$', interlocutorc_views.tarea),
+        url(r'^configuracion/tarea/$', interlocutorc_views.tarea_correo_pedido),
 
         url(r'^configuracion/solicitud_factura_proveedor/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_proveedor),
         #---------------------------------------COMPRAS-------------------------------------------------------------------
