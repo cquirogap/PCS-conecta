@@ -139,5 +139,5 @@ EMAIL_HOST_USER = 'gestiondocumentaletet@gmail.com'
 EMAIL_HOST_PASSWORD = 'wtkyxnjypbdwqbxx'
 
 CRONJOBS = [
-    ('*/2 * * * *', 'interlocutorc.views.tarea')
+    ('*/2 * * * *', 'interlocutorc.views.tarea_correo_pedido')
 ]
