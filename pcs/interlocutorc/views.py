@@ -116,7 +116,7 @@ def tarea_correo_pedido():
 
         respuesta = ast.literal_eval(response.text)
         url2 = "https://192.168.1.20:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode&$filter=DocDate eq '" \
-               + str(hoy) + "'and CardCode eq 'P005050'"
+               + str(hoy) + "'and CardCode eq 'P004075'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -143,7 +143,7 @@ def tarea_correo_pedido():
                         email = EmailMessage('TIENES UN NUEVO PEDIDO',
                                                 'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
                                                 + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(datos['DocEntry']) + '/',
-                                                to=['juansebastianduartes@gmail.com'])
+                                                to=[correos])
                         email.send()
                     pedido_al = PedidosAlmacenados(
                         pedido=datos['DocNum']
