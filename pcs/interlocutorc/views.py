@@ -108,6 +108,15 @@ def tarea_correo_pedido():
     try:
         estado = 'bost_Open'
         hoy=date.today()
+        hora = datetime.now().time()
+        errores = HistorialErrorTarea(
+            accion='Inicio de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
         url = "https://192.168.1.20:50000/b1s/v1/Login"
 
         payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
@@ -115,8 +124,8 @@ def tarea_correo_pedido():
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode&$filter=DocDate eq '" \
-               + str(hoy) + "'and CardCode eq 'P004075'"
+        url2 = "https://192.168.1.20:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
+               + str(hoy) + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -126,44 +135,68 @@ def tarea_correo_pedido():
         response = ast.literal_eval(response.text)
         response = response['value']
         for datos in response:
-            try:
-                pedido_almacenado=PedidosAlmacenados.objects.get(pedido=datos['DocNum'])
-                pass
-            except:
+            if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
                 try:
-                    dependencias='LOGISTICA Y DESPACHOS'
-                    url3 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + datos['CardCode'] + "'&dependencia='" + dependencias + "'"
-                    response2 = requests.request("GET", url3, headers=headers, verify=False)
-                    response2 = ast.literal_eval(response2.text)
-                    response2 = response2['value']
-                    response2 = response2[0]
-                    response2 = response2['E_MailL']
-                    response2=str(response2).split(";")
-                    for correos in response2:
-                        email = EmailMessage('TIENES UN NUEVO PEDIDO',
-                                                'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(datos['DocEntry']) + '/',
-                                                to=[correos])
-                        email.send()
-                    pedido_al = PedidosAlmacenados(
-                        pedido=datos['DocNum']
-                    )
-                    pedido_al.save()
+                    pedido_almacenado = PedidosAlmacenados.objects.get(pedido=datos['DocNum'])
+                    pass
                 except:
-                    hoy = datetime.now()
-                    pedido_al = PedidosAlmacenados(
-                        pedido=datos['DocNum']
-                    )
-                    pedido_al.save()
-                    errores = HistorialErrorTarea(
-                        accion='No se encuentra correo para el pedido '+str(datos['DocNum']),
-                        fecha=hoy,
-                    )
-                    errores.save()
+                    try:
+                        dependencias = 'LOGISTICA Y DESPACHOS'
+                        url3 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
+                               datos['CardCode'] + "'&dependencia='" + dependencias + "'"
+                        response2 = requests.request("GET", url3, headers=headers, verify=False)
+                        response2 = ast.literal_eval(response2.text)
+                        response2 = response2['value']
+                        response2 = response2[0]
+                        response2 = response2['E_MailL']
+                        response2 = str(response2).split(";")
+                        for correos in response2:
+                            email = EmailMessage('TIENES UN NUEVO PEDIDO',
+                                                 'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
+                                                 + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                     datos['DocEntry']) + '/',
+                                                 to=[correos])
+                            email.send()
+                        pedido_al = PedidosAlmacenados(
+                            pedido=datos['DocNum']
+                        )
+                        pedido_al.save()
+                    except:
+                        hoy=date.today()
+                        hora=datetime.now().time()
+                        pedido_al = PedidosAlmacenados(
+                            pedido=datos['DocNum']
+                        )
+                        pedido_al.save()
+                        errores = HistorialErrorTarea(
+                            accion='No se encuentra correo para el pedido ',
+                            fecha=hoy,
+                            hora=hora,
+                            empresa=str(datos['CardCode']),
+                            pedido=str(datos['DocNum'])
+                        )
+                        errores.save()
+            else:
+                pass
+
+        hoy = date.today()
+        hora = datetime.now().time()
+        errores = HistorialErrorTarea(
+            accion='Fin de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
     except:
-        hoy=datetime.now()
+        hoy = date.today()
+        hora = datetime.now().time()
         errores = HistorialErrorTarea(
             accion='Error de conexion',
             fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
         )
         errores.save()
