@@ -57,4 +57,7 @@ class HistoriaUsuario(models.Model):
 
 class HistorialErrorTarea(models.Model):
     accion=models.CharField(max_length=100, null=True)
-    fecha=models.DateTimeField(null=True)
+    pedido=models.CharField(max_length=100, null=True)
+    empresa=models.CharField(max_length=100, null=True)
+    fecha=models.DateField(null=True)
+    hora=models.TimeField(null=True)

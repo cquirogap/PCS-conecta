@@ -135,9 +135,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'bodega')
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'gestiondocumentaletet@gmail.com'
-EMAIL_HOST_PASSWORD = 'wtkyxnjypbdwqbxx'
+EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
+EMAIL_HOST_PASSWORD = 'baecxhtxwejobzgn'
 
 CRONJOBS = [
-    ('* */1 * * *', 'interlocutorc.views.tarea_correo_pedido')
+    ('30 12 * * *', 'interlocutorc.views.tarea_correo_pedido'),
+    ('0 17 * * *', 'interlocutorc.views.tarea_correo_pedido'),
+    ('0 21 * * *', 'interlocutorc.views.tarea_correo_pedido'),
+    ('59 23 * * *', 'interlocutorc.views.tarea_correo_pedido'),
 ]
