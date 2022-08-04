@@ -139,8 +139,5 @@ EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
 EMAIL_HOST_PASSWORD = 'baecxhtxwejobzgn'
 
 CRONJOBS = [
-    ('30 12 * * *', 'interlocutorc.views.tarea_correo_pedido'),
-    ('0 17 * * *', 'interlocutorc.views.tarea_correo_pedido'),
-    ('0 21 * * *', 'interlocutorc.views.tarea_correo_pedido'),
-    ('59 23 * * *', 'interlocutorc.views.tarea_correo_pedido'),
+    ('* */2 * * *', 'interlocutorc.views.tarea_correo_pedido'),
 ]

@@ -11,7 +11,7 @@ from datetime import date
 from datetime import datetime
 import requests
 import ast
-
+import pytz
 
 # Create your views here.
 # This view method handles the request for the root URL /
@@ -107,8 +107,9 @@ def tarea(request):
 def tarea_correo_pedido():
     try:
         estado = 'bost_Open'
-        hoy=date.today()
-        hora = datetime.now().time()
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy=now.date()
+        hora = now.time()
         errores = HistorialErrorTarea(
             accion='Inicio de tarea',
             fecha=hoy,
@@ -162,8 +163,9 @@ def tarea_correo_pedido():
                         )
                         pedido_al.save()
                     except:
-                        hoy=date.today()
-                        hora=datetime.now().time()
+                        now = datetime.now(pytz.timezone('America/Bogota'))
+                        hoy = now.date()
+                        hora = now.time()
                         pedido_al = PedidosAlmacenados(
                             pedido=datos['DocNum']
                         )
@@ -172,15 +174,16 @@ def tarea_correo_pedido():
                             accion='No se encuentra correo para el pedido ',
                             fecha=hoy,
                             hora=hora,
-                            empresa=str(datos['CardCode']),
+                            empresa=str(datos['CardName']),
                             pedido=str(datos['DocNum'])
                         )
                         errores.save()
             else:
                 pass
 
-        hoy = date.today()
-        hora = datetime.now().time()
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
         errores = HistorialErrorTarea(
             accion='Fin de tarea',
             fecha=hoy,
@@ -190,8 +193,9 @@ def tarea_correo_pedido():
         )
         errores.save()
     except:
-        hoy = date.today()
-        hora = datetime.now().time()
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
         errores = HistorialErrorTarea(
             accion='Error de conexion',
             fecha=hoy,
