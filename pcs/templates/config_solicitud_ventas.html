@@ -47,20 +47,25 @@
               <br>
                 <input type="hidden" name="pagina" value=0>
              <div class="row">
+
                  <div class="col-md-6">
-                     <label>Fecha Inicial</label>
+
+                     <label>Rango Informe</label>
                      <div class="input-group ">
-                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" value="{{ fecha_inicio }}" >
+                         <span class="input-group-addon"><i class="fa fa-filter"></i></span>
+                         <select class="form-control select2 " style="width: 100%;" name="rango" id="rango">
+                             <option value="semanal" selected disabled>Semanal</option>
+                         </select>
                      </div>
                  </div>
                  <div class="col-md-6">
-                     <label>Fecha Final</label>
+                     <label>Fecha Corte</label>
                      <div class="input-group ">
                          <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
                          <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" >
                      </div>
                  </div>
+
 
                  <div class="col-md-12">
                      <label>Cliente</label>
@@ -114,6 +119,7 @@
                                 <th>EAN</th>
                                 <th>Descripcion</th>
                                 <th>Linea</th>
+                                <th>Fecha</th>
                                 <th>Cantidad</th>
 
 
@@ -136,6 +142,9 @@
                                     </td>
                                     <td>
                                         {{ dato.Linea }}
+                                    </td>
+                                    <td>
+                                        {{ dato.Fecha }}
                                     </td>
                                     <td>
                                         {{ dato.Cantidad }}
