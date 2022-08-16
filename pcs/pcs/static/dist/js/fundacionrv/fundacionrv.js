@@ -1857,6 +1857,23 @@ $(function () {
        }
     )
 
+    var buscar_historial_email_excel = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/historial_email/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin
+
+    }
+
+    $("#buscar_historial_email_excel_button").click(
+       function (e) {
+           buscar_historial_email_excel()
+       }
+    )
+
 
 
 

@@ -8,7 +8,7 @@ from interlocutorc.models import *
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from datetime import date
-from datetime import datetime
+from datetime import datetime,timedelta
 import requests
 import ast
 import pytz
@@ -148,30 +148,36 @@ def tarea_correo_pedido():
                         response2 = requests.request("GET", url3, headers=headers, verify=False)
                         response2 = ast.literal_eval(response2.text)
                         response2 = response2['value']
-                        response2 = response2[0]
-                        response2 = response2['E_MailL']
-                        response2 = str(response2).split(";")
-                        for correos in response2:
-                            email = EmailMessage('TIENES UN NUEVO PEDIDO',
-                                                 'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                 + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
-                                                     datos['DocEntry']) + '/',
-                                                 to=[correos])
-                            email.send()
-                        pedido_al = PedidosAlmacenados(
-                            pedido=datos['DocNum']
-                        )
-                        pedido_al.save()
+                        if response2==[]:
+                            errores = HistorialErrorTarea(
+                                accion='No se tiene correo asignado al titulo LOGISTICA Y DESPACHOS',
+                                fecha=hoy,
+                                hora=hora,
+                                empresa=str(datos['CardName']),
+                                pedido=str(datos['DocNum'])
+                            )
+                            errores.save()
+                        else:
+                            response2 = response2[0]
+                            response2 = response2['E_MailL']
+                            response2 = str(response2).split(";")
+                            for correos in response2:
+                                email = EmailMessage('TIENES UN NUEVO PEDIDO',
+                                                     'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
+                                                     + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                         datos['DocEntry']) + '/',
+                                                     to=['juansebastianduartes@gmail.com'])
+                                email.send()
+                            pedido_al = PedidosAlmacenados(
+                                pedido=datos['DocNum']
+                            )
+                            pedido_al.save()
                     except:
                         now = datetime.now(pytz.timezone('America/Bogota'))
                         hoy = now.date()
                         hora = now.time()
-                        pedido_al = PedidosAlmacenados(
-                            pedido=datos['DocNum']
-                        )
-                        pedido_al.save()
                         errores = HistorialErrorTarea(
-                            accion='No se encuentra correo para el pedido ',
+                            accion='No se envio el correo',
                             fecha=hoy,
                             hora=hora,
                             empresa=str(datos['CardName']),
