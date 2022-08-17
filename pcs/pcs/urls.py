@@ -81,6 +81,7 @@ urlpatterns.extend(
         url(r'^configuracion/empresas/editar/(?P<id>[-\w]+)/$', configuracion_views.config_empresas_editar),
         url(r'^configuracion/empresas/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_empresas_borrar),
         url(r'^configuracion/historial_empresas/$', configuracion_views.config_historial_empresas),
+        url(r'^configuracion/historial_empresas/excel_general/$', configuracion_views.reporte_historial_empresa),
         url(r'^configuracion/historial_email/$', configuracion_views.config_historial_email),
         url(r'^configuracion/historial_email/excel_general/$', configuracion_views.reporte_historial),
         # Soportes
