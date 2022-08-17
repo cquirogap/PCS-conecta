@@ -166,7 +166,7 @@ def tarea_correo_pedido():
                                                      'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
                                                      + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                          datos['DocEntry']) + '/',
-                                                     to=['juansebastianduartes@gmail.com'])
+                                                     to=[correos])
                                 email.send()
                             pedido_al = PedidosAlmacenados(
                                 pedido=datos['DocNum']
