@@ -21,6 +21,8 @@
   <link rel="stylesheet" href="{% static 'plugins/fullcalendar/fullcalendar.print.css'%}" media="print">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css'%}">
+  <link rel="stylesheet" href="{% static 'dist/css/mobiscroll.javascript.min.css'%}">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css'%}">
@@ -41,6 +43,7 @@
 
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
 
   <![endif]-->
 
@@ -711,6 +714,7 @@
 <script src="{% static 'plugins/fullcalendar/fullcalendar.min.js'%}"></script>
 <!-- Fundacionrv App -->
 <script src="{% static 'dist/js/fundacionrv/fundacionrv.js'%}"></script>
+
 <script src="{% static 'dist/js/fundacionrv/table2excel.js'%}"></script>
 <!-- Fundacionrv App -->
 <script src="{% static 'dist/js/app.min.js'%}"></script>
@@ -732,5 +736,22 @@
 <script src="{% static 'plugins/flot/jquery.flot.pie.min.js' %}"></script>
 <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
 <script src="{% static 'plugins/flot/jquery.flot.categories.min.js' %}"></script>
+<script src="{% static 'dist/js/fundacionrv/mobiscroll.javascript.min.js'%}"></script>
+
+<script>
+  var now = new Date();
+  mobiscroll.datepicker('#demo-colored', {
+    controls: ['calendar'],       // More info about controls: https://docs.mobiscroll.com/5-18-1/javascript/calendar#opt-controls
+    display: 'inline',            // Specify display mode like: display: 'bottom' or omit setting to use default
+    calendarType: 'week',
+    calendarSize: 1,
+
+    colors: [
+      {% for datosf in dato_fechas %}
+      { recurring: { repeat: 'yearly', yearly:{{ datosf.ano }}, month: {{ datosf.mes }}, day: {{ datosf.dia }} }, background: '#F5CE3E' },
+      {% endfor %}
+    ]
+  });
+</script>
 </body>
 </html>

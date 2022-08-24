@@ -1,3 +1,5 @@
+
+
 jQuery(document).ready(function($) {
   // Create Thumbnails
   $('.video-link').each(function(index, el) {
@@ -1918,7 +1920,7 @@ $(function () {
 
         cliente = $("#cliente_input").val() || "";
         cliente = cliente.replace(/\s+/g, '');
-        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = $("#demo-colored").val() || "";
         fecha_fin = fecha_fin.replace(/\s+/g, '');
 
         window.location.href = '/configuracion/solicitud_inventarios/excel_general/?cliente='+cliente+'&fecha_fin='+fecha_fin
@@ -3105,6 +3107,12 @@ $(function () {
 
      // CALENDARIO AGENDA DE TRABAJO
 
+mobiscroll.setOptions({
+    locale: mobiscroll.localeEs,
+    theme: 'ios',
+    themeVariant: 'light'
+});
+
 
 
      // CALENDARIO AGENDA DE TRABAJO (carga automatica)
@@ -3914,7 +3922,6 @@ var tableToExcel = (function() {
         link.click();
   }
 })()
-
 
 
 
