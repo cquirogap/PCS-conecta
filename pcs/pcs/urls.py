@@ -237,6 +237,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_aviso_recibo/excel_general/$', configuracion_views.reporte_aviso_recibo),
 
         url(r'^configuracion/solicitud_inventarios/$', configuracion_views.config_solicitud_inventarios),
+        url(r'^configuracion/solicitud_inventarios/cliente/$', configuracion_views.config_solicitud_inventarios_cliente),
         url(r'^configuracion/solicitud_inventarios/excel_general/$', configuracion_views.reporte_inventario),
         url(r'^configuracion/solicitud_inventarios/detalle/$', configuracion_views.config_solicitud_inventarios_detalle),
 

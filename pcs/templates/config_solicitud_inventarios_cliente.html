@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
     <section class="content-header" xmlns="http://www.w3.org/1999/html">
-        <h1 class="pull-right"> <a href="/configuracion/solicitud_inventarios/cliente/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
       <h1><a href="#">Inventarios</a><small>Administración </small></h1>
         <br>
       {% if messages %}
@@ -44,40 +43,35 @@
               <!-- pestañas de el formulario-->
 
           <div class="tab-content">
-            <form role="form" action="/configuracion/solicitud_inventarios/" method="POST">
+            <form role="form" action="/configuracion/solicitud_inventarios/" method="GET">
             {% csrf_token %}
               <br>
                 <input type="hidden" name="pagina" value=0>
              <div class="row">
-                 <div class="col-md-6">
+                 <div class="col-md-12">
                      <label>Cliente</label>
                      <div class="input-group ">
                          <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
                          <select class="form-control select2 " style="width: 100%;" name="cliente" id="cliente_input" required>
-                             <option value="{{ cliente }}" selected >{{ nom_cliente }}</option>
+                             <option value="" selected disabled></option>
+                             {% for empresas in dato_cliente %}
+                             <option {% if  empresas.id == cliente %} selected {% endif %}
+                                     value="{{ empresas.id }}">{{ empresas.id }}-{{empresas.nombre}}
+                             </option>
+                             {% endfor %}
 
                          </select>
                      </div>
-                 </div>
-                 <div class="col-md-6">
-                     <label>Fecha Corte</label>
-                     <input type="hidden" name="fecha_fin" value="{{ diahoy }}" id="demo-colored">
                  </div>
 
 
                  <div class="col-md-12">
                      <br>
                  </div>
-                 <div class="col-md-6">
+                 <div class="col-md-12">
                      <button type="submit"  class="btn btn-primary btn-block btn-flat" >
                          <span class="glyphicon glyphicon-folder-open"></span>
-                         <span class="glyphicon glyphicon-search"></span>Consultar
-                     </button>
-                 </div>
-                 <div class="col-md-6">
-                     <button type="button" id="buscar_inventario_excel_button"  class="btn btn-success btn-block btn-flat" >
-                         <span class="glyphicon glyphicon-folder-open"></span>
-                         <span class="glyphicon glyphicon-search"></span>Excel
+                         <span class="glyphicon glyphicon-search"></span>Buscar
                      </button>
                  </div>
              </div>
