@@ -49,14 +49,16 @@
               <br>
                 <input type="hidden" name="pagina" value=0>
              <div class="row">
-                 <div class="col-md-6">
-                     <label>Cliente</label>
-                     <div class="input-group ">
-                         <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
-                         <select class="form-control select2 " style="width: 100%;" name="cliente" id="cliente_input" required>
-                             <option value="{{ cliente }}" selected >{{ nom_cliente }}</option>
+                 <select hidden  name="cliente" id="cliente_input" >
+                     <option value="{{ cliente }}" selected >{{ nom_cliente }}</option>
 
-                         </select>
+                 </select>
+                 <div class="col-md-6">
+                     <label>Cliente </label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-user "></i></span>
+                         <input type="text" readonly class="form-control" id="nombre"
+                                name="nombre" value="{{ nom_cliente }}" >
                      </div>
                  </div>
                  <div class="col-md-6">
