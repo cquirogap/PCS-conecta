@@ -60,6 +60,26 @@ urlpatterns.extend(
         url(r'^configuracion/municipios/editar/(?P<id>[-\w]+)/$', configuracion_views.config_municipios_editar),
         url(r'^configuracion/municipios/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_municipios_borrar),
         url(r'^configuracion/municipios/datos/$', configuracion_views.config_municipios_datos),
+        #Atencion
+        url(r'^configuracion/areas_atencion/$', configuracion_views.config_areas_atencion),
+        url(r'^configuracion/areas_atencion/registrar/$', configuracion_views.config_areas_atencion_registrar),
+        url(r'^configuracion/areas_atencion/editar/(?P<id>[-\w]+)/$', configuracion_views.config_areas_atencion_editar),
+        url(r'^configuracion/areas_atencion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_areas_atencion_borrar),
+
+        #Peticiones
+        url(r'^configuracion/peticion/$', configuracion_views.config_peticiones),
+        url(r'^configuracion/peticion/registrar/$', configuracion_views.config_peticiones_registrar),
+        url(r'^configuracion/peticion/editar/(?P<id>[-\w]+)/$', configuracion_views.config_peticiones_editar),
+        url(r'^configuracion/peticion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_peticiones_borrar),
+
+        #Personas
+        url(r'^configuracion/personas_aten/$', configuracion_views.config_personas_atencion),
+        url(r'^configuracion/personas_aten/registrar/$', configuracion_views.config_personas_aten_registrar),
+        url(r'^configuracion/personas_aten/editar/(?P<id>[-\w]+)/$', configuracion_views.config_personas_aten_editar),
+        url(r'^configuracion/personas_aten/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_personas_aten_borrar),
+
+        #RespuestaPedido
+        url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),
         # Tipos de Radicados
         url(r'^configuracion/tipos_radicados/$', configuracion_views.config_tipos_radicados),
         url(r'^configuracion/tipos_radicados/registrar/$', configuracion_views.config_tipos_radicados_registrar),
@@ -218,6 +238,7 @@ urlpatterns.extend(
         #---------------------------------------COMPRAS-------------------------------------------------------------------
         url(r'^configuracion/solicitud_pedido_orden/$', configuracion_views.config_solicitud_pedido_orden),
         url(r'^configuracion/solicitud_pedido_orden/detalle/(?P<form_id>\d+)/$', configuracion_views.pedido_detalle),
+        url(r'^configuracion/solicitud_pedido_orden/problema/(?P<form_id>\d+)/$', configuracion_views.pedido_problema_detalle),
         url(r'^configuracion/solicitud_pedido_orden/excel/$', configuracion_views.reporte_pedido_detalle),
         url(r'^configuracion/solicitud_pedido_orden/excel_general/$', configuracion_views.reporte_pedido),
         url(r'^configuracion/solicitud_pedido_orden/excel_csv/$', configuracion_views.reporte_pedidos_csv),

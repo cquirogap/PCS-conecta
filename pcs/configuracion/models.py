@@ -72,6 +72,45 @@ class Municipios(models.Model):
     def __unicode__(self):
         return str(self.descripcion)
 
+
+class AreasAtencion(models.Model):
+    descripcion = models.CharField(max_length=80)
+
+    def __unicode__(self):
+        return str(self.descripcion)
+
+
+class Peticiones(models.Model):
+    descripcion = models.CharField(max_length=80)
+    area = models.ForeignKey(AreasAtencion, default=1)
+
+    def __unicode__(self):
+        return str(self.descripcion)
+
+
+class PersonasAtencion(models.Model):
+    nombre = models.CharField(max_length=80)
+    telefono = models.CharField(max_length=30)
+    email = models.CharField(max_length=80)
+    area = models.ForeignKey(AreasAtencion, default=1)
+
+    def __unicode__(self):
+        return str(self.descripcion)
+
+
+class RespuestaPedido(models.Model):
+    num_pedido = models.CharField(max_length=80)
+    entry_pedido = models.CharField(max_length=80)
+    adicionales = models.CharField(max_length=80)
+    fecha = models.DateField(null=True)
+    estado = models.CharField(max_length=80,null=True,default=None)
+    respuesta = models.CharField(max_length=80,null=True,default=None)
+    peticion = models.ForeignKey(Peticiones, default=1)
+
+    def __unicode__(self):
+        return str(self.descripcion)
+
+
 class Tipos_identificacion(models.Model):
     descripcion = models.CharField(max_length=20)
 

@@ -15,21 +15,24 @@
                                 </div>
                                 <div class="modal-body">
                                     <p>¿Cual es su problema?</p>
-                                    <form role="form" action="/radicados/salidas/imagen/" method="POST" enctype="multipart/form-data">
+                                    <form role="form" action="/configuracion/respuesta_pedido/" method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
+                                        {% for dato in lista_solicitud %}
+                                        <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                        {% endfor %}
+                                        <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
                                     <div class="input-group ">
                                     <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-                                      <select class="form-control select2 " style="width: 100%;" name="tipo" required>
+                                      <select class="form-control select2 " style="width: 100%;" name="peticion" required>
                                            <option value="" selected disabled></option>
-                                          <option value="Cadena">Cadena</option>
-                                          <option value="Empresario">Empresario</option>
-                                          <option value="pcs">PCS</option>
-
+                                              {% for peticion in peticiones %}
+                                              <option value="{{ peticion.id }}">{{peticion.descripcion}}</option>
+                                              {% endfor %}
                                       </select>
                                   </div>
                                         <br>
                                         <p>Comentarios Adicionales</p>
-                                        <textarea class="form-control" rows="3" placeholder="Comentarios Adicionales"></textarea>
+                                        <textarea name="adicionales" class="form-control" rows="3" placeholder="Comentarios Adicionales"></textarea>
 
                                         <br>
                                         <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
@@ -47,8 +50,14 @@
     </div>
     <h1> <a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
     <br><br>
-
-
+    {% if peticion_activa != 'no' %}
+    <div class="alert alert-success alert-dismissible">
+        <a href="/configuracion/solicitud_pedido_orden/problema/{{ form_id }}" class="btn btn-success pull-right" style="margin-right: 5px;">
+            <i class="fa fa-arrow-right"></i> Ver mas
+        </a>
+        <h4>Tienes una solicitud de problema en este pedido</h4>
+    </div>
+    {% endif %}
     {% if messages %}
         {% for message in messages %}
             {% if message.tags %}
