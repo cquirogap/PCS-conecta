@@ -102,6 +102,7 @@ class RespuestaPedido(models.Model):
     num_pedido = models.CharField(max_length=80)
     entry_pedido = models.CharField(max_length=80)
     adicionales = models.CharField(max_length=80)
+    empresa = models.CharField(max_length=80,default=None,null=True)
     fecha = models.DateField(null=True)
     estado = models.CharField(max_length=80,null=True,default=None)
     respuesta = models.CharField(max_length=80,null=True,default=None)

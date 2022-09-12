@@ -44,6 +44,7 @@ class Usuarios_datos(models.Model):
     telefono = models.CharField(max_length=45, null=True)
     cargo = models.CharField(max_length=45, null=True)
     admin = models.BooleanField(default=True)
+    atencion = models.IntegerField(default=1)
     creado = models.DateTimeField(null=True)
     modificado = models.DateTimeField(null=True)
 

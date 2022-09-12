@@ -249,24 +249,25 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">BARRA DE NAVEGACION</li>
-        {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1 %}
+        {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-gears"></i> <span>Configuracion</span>
           </a>
           <ul class="treeview-menu">
-
+            {% if  permiso_usuario.admin == 1 %}
             <li><a href="/configuracion/continentes/"><i class="fa fa-circle-o"></i>Localizacion</a></li>
 
             <li><a href="/configuracion/usuarios/"><i class="fa fa-circle-o"></i>Usuarios</a></li>
+            {% endif %}
+            {% if permiso_usuario.atencion != 1  %}
             <li><a href="/configuracion/peticion/"><i class="fa fa-circle-o"></i>Atencion</a></li>
-
-
+            {% endif %}
           </ul>
         </li>
         {% endif %}
 
-
+        {% if  permiso_usuario.atencion == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-pencil"></i> <span>Comercial</span>
@@ -291,7 +292,7 @@
 
           </ul>
         </li>
-
+        {% endif %}
 
         {% if permisos.pacientes == True or permisos.administrador == True %}
         <li class="treeview">
@@ -312,13 +313,13 @@
 
 
 
-
+        {% if  permiso_usuario.atencion == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Finanzas</span>
           </a>
           <ul class="treeview-menu">
-            {% if permiso_usuario.empresa.tipo == 'pcs' %}
+            {% if permiso_usuario.empresa.tipo == 'pcs'  %}
             <li><a href="/configuracion/solicitud_debito_proveedores/"><i class="fa fa-circle-o"></i>Notas Debito </a></li>
             {% endif %}
             {% if permiso_usuario.empresa.tipo == 'Empresario' %}
@@ -342,7 +343,8 @@
             {% endif %}
           </ul>
         </li>
-
+        {% endif %}
+        {% if  permiso_usuario.atencion == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Indicadores</span>
@@ -358,7 +360,8 @@
 
           </ul>
         </li>
-
+        {% endif %}
+        {% if  permiso_usuario.atencion == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Logistico</span>
@@ -369,7 +372,7 @@
             {% endif %}
           </ul>
         </li>
-
+        {% endif %}
 
         {% if permisos.pacientes == True or permisos.administrador == True %}
         <li class="treeview">

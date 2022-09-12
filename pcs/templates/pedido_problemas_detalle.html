@@ -2,7 +2,13 @@
 {% load static %}
 {% block content %}
 <section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <div class="pull-right">
+        <div class="block">
+     <a href="/configuracion/solicitud_pedido_orden/detalle/{{ problemas_titulo.entry_pedido }}" class="hovicon effect-1 sub-a" title="¿Tienes un problema con este pedido?">Ver Detalle Pedido</a>
+    </div>
+    </div>
     <h1><a href="javascript:history.back()"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    <br><br>
 
     {% if messages %}
         {% for message in messages %}
@@ -43,7 +49,7 @@
     <div class="row">
         <div class="col-xs-12">
             <h2 class="page-header">
-                 PCS
+                 PCS -- {{ problemas_titulo.empresa }}
                 <small class="pull-right">Orden de Compra {{ problemas_titulo.num_pedido }}</small>
             </h2>
         </div>
@@ -57,8 +63,6 @@
                         <th>Problema</th>
                         <th>Comentarios Adicionales</th>
                         <th>Fecha</th>
-                        <th>Estado</th>
-                        <th>Respuesta</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,12 +90,12 @@
                     <td>{{ problema.peticion }}</td>
                     <td>{{ problema.adicionales }} </td>
                     <td>{{ problema.fecha }} </td>
-                    <td>{{ problema.estado }}</td>
+                    <!-- <td>{{ problema.estado }}</td>
                     <td>
                     {% if problema.respuesta != None %}
                     <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal{{ problema.id }}" class="btn btn-primary" title="Respuesta">Respuesta</a>
                     {% endif %}
-                    </td>
+                    </td> -->
                 </tr>
                 {% endfor %}
                 </tbody>
