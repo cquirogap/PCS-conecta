@@ -1,6 +1,24 @@
 
 
 jQuery(document).ready(function($) {
+    // Contact Form: Dynamic Select
+    function select_changed(){
+        $("div[id*='form-']").each(function(){
+           $(this).removeClass('form-visible');
+        });
+        $("select[name='selectform']").each(function(){
+            var selected = $(this).val();
+            $('#'+selected).addClass('form-visible');
+        });
+    }
+
+    $("select[name='selectform']").change(function(){
+        select_changed();
+    });
+});
+
+
+jQuery(document).ready(function($) {
   // Create Thumbnails
   $('.video-link').each(function(index, el) {
     $('#result').append('>>> ' + index + ':' + $(this).attr('data-source') + '<br>');

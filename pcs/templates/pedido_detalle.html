@@ -14,29 +14,64 @@
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    <p>¿Cual es su problema?</p>
-                                    <form role="form" action="/configuracion/respuesta_pedido/" method="POST" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                        {% for dato in lista_solicitud %}
-                                        <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
-                                        {% endfor %}
-                                        <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
-                                    <div class="input-group ">
-                                    <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-                                      <select class="form-control select2 " style="width: 100%;" name="peticion" required>
-                                           <option value="" selected disabled></option>
-                                              {% for peticion in peticiones %}
-                                              <option value="{{ peticion.id }}">{{peticion.descripcion}}</option>
-                                              {% endfor %}
-                                      </select>
-                                  </div>
-                                        <br>
-                                        <p>Comentarios Adicionales</p>
-                                        <textarea name="adicionales" class="form-control" rows="3" placeholder="Comentarios Adicionales"></textarea>
+                                    <div class="dynamicSelect">
+                                        <span class="dynamicSelect-dropdown">
+                                            <select class="dynamicSelect-select" name="selectform">
+                                                <option selected value="Get in touch">¿Cual es su problema?</option>
+                                                <option value="form-1">Prorroga</option>
+                                                <option value="form-2">Form 2</option>
+                                                <option value="form-3">Form 3</option>
+                                                <option value="form-4">Form 4</option>
+                                            </select>
+                                        </span>
+                                        <!-- Form 1 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-1" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    {% endfor %}
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="prorroga">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Fecha </label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                            <input type="date" class="form-control"  name="fecha_problema"  required>
+                                                        </div>
+                                                        <br>
+                                                    <label>Justificacion</label>
+                                                    <textarea required name="justificacion" class="form-control" rows="3" placeholder="Justificacion"></textarea>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                                </div>
+                                                </div></form>
+                                            </div></div>
+                                        <!-- Form 2 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-2" class="dynamicSelect-form">
+                                                <h4>Form 2</h4>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt odio sed est volutpat sodales. Mauris in dui ultrices ligula vestibulum mollis sed sed nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque nec bibendum enim.</p>
+                                            </div>
+                                        </div>
+                                        <!-- Form 3 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-3" class="dynamicSelect-form">
+                                                <h4>Form 3</h4>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt odio sed est volutpat sodales. Mauris in dui ultrices ligula vestibulum mollis sed sed nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque nec bibendum enim.</p>
+                                            </div>
+                                        </div>
+                                        <!-- Form 4 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-4" class="dynamicSelect-form">
+                                                <h4>Form 4</h4>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt odio sed est volutpat sodales. Mauris in dui ultrices ligula vestibulum mollis sed sed nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque nec bibendum enim.</p>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                        <br>
-                                        <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
-                                    </form>
                                 </div>
 
                           </div>
