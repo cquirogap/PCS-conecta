@@ -1,0 +1,58 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/areas_atencion/">Grupo de Atencion</a>
+        <small>Editar Información</small>
+      </h1>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="municipios">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/areas_atencion/editar_integrantes/{{areas.id}}/" method="POST">
+                              {% csrf_token %}
+
+                              <input type="hidden" class="form-control" id="id" placeholder="CODIGO"
+                                     name="id" value="{{areas.id}}">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                   <label>Integrante</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="integrante" required>
+                                           <option value="" selected disabled></option>
+                                              {% for usuario in usuarios %}
+                                              <option value="{{ usuario.usuario_id }}">{{usuario.usuario.first_name}} {{usuario.usuario.last_name}}</option>
+                                              {% endfor %}
+                                      </select>
+                                  </div>
+                              </div>
+
+                              </div>
+
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Agregar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla  -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

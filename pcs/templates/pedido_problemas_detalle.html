@@ -63,6 +63,8 @@
                         <th>Problema</th>
                         <th>Informacion</th>
                         <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Respuesta</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,16 +88,52 @@
 
                         </div>
                     </div>
+                <div id="RespuestaModal{{ problema.id }}" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="main-header">
+                                    <span class="close" data-dismiss="modal">&times;</span>
+                                    <div class="col-md-12">
+                                    <h2 class="page-header">
+                                    <strong>Respuesta Peticion</strong>
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
+                                    <input type="hidden" name="problema" value="{{problema.id}}">
+                                        <input type="hidden" name="direccion" value="1">
+                                    <label>Respuesta</label>
+                                    <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
+                                    <br>
+                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                    </form>
+                                </div>
+
+                          </div>
+
+                        </div>
+                    </div>
                 <tr>
                     <td>{{ problema.peticion }}</td>
                     <td>{{ problema.adicionales }} </td>
                     <td>{{ problema.fecha }} </td>
-                    <!-- <td>{{ problema.estado }}</td>
+                    <td>{{ problema.estado }}</td>
                     <td>
+                    {% if permiso_usuario.atencion != 1  %}
+                        <a class="btn btn-info " data-toggle="modal" data-dismiss="modal" data-target="#RespuestaModal{{ problema.id }}"
+                           title="responder ">
+                            <i class="fa fa-mail-forward"></i>
+                            <br> Responder
+                        </a>
+                    {% else %}
                     {% if problema.respuesta != None %}
                     <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal{{ problema.id }}" class="btn btn-primary" title="Respuesta">Respuesta</a>
                     {% endif %}
-                    </td> -->
+                    {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>

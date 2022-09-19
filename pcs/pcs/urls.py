@@ -64,6 +64,7 @@ urlpatterns.extend(
         url(r'^configuracion/areas_atencion/$', configuracion_views.config_areas_atencion),
         url(r'^configuracion/areas_atencion/registrar/$', configuracion_views.config_areas_atencion_registrar),
         url(r'^configuracion/areas_atencion/editar/(?P<id>[-\w]+)/$', configuracion_views.config_areas_atencion_editar),
+        url(r'^configuracion/areas_atencion/editar_integrantes/(?P<id>[-\w]+)/$', configuracion_views.config_areas_atencion_editar_integrantes),
         url(r'^configuracion/areas_atencion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_areas_atencion_borrar),
 
         #Peticiones
@@ -78,8 +79,12 @@ urlpatterns.extend(
         url(r'^configuracion/personas_aten/editar/(?P<id>[-\w]+)/$', configuracion_views.config_personas_aten_editar),
         url(r'^configuracion/personas_aten/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_personas_aten_borrar),
 
+        #Solicitudes
+        url(r'^configuracion/solicitudes/$', configuracion_views.config_solicitudes),
+
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),
+        url(r'^configuracion/respuesta_peticion/$', configuracion_views.config_respuesta_peticion),
         # Tipos de Radicados
         url(r'^configuracion/tipos_radicados/$', configuracion_views.config_tipos_radicados),
         url(r'^configuracion/tipos_radicados/registrar/$', configuracion_views.config_tipos_radicados_registrar),

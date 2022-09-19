@@ -1,0 +1,146 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/solicitudes/">Solicitudes</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Solicitud</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li><a href="/configuracion/peticion/" >Peticiones</a></li>
+              <li ><a href="/configuracion/areas_atencion/" >Grupos de Atencion</a></li>
+              <li><a href="/configuracion/personas_aten/" >Integrantes</a></li>
+              <li class="active"><a href="#" data-toggle="tab">Solicitudes</a></li>
+
+            </ul>
+            {% csrf_token %}
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="paises">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                  <h3 class="box-title">Solicitudes</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive no-padding">
+                                  <table id="municipios" class="table table-bordered table-hover dataTables">
+                                    <thead>
+                                        <tr>
+                                            <th>Empresa</th>
+                                            <th>Pedido</th>
+                                            <th>Peticion</th>
+                                            <th>Fecha</th>
+                                            <th>Estado</th>
+                                            <th>Respuesta</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for solicitud in solicitudes %}
+                                        <div id="RespuestaModal{{ solicitud.id }}" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="main-header">
+                                                        <span class="close" data-dismiss="modal">&times;</span>
+                                                        <div class="col-md-12">
+                                                            <h2 class="page-header">
+                                                                <strong>Respuesta Peticion</strong>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="entry_pedido" value="{{solicitud.entry}}">
+                                                            <input type="hidden" name="direccion" value="2">
+                                                            <input type="hidden" name="problema" value="{{solicitud.id}}">
+                                                            <label>Respuesta</label>
+                                                            <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
+                                                            <br>
+                                                            <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                            <tr>
+                                                <td>{{solicitud.empresa}}</td>
+                                                <td>{{solicitud.pedido}}</td>
+                                                <td>{{solicitud.peticion}}</td>
+                                                <td>{{solicitud.fecha}}</td>
+                                                <td>{{solicitud.estado}}</td>
+                                                <td><a class="btn btn-info " data-toggle="modal" data-dismiss="modal" data-target="#RespuestaModal{{ solicitud.id }}"
+                                                       title="responder ">
+                                                    <i class="fa fa-mail-forward"></i>
+                                                    <br> Responder
+                                                </a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <!-- /.box-body -->
+                          </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

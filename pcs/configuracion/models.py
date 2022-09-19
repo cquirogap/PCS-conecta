@@ -89,7 +89,8 @@ class Peticiones(models.Model):
 
 
 class PersonasAtencion(models.Model):
-    nombre = models.CharField(max_length=80)
+    nombre = models.CharField(max_length=120)
+    usuario = models.CharField(max_length=80,null=True)
     telefono = models.CharField(max_length=30)
     email = models.CharField(max_length=80)
     area = models.ForeignKey(AreasAtencion, default=1)
