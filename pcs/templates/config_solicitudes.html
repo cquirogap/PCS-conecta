@@ -51,9 +51,6 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li><a href="/configuracion/peticion/" >Peticiones</a></li>
-              <li ><a href="/configuracion/areas_atencion/" >Grupos de Atencion</a></li>
-              <li><a href="/configuracion/personas_aten/" >Integrantes</a></li>
               <li class="active"><a href="#" data-toggle="tab">Solicitudes</a></li>
 
             </ul>
@@ -79,49 +76,20 @@
                                             <th>Peticion</th>
                                             <th>Fecha</th>
                                             <th>Estado</th>
-                                            <th>Respuesta</th>
+                                            <th>Detalle</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for solicitud in solicitudes %}
-                                        <div id="RespuestaModal{{ solicitud.id }}" class="modal fade" role="dialog">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="main-header">
-                                                        <span class="close" data-dismiss="modal">&times;</span>
-                                                        <div class="col-md-12">
-                                                            <h2 class="page-header">
-                                                                <strong>Respuesta Peticion</strong>
-                                                            </h2>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
-                                                            {% csrf_token %}
-                                                            <input type="hidden" name="entry_pedido" value="{{solicitud.entry}}">
-                                                            <input type="hidden" name="direccion" value="2">
-                                                            <input type="hidden" name="problema" value="{{solicitud.id}}">
-                                                            <label>Respuesta</label>
-                                                            <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
-                                                            <br>
-                                                            <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
-                                                        </form>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
                                             <tr>
                                                 <td>{{solicitud.empresa}}</td>
                                                 <td>{{solicitud.pedido}}</td>
                                                 <td>{{solicitud.peticion}}</td>
                                                 <td>{{solicitud.fecha}}</td>
                                                 <td>{{solicitud.estado}}</td>
-                                                <td><a class="btn btn-info " data-toggle="modal" data-dismiss="modal" data-target="#RespuestaModal{{ solicitud.id }}"
-                                                       title="responder ">
+                                                <td><a class="btn btn-info " href="/configuracion/solicitud_pedido_orden/problema/{{ solicitud.entry }}">
                                                     <i class="fa fa-mail-forward"></i>
-                                                    <br> Responder
+
                                                 </a></td>
                                             </tr>
                                         {% endfor %}

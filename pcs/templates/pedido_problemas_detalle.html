@@ -123,11 +123,16 @@
                     <td>{{ problema.estado }}</td>
                     <td>
                     {% if permiso_usuario.atencion != 1  %}
+                        {% if problema.estado == 'pendiente' %}
                         <a class="btn btn-info " data-toggle="modal" data-dismiss="modal" data-target="#RespuestaModal{{ problema.id }}"
                            title="responder ">
                             <i class="fa fa-mail-forward"></i>
                             <br> Responder
                         </a>
+                        {% else %}
+                        <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal{{ problema.id }}" class="btn btn-primary" title="Respuesta">Respuesta</a>
+                        {% endif %}
+
                     {% else %}
                     {% if problema.respuesta != None %}
                     <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal{{ problema.id }}" class="btn btn-primary" title="Respuesta">Respuesta</a>
