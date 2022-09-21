@@ -81,6 +81,9 @@ urlpatterns.extend(
 
         #Solicitudes
         url(r'^configuracion/solicitudes/$', configuracion_views.config_solicitudes),
+        url(r'^configuracion/solicitudes_generales/$', configuracion_views.config_solicitudes_generales),
+        url(r'^configuracion/solicitudes_generales/informacion/$', configuracion_views.informacion_complementaria_consulta_solicitud),
+
 
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),

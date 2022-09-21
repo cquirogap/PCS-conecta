@@ -1755,29 +1755,25 @@ $(function () {
        }
     )
 
-    //BUSCAR CASOS X MEDICAMENTO Y FECHA INFORMACION COMPLEMENTARIA
+    //BUSCAR SOLICITUDES GENERALES
 
-    var buscar_infoc_medicamento = function () {
+    var buscar_infoc_solicitudes = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";
         fecha_inicio = fecha_inicio.replace(/\s+/g, '');
         fecha_fin = $("#fecha_fin_input").val() || "";
         fecha_fin = fecha_fin.replace(/\s+/g, '');
-        medicamento = $("#medicamento_input").val() || "";
-        medicamento = medicamento.replace(/\s+/g, '');
+        peticiones = $("#peticiones_input").val() || "";
+        peticiones = peticiones.replace(/\s+/g, '');
         estado = $("#estado_input").val() || "";
         estado = estado.replace(/\s+/g, '');
-        patologia = $("#patologia_input").val() || "";
-        patologia = patologia.replace(/\s+/g, '');
-        departamento = $("#departamento_input").val() || "";
-        departamento = departamento.replace(/\s+/g, '');
-        eps = $("#eps_input").val() || "";
-        eps = eps.replace(/\s+/g, '');
+        grupo = $("#grupo_input").val() || "";
+        grupo = grupo.replace(/\s+/g, '');
 
         $.ajax({
                 type: "GET",
                 data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
-                url: '/administracion/pacientes/casos/informacion_complementaria/consulta/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&r_medicamento='+medicamento+'&estado='+estado+'&patologia='+patologia+'&departamento='+departamento+'&eps='+eps,
+                url: '/configuracion/solicitudes_generales/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&peticiones='+peticiones+'&estado='+estado+'&grupo='+grupo,
                 dataType:'json',
                 success: function(data) {
                     // Cargar en tabla
@@ -1790,38 +1786,19 @@ $(function () {
                         for(var i=0;i<casos.length; i++)
                                  {
 
-                                if (casos[i].estado === 'PENDIENTE') {
-                                estado="<td style='color:#dd4b39'>"+casos[i].estado+"</td>";}
-
-                                if (casos[i].estado === 'EN PROCESO') {
-                                estado="<td style='color:#f5841f'>"+casos[i].estado+"</td>";}
-
-                                if (casos[i].estado === 'FINALIZADO') {
-                                estado="<td style='color:#50bc37'>"+casos[i].estado+"</td>";}
 
                                 lineas +=   "<tr>" +
-                                            "<td>"+(contador++)+"</td>" +
                                             "<td>"+casos[i].id+"</td>" +
-                                            "<td>"+casos[i].indetificacion_paciente+"</td>" +
-                                            "<td>"+ casos[i].nombre_uno + "<br>"
-                                                  + casos[i].nombre_dos +
+                                            "<td>"+casos[i].empresa+"</td>" +
+                                            "<td>"+ casos[i].num_pedido +
                                             "</td>" +
-                                            "<td>"+ casos[i].apellido_uno + "<br>"
-                                                  + casos[i].apellido_dos +
+                                            "<td>"+ casos[i].peticion +
                                             "</td>" +
-                                            "<td>"+casos[i].enfermedad+"</td>" +
-                                            "<td>"+casos[i].terapia+"</td>" +
-                                            "<td>"+casos[i].eps+"</td>" +
-                                            "<td>"+casos[i].clasificacion_eps+"</td>" +
-                                            "<td>"+casos[i].regimen+"</td>" +
-                                            "<td>"+casos[i].ips+"</td>" +
-                                            "<td>"+casos[i].gestor_farmaceutico+"</td>" +
-                                            "<td>"+casos[i].barreras+"</td>" +
-                                            estado+
-                                            "<td>"+casos[i].fecha_solicitudrv+"</td>"+
-                                            "<td>"+casos[i].fecha_enproceso_caso+"</td>" +
-                                            "<td>"+casos[i].fecha_finalizacion_caso+"</td>" +
-                                            "<td>"+casos[i].tiempo_respuesta+"</td>" +
+                                            "<td>"+casos[i].fecha+"</td>" +
+                                            "<td>"+casos[i].estado+"</td>" +
+                                            "<td> <a class='btn btn-info' href='/configuracion/solicitud_pedido_orden/problema/"+ casos[i].entry_pedido +
+                                            "'><i class='fa fa-mail-forward'></i></a> </td>"+
+
                                             "</tr>";
                                }
                         table_body.append(lineas)
@@ -1830,9 +1807,9 @@ $(function () {
     }
 
 
-    $("#busqueda_infoc_medicamento_button").click(
+    $("#busqueda_solicitudes_generales").click(
        function (e) {
-           buscar_infoc_medicamento()
+           buscar_infoc_solicitudes()
        }
     )
 
