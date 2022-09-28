@@ -19,7 +19,7 @@
                                             <select class="dynamicSelect-select" name="selectform">
                                                 <option selected value="Get in touch">¿Cual es su problema?</option>
                                                 <option value="form-1">Prorroga</option>
-                                                <option value="form-2">Form 2</option>
+                                                <option value="form-2">Solicitar Factura</option>
                                                 <option value="form-3">Form 3</option>
                                                 <option value="form-4">Form 4</option>
                                             </select>
@@ -52,8 +52,24 @@
                                         <!-- Form 2 -->
                                         <div class="form-wrapper">
                                             <div id="form-2" class="dynamicSelect-form">
-                                                <h4>Form 2</h4>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt odio sed est volutpat sodales. Mauris in dui ultrices ligula vestibulum mollis sed sed nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque nec bibendum enim.</p>
+                                                <form role="form" action="/configuracion/respuesta_seg_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    {% endfor %}
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="SolicitudFactura">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                    <label>Solicitar Factura</label>
+                                                    <br>
+                                                    <p>si decea solicitar la factura para este pedido da al boton solicitar</p>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Solicitar</button>
+                                                </div>
+                                                </div></form>
                                             </div>
                                         </div>
                                         <!-- Form 3 -->

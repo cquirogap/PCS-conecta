@@ -82,6 +82,10 @@
                                 </div>
                                 <div class="modal-body">
                                     <p>{{problema.respuesta}}</p>
+                                    {% if problema.doc_respuesta != None %}
+                                    <strong>Adjuntos:</strong><br>
+                                    <a href="{{problema.doc_respuesta}}">Ver adjunto</a>
+                                    {% endif %}
                                 </div>
 
                           </div>
@@ -108,6 +112,16 @@
                                     <label>Respuesta</label>
                                     <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
                                     <br>
+                                     {% if problema.peticion.descripcion == 'SolicitudFactura' %}
+                                        <input type="hidden" value="1" name="doc">
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-upload"></i></span>
+                                        <input id="adjunto" name="adjunto" type="file" required>
+                                    </div>
+                                        <br>
+                                     {% elif problema.peticion.descripcion == 'prorroga' %}
+                                        <input type="hidden" value="2" name="doc">
+                                     {% endif %}
                                     <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
                                     </form>
                                 </div>

@@ -108,6 +108,7 @@ class RespuestaPedido(models.Model):
     estado = models.CharField(max_length=80,null=True,default=None)
     respuesta = models.CharField(max_length=80,null=True,default=None)
     peticion = models.ForeignKey(Peticiones, default=1)
+    doc_respuesta = models.CharField(max_length=100, null=True,default=None)
 
     def __unicode__(self):
         return str(self.descripcion)
