@@ -37,6 +37,11 @@ urlpatterns.extend(
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
         #_______________________________________________ CONFIGURACION _____________________________________________
+        #Justificacion
+        url(r'^configuracion/justificacion/$', configuracion_views.config_justificacion),
+        url(r'^configuracion/justificacion/registrar/$', configuracion_views.config_justificacion_registrar),
+        url(r'^configuracion/justificacion/editar/(?P<id>[-\w]+)/$', configuracion_views.config_justificacion_editar),
+        url(r'^configuracion/justificacion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_justificacion_borrar),
         # Continentes
         url(r'^configuracion/continentes/$', configuracion_views.config_continentes),
         url(r'^configuracion/continentes/registrar/$', configuracion_views.config_continentes_registrar),

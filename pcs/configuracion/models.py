@@ -39,6 +39,13 @@ class Fechas_festivos (models.Model):
         return str(self.fecha)
 
 
+class Justificacion (models.Model):
+    descripcion = models.CharField(max_length=70)
+
+    def __unicode__(self):
+        return str(self.descripcion)
+
+
 class Continentes (models.Model):
     codigo = models.CharField(max_length=2)   # Codigo identificador del Continente no es llave primaria
     descripcion = models.CharField(max_length=45)
@@ -102,12 +109,13 @@ class PersonasAtencion(models.Model):
 class RespuestaPedido(models.Model):
     num_pedido = models.CharField(max_length=80)
     entry_pedido = models.CharField(max_length=80)
-    adicionales = models.CharField(max_length=80)
     empresa = models.CharField(max_length=80,default=None,null=True)
     fecha = models.DateField(null=True)
     estado = models.CharField(max_length=80,null=True,default=None)
     respuesta = models.CharField(max_length=80,null=True,default=None)
+    email = models.CharField(max_length=80,null=True,default=None)
     peticion = models.ForeignKey(Peticiones, default=1)
+    justificacion = models.ForeignKey(Justificacion, default=1)
     doc_respuesta = models.CharField(max_length=100, null=True,default=None)
 
     def __unicode__(self):

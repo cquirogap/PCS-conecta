@@ -31,9 +31,10 @@
                                                     {% csrf_token %}
                                                     {% for dato in lista_solicitud %}
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
-                                                    {% endfor %}
+
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
                                                     <input type="hidden"  name="peticion" value="prorroga">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <label>Fecha </label>
@@ -43,11 +44,27 @@
                                                         </div>
                                                         <br>
                                                     <label>Justificacion</label>
-                                                    <textarea required name="justificacion" class="form-control" rows="3" placeholder="Justificacion"></textarea>
+                                                    <div class="input-group ">
+                                                        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                                        <select class="form-control select2 " style="width: 100%;" name="justificacion" required>
+                                                            <option value="" selected disabled></option>
+                                                            {% for justificacion in lista_justificaciones %}
+                                                            <option value="{{ justificacion.id }}">{{justificacion.descripcion}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
                                                     <br>
+                                                    {% if hoy < dato.fecha_entrega %}
                                                     <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                                    {% else %}
+                                                    <center><strong>no es posible solicitar una prorroga se supero la fecha de vencimiento</strong></center>
+                                                        <br>
+                                                    <button type="button" disabled class="btn btn-block btn-default btn-xs">Enviar</button>
+                                                    {% endif %}
                                                 </div>
-                                                </div></form>
+                                                </div>
+                                                {% endfor %}
+                                                </form>
                                             </div></div>
                                         <!-- Form 2 -->
                                         <div class="form-wrapper">
