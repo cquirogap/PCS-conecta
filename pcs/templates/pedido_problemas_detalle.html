@@ -110,7 +110,16 @@
                                     <input type="hidden" name="problema" value="{{problema.id}}">
                                         <input type="hidden" name="direccion" value="1">
                                     <label>Respuesta</label>
+                                    {% if problema.peticion.descripcion == 'prorroga' %}
+                                    <select class="form-control select2 " style="width: 100%;" name="respuesta" required>
+                                        <option value="" selected disabled></option>
+                                        <option value="Se ha aprobado la prorroga para el pedido {{ problema.num_pedido }}">Aprobar</option>
+                                        <option value="No se ha aprobado la prorroga para el pedido {{ problema.num_pedido }}">Desaprobar</option>
+                                    </select>
+                                        <br>
+                                     {% else %}
                                     <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
+                                     {% endif %}
                                     <br>
                                      {% if problema.peticion.descripcion == 'SolicitudFactura' or problema.peticion.descripcion == 'FacturaConNovedades' %}
                                         <input type="hidden" value="1" name="doc">
