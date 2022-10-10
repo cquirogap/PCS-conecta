@@ -112,7 +112,7 @@
                                     <label>Respuesta</label>
                                     <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
                                     <br>
-                                     {% if problema.peticion.descripcion == 'SolicitudFactura' %}
+                                     {% if problema.peticion.descripcion == 'SolicitudFactura' or problema.peticion.descripcion == 'FacturaConNovedades' %}
                                         <input type="hidden" value="1" name="doc">
                                      <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-upload"></i></span>

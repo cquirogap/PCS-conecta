@@ -17,11 +17,12 @@
                                     <div class="dynamicSelect">
                                         <span class="dynamicSelect-dropdown">
                                             <select class="dynamicSelect-select" name="selectform">
-                                                <option selected value="Get in touch">¿Cual es su problema?</option>
+                                                <option selected value="Get in touch">Respuesta a la orden</option>
                                                 <option value="form-1">Solicitud de prórroga</option>
                                                 <option value="form-2">Facturar pedido sin novedades</option>
                                                 <option value="form-3">Facturar Pedido con novedades</option>
                                                 <option value="form-4">No despachare pedido</option>
+                                                <option value="form-5">Suspender producto</option>
                                             </select>
                                         </span>
                                         <!-- Form 1 -->
@@ -92,15 +93,103 @@
                                         <!-- Form 3 -->
                                         <div class="form-wrapper">
                                             <div id="form-3" class="dynamicSelect-form">
-                                                <h4>Form 3</h4>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt odio sed est volutpat sodales. Mauris in dui ultrices ligula vestibulum mollis sed sed nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque nec bibendum enim.</p>
+                                                <form role="form" action="/configuracion/respuesta_cuar_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="FacturaConNovedades">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Nombre de articulo</th>
+                                                            <th>Cantidad</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for articulo in dato.articulos %}
+                                                        <input type="hidden" value="{{articulo.nombre}}" name="nombre_prod[]">
+                                                        <input type="hidden" value="{{articulo.numero}}" name="numero_prod[]">
+                                                        <tr>
+                                                            <td>{{ articulo.nombre }} </td>
+                                                            <td><input type="text" name="cantidad[]" value="{{ articulo.cantidad }}"> </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                                {% endfor %}
+                                                </form>
                                             </div>
                                         </div>
                                         <!-- Form 4 -->
                                         <div class="form-wrapper">
                                             <div id="form-4" class="dynamicSelect-form">
-                                                <h4>Form 4</h4>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt odio sed est volutpat sodales. Mauris in dui ultrices ligula vestibulum mollis sed sed nisi. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque nec bibendum enim.</p>
+                                                <form role="form" action="/configuracion/respuesta_ter_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="NoDespacho">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Justificacion</label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                                            <select class="form-control select2 " style="width: 100%;" name="justificacion" required>
+                                                                <option value="" selected disabled></option>
+                                                                <option value="Bajo monto">Bajo monto</option>
+                                                                <option value="Error unidad despacho">Error unidad despacho</option>
+                                                                <option value="Error condiciones comerciales">Error condiciones comerciales</option>
+                                                                <option value="Fuera de agenda">Fuera de agenda</option>
+                                                                <option value="Agotados">Agotados</option>
+                                                                <option value="Error código producto">Error código producto</option>
+                                                            </select>
+                                                        </div>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+
+                                                </div>
+                                                </div>
+                                                {% endfor %}
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 5 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-5" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_cuar_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Suspender">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Justificacion</label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                                            <select class="form-control select2 " style="width: 100%;" name="justificacion" required>
+                                                                <option value="" selected disabled></option>
+                                                                <option value="Problema producción">Problema producción</option>
+                                                                <option value="Problema materia prima">Problema materia prima</option>
+                                                            </select>
+                                                        </div>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+
+                                                </div>
+                                                </div>
+                                                {% endfor %}
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -113,11 +202,11 @@
                     </div>
     <div class="pull-right">
         <div class="block">
-     <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal" class="hovicon effect-1 sub-a" title="¿Tienes un problema con este pedido?">RESPUESTA A LA ORDEN</a>
+     <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal" class="custom-btn btn-11" title="¿Tienes un problema con este pedido?">RESPUESTA A LA ORDEN</a>
     </div>
     </div>
     <h1> <a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
-    <br><br>
+    <br>
     {% if peticion_activa != 'no' %}
     <div class="alert alert-success alert-dismissible">
         <a href="/configuracion/solicitud_pedido_orden/problema/{{ form_id }}" class="btn btn-success pull-right" style="margin-right: 5px;">

@@ -93,6 +93,8 @@ urlpatterns.extend(
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),
         url(r'^configuracion/respuesta_seg_pedido/$', configuracion_views.config_respuesta_seg_pedido),
+        url(r'^configuracion/respuesta_ter_pedido/$', configuracion_views.config_respuesta_ter_pedido),
+        url(r'^configuracion/respuesta_cuar_pedido/$', configuracion_views.config_respuesta_cuar_pedido),
         url(r'^configuracion/respuesta_peticion/$', configuracion_views.config_respuesta_peticion),
         # Tipos de Radicados
         url(r'^configuracion/tipos_radicados/$', configuracion_views.config_tipos_radicados),
