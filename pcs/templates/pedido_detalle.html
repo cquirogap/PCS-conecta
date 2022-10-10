@@ -164,7 +164,7 @@
                                         <!-- Form 5 -->
                                         <div class="form-wrapper">
                                             <div id="form-5" class="dynamicSelect-form">
-                                                <form role="form" action="/configuracion/respuesta_cuar_pedido/" method="POST" enctype="multipart/form-data">
+                                                <form role="form" action="/configuracion/respuesta_quin_pedido/" method="POST" enctype="multipart/form-data">
                                                     {% csrf_token %}
                                                     {% for dato in lista_solicitud %}
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
