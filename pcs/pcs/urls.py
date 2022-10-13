@@ -96,6 +96,7 @@ urlpatterns.extend(
         url(r'^configuracion/respuesta_ter_pedido/$', configuracion_views.config_respuesta_ter_pedido),
         url(r'^configuracion/respuesta_cuar_pedido/$', configuracion_views.config_respuesta_cuar_pedido),
         url(r'^configuracion/respuesta_quin_pedido/$', configuracion_views.config_respuesta_quin_pedido),
+        url(r'^configuracion/respuesta_sex_pedido/$', configuracion_views.config_respuesta_sex_pedido),
         url(r'^configuracion/respuesta_peticion/$', configuracion_views.config_respuesta_peticion),
         # Tipos de Radicados
         url(r'^configuracion/tipos_radicados/$', configuracion_views.config_tipos_radicados),
@@ -257,6 +258,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_pedido_orden/$', configuracion_views.config_solicitud_pedido_orden),
         url(r'^configuracion/solicitud_pedido_orden/detalle/(?P<form_id>\d+)/$', configuracion_views.pedido_detalle),
         url(r'^configuracion/solicitud_pedido_orden/problema/(?P<form_id>\d+)/$', configuracion_views.pedido_problema_detalle),
+        url(r'^configuracion/solicitud_pedido_orden/novedades/(?P<form_id>\d+)/(?P<novedad_id>\d+)/$', configuracion_views.pedido_problema_novedades),
         url(r'^configuracion/solicitud_pedido_orden/excel/$', configuracion_views.reporte_pedido_detalle),
         url(r'^configuracion/solicitud_pedido_orden/excel_general/$', configuracion_views.reporte_pedido),
         url(r'^configuracion/solicitud_pedido_orden/excel_csv/$', configuracion_views.reporte_pedidos_csv),

@@ -23,6 +23,7 @@
                                                 <option value="form-3">Facturar Pedido con novedades</option>
                                                 <option value="form-4">No despachare pedido</option>
                                                 <option value="form-5">Suspender producto</option>
+                                                <option value="form-6">Solicitud de cita entrega</option>
                                             </select>
                                         </span>
                                         <!-- Form 1 -->
@@ -76,7 +77,7 @@
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
                                                     {% endfor %}
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
-                                                    <input type="hidden"  name="peticion" value="SolicitudFactura">
+                                                    <input type="hidden"  name="peticion" value="Facturar pedido sin novedades">
                                                     <input type="hidden"  name="justificacion" value="factura">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -99,7 +100,7 @@
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
 
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
-                                                    <input type="hidden"  name="peticion" value="FacturaConNovedades">
+                                                    <input type="hidden"  name="peticion" value="Facturar Pedido con novedades">
                                                     <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
                                                     <input type="hidden"  name="justificacion" value="factura">
                                                     <table class="table table-striped">
@@ -113,6 +114,7 @@
                                                         {% for articulo in dato.articulos %}
                                                         <input type="hidden" value="{{articulo.nombre}}" name="nombre_prod[]">
                                                         <input type="hidden" value="{{articulo.numero}}" name="numero_prod[]">
+                                                        <input type="hidden" value="{{articulo.cantidad}}" name="comprobante_cantidad[]">
                                                         <tr>
                                                             <td>{{ articulo.nombre }} </td>
                                                             <td><input type="text" name="cantidad[]" value="{{ articulo.cantidad }}"> </td>
@@ -135,7 +137,7 @@
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
 
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
-                                                    <input type="hidden"  name="peticion" value="NoDespacho">
+                                                    <input type="hidden"  name="peticion" value="No despachare pedido">
                                                     <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -170,7 +172,7 @@
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
 
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
-                                                    <input type="hidden"  name="peticion" value="Suspender">
+                                                    <input type="hidden"  name="peticion" value="Suspender producto">
                                                     <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -190,6 +192,29 @@
                                                 </div>
                                                 {% endfor %}
                                                 </form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 6 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-6" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_sex_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    {% endfor %}
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Solicitud de cita entrega">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                    <label>Solicitud de cita entrega</label>
+                                                    <br>
+                                                    <p>si decea solicitar una cita de entrega para este pedido da al boton solicitar</p>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Solicitar</button>
+                                                </div>
+                                                </div></form>
                                             </div>
                                         </div>
                                     </div>
@@ -212,7 +237,7 @@
         <a href="/configuracion/solicitud_pedido_orden/problema/{{ form_id }}" class="btn btn-success pull-right" style="margin-right: 5px;">
             <i class="fa fa-arrow-right"></i> Ver mas
         </a>
-        <h4>Tienes una solicitud de problema en este pedido</h4>
+        <h4>Trazabilidad respuesta orden de compra</h4>
     </div>
     {% endif %}
     {% if messages %}

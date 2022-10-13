@@ -1,0 +1,85 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <div class="pull-right">
+        <div class="block">
+     <a href="/configuracion/solicitud_pedido_orden/detalle/{{ problemas_titulo.entry_pedido }}" class="hovicon effect-1 sub-a" title="¿Tienes un problema con este pedido?">Ver Detalle Pedido</a>
+    </div>
+    </div>
+    <h1><a href="javascript:history.back()"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    <br><br>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+</section>
+
+<div id="printableArea">
+<section class="invoice">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                 PCS -- {{ problemas_titulo.empresa }}
+                <small class="pull-right">Orden de Compra {{ problemas_titulo.num_pedido }}</small>
+            </h2>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Numero</th>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Modificado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for novedad in pedido_novedades %}
+                <tr>
+                    <td>{{ novedad.numero }}</td>
+                    <td>{{ novedad.nombre }} </td>
+                    <td>{{ novedad.cantidad }} </td>
+                    <td>{{ novedad.modificado }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</section>
+
+{% endblock %}

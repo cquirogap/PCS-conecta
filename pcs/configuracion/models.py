@@ -122,6 +122,17 @@ class RespuestaPedido(models.Model):
         return str(self.descripcion)
 
 
+class PedidosNovedades(models.Model):
+    numero = models.CharField(max_length=20)
+    cantidad = models.CharField(max_length=20)
+    modificado = models.CharField(max_length=20,default='no')
+    nombre = models.CharField(max_length=50)
+    peticion=models.ForeignKey(RespuestaPedido, default=1)
+
+    def __unicode__(self):
+        return str(self.nombre)
+
+
 class Tipos_identificacion(models.Model):
     descripcion = models.CharField(max_length=20)
 

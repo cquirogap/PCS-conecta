@@ -65,6 +65,7 @@
                         <th>Fecha</th>
                         <th>Estado</th>
                         <th>Respuesta</th>
+                        <th>Adicionales</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,22 +114,30 @@
                                     {% if problema.peticion.descripcion == 'prorroga' %}
                                     <select class="form-control select2 " style="width: 100%;" name="respuesta" required>
                                         <option value="" selected disabled></option>
-                                        <option value="Se ha aprobado la prorroga para el pedido {{ problema.num_pedido }}">Aprobar</option>
-                                        <option value="No se ha aprobado la prorroga para el pedido {{ problema.num_pedido }}">Desaprobar</option>
+                                        <option value="Se ha aceptado la prorroga para el pedido {{ problema.num_pedido }}">Aceptar</option>
+                                        <option value="Se ha rechazado la prorroga para el pedido {{ problema.num_pedido }}">Rechazar</option>
                                     </select>
                                         <br>
+                                     {% elif problema.peticion.descripcion == 'Solicitud de cita entrega' %}
+                                        <br>
+                                     <label>Fecha de cita entrega</label>
+                                        <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                            <input type="hidden" value="1" name="respuesta">
+                                            <input type="date" class="form-control"  name="fecha_cita"  required>
+                                        </div>
                                      {% else %}
                                     <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
                                      {% endif %}
                                     <br>
-                                     {% if problema.peticion.descripcion == 'SolicitudFactura' or problema.peticion.descripcion == 'FacturaConNovedades' %}
+                                     {% if problema.peticion.descripcion == 'Facturar pedido sin novedades' or problema.peticion.descripcion == 'Facturar Pedido con novedades' %}
                                         <input type="hidden" value="1" name="doc">
                                      <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-upload"></i></span>
                                         <input id="adjunto" name="adjunto" type="file" required>
                                     </div>
                                         <br>
-                                     {% elif problema.peticion.descripcion == 'prorroga' %}
+                                     {% else %}
                                         <input type="hidden" value="2" name="doc">
                                      {% endif %}
                                     <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
@@ -162,6 +171,17 @@
                     {% endif %}
                     {% endif %}
                     </td>
+                    {% if problema.peticion.descripcion == 'Facturar Pedido con novedades' %}
+                    <td><a class="btn btn-info "
+                                   href="/configuracion/solicitud_pedido_orden/novedades/{{form_id}}/{{problema.pk}}"
+                                   title="Ver detalle ">
+                        <i class="fa fa-table"></i>
+                        <i class="glyphicon glyphicon-zoom-in"></i>
+                        <br> Novedades Pedido
+                    </a></td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
                 </tbody>
