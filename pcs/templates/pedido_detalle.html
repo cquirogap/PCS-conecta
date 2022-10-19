@@ -203,15 +203,71 @@
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
                                                     {% endfor %}
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    {% for cliente in lista_cliente %}
+                                                    {% if cliente.cliente == 'ALMACENES EXITO S.A.' %}
+                                                    <input type="hidden"  name="peticion" value="Solicitud de cita entrega(almacenes exito)">
+                                                    {% elif cliente.cliente == 'COLOMBIANA DE COMERCIO S.A.' %}
+                                                    <input type="hidden"  name="peticion" value="Solicitud de cita entrega(almacenes alkosto)">
+                                                    {% else %}
                                                     <input type="hidden"  name="peticion" value="Solicitud de cita entrega">
+                                                    {% endif %}
+                                                    {% endfor %}
+
                                                     <input type="hidden"  name="justificacion" value="factura">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <br>
-                                                    <label>Solicitud de cita entrega</label>
+                                                    <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Número de unidades</label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                            <input type="text" class="form-control"
+                                                                   name="unidades" placeholder="Número de unidades" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Numero de cajas </label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                            <input type="text" class="form-control"
+                                                                   name="cajas" placeholder="Numero de cajas" required>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+
                                                     <br>
-                                                    <p>si decea solicitar una cita de entrega para este pedido da al boton solicitar</p>
-                                                    <br>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Tipo de vehículo </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                                    <input type="text" class="form-control"
+                                                                           name="vehiculo" placeholder="Tipo de vehículo" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label>Fecha </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                                    <input type="date" class="form-control"  name="fecha_problema"  required>
+                                                                </div>
+                                                                <br>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Hora </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                                    <input type="time" class="form-control"  name="hora"  required>
+                                                                </div>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+
+                                                        <br>
                                                     <button type="submit" class="btn btn-block btn-primary btn-xs">Solicitar</button>
                                                 </div>
                                                 </div></form>

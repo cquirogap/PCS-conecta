@@ -133,6 +133,20 @@ class PedidosNovedades(models.Model):
         return str(self.nombre)
 
 
+class RespuestaCita(models.Model):
+    unidades = models.CharField(max_length=20)
+    cajas = models.CharField(max_length=20)
+    vehiculo = models.CharField(max_length=20)
+    fecha = models.DateField(null=True)
+    hora = models.TimeField(null=True)
+    peticion=models.ForeignKey(RespuestaPedido, default=1)
+
+    def __unicode__(self):
+        return str(self.unidades)
+
+
+
+
 class Tipos_identificacion(models.Model):
     descripcion = models.CharField(max_length=20)
 

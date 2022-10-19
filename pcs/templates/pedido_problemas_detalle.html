@@ -70,6 +70,129 @@
                 </thead>
                 <tbody>
                 {% for problema in problemas %}
+
+                <div id="ArchivoModales{{ problema.id }}" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="main-header">
+                                    <span class="close" data-dismiss="modal">&times;</span>
+                                    <div class="col-md-12">
+                                    <h2 class="page-header">
+                                    <strong>Respuesta Peticion</strong>
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <strong>Respuesta</strong>
+                                    <div class="dynamicSelect">
+                                        <span class="dynamicSelect-dropdown">
+                                            <select class="dynamicSelect-select" name="selectform">
+                                                <option selected value="Get in touch"></option>
+                                                <option value="form-1{{ problema.id }}">Reprogramar Cita</option>
+                                                <option value="form-2{{ problema.id }}">Cita sin agenda</option>
+                                                <option value="form-3{{ problema.id }}">Aceptar Cita</option>
+                                            </select>
+                                        </span>
+                                        <!-- Form 1 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-1{{ problema.id }}" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
+                                                    <input type="hidden" name="problema" value="{{problema.id}}">
+                                                    <input type="hidden" name="direccion" value="1">
+                                                    <input type="hidden" value="2" name="doc">
+                                                    <input type="hidden" value="2" name="respuesta">
+                                                    <input type="hidden" value="2" name="cita">
+                                                    <input type="hidden" value="reprogramar" name="tipo_cita">
+                                                <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Numero de Cita </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                                    <input type="text" class="form-control"
+                                                                           name="numero_cita" placeholder="Numero de cita" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label>Fecha </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                                    <input type="date" class="form-control"  name="fecha_cita"  required>
+                                                                </div>
+                                                                <br>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Hora </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                                    <input type="time" class="form-control"  name="hora_cita"  required>
+                                                                </div>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+
+                                                </form>
+                                            </div></div>
+                                        <!-- Form 2 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-2{{ problema.id }}" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
+                                                    <input type="hidden" name="problema" value="{{problema.id}}">
+                                                    <input type="hidden" name="direccion" value="1">
+                                                    <input type="hidden" value="2" name="doc">
+                                                    <input type="hidden" value="2" name="respuesta">
+                                                    <input type="hidden" value="2" name="cita">
+                                                    <input type="hidden" value="NoAgenda" name="tipo_cita">
+
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+
+                                                </form>
+                                            </div></div>
+                                        <!-- Form 3 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-3{{ problema.id }}" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
+                                                    <input type="hidden" name="problema" value="{{problema.id}}">
+                                                    <input type="hidden" name="direccion" value="1">
+                                                    <input type="hidden" value="2" name="doc">
+                                                    <input type="hidden" value="2" name="respuesta">
+                                                    <input type="hidden" value="2" name="cita">
+                                                    <input type="hidden" value="Aceptar" name="tipo_cita">
+                                                <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Numero de Cita </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                                    <input type="text" class="form-control"
+                                                                           name="numero_cita" placeholder="Numero de cita" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+
+                                                </form>
+                                            </div></div>
+                                    </div>
+
+                                </div>
+
+                          </div>
+
+                        </div>
+                    </div>
                 <div id="ArchivoModal{{ problema.id }}" class="modal fade" role="dialog">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -114,18 +237,10 @@
                                     {% if problema.peticion.descripcion == 'prorroga' %}
                                     <select class="form-control select2 " style="width: 100%;" name="respuesta" required>
                                         <option value="" selected disabled></option>
-                                        <option value="Se ha aceptado la prorroga para el pedido {{ problema.num_pedido }}">Aceptar</option>
+                                        <option value="Se ha aceptado la prorroga hasta el {{ problema.fecha }}  para el pedido {{ problema.num_pedido }}">Aceptar</option>
                                         <option value="Se ha rechazado la prorroga para el pedido {{ problema.num_pedido }}">Rechazar</option>
                                     </select>
                                         <br>
-                                     {% elif problema.peticion.descripcion == 'Solicitud de cita entrega' %}
-                                        <br>
-                                     <label>Fecha de cita entrega</label>
-                                        <div class="input-group ">
-                                            <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                                            <input type="hidden" value="1" name="respuesta">
-                                            <input type="date" class="form-control"  name="fecha_cita"  required>
-                                        </div>
                                      {% else %}
                                     <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
                                      {% endif %}
@@ -156,11 +271,19 @@
                     <td>
                     {% if permiso_usuario.atencion != 1  %}
                         {% if problema.estado == 'pendiente' %}
+                        {% if problema.peticion.descripcion == 'Solicitud de cita entrega' or  problema.peticion.descripcion == 'Solicitud de cita entrega(almacenes exito)' or problema.peticion.descripcion == 'Solicitud de cita entrega(almacenes alkosto)' %}
+                        <a class="btn btn-info " data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModales{{ problema.id }}"
+                           title="responder ">
+                            <i class="fa fa-mail-forward"></i>
+                            <br> Responder
+                        </a>
+                        {% else %}
                         <a class="btn btn-info " data-toggle="modal" data-dismiss="modal" data-target="#RespuestaModal{{ problema.id }}"
                            title="responder ">
                             <i class="fa fa-mail-forward"></i>
                             <br> Responder
                         </a>
+                        {% endif %}
                         {% else %}
                         <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal{{ problema.id }}" class="btn btn-primary" title="Respuesta">Respuesta</a>
                         {% endif %}
