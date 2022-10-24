@@ -80,6 +80,7 @@
                         <th>Doc.No </th>
                         <th>Fecha</th>
                         <th>No.Factura</th>
+                        <th>Descuento</th>
                         <th>Valor a Pagar($)</th>
                     </tr>
                 </thead>
@@ -99,6 +100,7 @@
                     {% elif articulo.tipo == '19' %}{{ articulo.nota }}
                     {% endif %}
                         </td>
+                    <td>{{ articulo.descuento }}</td>
                     <td>{{ articulo.total }}</td>
                 </tr>
                 {% endfor %}
