@@ -111,6 +111,7 @@ class RespuestaPedido(models.Model):
     entry_pedido = models.CharField(max_length=80)
     empresa = models.CharField(max_length=80,default=None,null=True)
     fecha = models.DateField(null=True)
+    hora = models.TimeField(null=True,default='01:01:00')
     estado = models.CharField(max_length=80,null=True,default=None)
     respuesta = models.CharField(max_length=80,null=True,default=None)
     email = models.CharField(max_length=80,null=True,default=None)
@@ -134,6 +135,7 @@ class PedidosNovedades(models.Model):
 
 
 class RespuestaCita(models.Model):
+    orden_compra = models.CharField(max_length=80,default='1')
     unidades = models.CharField(max_length=20)
     cajas = models.CharField(max_length=20)
     vehiculo = models.CharField(max_length=20)

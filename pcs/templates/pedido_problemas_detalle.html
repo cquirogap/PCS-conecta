@@ -83,20 +83,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-body">
-                                    <strong>Respuesta</strong>
-                                    <div class="dynamicSelect">
-                                        <span class="dynamicSelect-dropdown">
-                                            <select class="dynamicSelect-select" name="selectform">
-                                                <option selected value="Get in touch"></option>
-                                                <option value="form-1{{ problema.id }}">Reprogramar Cita</option>
-                                                <option value="form-2{{ problema.id }}">Cita sin agenda</option>
-                                                <option value="form-3{{ problema.id }}">Aceptar Cita</option>
-                                            </select>
-                                        </span>
-                                        <!-- Form 1 -->
-                                        <div class="form-wrapper">
-                                            <div id="form-1{{ problema.id }}" class="dynamicSelect-form">
-                                                <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
+
+                                     <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
                                                     <input type="hidden" name="problema" value="{{problema.id}}">
@@ -121,7 +109,7 @@
                                                                 <label>Fecha </label>
                                                                 <div class="input-group ">
                                                                     <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                                                                    <input type="date" class="form-control"  name="fecha_cita"  required>
+                                                                    <input type="date"  value="{{problema.fecha}}" class="form-control"  name="fecha_cita"  required>
                                                                 </div>
                                                                 <br>
                                                             </div>
@@ -129,7 +117,7 @@
                                                                 <label>Hora </label>
                                                                 <div class="input-group ">
                                                                     <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                                                                    <input type="time" class="form-control"  name="hora_cita"  required>
+                                                                    <input type="time" value="{{problema.hora}}" class="form-control"  name="hora_cita"  required>
                                                                 </div>
                                                                 <br>
                                                             </div>
@@ -138,54 +126,6 @@
                                                     <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
 
                                                 </form>
-                                            </div></div>
-                                        <!-- Form 2 -->
-                                        <div class="form-wrapper">
-                                            <div id="form-2{{ problema.id }}" class="dynamicSelect-form">
-                                                <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
-                                                    <input type="hidden" name="problema" value="{{problema.id}}">
-                                                    <input type="hidden" name="direccion" value="1">
-                                                    <input type="hidden" value="2" name="doc">
-                                                    <input type="hidden" value="2" name="respuesta">
-                                                    <input type="hidden" value="2" name="cita">
-                                                    <input type="hidden" value="NoAgenda" name="tipo_cita">
-
-                                                    <br>
-                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
-
-                                                </form>
-                                            </div></div>
-                                        <!-- Form 3 -->
-                                        <div class="form-wrapper">
-                                            <div id="form-3{{ problema.id }}" class="dynamicSelect-form">
-                                                <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
-                                                    <input type="hidden" name="problema" value="{{problema.id}}">
-                                                    <input type="hidden" name="direccion" value="1">
-                                                    <input type="hidden" value="2" name="doc">
-                                                    <input type="hidden" value="2" name="respuesta">
-                                                    <input type="hidden" value="2" name="cita">
-                                                    <input type="hidden" value="Aceptar" name="tipo_cita">
-                                                <div class="row">
-                                                            <div class="col-md-12">
-                                                                <label>Numero de Cita </label>
-                                                                <div class="input-group ">
-                                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                                                    <input type="text" class="form-control"
-                                                                           name="numero_cita" placeholder="Numero de cita" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <br>
-                                                    <br>
-                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
-
-                                                </form>
-                                            </div></div>
-                                    </div>
 
                                 </div>
 
@@ -296,11 +236,19 @@
                     </td>
                     {% if problema.peticion.descripcion == 'Facturar Pedido con novedades' %}
                     <td><a class="btn btn-info "
-                                   href="/configuracion/solicitud_pedido_orden/novedades/{{form_id}}/{{problema.pk}}"
+                                   href="/configuracion/solicitud_pedido_orden/novedades/{{form_id}}/{{problema.id}}"
                                    title="Ver detalle ">
                         <i class="fa fa-table"></i>
                         <i class="glyphicon glyphicon-zoom-in"></i>
                         <br> Novedades Pedido
+                    </a></td>
+                    {% elif problema.peticion.descripcion == 'Solicitud de cita entrega' or  problema.peticion.descripcion == 'Solicitud de cita entrega(almacenes exito)' or problema.peticion.descripcion == 'Solicitud de cita entrega(almacenes alkosto)' %}
+                    <td><a class="btn btn-info "
+                                   href="/configuracion/solicitud_pedido_orden/cita_entrega/{{form_id}}/{{problema.id}}"
+                                   title="Ver detalle ">
+                        <i class="fa fa-table"></i>
+                        <i class="glyphicon glyphicon-zoom-in"></i>
+                        <br> Detalle Cita
                     </a></td>
                     {% else %}
                     <td></td>
