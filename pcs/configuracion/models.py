@@ -117,6 +117,7 @@ class RespuestaPedido(models.Model):
     email = models.CharField(max_length=80,null=True,default=None)
     peticion = models.ForeignKey(Peticiones, default=1)
     justificacion = models.ForeignKey(Justificacion, default=1)
+    justificacion_adicional = models.CharField(max_length=80,null=True,default=None)
     doc_respuesta = models.CharField(max_length=100, null=True,default=None)
 
     def __unicode__(self):
