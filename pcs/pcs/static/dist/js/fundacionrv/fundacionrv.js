@@ -1835,6 +1835,26 @@ $(function () {
     )
 
 
+
+
+    var buscar_comprobante_excel = function () {
+
+        solicitud = $("#comprobante_dato_excel").val() || "";
+        solicitud = solicitud.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/solicitud_comprobante_egreso/excel/?solicitud='+solicitud
+
+    }
+
+    $("#buscar_comprobante_excel_button").click(
+       function (e) {
+           buscar_comprobante_excel()
+       }
+    )
+
+
+
+
     var buscar_lista_pedido_excel = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";

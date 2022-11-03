@@ -42,37 +42,56 @@
     {% for dato in lista_solicitud %}
 
     <div class="row">
-        <div class="col-md-12">
-            <h2 class="page-header">
-               Detalle Comprobante de Egreso  # {{ dato.n_pagos }}
+        <div class="col-md-4"><img src="{% static 'dist/img/logo_etet.jpg'%}" width="300px" height="80px" ></div>
+        <div class="col-md-4">
+            <h2 >
+               Comprobante de Egreso
             </h2>
         </div>
     </div>
+    <br>
     <div class="row no-print">
 
     </div>
 
     <div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-            No.Pago :<br>
+            Fecha del documento:<br>
+            <strong>{{ dato.fecha_vencimiento }}</strong><br><br>
+
+
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Numero de Documento :<br>
             <strong>{{dato.n_pagos}}</strong><br><br>
+
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Fecha de vencimiento:<br>
+            <strong>{{ dato.fecha_contabilizacion }}</strong><br><br>
+
+        </div>
+    </div>
+    <strong>En favor de:</strong>
+    <br>
+    <br>
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            Nombre:<br>
+            <strong>{{ dato.nombre }}</strong><br><br>
+
+
+
+        </div>
+        <div class="col-sm-4 invoice-col">
             Destinatario de Factura:<br>
             <strong>{{ dato.destinatorio_factura }}</strong><br><br>
 
         </div>
-        <div class="col-sm-4 invoice-col">
-            Codigo:<br>
-            <strong>{{dato.codigo}}</strong><br><br>
-            Fecha de Contabilizacion:<br>
-            <strong>{{ dato.fecha_contabilizacion }}</strong><br><br>
-        </div>
-        <div class="col-sm-4 invoice-col">
-            Nombre:<br>
-            <strong>{{ dato.nombre }}</strong><br><br>
-            Fecha del documento:<br>
-            <strong>{{ dato.fecha_vencimiento }}</strong><br><br>
-        </div>
     </div>
+    <strong>cancelamos los siguientes documentos:</strong>
+    <br>
+    <br>
     <div class="row">
         <div class="col-xs-12 table-responsive">
             <table class="table table-striped">
@@ -95,9 +114,7 @@
                     {% elif articulo.tipo == '19' %}Notas Credito Provedor
                     {% else %}{{articulo.tipo}}{% endif %}
                     </td>
-                    <td><a {% if articulo.tipo == '18' %}href="/configuracion/solicitud_factura_proveedor/detalle/{{ articulo.doc_num }}"
-                    {% elif articulo.tipo == '19' %}href="/configuracion/solicitud_credito_proveedores/detalle/{{ articulo.doc_num }}"
-                    {% endif %}  type="button" class="btn btn-warning btn-flat"><i class="fa fa-mail-forward"></i></a> {{ articulo.doc_num }}</td>
+                    <td> {{ articulo.doc_num }}</td>
                     <td>{{ articulo.fecha }}</td>
                     <td>{% if articulo.tipo == '18' %}{{ articulo.factura }}
                     {% elif articulo.tipo == '19' %}{{ articulo.nota }}
@@ -149,9 +166,6 @@
         </div>
     </div>
     <br>
-     <button type="button" id="buscar_comprobante_excel_button" class="btn btn-success pull-right"><i class="fa  fa-file-excel-o"></i> Descargar</button>
-
-    <a href="/configuracion/solicitud_comprobante_egreso/print/{{ form_id }}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Imprimir</a>
      {% endfor %}
     <div class="row no-print">
 

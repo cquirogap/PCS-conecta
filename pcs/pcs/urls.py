@@ -264,6 +264,8 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_pedido_orden/excel_general/$', configuracion_views.reporte_pedido),
         url(r'^configuracion/solicitud_pedido_orden/excel_csv/$', configuracion_views.reporte_pedidos_csv),
 
+        url(r'^configuracion/solicitud_comprobante_egreso/excel/$', configuracion_views.reporte_comprobante_detalle),
+
         url(r'^configuracion/solicitud_catalogo_productos/$', configuracion_views.config_solicitud_catalogo_productos),
         url(r'^configuracion/solicitud_catalogo_productos/detalle/(?P<form_id>\d+)/$', configuracion_views.catalogo_productos_detalle),
 
@@ -295,6 +297,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_estado_cuenta/detalle/(?P<form_id>[\w\-]+)/$', configuracion_views.estado_cuenta_detalle),
         url(r'^configuracion/solicitud_comprobante_egreso/$', configuracion_views.config_solicitud_comprobante_egreso),
         url(r'^configuracion/solicitud_comprobante_egreso/detalle/(?P<form_id>\d+)/$', configuracion_views.comprobante_egreso_detalles),
+        url(r'^configuracion/solicitud_comprobante_egreso/print/(?P<form_id>\d+)/$', configuracion_views.comprobante_egreso_print),
 
         url(r'^configuracion/solicitud_comprobante_egreso_pcs/$', configuracion_views.config_solicitud_comprobante_egreso_pcs),
         #_______________________________________________ EXTERNO ____________________________________________________________
