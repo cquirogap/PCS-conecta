@@ -28,6 +28,8 @@
                                                 <option value="form-6">Solicitud de cita entrega</option>
                                                 {% endif %}
                                                 {% endfor %}
+                                                <option value="form-7">Despacho sin novedades SPE</option>
+                                                <option value="form-8">Despacho con novedades SPE</option>
                                             </select>
                                         </span>
                                         <!-- Form 1 -->
@@ -276,6 +278,66 @@
                                                     <button type="submit" class="btn btn-block btn-primary btn-xs">Solicitar</button>
                                                 </div>
                                                 </div></form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 7 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-7" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_sept_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    {% endfor %}
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Despacho sin novedades SPE">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                    <label>Solicitar Despacho</label>
+                                                    <br>
+                                                    <p>si decea solicitar despacho para este pedido da al boton solicitar</p>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Solicitar</button>
+                                                </div>
+                                                </div></form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 8 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-8" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_oct_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Despacho con novedades SPE">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Nombre de articulo</th>
+                                                            <th>Cantidad</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for articulo in dato.articulos %}
+                                                        <input type="hidden" value="{{articulo.nombre}}" name="nombre_prod[]">
+                                                        <input type="hidden" value="{{articulo.numero}}" name="numero_prod[]">
+                                                        <input type="hidden" value="{{articulo.cantidad}}" name="comprobante_cantidad[]">
+                                                        <tr>
+                                                            <td>{{ articulo.nombre }} </td>
+                                                            <td><input type="text" name="cantidad[]" value="{{ articulo.cantidad }}"> </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                                {% endfor %}
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

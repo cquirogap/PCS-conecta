@@ -97,6 +97,8 @@ urlpatterns.extend(
         url(r'^configuracion/respuesta_cuar_pedido/$', configuracion_views.config_respuesta_cuar_pedido),
         url(r'^configuracion/respuesta_quin_pedido/$', configuracion_views.config_respuesta_quin_pedido),
         url(r'^configuracion/respuesta_sex_pedido/$', configuracion_views.config_respuesta_sex_pedido),
+        url(r'^configuracion/respuesta_sept_pedido/$', configuracion_views.config_respuesta_sept_pedido),
+        url(r'^configuracion/respuesta_oct_pedido/$', configuracion_views.config_respuesta_oct_pedido),
         url(r'^configuracion/respuesta_peticion/$', configuracion_views.config_respuesta_peticion),
         # Tipos de Radicados
         url(r'^configuracion/tipos_radicados/$', configuracion_views.config_tipos_radicados),

@@ -185,7 +185,7 @@
                                     <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
                                      {% endif %}
                                     <br>
-                                     {% if problema.peticion.descripcion == 'Facturar pedido sin novedades' or problema.peticion.descripcion == 'Facturar Pedido con novedades' %}
+                                     {% if problema.peticion.descripcion == 'Facturar pedido sin novedades' or problema.peticion.descripcion == 'Facturar Pedido con novedades' or problema.peticion.descripcion == 'Despacho sin novedades SPE' or problema.peticion.descripcion == 'Despacho con novedades SPE' %}
                                         <input type="hidden" value="1" name="doc">
                                      <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-upload"></i></span>
@@ -234,7 +234,7 @@
                     {% endif %}
                     {% endif %}
                     </td>
-                    {% if problema.peticion.descripcion == 'Facturar Pedido con novedades' %}
+                    {% if problema.peticion.descripcion == 'Facturar Pedido con novedades' or problema.peticion.descripcion == 'Despacho con novedades SPE' %}
                     <td><a class="btn btn-info "
                                    href="/configuracion/solicitud_pedido_orden/novedades/{{form_id}}/{{problema.id}}"
                                    title="Ver detalle ">
