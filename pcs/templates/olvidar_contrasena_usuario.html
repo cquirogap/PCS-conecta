@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="split-login">
+  <div class="split-login-half split-login-left">
+    <div class="split-login-form">
+      <center><img src="{% static 'dist/img/Logo-Conecta.png'%}" width="300px" height="80px" ></center>
+      <br>
+      <div class="login-form">
+
+       <div class="login-box-body">
+    <p class="login-box-msg"><img src="{% static 'dist/img/logo_etet.jpg'%}" width="100%" height="100%"></p>
+    <p class="login-box-msg">Restablezca su contraseña</p>
+
+    <form action="/registrar/olvidar_contrasena/" method="post">
+        {% csrf_token %}
+      <b>Ingrese su correo electronico:</b>
+      <br><br>
+      <div class="form-group has-feedback">
+
+        <input type="email"
+               id="email" name="email"  class="form-control" placeholder="Correo Electronico">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      {% if error_user %}
+      <div class="callout callout-danger" style="margin-bottom: 0!important;">
+        {{error_user}}
+      </div>
+      {% endif %}
+      <br>
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Enviar un Email</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+  </div>
+      </div>
+    </div>
+    <div class="split-login-footer">
+    </div>
+  </div>
+  <div class="split-login-half split-login-right"></div>
+</div>
+
+
+
+<!-- /.login-box -->
+{% endblock content %}
