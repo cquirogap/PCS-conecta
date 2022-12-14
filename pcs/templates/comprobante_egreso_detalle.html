@@ -149,6 +149,43 @@
         </div>
     </div>
     <br>
+    <strong>Contabilizacion:</strong>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Cuenta</th>
+                        <th>Descripcion </th>
+                        <th>Debito </th>
+                        <th>Credito</th>
+                        <th>Comentarios</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for datos_con in lista_contabilizacion %}
+                <tr>
+                    <td>{{ datos_con.cuenta }}</td>
+                    <td>{{ datos_con.descripcion }}</td>
+                    <td>{{ datos_con.debito }}</td>
+                    <td>{{ datos_con.credito }}</td>
+                    <td>{{ datos_con.comentarios }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><strong>$ {{ suma_debito }}</strong></td>
+                    <td><strong>$ {{ suma_credito }}</strong></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
      <button type="button" id="buscar_comprobante_excel_button" class="btn btn-success pull-right"><i class="fa  fa-file-excel-o"></i> Descargar Excel</button>
 
     <a href="/configuracion/solicitud_comprobante_egreso/print/{{ form_id }}" target="_blank" class="btn btn-danger pull-right"><i class="fa fa-print"></i> Generar PDF</a>
