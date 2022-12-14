@@ -174,7 +174,7 @@
                                     <input type="hidden" name="problema" value="{{problema.id}}">
                                         <input type="hidden" name="direccion" value="1">
                                     <label>Respuesta</label>
-                                    {% if problema.peticion.descripcion == 'prorroga' %}
+                                    {% if problema.peticion.descripcion == 'Solicitud de prorroga' %}
                                     <select class="form-control select2 " style="width: 100%;" name="respuesta" required>
                                         <option value="" selected disabled></option>
                                         <option value="Se ha aceptado la prorroga hasta el {{ problema.fecha }}  para el pedido {{ problema.num_pedido }}">Aceptar</option>
