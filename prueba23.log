@@ -1671,3 +1671,10 @@ local  IP address 10.212.134.101
 remote IP address 192.0.2.1
 Script /etc/ppp/ip-up started (pid 1076284)
 Script /etc/ppp/ip-up finished (pid 1076284), status = 0x0
+Hangup (SIGHUP)
+Modem hangup
+Connect time 480.0 minutes.
+Sent 0 bytes, received 0 bytes.
+Script /etc/ppp/ip-down started (pid 1081922)
+Connection terminated.
+Script /etc/ppp/ip-down finished (pid 1081922), status = 0x0
