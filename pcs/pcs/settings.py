@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'configuracion',
     'interlocutorc',
     'django_crontab',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -140,4 +141,5 @@ EMAIL_HOST_PASSWORD = 'baecxhtxwejobzgn'
 
 CRONJOBS = [
     ('0 */2 * * *', 'interlocutorc.views.tarea_correo_pedido'),
+    ('0 */2 * * *', 'interlocutorc.views.tarea_api'),
 ]

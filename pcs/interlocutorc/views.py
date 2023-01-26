@@ -12,10 +12,17 @@ from datetime import datetime,timedelta
 import requests
 import ast
 import pytz
-
+from rest_framework.viewsets import ModelViewSet
+from interlocutorc.serializers import PostSerializer
 # Create your views here.
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
+
+class ApiPrueba(ModelViewSet):
+    serializer_class = PostSerializer
+    now = datetime.now(pytz.timezone('America/Bogota'))
+    hoy = now.date()
+    queryset = ClientesApi.objects.filter(FechaHoy=hoy)
 
 def admin_admin(request):
 
@@ -102,6 +109,87 @@ def tarea(request):
                          + '45.56.118.44/configuracion/solicitud_pedido_orden/detalle/',
                          to=['juansebastianduartes@gmail.com'])
     email.send()
+
+
+def tarea_api():
+    try:
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorApi(
+            accion='Inicio de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
+        url = "https://192.168.1.20:50000/b1s/v1/Login"
+
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+
+        response = requests.request("POST", url, data=payload, verify=False)
+
+        respuesta = ast.literal_eval(response.text)
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosApi')/List?FechaHoy='"+ str(hoy) + "'"
+
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = response.text
+        response = response.replace('null', ' " " ')
+        response = ast.literal_eval(response)
+        response = response['value']
+        for datos in response:
+            if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
+                try:
+                    pedido_almacenado = ClientesApi.objects.get(NumeroPedido=datos['DocNum'])
+                    pass
+                except:
+                    fecha_pedido=str(datos['DocDueDate'])
+                    fecha_pedido = datetime.strptime(fecha_pedido, '%Y%m%d')
+                    fecha_hoy = str(datos['DocDate'])
+                    fecha_hoy = datetime.strptime(fecha_hoy, '%Y%m%d')
+                    nuevo_pedido = ClientesApi(
+                        NombreEmpresa=datos['CardName'],
+                        Identificacion=datos['LicTradNum'],
+                        TipoIdentificacion='NIT',
+                        Correo=datos['E_Mail'],
+                        ValorOrden=datos['DocTotal'],
+                        FechaEntrega=fecha_pedido,
+                        FechaPago=fecha_pedido,
+                        FechaHoy=fecha_hoy,
+                        NumeroPedido=datos['DocNum'],
+                    )
+                    nuevo_pedido.save()
+            else:
+                pass
+
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorTarea(
+            accion='Fin de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
+    except:
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorApi(
+            accion='Error de conexion',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
 
 
 def tarea_correo_pedido():

@@ -62,3 +62,22 @@ class HistorialErrorTarea(models.Model):
     empresa=models.CharField(max_length=100, null=True)
     fecha=models.DateField(null=True)
     hora=models.TimeField(null=True)
+
+
+class HistorialErrorApi(models.Model):
+    accion=models.CharField(max_length=100, null=True)
+    pedido=models.CharField(max_length=100, null=True)
+    empresa=models.CharField(max_length=100, null=True)
+    fecha=models.DateField(null=True)
+    hora=models.TimeField(null=True)
+
+class ClientesApi(models.Model):
+    NombreEmpresa = models.CharField(max_length=100, null=True)
+    Identificacion = models.CharField(max_length=100, null=True)
+    TipoIdentificacion = models.CharField(max_length=100, null=True)
+    Correo = models.CharField(max_length=100, null=True)
+    ValorOrden = models.CharField(max_length=100, null=True)
+    FechaEntrega = models.DateField( null=True)
+    FechaPago = models.DateField(null=True)
+    FechaHoy = models.DateField(null=True)
+    NumeroPedido = models.CharField(max_length=100, null=True)
