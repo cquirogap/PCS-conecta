@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.core.urlresolvers import reverse_lazy
-from interlocutorc.router import router_posts
+
 from pcs import settings
 from interlocutorc import views as interlocutorc_views
 from configuracion import views as configuracion_views
@@ -28,7 +28,6 @@ from configuracion import views as configuracion_views
 
 urlpatterns = [
     url(r'^admin123/', admin.site.urls),
-    url(r'^api/', include(router_posts.urls)),
 
 ]
 urlpatterns.extend(

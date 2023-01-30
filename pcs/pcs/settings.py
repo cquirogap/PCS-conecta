@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'configuracion',
     'interlocutorc',
     'django_crontab',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
