@@ -12,12 +12,17 @@ from datetime import datetime,timedelta
 import requests
 import ast
 import pytz
-
+from rest_framework.viewsets import ModelViewSet
+from interlocutorc.serializers import PostSerializer
 # Create your views here.
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
 
-
+class ApiPrueba(ModelViewSet):
+    serializer_class = PostSerializer
+    now = datetime.now(pytz.timezone('America/Bogota'))
+    hoy = now.date()
+    queryset = ClientesApi.objects.filter(FechaHoy=hoy)
 
 def admin_admin(request):
 
