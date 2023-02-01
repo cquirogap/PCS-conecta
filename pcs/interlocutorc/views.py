@@ -12,11 +12,17 @@ from datetime import datetime,timedelta
 import requests
 import ast
 import pytz
+from rest_framework.viewsets import ModelViewSet
+from interlocutorc.serializers import PostSerializer
 # Create your views here.
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
 
-
+class ApiPrueba(ModelViewSet):
+    serializer_class = PostSerializer
+    now = datetime.now(pytz.timezone('America/Bogota'))
+    hoy = now.date()
+    queryset = ClientesApi.objects.filter(FechaHoy=hoy)
 
 def admin_admin(request):
 
@@ -235,12 +241,25 @@ def tarea_correo_pedido():
                             response2 = response2['E_MailL']
                             response2 = str(response2).split(";")
                             for correos in response2:
-                                email = EmailMessage('TIENES UN NUEVO PEDIDO',
-                                                     'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                     + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
-                                                         datos['DocEntry']) + '/',
-                                                     to=[correos])
-                                email.send()
+                                try:
+                                    email = EmailMessage('TIENES UN NUEVO PEDIDO',
+                                                         'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
+                                                         + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                             datos['DocEntry']) + '/',
+                                                         to=[correos])
+                                    email.send()
+                                except:
+                                    now = datetime.now(pytz.timezone('America/Bogota'))
+                                    hoy = now.date()
+                                    hora = now.time()
+                                    errores = HistorialErrorTarea(
+                                        accion='Fallo al enviar al correo'+str(correos),
+                                        fecha=hoy,
+                                        hora=hora,
+                                        empresa=str(datos['CardName']),
+                                        pedido=str(datos['DocNum'])
+                                    )
+                                    errores.save()
                             pedido_al = PedidosAlmacenados(
                                 pedido=datos['DocNum']
                             )
