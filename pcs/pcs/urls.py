@@ -127,7 +127,9 @@ urlpatterns.extend(
         url(r'^configuracion/historial_empresas/$', configuracion_views.config_historial_empresas),
         url(r'^configuracion/historial_empresas/excel_general/$', configuracion_views.reporte_historial_empresa),
         url(r'^configuracion/historial_email/$', configuracion_views.config_historial_email),
+        url(r'^configuracion/historial_respuesta_pedido/$', configuracion_views.config_historial_respuesta_pedido),
         url(r'^configuracion/historial_email/excel_general/$', configuracion_views.reporte_historial),
+        url(r'^configuracion/historial_respuesta_pedido/excel_general/$', configuracion_views.reporte_historial_respuesta),
         # Soportes
         url(r'^configuracion/soportes/$', configuracion_views.config_soportes),
         url(r'^configuracion/soportes/registrar/$', configuracion_views.config_soportes_registrar),

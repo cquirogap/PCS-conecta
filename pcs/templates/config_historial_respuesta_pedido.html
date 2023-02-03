@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/usuarios/">Usuarios </a>
+        <a href="/configuracion/historial_respuesta_pedido/">Historial</a>
         <small>Configuracion</small>
       </h1>
 
@@ -41,7 +41,7 @@
       {% endif %}
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
-        <li><a href="#">Opciones</a></li>
+        <li><a href="#">Compañia</a></li>
       </ol>
 
 
@@ -51,68 +51,88 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#opciones" data-toggle="tab">Usuarios</a></li>
+              <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
               <li><a href="/configuracion/empresas/" >Compañia</a></li>
               <li><a href="/configuracion/historial_empresas/" >Historial</a></li>
               <li><a href="/configuracion/historial_email/" >Envio Emails</a></li>
-              <li><a href="/configuracion/historial_respuesta_pedido/">Envio Respuesta Pedido</a></li>
+              <li class="active"><a href="#" data-toggle="tab">Envio Respuesta Pedido</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
-                <!-- barras de acceso -->
-                <div class="active tab-pane" id="opciones">
+                <form role="form" action="/configuracion/historial_respuesta_pedido/" method="POST">
+                    {% csrf_token %}
                     <br>
                     <div class="row">
-                          <div class="col-md-2">
-                              <a href="/configuracion/usuarios/registrar/">
-                                <button type="button" class="btn btn-primary">
-                                    <span class='glyphicon glyphicon-edit'></span> Registrar</button>
-                              </a>
-                          </div>
+                    <div class="col-md-6">
+                        <label>Fecha inicial</label>
+                        <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" value="{{ fecha_inicio }}" required>
+                        </div>
                     </div>
+                    <div class="col-md-6">
+                        <label>Fecha final</label>
+                        <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <br>
+                    </div>
+
+                    <div class="col-md-12">
+                        <br>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit"  class="btn btn-primary btn-block btn-flat" >
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            <span class="glyphicon glyphicon-search"></span>Consultar
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" id="buscar_historial_respuesta_pedido_excel_button"  class="btn btn-success btn-block btn-flat" >
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            <span class="glyphicon glyphicon-search"></span>Excel
+                        </button>
+                    </div>
+                </div>
+                </form>
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="perfiles">
+                    <br>
+
                     <br>
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box">
-                                <div class="box-header">
-                                  <h3 class="box-title">Opciones</h3>
-                                </div>
+                                <br>
                                 <!-- /.box-header -->
                                 <div class="box-body table-responsive no-padding">
-                                  <table id="opciones" class="table table-bordered table-hover dataTables">
+                                  <table id="empresas" class="table table-bordered table-hover dataTables">
                                     <thead>
                                         <tr>
-
-                                            <th>Nombres</th>
-                                            <th>Apellidos</th>
-                                            <th>Nombre Usuario</th>
-                                            <th>Correo</th>
-                                            <th>Permisos</th>
-
-                                            <th></th>
-
-
+                                            <th>Accion</th>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Empresa</th>
+                                            <th>Pedido</th>
+                                            <th>Email</th>
+                                            <th>Peticion</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for usuario in lista_usuarios %}
+                                        {% for historial in lista_historial %}
                                             <tr>
 
-                                                    <td>{{usuario.first_name}}</td>
-                                                    <td>{{usuario.last_name}}</td>
-                                                    <td>{{usuario.username}}</td>
-                                                    <td>{{usuario.email}}</td>
+                                                <td>{{historial.accion}}</td>
+                                                <td>{{historial.fecha}}</td>
+                                                <td>{{historial.hora}}</td>
+                                                <td>{{historial.empresa}}</td>
+                                                <td>{{historial.num_pedido}}</td>
+                                                <td>{{historial.email}}</td>
+                                                <td>{{historial.peticion.descripcion}}</td>
 
-                                                <td><center><a class="btn btn-info btn-sm"
-                                                       href="/configuracion/usuarios/editar/{{ usuario.id }}/"
-                                                       title="Editar ">
-                                                    <i class="glyphicon glyphicon-pencil"></i>
-                                                </a></center></td>
-                                                <td><center><a class="btn btn-info btn-sm"
-                                                       href="/configuracion/usuarios/borrar/{{ usuario.id }}/"
-                                                       title="Eliminar ">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </a></center></td>
 
                                             </tr>
                                         {% endfor %}

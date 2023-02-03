@@ -124,6 +124,21 @@ class RespuestaPedido(models.Model):
         return str(self.descripcion)
 
 
+
+class LogRespuestaPedido(models.Model):
+    num_pedido = models.CharField(max_length=80)
+    empresa = models.CharField(max_length=80,default=None,null=True)
+    fecha = models.DateField(null=True)
+    hora = models.TimeField(null=True,default='01:01:00')
+    email = models.CharField(max_length=80,null=True,default=None)
+    accion = models.CharField(max_length=100,null=True,default=None)
+    peticion = models.ForeignKey(Peticiones, default=1)
+
+    def __unicode__(self):
+        return str(self.descripcion)
+
+
+
 class PedidosNovedades(models.Model):
     numero = models.CharField(max_length=20)
     cantidad = models.CharField(max_length=20)

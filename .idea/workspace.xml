@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/configuracion/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/configuracion/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/configuracion/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/configuracion/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +38,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/juan sebastian duart/Documents/pcs-conecta",
+    "last_opened_file_path": "C:/Users/juan sebastian duart/Documents/pcs-conecta/pcs/configuracion",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.jetbrains.django.DjangoModulesConfigurable"
   }
