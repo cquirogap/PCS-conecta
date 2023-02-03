@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/pcs/configuracion/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/configuracion/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/configuracion/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/configuracion/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,16 +35,18 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/juan sebastian duart/Documents/pcs-conecta/pcs/configuracion",
+    "last_opened_file_path": "C:/Users/juan sebastian duart/Documents/pcs-conecta/pcs/templates",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.jetbrains.django.DjangoModulesConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\templates" />
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs" />
-      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\interlocutorc" />
+      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs\static\dist\js\fundacionrv" />
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\configuracion" />
+      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\interlocutorc" />
     </key>
   </component>
   <component name="RunManager" selected="Django Server.Django">
