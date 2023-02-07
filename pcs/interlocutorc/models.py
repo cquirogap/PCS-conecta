@@ -81,3 +81,13 @@ class ClientesApi(models.Model):
     FechaPago = models.DateField(null=True)
     FechaHoy = models.DateField(null=True)
     NumeroPedido = models.CharField(max_length=100, null=True)
+
+class FacturasApi(models.Model):
+    NombreEmpresa = models.CharField(max_length=100, null=True)
+    Identificacion = models.CharField(max_length=100, null=True)
+    TipoIdentificacion = models.CharField(max_length=100, null=True)
+    Correo = models.CharField(max_length=100, null=True)
+    ValorOrden = models.CharField(max_length=100, null=True)
+    FechaPago = models.DateField(null=True)
+    FechaHoy = models.DateField(null=True)
+    NumeroPedido = models.CharField(max_length=100, null=True)

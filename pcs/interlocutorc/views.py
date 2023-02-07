@@ -13,7 +13,8 @@ import requests
 import ast
 import pytz
 from rest_framework.viewsets import ModelViewSet
-from interlocutorc.serializers import PostSerializer
+from interlocutorc.serializers import PostSerializer,FacturasSerializer
+import re
 # Create your views here.
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
@@ -22,7 +23,13 @@ class ApiPrueba(ModelViewSet):
     serializer_class = PostSerializer
     now = datetime.now(pytz.timezone('America/Bogota'))
     hoy = now.date()
-    queryset = ClientesApi.objects.filter(FechaHoy=hoy)
+    queryset = ClientesApi.objects.filter(FechaEntrega__gte=hoy)
+
+class ApiFacturas(ModelViewSet):
+    serializer_class = FacturasSerializer
+    now = datetime.now(pytz.timezone('America/Bogota'))
+    hoy = now.date()
+    queryset = FacturasApi.objects.filter(FechaHoy=hoy)
 
 def admin_admin(request):
 
@@ -183,6 +190,87 @@ def tarea_api():
         )
         errores.save()
 
+
+def facturas_api(request):
+    try:
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorApi(
+            accion='Inicio de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
+        url = "https://192.168.1.20:50000/b1s/v1/Login"
+
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+
+        response = requests.request("POST", url, data=payload, verify=False)
+
+        respuesta = ast.literal_eval(response.text)
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaFacturaApi')/List?FechaHoy='"+ str(hoy) + "'"
+
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = response.text
+        response = response.replace('null', ' " " ')
+        response = ast.literal_eval(response)
+        response = response['value']
+        for datos in response:
+            if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
+                try:
+                    pedido_almacenado = FacturasApi.objects.get(NumeroPedido=datos['DocNum'])
+                    pass
+                except:
+                    fecha_pedido=str(datos['DocDueDate'])
+                    fecha_pedido = datetime.strptime(fecha_pedido, '%Y%m%d')
+                    fecha_hoy = str(datos['DocDate'])
+                    fecha_hoy = datetime.strptime(fecha_hoy, '%Y%m%d')
+                    nuevo_factura = FacturasApi(
+                        NombreEmpresa=datos['CardName'],
+                        Identificacion=datos['LicTradNum'],
+                        TipoIdentificacion='NIT',
+                        Correo=datos['E_Mail'],
+                        ValorOrden=datos['DocTotal'],
+                        FechaPago=fecha_pedido,
+                        FechaHoy=fecha_hoy,
+                        NumeroPedido=datos['DocNum'],
+                    )
+                    nuevo_factura.save()
+            else:
+                pass
+
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorTarea(
+            accion='Fin de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
+    except:
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorApi(
+            accion='Error de conexion',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
+
+
 def tarea_correo_pedido():
     try:
         estado = 'bost_Open'
@@ -241,19 +329,34 @@ def tarea_correo_pedido():
                             response2 = response2['E_MailL']
                             response2 = str(response2).split(";")
                             for correos in response2:
-                                try:
-                                    email = EmailMessage('TIENES UN NUEVO PEDIDO',
-                                                         'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                         + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
-                                                             datos['DocEntry']) + '/',
-                                                         to=[correos])
-                                    email.send()
-                                except:
+                                expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+                                valido = re.match(expresion_regular, correos) is not None
+                                if valido == True:
+                                    try:
+                                        email = EmailMessage('TIENES UN NUEVO PEDIDO',
+                                                             'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
+                                                             + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                                 datos['DocEntry']) + '/',
+                                                             to=[correos])
+                                        email.send()
+                                    except:
+                                        now = datetime.now(pytz.timezone('America/Bogota'))
+                                        hoy = now.date()
+                                        hora = now.time()
+                                        errores = HistorialErrorTarea(
+                                            accion='Fallo al enviar al correo' + str(correos),
+                                            fecha=hoy,
+                                            hora=hora,
+                                            empresa=str(datos['CardName']),
+                                            pedido=str(datos['DocNum'])
+                                        )
+                                        errores.save()
+                                elif valido == False:
                                     now = datetime.now(pytz.timezone('America/Bogota'))
                                     hoy = now.date()
                                     hora = now.time()
                                     errores = HistorialErrorTarea(
-                                        accion='Fallo al enviar al correo'+str(correos),
+                                        accion='No se reconoce el correo' + str(correos),
                                         fecha=hoy,
                                         hora=hora,
                                         empresa=str(datos['CardName']),

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="" />
+    <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/models.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,7 +38,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/juan sebastian duart/Documents/pcs-conecta/pcs/templates",
+    "last_opened_file_path": "C:/Users/juan sebastian duart/Documents/pcs-conecta/pcs/configuracion",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.jetbrains.django.DjangoModulesConfigurable"
   }
@@ -112,6 +115,7 @@
       <workItem from="1673965294916" duration="820000" />
       <workItem from="1674227887374" duration="359000" />
       <workItem from="1675209465951" duration="124000" />
+      <workItem from="1675809912646" duration="211000" />
     </task>
     <servers />
   </component>
