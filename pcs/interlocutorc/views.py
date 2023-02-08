@@ -29,7 +29,7 @@ class ApiFacturas(ModelViewSet):
     serializer_class = FacturasSerializer
     now = datetime.now(pytz.timezone('America/Bogota'))
     hoy = now.date()
-    queryset = FacturasApi.objects.filter(FechaHoy=hoy)
+    queryset = FacturasApi.objects.filter(FechaPago__gte=hoy)
 
 def admin_admin(request):
 
@@ -191,7 +191,7 @@ def tarea_api():
         errores.save()
 
 
-def facturas_api(request):
+def facturas_api():
     try:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
@@ -211,7 +211,7 @@ def facturas_api(request):
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaFacturaApi')/List?FechaHoy='"+ str(hoy) + "'"
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultasFacturasApi')/List"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',

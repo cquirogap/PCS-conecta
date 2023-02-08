@@ -50,7 +50,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES':(
-        'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.IsAuthenticated',
     ),
 }
 
@@ -155,4 +155,5 @@ EMAIL_HOST_PASSWORD = 'baecxhtxwejobzgn'
 CRONJOBS = [
     ('0 */2 * * *', 'interlocutorc.views.tarea_correo_pedido'),
     ('0 */2 * * *', 'interlocutorc.views.tarea_api'),
+    ('0 */2 * * *', 'interlocutorc.views.facturas_api'),
 ]
