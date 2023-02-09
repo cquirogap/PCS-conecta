@@ -13,7 +13,7 @@ import requests
 import ast
 import pytz
 from rest_framework.viewsets import ModelViewSet
-from interlocutorc.serializers import PostSerializer,FacturasSerializer
+from interlocutorc.serializers import PostSerializer,FacturasSerializer,RespuestaOrdenSerializer
 import re
 # Create your views here.
 # This view method handles the request for the root URL /
@@ -23,13 +23,21 @@ class ApiPrueba(ModelViewSet):
     serializer_class = PostSerializer
     now = datetime.now(pytz.timezone('America/Bogota'))
     hoy = now.date()
-    queryset = ClientesApi.objects.filter(FechaEntrega__gte=hoy)
+    objetos_a = ClientesApi.objects.filter(FechaEntrega__gte=hoy)
+    ids_b = RespuestaOrdenCompraApi.objects.values_list('NumeroOrdenCompra', flat=True)
+    queryset = [objeto for objeto in objetos_a if objeto.NumeroPedido not in ids_b]
 
 class ApiFacturas(ModelViewSet):
     serializer_class = FacturasSerializer
     now = datetime.now(pytz.timezone('America/Bogota'))
     hoy = now.date()
     queryset = FacturasApi.objects.filter(FechaPago__gte=hoy)
+
+class RespuestaOrdenApi(ModelViewSet):
+    serializer_class = RespuestaOrdenSerializer
+    now = datetime.now(pytz.timezone('America/Bogota'))
+    hoy = now.date()
+    queryset = RespuestaOrdenCompraApi.objects.all()
 
 def admin_admin(request):
 

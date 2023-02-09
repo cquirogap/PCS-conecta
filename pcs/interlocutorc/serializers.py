@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from interlocutorc.models import ClientesApi,FacturasApi
+from interlocutorc.models import ClientesApi,FacturasApi,RespuestaOrdenCompraApi
 
 class PostSerializer(ModelSerializer):
     class Meta:
@@ -11,3 +11,10 @@ class FacturasSerializer(ModelSerializer):
     class Meta:
         model= FacturasApi
         fields=['NombreEmpresa','Identificacion','TipoIdentificacion','Correo','ValorOrden','FechaPago','NumeroPedido']
+
+
+
+class RespuestaOrdenSerializer(ModelSerializer):
+    class Meta:
+        model= RespuestaOrdenCompraApi
+        fields=['Identificacion','TipoIdentificacion','ValorAprobado','NumeroOrdenCompra','FechaEmision']
