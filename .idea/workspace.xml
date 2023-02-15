@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/pedido_problemas_detalle.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/pedido_problemas_detalle.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +43,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/juan sebastian duart/Documents/pcs-conecta/pcs/interlocutorc",
+    "last_opened_file_path": "C:/Users/juan sebastian duart/Documents/pcs-conecta/pcs/templates",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.jetbrains.django.DjangoModulesConfigurable"
   }
@@ -46,9 +52,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\templates" />
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs" />
-      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs\static\dist\js\fundacionrv" />
-      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\configuracion" />
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\interlocutorc" />
+      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\configuracion" />
+      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs\static\dist\js\fundacionrv" />
     </key>
   </component>
   <component name="RunManager" selected="Django Server.Django">

@@ -13,7 +13,7 @@ import requests
 import ast
 import pytz
 from rest_framework.viewsets import ModelViewSet
-from interlocutorc.serializers import PostSerializer,FacturasSerializer,RespuestaOrdenSerializer
+from interlocutorc.serializers import PostSerializer,FacturasSerializer,RespuestaOrdenSerializer,RespuestaFacturaSerializer
 import re
 # Create your views here.
 # This view method handles the request for the root URL /
@@ -31,13 +31,21 @@ class ApiFacturas(ModelViewSet):
     serializer_class = FacturasSerializer
     now = datetime.now(pytz.timezone('America/Bogota'))
     hoy = now.date()
-    queryset = FacturasApi.objects.filter(FechaPago__gte=hoy)
+    objetos_a = FacturasApi.objects.filter(FechaPagoFactura__gte=hoy)
+    ids_b = RespuestaFacturaApi.objects.values_list('NumeroFactura', flat=True)
+    queryset = [objeto for objeto in objetos_a if objeto.NumeroFactura not in ids_b]
 
 class RespuestaOrdenApi(ModelViewSet):
     serializer_class = RespuestaOrdenSerializer
     now = datetime.now(pytz.timezone('America/Bogota'))
     hoy = now.date()
     queryset = RespuestaOrdenCompraApi.objects.all()
+
+class RespuestaFacturaApi(ModelViewSet):
+    serializer_class = RespuestaFacturaSerializer
+    now = datetime.now(pytz.timezone('America/Bogota'))
+    hoy = now.date()
+    queryset = RespuestaFacturaApi.objects.all()
 
 def admin_admin(request):
 
@@ -166,7 +174,7 @@ def tarea_api():
                         Correo=datos['E_Mail'],
                         ValorOrden=datos['DocTotal'],
                         FechaEntrega=fecha_pedido,
-                        FechaPago=fecha_pedido,
+                        FechaPago=fecha_hoy,
                         FechaHoy=fecha_hoy,
                         NumeroPedido=datos['DocNum'],
                     )
@@ -233,7 +241,7 @@ def facturas_api():
         for datos in response:
             if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
                 try:
-                    pedido_almacenado = FacturasApi.objects.get(NumeroPedido=datos['DocNum'])
+                    pedido_almacenado = FacturasApi.objects.get(NumeroFactura=datos['DocNum'])
                     pass
                 except:
                     fecha_pedido=str(datos['DocDueDate'])
@@ -245,10 +253,10 @@ def facturas_api():
                         Identificacion=datos['LicTradNum'],
                         TipoIdentificacion='NIT',
                         Correo=datos['E_Mail'],
-                        ValorOrden=datos['DocTotal'],
-                        FechaPago=fecha_pedido,
+                        ValorFacturaEmitida=datos['DocTotal'],
+                        FechaPagoFactura=fecha_pedido,
                         FechaHoy=fecha_hoy,
-                        NumeroPedido=datos['DocNum'],
+                        NumeroFactura=datos['DocNum'],
                     )
                     nuevo_factura.save()
             else:

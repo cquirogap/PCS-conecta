@@ -171,6 +171,7 @@
                                     <form role="form" action="/configuracion/respuesta_peticion/" method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
+                                        <input type="hidden" name="num_pedido" value="{{ problemas_titulo.num_pedido }}">
                                     <input type="hidden" name="problema" value="{{problema.id}}">
                                         <input type="hidden" name="direccion" value="1">
                                     <label>Respuesta</label>

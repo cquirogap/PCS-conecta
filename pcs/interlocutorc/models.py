@@ -87,10 +87,10 @@ class FacturasApi(models.Model):
     Identificacion = models.CharField(max_length=100, null=True)
     TipoIdentificacion = models.CharField(max_length=100, null=True)
     Correo = models.CharField(max_length=100, null=True)
-    ValorOrden = models.CharField(max_length=100, null=True)
-    FechaPago = models.DateField(null=True)
+    ValorFacturaEmitida = models.CharField(max_length=100, null=True)
+    FechaPagoFactura = models.DateField(null=True)
     FechaHoy = models.DateField(null=True)
-    NumeroPedido = models.CharField(max_length=100, null=True)
+    NumeroFactura = models.CharField(max_length=100, null=True)
 
 
 class RespuestaOrdenCompraApi(models.Model):
@@ -99,3 +99,11 @@ class RespuestaOrdenCompraApi(models.Model):
     ValorAprobado = models.CharField(max_length=100, null=True)
     FechaEmision = models.DateField(null=True)
     NumeroOrdenCompra = models.CharField(max_length=100, null=True)
+
+
+class RespuestaFacturaApi(models.Model):
+    Identificacion = models.CharField(max_length=100, null=True)
+    TipoIdentificacion = models.CharField(max_length=100, null=True)
+    ValorAprobado = models.CharField(max_length=100, null=True)
+    FechaEmision = models.DateField(null=True)
+    NumeroFactura = models.CharField(max_length=100, null=True)
