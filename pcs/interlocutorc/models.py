@@ -63,6 +63,12 @@ class HistorialErrorTarea(models.Model):
     fecha=models.DateField(null=True)
     hora=models.TimeField(null=True)
 
+class HistorialEmailEnviados(models.Model):
+    pedido=models.CharField(max_length=100, null=True)
+    empresa=models.CharField(max_length=100, null=True)
+    fecha=models.DateField(null=True)
+    hora=models.TimeField(null=True)
+
 
 class HistorialErrorApi(models.Model):
     accion=models.CharField(max_length=100, null=True)

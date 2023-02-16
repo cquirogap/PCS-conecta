@@ -1,0 +1,150 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/historial_respuesta_pedido/">Historial</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Compañia</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
+              <li><a href="/configuracion/empresas/" >Compañia</a></li>
+              <li><a href="/configuracion/historial_empresas/" >Historial</a></li>
+              <li><a href="/configuracion/historial_email/" >Envio Emails</a></li>
+              <li class="active"><a href="#" data-toggle="tab">Envio Respuesta Pedido</a></li>
+            </ul>
+            {% csrf_token %}
+            <div class="tab-content">
+                <div class="active tab-pane" id="casos_estado">
+                     {% csrf_token %}
+                    <section class="invoice">
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center><h3 >
+                                    <i class="fa fa-check-square-o"></i> Indicadores de Envio de Correos de Pedidos
+                                </h3></center>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 class="page-header">
+
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                               <label>Fecha inicial</label>
+                              <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                    <input type="date" class="form-control" id="fecha_inicio_input">
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                               <label>Fecha final</label>
+                              <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                    <input type="date" class="form-control" id="fecha_fin_input">
+                              </div>
+                          </div>
+                          <div class="col-md-12">
+                              <br>
+                          </div>
+                          <div class="col-md-12">
+                                <button id="buscar_indi_casos_estado_button" class="btn btn-primary btn-block btn-flat" >
+                                  Consultar
+                                </button>
+                          </div>
+                        </div>
+                         <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="page-header">
+                                    </h4>
+                                </div>
+                            </div>
+                            <div id="printableArea">
+
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                              <table id="tabla_indicasos_estado" class="table table-hover">
+                                <tbody>
+                                <!-- Espacio para los datos que cargan -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+
+                                    </tr>
+                                </tfoot>
+                              </table>
+                            </div>
+                            <!-- /.box-body -->
+                      </div>
+                        <br>
+                        <div class="row invoice-info">
+
+                            <div class="col-md-12">
+                              <canvas id="pieChart_casos_estados" style="height: 150px; width: 626px;" width="526" height="263"></canvas>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                   <hr><center></center>
+                              </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

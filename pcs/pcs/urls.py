@@ -128,6 +128,8 @@ urlpatterns.extend(
         url(r'^configuracion/historial_empresas/excel_general/$', configuracion_views.reporte_historial_empresa),
         url(r'^configuracion/historial_email/$', configuracion_views.config_historial_email),
         url(r'^configuracion/historial_respuesta_pedido/$', configuracion_views.config_historial_respuesta_pedido),
+        url(r'^configuracion/indicadores_envio_email/$', configuracion_views.config_indicadores_envio_emails),
+        url(r'^configuracion/envio_mail_indicador/$', configuracion_views.indienvio_mail, name="indienvio_mail"),
         url(r'^configuracion/historial_email/excel_general/$', configuracion_views.reporte_historial),
         url(r'^configuracion/historial_respuesta_pedido/excel_general/$', configuracion_views.reporte_historial_respuesta),
         # Soportes
@@ -260,7 +262,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_factura_deudores/$', configuracion_views.config_solicitud_factura_deudores),
         url(r'^configuracion/solicitud_factura_deudores/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_detalle),
 
-        url(r'^configuracion/tarea/$', interlocutorc_views.facturas_api),
+        url(r'^configuracion/tarea/$', interlocutorc_views.tarea_correo_pedido),
 
         url(r'^configuracion/solicitud_factura_proveedor/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_proveedor),
         #---------------------------------------COMPRAS-------------------------------------------------------------------

@@ -174,7 +174,7 @@ def tarea_api():
                         Correo=datos['E_Mail'],
                         ValorOrden=datos['DocTotal'],
                         FechaEntrega=fecha_pedido,
-                        FechaPago=fecha_hoy,
+                        FechaPago=fecha_pedido,
                         FechaHoy=fecha_hoy,
                         NumeroPedido=datos['DocNum'],
                     )
@@ -287,7 +287,7 @@ def facturas_api():
         errores.save()
 
 
-def tarea_correo_pedido():
+def tarea_correo_pedido(request):
     try:
         estado = 'bost_Open'
         now = datetime.now(pytz.timezone('America/Bogota'))
@@ -355,6 +355,13 @@ def tarea_correo_pedido():
                                                                  datos['DocEntry']) + '/',
                                                              to=[correos])
                                         email.send()
+                                        enviados = HistorialEmailEnviados(
+                                            fecha=hoy,
+                                            hora=hora,
+                                            empresa=str(datos['CardName']),
+                                            pedido=str(datos['DocNum'])
+                                        )
+                                        enviados.save()
                                     except:
                                         now = datetime.now(pytz.timezone('America/Bogota'))
                                         hoy = now.date()
@@ -372,7 +379,7 @@ def tarea_correo_pedido():
                                     hoy = now.date()
                                     hora = now.time()
                                     errores = HistorialErrorTarea(
-                                        accion='No se reconoce el correo' + str(correos),
+                                        accion='No se reconoce el correo ' + str(correos),
                                         fecha=hoy,
                                         hora=hora,
                                         empresa=str(datos['CardName']),
