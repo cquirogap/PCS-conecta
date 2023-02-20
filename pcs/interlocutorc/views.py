@@ -287,7 +287,7 @@ def facturas_api():
         errores.save()
 
 
-def tarea_correo_pedido(request):
+def tarea_correo_pedido():
     try:
         estado = 'bost_Open'
         now = datetime.now(pytz.timezone('America/Bogota'))
