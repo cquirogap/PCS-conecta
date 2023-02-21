@@ -17,10 +17,10 @@ class FacturasSerializer(ModelSerializer):
 class RespuestaOrdenSerializer(ModelSerializer):
     class Meta:
         model= RespuestaOrdenCompraApi
-        fields=['Identificacion','TipoIdentificacion','ValorAprobado','NumeroOrdenCompra','FechaEmision','Impuesto']
+        fields=['Identificacion','TipoIdentificacion','ValorAprobado','NumeroOrdenCompra','FechaEmision','Interes']
 
 
 class RespuestaFacturaSerializer(ModelSerializer):
     class Meta:
         model= RespuestaFacturaApi
-        fields=['Identificacion','TipoIdentificacion','ValorAprobado','NumeroFactura','FechaEmision','Impuesto']
+        fields=['Identificacion','TipoIdentificacion','ValorAprobado','NumeroFactura','FechaEmision','Interes']

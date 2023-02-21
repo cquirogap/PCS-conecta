@@ -105,7 +105,7 @@ class RespuestaOrdenCompraApi(models.Model):
     ValorAprobado = models.CharField(max_length=100, null=True)
     FechaEmision = models.DateField(null=True)
     NumeroOrdenCompra = models.CharField(max_length=100, null=True)
-    Impuesto = models.CharField(max_length=100, null=True,default=None)
+    Interes = models.CharField(max_length=100, null=True,default=None)
 
 
 class RespuestaFacturaApi(models.Model):
@@ -114,4 +114,4 @@ class RespuestaFacturaApi(models.Model):
     ValorAprobado = models.CharField(max_length=100, null=True)
     FechaEmision = models.DateField(null=True)
     NumeroFactura = models.CharField(max_length=100, null=True)
-    Impuesto = models.CharField(max_length=100, null=True, default=None)
+    Interes = models.CharField(max_length=100, null=True, default=None)
