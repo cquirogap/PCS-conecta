@@ -284,6 +284,19 @@
           </ul>
         </li>
         {% endif %}
+        {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1 %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-file-text"></i> <span>Servicios Web</span>
+          </a>
+          <ul class="treeview-menu">
+
+            <li><a href="/configuracion/servicio_crediya/"><i class="fa fa-circle-o"></i>Servicio CrediYa</a></li>
+            <li><a href="/configuracion/servicio_credilisto/"><i class="fa fa-circle-o"></i>Servicio CrediListo</a></li>
+
+          </ul>
+        </li>
+        {% endif %}
         {% if  permiso_usuario.atencion == 1 or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
