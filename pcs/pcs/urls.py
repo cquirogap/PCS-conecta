@@ -128,10 +128,12 @@ urlpatterns.extend(
         url(r'^configuracion/historial_empresas/excel_general/$', configuracion_views.reporte_historial_empresa),
         url(r'^configuracion/historial_email/$', configuracion_views.config_historial_email),
         url(r'^configuracion/historial_respuesta_pedido/$', configuracion_views.config_historial_respuesta_pedido),
+        url(r'^configuracion/historial_correos_enviados/$', configuracion_views.config_historial_correos_enviados),
         url(r'^configuracion/indicadores_envio_email/$', configuracion_views.config_indicadores_envio_emails),
         url(r'^configuracion/envio_mail_indicador/$', configuracion_views.indienvio_mail, name="indienvio_mail"),
         url(r'^configuracion/historial_email/excel_general/$', configuracion_views.reporte_historial),
         url(r'^configuracion/historial_respuesta_pedido/excel_general/$', configuracion_views.reporte_historial_respuesta),
+        url(r'^configuracion/historial_correos_enviados/excel_general/$', configuracion_views.reporte_correos_enviados),
         # Soportes
         url(r'^configuracion/soportes/$', configuracion_views.config_soportes),
         url(r'^configuracion/soportes/registrar/$', configuracion_views.config_soportes_registrar),

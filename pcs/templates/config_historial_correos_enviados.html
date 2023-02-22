@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/historial_email/">Historial</a>
+        <a href="#">Historial Correos Enviados</a>
         <small>Configuracion</small>
       </h1>
 
@@ -41,7 +41,7 @@
       {% endif %}
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
-        <li><a href="#">Compañia</a></li>
+        <li><a href="#">Historial</a></li>
       </ol>
 
 
@@ -54,14 +54,14 @@
               <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
               <li><a href="/configuracion/empresas/" >Compañia</a></li>
               <li><a href="/configuracion/historial_empresas/" >Historial</a></li>
-              <li class="active"><a href="#" data-toggle="tab">Envio Emails</a></li>
+              <li><a href="/configuracion/historial_email/" >Envio Emails</a></li>
               <li><a href="/configuracion/historial_respuesta_pedido/">Envio Respuesta Pedido</a></li>
-                <li ><a href="/configuracion/indicadores_envio_email/" >Indicador Envio Email</a></li>
-                <li ><a href="/configuracion/historial_correos_enviados/" >Correos Enviados</a></li>
+              <li ><a href="/configuracion/indicadores_envio_email/" >Indicador Envio Email</a></li>
+                <li class="active" data-toggle="tab"><a href="#" >Correos Enviados</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
-                <form role="form" action="/configuracion/historial_email/" method="POST">
+                <form role="form" action="/configuracion/historial_correos_enviados/" method="POST">
                     {% csrf_token %}
                     <br>
                     <div class="row">
@@ -81,6 +81,18 @@
                     </div>
                     <div class="col-md-12">
                         <br>
+                        <label>Empresa</label>
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                <select class="form-control select2 " style="width: 100%;" name="empresa" id="empresa">
+                                    <option value="" selected disabled></option>
+                                    {% for empresa_nombre in empresas %}
+                                        <option value="{{ empresa_nombre.nombre }}"
+                                        {% if empresa == empresa_nombre.nombre %}selected{% endif %}>
+                                            {{empresa_nombre.nombre}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                     </div>
 
                     <div class="col-md-12">
@@ -93,7 +105,7 @@
                         </button>
                     </div>
                     <div class="col-md-6">
-                        <button type="button" id="buscar_historial_email_excel_button"  class="btn btn-success btn-block btn-flat" >
+                        <button type="button" id="buscar_historial_correos_enviados_excel_button"  class="btn btn-success btn-block btn-flat" >
                             <span class="glyphicon glyphicon-folder-open"></span>
                             <span class="glyphicon glyphicon-search"></span>Excel
                         </button>
@@ -114,22 +126,22 @@
                                   <table id="empresas" class="table table-bordered table-hover dataTables">
                                     <thead>
                                         <tr>
-                                            <th>Accion</th>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
                                             <th>Empresa</th>
                                             <th>Pedido</th>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Email</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for historial in lista_historial %}
                                             <tr>
 
-                                                <td>{{historial.accion}}</td>
-                                                <td>{{historial.fecha}}</td>
-                                                <td>{{historial.hora}}</td>
                                                 <td>{{historial.empresa}}</td>
                                                 <td>{{historial.pedido}}</td>
+                                                <td>{{historial.fecha}}</td>
+                                                <td>{{historial.hora}}</td>
+                                                <td>{{historial.email}}</td>
 
 
                                             </tr>

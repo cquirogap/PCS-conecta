@@ -1909,6 +1909,25 @@ $(function () {
     )
 
 
+    var buscar_historial_correos_enviados_excel = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        const EmpresaSeleccionada = document.getElementById("empresa").value;
+
+        window.location.href = '/configuracion/historial_correos_enviados/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa='+EmpresaSeleccionada
+
+    }
+
+    $("#buscar_historial_correos_enviados_excel_button").click(
+       function (e) {
+           buscar_historial_correos_enviados_excel()
+       }
+    )
+
+
     var buscar_historial_empresa_excel = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";
@@ -2174,9 +2193,9 @@ $(function () {
                                   "<div class='info-box'>"+
                                     "<span class='info-box-icon bg-red'><i class='ion ion-ios-people-outline'></i></span>"+
                                     "<div class='info-box-content'>"+
-                                      "<span class='info-box-text'>"+'CORREOS ENVIADOS'+"</span>"+
-                                      "<span class='info-box-number'>"+data.n_casos_pendientes+"/"+data.total+ "</span>"+
-                                      "<strong><i class='fa fa fa-arrow-right'></i>"+data.p_casos_pendientes+"%"+"</strong><br><br>"+
+                                      "<span class='info-box-text'>"+'CORREOS SIN ENVIAR'+"</span>"+
+                                      "<span class='info-box-number'>"+data.n_casos_finalizado+"/"+data.total+ "</span>"+
+                                      "<strong><i class='fa fa fa-arrow-right'></i>"+data.p_casos_finalizado+"%"+"</strong><br><br>"+
                                     "</div>"+
                                   "</div>"+
                                 "</div>"+
@@ -2186,9 +2205,19 @@ $(function () {
                                   "<div class='info-box'>"+
                                     "<span class='info-box-icon bg-green'><i class='ion ion-ios-people-outline'></i></span>"+
                                     "<div class='info-box-content'>"+
-                                      "<span class='info-box-text'>"+"CORREOS SIN ENVIAR"+"</span>"+
-                                      "<span class='info-box-number'>"+data.n_casos_finalizado+"/"+data.total+"</span>"+
-                                      "<strong><i class='fa fa fa-arrow-right'></i>"+data.p_casos_finalizado+"%"+"</strong><br><br>"+
+                                      "<span class='info-box-text'>"+"CORREOS ENVIADOS"+"</span>"+
+                                      "<span class='info-box-number'>"+data.n_casos_pendientes+"/"+data.total+"</span>"+
+                                      "<strong><i class='fa fa fa-arrow-right'></i>"+data.p_casos_pendientes+"%"+"</strong><br><br>"+
+                                    "</div>"+
+                                  "</div>"+
+                                "</div>"+
+                        "<div class='col-md-4 col-sm-6 col-xs-12'>"+
+                                  "<div class='info-box'>"+
+                                    "<span class='info-box-icon bg-yellow'><i class='ion ion-ios-people-outline'></i></span>"+
+                                    "<div class='info-box-content'>"+
+                                      "<span class='info-box-text'>"+"CORREOS NO PERTENECEN"+"</span>"+
+                                      "<span class='info-box-number'>"+data.n_casos_no_pertenece+"/"+data.total+"</span>"+
+                                      "<strong><i class='fa fa fa-arrow-right'></i>"+data.p_casos_no_pertenece+"%"+"</strong><br><br>"+
                                     "</div>"+
                                   "</div>"+
                                 "</div>"+
@@ -2198,16 +2227,22 @@ $(function () {
                         var pieChart = new Chart(pieChartCanvas);
                         var PieData = [
                           {
-                                value: data.p_casos_pendientes,
+                                value: data.p_casos_finalizado,
                                 color: "#dd4b39",
                                 highlight: "#dd4b39",
-                                label: "CORREOS ENVIADOS %"
+                                label: "CORREOS SIN ENVIAR %"
                               },
                               {
-                                value:  data.p_casos_finalizado,
+                                value:  data.p_casos_pendientes,
                                 color: "#50bc37",
                                 highlight: "#50bc37",
-                                label: "CORREOS SIN ENVIAR %"
+                                label: "CORREOS ENVIADOS %"
+                              },
+                            {
+                                value:  data.p_casos_no_pertenece,
+                                color: "#f5841f",
+                                highlight: "#f5841f",
+                                label: "CORREOS NO PERTENECE %"
                               }
                         ];
                         var pieOptions = {

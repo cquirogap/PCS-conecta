@@ -359,7 +359,9 @@ def tarea_correo_pedido():
                                             fecha=hoy,
                                             hora=hora,
                                             empresa=str(datos['CardName']),
-                                            pedido=str(datos['DocNum'])
+                                            pedido=str(datos['DocNum']),
+                                            tipo='enviado',
+                                            email=correos
                                         )
                                         enviados.save()
                                     except:
@@ -403,7 +405,15 @@ def tarea_correo_pedido():
                         )
                         errores.save()
             else:
-                pass
+                enviados = HistorialEmailEnviados(
+                    fecha=hoy,
+                    hora=hora,
+                    empresa=str(datos['CardName']),
+                    pedido=str(datos['DocNum']),
+                    tipo='noregistrado',
+                    email=None
+                )
+                enviados.save()
 
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
