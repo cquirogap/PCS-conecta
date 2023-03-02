@@ -284,7 +284,7 @@
           </ul>
         </li>
         {% endif %}
-        {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1 %}
+        {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Servicios Web</span>
