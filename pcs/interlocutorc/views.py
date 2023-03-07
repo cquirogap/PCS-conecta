@@ -146,7 +146,7 @@ def tarea_api():
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosApi')/List?FechaHoy='"+ str(hoy) + "'"
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosApi')/List?FechaHoy='" + str(hoy) + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',

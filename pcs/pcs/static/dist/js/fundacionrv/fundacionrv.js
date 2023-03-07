@@ -2234,7 +2234,7 @@ $(function () {
                                   "<div class='info-box'>"+
                                     "<span class='info-box-icon bg-red'><i class='ion ion-ios-people-outline'></i></span>"+
                                     "<div class='info-box-content'>"+
-                                      "<span class='info-box-text'>"+'CORREOS SIN ENVIAR'+"</span>"+
+                                      "<a href='/configuracion/historial_correos_no_enviados/?fecha_inicio="+fecha_inicio+"&fecha_fin="+fecha_fin+"'><span class='info-box-text' >"+'CORREOS SIN ENVIAR'+"</span></a>"+
                                       "<span class='info-box-number'>"+data.n_casos_finalizado+"/"+data.total+ "</span>"+
                                       "<strong><i class='fa fa fa-arrow-right'></i>"+data.p_casos_finalizado+"%"+"</strong><br><br>"+
                                     "</div>"+
