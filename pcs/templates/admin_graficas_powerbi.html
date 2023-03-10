@@ -1,0 +1,143 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="#">Graficas Administrar</a>
+        <small>Administrar</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Administrar</a></li>
+        <li><a href="#">Graficar </a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <div class="tab-content">
+                <!-- Paises -->
+                <div class="active tab-pane" id="paises">
+                    <!-- Formulario Paises -->
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/definiciones/graficas/" method="POST">
+                              <!-- comando django de seguridad -->
+                              {% csrf_token %}
+                              <input type="hidden" name="codigo" value="{{data_grafica.codigo  }}">
+                              <div>
+                                  <div class="form-group">
+                                      <label for="nombre_pais">Nombre</label>
+                                      <input type="text" class="form-control" id="nombre_pais"
+                                        style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                        name="nombre" placeholder="Nombre de la grafica" value="{{data_grafica.nombre}}" required>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="codigo_pais">Grafica</label>
+                                      <input type="text" class="form-control"  min="0" max="999" id="codigo_pais"
+                                       name="grafica" placeholder="Link Grafica" value="{{data_grafica.grafica}}" required>
+
+                                  </div>
+                                  <div class="form-group">
+                                   <label>Tipo Usuario</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo_usuario" required>
+                                           <option value="" selected disabled></option>
+                                              <option value="PCS" {% if  data_grafica.tipo_usuario == 'PCS'%}selected{% endif %}>PCS</option>
+                                              <option value="EMPRESARIO"{% if  data_grafica.tipo_usuario == 'EMPRESARIO'%}selected{% endif %}>EMPRESARIO</option>
+                                      </select>
+                                  </div>
+                              </div>
+
+                              </div>
+                              <!-- /.box-body -->
+                              <div>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                  <br>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+                    <br>
+                    <!-- Tabla paises existentes -->
+                   <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                  <h3 class="box-title">Grafica</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive no-padding">
+                                   <table id="pais" class="table table-bordered table-hover dataTables">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Nombre</th>
+                                        <th>Tipo Usuario</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for grafica in lista_graficas %}
+                                <tr>
+                                    <td>{{grafica.id}}</td>
+                                    <td>{{grafica.nombre}}</td>
+                                    <td>{{grafica.tipo_usuario}}</td>
+                                    <td><center><a class="btn btn-info btn-sm" href="/configuracion/definiciones/grafica/{{ grafica.id }}/detalle/" title="Editar pais">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                    </a></center></td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                                </div>
+                                <!-- /.box-body -->
+                          </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                </div>
+
+            </div>
+            <!-- /.tab-content -->
+          </div>
+    </section>
+
+{% endblock %}

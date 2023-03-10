@@ -287,6 +287,13 @@ def facturas_api():
         errores.save()
 
 
+def prueba(request):
+    email = EmailMessage('TIENES UN NUEVO PEDIDO',
+                         'hssg',
+                         to=['juan   sebastianduartes@gmail.com'])
+    email.send()
+
+
 def tarea_correo_pedido():
     try:
         estado = 'bost_Open'
@@ -345,11 +352,12 @@ def tarea_correo_pedido():
                             response2 = response2['E_MailL']
                             response2 = str(response2).split(";")
                             for correos in response2:
-                                expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+                                correos=correos.lstrip()
+                                expresion_regular = r"(?i)(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
                                 valido = re.match(expresion_regular, correos) is not None
                                 if valido == True:
                                     try:
-                                        email = EmailMessage('TIENES UN NUEVO PEDIDO',
+                                        email = EmailMessage('TIENES UN NUEVO PEDIDO '+str(datos['DocNum']),
                                                              'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
                                                              + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                                  datos['DocEntry']) + '/',

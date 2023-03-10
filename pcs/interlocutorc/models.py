@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+import datetime
 
 from configuracion.models import *
 
@@ -103,18 +104,18 @@ class FacturasApi(models.Model):
 
 
 class RespuestaOrdenCompraApi(models.Model):
-    Identificacion = models.CharField(max_length=100, null=True)
-    TipoIdentificacion = models.CharField(max_length=100, null=True)
-    ValorAprobado = models.CharField(max_length=100, null=True)
-    FechaEmision = models.DateField(null=True)
-    NumeroOrdenCompra = models.CharField(max_length=100, null=True)
-    Interes = models.CharField(max_length=100, null=True,default=None)
+    Identificacion = models.CharField(max_length=100, null=True,default='0000')
+    TipoIdentificacion = models.CharField(max_length=100, null=True,default='NIT')
+    ValorAprobado = models.CharField(max_length=100, null=True,default='0')
+    FechaEmision = models.DateField(null=True,default=datetime.date(1, 1, 1))
+    NumeroOrdenCompra = models.CharField(max_length=100, null=True,default='0')
+    Interes = models.CharField(max_length=100, null=True,default='0')
 
 
 class RespuestaFacturaApi(models.Model):
-    Identificacion = models.CharField(max_length=100, null=True)
-    TipoIdentificacion = models.CharField(max_length=100, null=True)
-    ValorAprobado = models.CharField(max_length=100, null=True)
-    FechaEmision = models.DateField(null=True)
-    NumeroFactura = models.CharField(max_length=100, null=True)
-    Interes = models.CharField(max_length=100, null=True, default=None)
+    Identificacion = models.CharField(max_length=100, null=True,default='0000')
+    TipoIdentificacion = models.CharField(max_length=100, null=True,default='NIT')
+    ValorAprobado = models.CharField(max_length=100, null=True,default='0')
+    FechaEmision = models.DateField(null=True,default=datetime.date(1, 1, 1))
+    NumeroFactura = models.CharField(max_length=100, null=True,default='0')
+    Interes = models.CharField(max_length=100, null=True,default='0')

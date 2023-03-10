@@ -40,6 +40,7 @@ urlpatterns.extend(
         # Administracion
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
+        url(r'^prueba/$', interlocutorc_views.prueba),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
         url(r'^configuracion/justificacion/$', configuracion_views.config_justificacion),
@@ -93,6 +94,11 @@ urlpatterns.extend(
         url(r'^configuracion/solicitudes_generales/$', configuracion_views.config_solicitudes_generales),
         url(r'^configuracion/solicitudes_generales/informacion/$', configuracion_views.informacion_complementaria_consulta_solicitud),
 
+        #PowerBi
+        url(r'^configuracion/definiciones/graficas/$', configuracion_views.admin_graficas_powerbi),
+        url(r'^configuracion/definiciones/grafica/(?P<grafica_id>\d+)/detalle/$', configuracion_views.detalle_grafica),
+        url(r'^configuracion/definiciones/grafica_pcs_actuales/$', configuracion_views.admin_graficas_actuales_pcs_powerbi),
+        url(r'^configuracion/definiciones/grafica_empresarios_actuales/$', configuracion_views.admin_graficas_actuales_empresarios_powerbi),
 
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),

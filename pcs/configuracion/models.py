@@ -215,6 +215,11 @@ class Atorizaciones(models.Model):
         return str(self.descripcion)
 
 
+class Graficas (models.Model):
+    nombre = models.CharField(max_length=45)
+    tipo_usuario = models.CharField(max_length=45,default=None)
+    grafico = models.CharField(max_length=100)
+
 
 
 # Tabla soportes papel, electronico y Digital
