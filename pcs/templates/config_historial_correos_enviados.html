@@ -79,7 +79,25 @@
                          <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" required>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                            <br>
+                            <label>Email</label>
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input type="email" class="form-control" id="email"
+                                       name="email" placeholder="Correo de Envio" value="{{ email }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <br>
+                            <label>Pedido</label>
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input type="number" class="form-control" id="pedido"
+                                       name="pedido" placeholder="Numero de Pedido" value="{{ pedido }}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
                         <br>
                         <label>Empresa</label>
                             <div class="input-group ">
@@ -94,7 +112,6 @@
                                 </select>
                             </div>
                     </div>
-
                     <div class="col-md-12">
                         <br>
                     </div>

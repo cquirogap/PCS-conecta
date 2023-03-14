@@ -1915,9 +1915,13 @@ $(function () {
         fecha_inicio = fecha_inicio.replace(/\s+/g, '');
         fecha_fin = $("#fecha_fin_input").val() || "";
         fecha_fin = fecha_fin.replace(/\s+/g, '');
+        email = $("#email").val() || "";
+        email = email.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
         const EmpresaSeleccionada = document.getElementById("empresa").value;
 
-        window.location.href = '/configuracion/historial_correos_enviados/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa='+EmpresaSeleccionada
+        window.location.href = '/configuracion/historial_correos_enviados/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa='+EmpresaSeleccionada+'&email='+email+'&pedido='+pedido
 
     }
 
