@@ -2260,7 +2260,7 @@ $(function () {
                                   "<div class='info-box'>"+
                                     "<span class='info-box-icon bg-yellow'><i class='ion ion-ios-people-outline'></i></span>"+
                                     "<div class='info-box-content'>"+
-                                      "<span class='info-box-text'>"+"CORREOS NO PERTENECEN"+"</span>"+
+                                      "<a href='/configuracion/historial_correos_no_registrados/?fecha_inicio="+fecha_inicio+"&fecha_fin="+fecha_fin+"'><span class='info-box-text'>"+"CORREOS NO PERTENECEN"+"</span></a>"+
                                       "<span class='info-box-number'>"+data.n_casos_no_pertenece+"/"+data.total+"</span>"+
                                       "<strong><i class='fa fa fa-arrow-right'></i>"+data.p_casos_no_pertenece+"%"+"</strong><br><br>"+
                                     "</div>"+
