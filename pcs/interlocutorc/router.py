@@ -1,5 +1,5 @@
 from rest_framework.routers import DefaultRouter
-from interlocutorc.views import ApiPrueba,ApiFacturas,RespuestaOrdenApi,RespuestaFacturaApi
+from interlocutorc.views import ApiPrueba,ApiFacturas,RespuestaOrdenApi,RespuestaFacturaApi,MyListView
 
 router_posts=DefaultRouter()
 

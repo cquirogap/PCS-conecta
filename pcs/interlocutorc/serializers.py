@@ -1,5 +1,28 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from interlocutorc.models import ClientesApi,FacturasApi,RespuestaOrdenCompraApi,RespuestaFacturaApi
+
+
+
+
+class MyDataSerializer(serializers.Serializer):
+    OrdenEDI = serializers.CharField()
+    OrdenSAP = serializers.CharField()
+    Cliente = serializers.CharField()
+    Empresario = serializers.CharField()
+    NombreCliente = serializers.CharField()
+    NombreEmpresario = serializers.CharField()
+    GLNEntrega = serializers.CharField()
+    SitioEntrega = serializers.CharField()
+    FechaExpedicionEDI = serializers.CharField()
+    FechaMinimaEdi = serializers.CharField()
+    FechaMaximaEdi = serializers.CharField()
+    GLNCod_Dep = serializers.CharField()
+    GLNCliente = serializers.CharField()
+    Tipopedido = serializers.CharField()
+    lineas_orden = serializers.JSONField()
+
+
 
 class PostSerializer(ModelSerializer):
     class Meta:

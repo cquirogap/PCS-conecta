@@ -41,6 +41,7 @@ urlpatterns.extend(
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
         url(r'^prueba/$', interlocutorc_views.prueba),
+        url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
         url(r'^configuracion/justificacion/$', configuracion_views.config_justificacion),

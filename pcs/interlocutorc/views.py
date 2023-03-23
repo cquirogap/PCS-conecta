@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+
 # Import the datetime module so that we can get the current time
 import datetime
+import json
+
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -13,11 +17,102 @@ import requests
 import ast
 import pytz
 from rest_framework.viewsets import ModelViewSet
-from interlocutorc.serializers import PostSerializer,FacturasSerializer,RespuestaOrdenSerializer,RespuestaFacturaSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from interlocutorc.serializers import PostSerializer,FacturasSerializer,RespuestaOrdenSerializer,RespuestaFacturaSerializer,MyDataSerializer
 import re
+from itertools import groupby
 # Create your views here.
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
+
+
+
+class MyListView(APIView):
+    def get(self, request,start_date,end_date):
+        url = "https://192.168.1.20:50000/b1s/v1/Login"
+
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+
+        response = requests.request("POST", url, data=payload, verify=False)
+        respuesta = ast.literal_eval(response.text)
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosIndicadorJSON')/List?FechaInicial='" + start_date + "'&FechaFinal='" + end_date + "'"
+
+        headers = {
+            'Prefer': 'odata.maxpagesize=9999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+        response3 = requests.request("GET", url2, headers=headers, verify=False)
+        response3 = response3.text
+        response3 = response3.replace('null', ' " " ')
+        response3 = ast.literal_eval(response3)
+        response3 = response3['value']
+        response3 = [dict(t) for t in set(tuple(sorted(d.items())) for d in response3)]
+        patron = re.compile(r'[^\w\s]+')
+
+        # Iterar sobre cada diccionario de la lista
+        for diccionario in response3:
+            # Iterar sobre cada clave-valor del diccionario
+            for clave, valor in diccionario.items():
+                if isinstance(valor, str):
+                    diccionario[clave] = patron.sub('', valor)
+        lista=[]
+        for d in response3:
+            if d['U_EAN']==' ':
+                Eandependencia=d['EANEntrega']
+                NombreDep=d['SitioEntrega']
+            else:
+                Eandependencia=d['U_EAN']
+                NombreDep = d['NombreDep']
+            if d['U_HBT1_TIPO_ORD_EDI']=='220':
+                Tipopedido='Almacenamiento'
+            elif d['U_HBT1_TIPO_ORD_EDI']=='YB1':
+                Tipopedido = 'Predistribuido'
+            elif d['U_HBT1_TIPO_ORD_EDI']=='YA9':
+                Tipopedido = 'Consolidado'
+            else:
+                Tipopedido='Sin Asignar'
+
+            lista_individual={
+                'OrdenEDI': d['OrdenEDI'],
+                'OrdenSAP':d['PedidoVta'],
+                'Cliente':d['Cliente'],
+                'Empresario':d['Empresario'],
+                'NombreCliente':d['NombreCliente'],
+                'NombreEmpresario':d['NombreEmpresario'],
+                'GLNEntrega':d['EANEntrega'],
+                'SitioEntrega':d['SitioEntrega'],
+                'FechaExpedicionEDI':d['FechaDocto'],
+                'FechaMinimaEdi':d['FechaMinEnt'],
+                'FechaMaximaEdi':d['FechaMaxEnt'],
+                'GLNCod_Dep':Eandependencia,
+                'NombreDep':NombreDep,
+                'EANproducto':d['EANArticulo'],
+                'DescripArticulo':d['DescripArticulo'],
+                'Cantidad':d['CantidadFactura'],
+                'ValorUnitario':d['PrecioPed'],
+                'ValorTotal':d['TotalPed'],
+                'SKU / REFERENCIA CLIENTE':d['PLU'],
+                'SKU / REFERENCIA EMPRESARIO':d['CodArticulo'],
+                'GLNCliente':d['Cliente'],
+                'Tipopedido':Tipopedido
+            }
+            lista.append(lista_individual)
+
+
+        response3=lista
+        lista_ordenada = sorted(response3, key=lambda x: (x['OrdenEDI'], x['OrdenSAP'], x['Cliente'], x['Empresario'],x['NombreCliente'],x['NombreEmpresario'],x['GLNEntrega'],x['SitioEntrega'],x['FechaExpedicionEDI'],x['FechaMinimaEdi'],x['FechaMaximaEdi'],x['GLNCod_Dep'],x['NombreDep'],x['GLNCliente'],x['Tipopedido']))
+
+        grupos_ordenados = groupby(lista_ordenada, key=lambda x: (x['OrdenEDI'], x['OrdenSAP'], x['Cliente'], x['Empresario'],x['NombreCliente'],x['NombreEmpresario'],x['GLNEntrega'],x['SitioEntrega'],x['FechaExpedicionEDI'],x['FechaMinimaEdi'],x['FechaMaximaEdi'],x['GLNCod_Dep'],x['NombreDep'],x['GLNCliente'],x['Tipopedido']))
+
+        resultado = [{'OrdenEDI': OrdenEDI, 'OrdenSAP': OrdenSAP, 'Cliente': Cliente, 'Empresario': Empresario, 'NombreCliente': NombreCliente, 'NombreEmpresario': NombreEmpresario, 'GLNEntrega': GLNEntrega, 'SitioEntrega': SitioEntrega, 'FechaExpedicionEDI': FechaExpedicionEDI, 'FechaMinimaEdi': FechaMinimaEdi,
+                      'FechaMaximaEdi': FechaMaximaEdi,'GLNCod_Dep': GLNCod_Dep,'NombreDep': NombreDep,'GLNCliente': GLNCliente,'Tipopedido': Tipopedido, 'lineas_orden': list(info)} for
+                     (OrdenEDI, OrdenSAP, Cliente, Empresario, NombreCliente, NombreEmpresario, GLNEntrega, SitioEntrega, FechaExpedicionEDI, FechaMinimaEdi, FechaMaximaEdi, GLNCod_Dep, NombreDep, GLNCliente, Tipopedido),
+                     info in grupos_ordenados]
+
+        serializer = MyDataSerializer(resultado, many=True)
+        return Response(serializer.data)
+
 
 class ApiPrueba(ModelViewSet):
     serializer_class = PostSerializer
