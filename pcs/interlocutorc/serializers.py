@@ -18,6 +18,7 @@ class MyDataSerializer(serializers.Serializer):
     FechaMinimaEdi = serializers.CharField()
     FechaMaximaEdi = serializers.CharField()
     GLNCod_Dep = serializers.CharField()
+    NombreDep = serializers.CharField()	
     GLNCliente = serializers.CharField()
     Tipopedido = serializers.CharField()
     lineas_orden = serializers.JSONField()
