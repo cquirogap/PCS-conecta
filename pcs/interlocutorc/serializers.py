@@ -34,7 +34,7 @@ class PostSerializer(ModelSerializer):
 class FacturasSerializer(ModelSerializer):
     class Meta:
         model= FacturasApi
-        fields=['NombreEmpresa','Identificacion','TipoIdentificacion','Correo','ValorFacturaEmitida','FechaPagoFactura','NumeroFactura']
+        fields=['NombreEmpresa','Identificacion','TipoIdentificacion','Correo','ValorFacturaEmitida','FechaPagoFactura','NumeroFactura','Referencia2']
 
 
 

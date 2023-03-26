@@ -101,6 +101,18 @@ class FacturasApi(models.Model):
     FechaPagoFactura = models.DateField(null=True)
     FechaHoy = models.DateField(null=True)
     NumeroFactura = models.CharField(max_length=100, null=True)
+    Referencia2 = models.CharField(max_length=100, null=True, default='0')
+
+class FacturasApis(models.Model):
+    NombreEmpresa = models.CharField(max_length=100, null=True)
+    Identificacion = models.CharField(max_length=100, null=True)
+    TipoIdentificacion = models.CharField(max_length=100, null=True)
+    Correo = models.CharField(max_length=100, null=True)
+    ValorFacturaEmitida = models.CharField(max_length=100, null=True)
+    FechaPagoFactura = models.DateField(null=True)
+    FechaHoy = models.DateField(null=True)
+    NumeroFactura = models.CharField(max_length=100, null=True)
+    Referencia2 = models.CharField(max_length=100, null=True,default='0')
 
 
 class RespuestaOrdenCompraApi(models.Model):

@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="" />
+    <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,18 +44,23 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Janus/Documents/GitHub/pcs-conecta/pcs/pcs/static/dist/js/fundacionrv",
+    "last_opened_file_path": "C:/Users/Janus/Documents/GitHub/pcs-conecta/pcs/interlocutorc",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.django.DjangoModulesConfigurable"
+    "settings.editor.selected.configurable": "com.jetbrains.django.DjangoModulesConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Janus\Documents\GitHub\pcs-conecta\pcs\interlocutorc" />
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\templates" />
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs\static\dist\js\fundacionrv" />
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs" />
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs\static\dist\js" />
-      <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\interlocutorc" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\juan sebastian duart\Documents\pcs-conecta\pcs\pcs\static\dist\js\fundacionrv" />
@@ -118,6 +132,7 @@
       <workItem from="1675809912646" duration="211000" />
       <workItem from="1675981332728" duration="165000" />
       <workItem from="1678153717140" duration="300000" />
+      <workItem from="1679868313220" duration="333000" />
     </task>
     <servers />
   </component>

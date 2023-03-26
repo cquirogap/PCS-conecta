@@ -241,7 +241,7 @@ def tarea_api():
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosApi')/List?FechaHoy='" + str(hoy) + "'"
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosApis')/List?FechaHoy='" + str(hoy) + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -267,7 +267,7 @@ def tarea_api():
                         Identificacion=datos['LicTradNum'],
                         TipoIdentificacion='NIT',
                         Correo=datos['E_Mail'],
-                        ValorOrden=datos['DocTotal'],
+                        ValorOrden=format(int(datos['DocTotal']) - int(datos['VatSum']), '0,.0f'),
                         FechaEntrega=fecha_pedido,
                         FechaPago=fecha_pedido,
                         FechaHoy=fecha_hoy,
@@ -322,7 +322,7 @@ def facturas_api():
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultasFacturasApi')/List"
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultasFacturasApis')/List"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -352,6 +352,7 @@ def facturas_api():
                         FechaPagoFactura=fecha_pedido,
                         FechaHoy=fecha_hoy,
                         NumeroFactura=datos['DocNum'],
+                        Referencia=datos['NumAtCard'],
                     )
                     nuevo_factura.save()
             else:
