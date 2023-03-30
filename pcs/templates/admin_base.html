@@ -786,5 +786,15 @@
     ]
   });
 </script>
+<script>
+  const checkboxSeleccionarTodo = document.getElementById('seleccionar_todo');
+  const filasSeleccionables = document.querySelectorAll('.fila_seleccionable input[type="checkbox"]');
+
+  checkboxSeleccionarTodo.addEventListener('change', () => {
+    filasSeleccionables.forEach((checkbox) => {
+      checkbox.checked = checkboxSeleccionarTodo.checked;
+    });
+  });
+</script>
 </body>
 </html>

@@ -71,10 +71,17 @@
                             <div class="box">
                                 <br>
                                 <!-- /.box-header -->
+                                <form role="form" action="/configuracion/enviar_correos_no_enviados/" method="POST">
+                                    <input type="hidden" value="{{ fecha_fin }}" name="fecha_fin">
+                                    <input type="hidden" value="{{ fecha_inicio }}" name="fecha_inicio">
                                 <div class="box-body table-responsive no-padding">
+
+                                    {% csrf_token %}
                                   <table id="empresas" class="table table-bordered table-hover dataTables">
+
                                     <thead>
                                         <tr>
+                                            <th width="10">SELECCIONAR TODOS <input type="checkbox" id="seleccionar_todo"></th>
                                             <th>Empresa</th>
                                             <th>Pedido</th>
                                             <th>Fecha</th>
@@ -82,18 +89,20 @@
                                     </thead>
                                     <tbody>
                                         {% for datos in datos_no_en_queryset %}
-                                            <tr>
-
-                                                <td>{{datos.empresa}}</td>
-                                                <td>{{datos.pedido}}</td>
-                                                <td>{{datos.fecha}}</td>
-
-
+                                            <tr class="fila_seleccionable">
+                                                <td><input type="checkbox" name="datos_seleccionados[]" value="{{ datos.empresa }},{{ datos.pedido }},{{ datos.num_pedido }},{{ datos.codigo }}"></td>
+                                                <td>{{ datos.empresa }}</td>
+                                                <td>{{ datos.pedido }}</td>
+                                                <td>{{ datos.fecha }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
                                   </table>
+
                                 </div>
+                                    <br>
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">ENVIAR CORREOS</button>
+                                </form>
                                 <!-- /.box-body -->
                           </div>
                             <!-- /.box -->

@@ -141,6 +141,7 @@ urlpatterns.extend(
         url(r'^configuracion/historial_respuesta_pedido/$', configuracion_views.config_historial_respuesta_pedido),
         url(r'^configuracion/historial_correos_enviados/$', configuracion_views.config_historial_correos_enviados),
         url(r'^configuracion/historial_correos_no_enviados/$', configuracion_views.config_historial_correos_no_enviados),
+        url(r'^configuracion/enviar_correos_no_enviados/$', configuracion_views.config_enviar_correos_no_enviados),
         url(r'^configuracion/historial_correos_no_registrados/$', configuracion_views.config_historial_correos_no_registrados),
         url(r'^configuracion/indicadores_envio_email/$', configuracion_views.config_indicadores_envio_emails),
         url(r'^configuracion/envio_mail_indicador/$', configuracion_views.indienvio_mail, name="indienvio_mail"),
@@ -277,7 +278,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_factura_deudores/$', configuracion_views.config_solicitud_factura_deudores),
         url(r'^configuracion/solicitud_factura_deudores/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_detalle),
 
-        url(r'^configuracion/tarea/$', interlocutorc_views.tarea_correo_pedido),
+        url(r'^configuracion/tarea/$', interlocutorc_views.tarea_api),
 
         url(r'^configuracion/solicitud_factura_proveedor/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_proveedor),
         #---------------------------------------COMPRAS-------------------------------------------------------------------
