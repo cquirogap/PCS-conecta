@@ -352,7 +352,7 @@ def facturas_api():
                         FechaPagoFactura=fecha_pedido,
                         FechaHoy=fecha_hoy,
                         NumeroFactura=datos['DocNum'],
-                        Referencia=datos['NumAtCard'],
+                        Referencia2=datos['NumAtCard'],
                     )
                     nuevo_factura.save()
             else:
