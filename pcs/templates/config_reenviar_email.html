@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/historial_empresas/">Historial</a>
+        <a href="#">Historial</a>
         <small>Configuracion</small>
       </h1>
 
@@ -53,16 +53,16 @@
             <ul class="nav nav-tabs">
               <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
               <li><a href="/configuracion/empresas/" >Compañia</a></li>
-              <li class="active"><a href="#" data-toggle="tab">Historial</a></li>
+              <li><a href="/configuracion/historial_empresas/" >Historial</a></li>
               <li><a href="/configuracion/historial_email/" >Envio Emails</a></li>
               <li><a href="/configuracion/historial_respuesta_pedido/">Envio Respuesta Pedido</a></li>
-              <li ><a href="/configuracion/indicadores_envio_email/" >Indicador Envio Email</a></li>
+                <li ><a href="/configuracion/indicadores_envio_email/" >Indicador Envio Email</a></li>
                 <li ><a href="/configuracion/historial_correos_enviados/" >Correos Enviados</a></li>
-                <li ><a href="/configuracion/reenviar_pedido/" >Email Correos ReEnviados</a></li>
+                <li class="active"><a href="#" data-toggle="tab">Email Correos ReEnviados</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
-                <form role="form" action="/configuracion/historial_empresas/" method="POST">
+                <form role="form" action="/configuracion/reenviar_pedido/" method="POST">
                     {% csrf_token %}
                     <br>
                     <div class="row">
@@ -94,7 +94,7 @@
                         </button>
                     </div>
                     <div class="col-md-6">
-                        <button type="button" id="buscar_historial_empresa_excel_button"  class="btn btn-success btn-block btn-flat" >
+                        <button type="button" id="buscar_historial_email_reenviado_button"  class="btn btn-success btn-block btn-flat" >
                             <span class="glyphicon glyphicon-folder-open"></span>
                             <span class="glyphicon glyphicon-search"></span>Excel
                         </button>
@@ -109,27 +109,28 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box">
-                                <div class="box-header">
-                                </div>
+                                <br>
                                 <!-- /.box-header -->
                                 <div class="box-body table-responsive no-padding">
                                   <table id="empresas" class="table table-bordered table-hover dataTables">
                                     <thead>
                                         <tr>
-                                            <th>Usuario</th>
+                                            <th>Pedido</th>
                                             <th>Empresa</th>
-                                            <th>Accion</th>
                                             <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Email</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for historial in lista_historial %}
                                             <tr>
 
-                                                <td>{{historial.usuario.usuario}}</td>
-                                                <td>{{historial.usuario.empresa.nombre}}</td>
-                                                <td>{{historial.accion}}</td>
+                                                <td>{{historial.pedido}}</td>
+                                                <td>{{historial.empresa}}</td>
                                                 <td>{{historial.fecha}}</td>
+                                                <td>{{historial.hora}}</td>
+                                                <td>{{historial.email}}</td>
 
 
                                             </tr>

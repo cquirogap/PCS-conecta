@@ -284,6 +284,19 @@
           </ul>
         </li>
         {% endif %}
+      {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1 %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-file-text"></i> <span>Graficas</span>
+          </a>
+          <ul class="treeview-menu">
+
+            <li><a href="/configuracion/definiciones/graficas/"><i class="fa fa-circle-o"></i>Administrar</a></li>
+            <li><a href="/configuracion/definiciones/grafica_empresarios_actuales/"><i class="fa fa-circle-o"></i>Indicadores</a></li>
+
+          </ul>
+        </li>
+        {% endif %}
         {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
@@ -795,6 +808,17 @@
       checkbox.checked = checkboxSeleccionarTodo.checked;
     });
   });
+</script>
+<script>
+    function mostrarInputs() {
+        var select = document.getElementById("tipo_usuario");
+        var divDatosCliente = document.getElementById("datoscliente");
+        if (select.value == "EMPRESARIO") {
+          divDatosCliente.style.display = "block";
+        } else {
+          divDatosCliente.style.display = "none";
+        }
+      }
 </script>
 </body>
 </html>

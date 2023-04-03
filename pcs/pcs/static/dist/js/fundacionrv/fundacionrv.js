@@ -1891,6 +1891,29 @@ $(function () {
        }
     )
 
+
+
+
+    var buscar_historial_email_reenviado = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/historial_email/excel_reenviado/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin
+
+    }
+
+    $("#buscar_historial_email_reenviado_button").click(
+       function (e) {
+           buscar_historial_email_reenviado()
+       }
+    )
+
+
+
+
     var buscar_historial_respuesta_pedido_excel = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";

@@ -76,12 +76,28 @@
                                    <label>Tipo Usuario</label>
                                   <div class="input-group ">
                                     <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
-                                      <select class="form-control select2 " style="width: 100%;" name="tipo_usuario" required>
+                                      <select class="form-control select2 " style="width: 100%;" name="tipo_usuario" onchange="mostrarInputs()" id="tipo_usuario" required >
                                            <option value="" selected disabled></option>
                                               <option value="PCS" {% if  data_grafica.tipo_usuario == 'PCS'%}selected{% endif %}>PCS</option>
                                               <option value="EMPRESARIO"{% if  data_grafica.tipo_usuario == 'EMPRESARIO'%}selected{% endif %}>EMPRESARIO</option>
                                       </select>
                                   </div>
+                              </div>
+                              <div id="datoscliente" style="display:none;">
+                                  <div class="form-group">
+                                          <label for="Tabla">Nombre Tabla</label>
+                                          <input type="text" class="form-control"  min="0" max="999" id="tabla"
+                                           name="tabla" placeholder="Nombre Tabla" value="{{data_grafica.tabla}}" required>
+
+                                      </div>
+
+                                  <div class="form-group">
+                                          <label for="codigo_pais">Nombre Campo</label>
+                                          <input type="text" class="form-control"  min="0" max="999" id="campo"
+                                           name="campo" placeholder="Nombre Campo" value="{{data_grafica.campo}}" required>
+
+                                      </div>
+
                               </div>
 
                               </div>
