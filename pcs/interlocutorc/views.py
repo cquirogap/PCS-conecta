@@ -453,7 +453,7 @@ def tarea_correo_pedido():
                                 valido = re.match(expresion_regular, correos) is not None
                                 if valido == True:
                                     try:
-                                        email = EmailMessage('TIENES UN NUEVO PEDIDO '+str(datos['DocNum']),
+                                        email = EmailMessage(str(datos['CardName'])+' TIENES UN NUEVO PEDIDO '+str(datos['DocNum']),
                                                              'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
                                                              + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                                  datos['DocEntry']) + '/',
@@ -468,12 +468,16 @@ def tarea_correo_pedido():
                                             email=correos
                                         )
                                         enviados.save()
+                                        pedido_al = PedidosAlmacenados(
+                                            pedido=datos['DocNum']
+                                        )
+                                        pedido_al.save()
                                     except:
                                         now = datetime.now(pytz.timezone('America/Bogota'))
                                         hoy = now.date()
                                         hora = now.time()
                                         errores = HistorialErrorTarea(
-                                            accion='Fallo al enviar al correo' + str(correos),
+                                            accion='Fallo al enviar al correo ' + str(correos),
                                             fecha=hoy,
                                             hora=hora,
                                             empresa=str(datos['CardName']),
@@ -492,10 +496,7 @@ def tarea_correo_pedido():
                                         pedido=str(datos['DocNum'])
                                     )
                                     errores.save()
-                            pedido_al = PedidosAlmacenados(
-                                pedido=datos['DocNum']
-                            )
-                            pedido_al.save()
+
                     except:
                         now = datetime.now(pytz.timezone('America/Bogota'))
                         hoy = now.date()
