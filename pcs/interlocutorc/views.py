@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from interlocutorc.forms import *
 from interlocutorc.models import *
+from configuracion.models import *
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from datetime import date
@@ -383,10 +384,39 @@ def facturas_api():
         errores.save()
 
 
-def prueba(request):
-    email = EmailMessage('TIENES UN NUEVO PEDIDO',
-                         'hssg',
-                         to=['juan   sebastianduartes@gmail.com'])
+def prueba():
+    url = "https://192.168.1.20:50000/b1s/v1/Login"
+
+    payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+
+    response = requests.request("POST", url, data=payload, verify=False)
+    respuesta = ast.literal_eval(response.text)
+    empresas= Empresas.objects.all()
+    lista_correos = []
+    for empresa in empresas:
+        
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
+
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = ast.literal_eval(response.text)
+        response = response['value']
+        if response==[]:
+            lista_correos.append(str(empresa.nombre))
+        else:
+            response=response[0]['E_MailL']
+            if response=='':
+                lista_correos.append(str(empresa.nombre))
+            else:
+                pass
+    empresas_str = ', '.join(lista_correos)
+    email = EmailMessage(' EMPRESAS SIN CORREO' ,
+                         'las empresas que no tienen correos son los siguientes: '
+                         + empresas_str ,
+                         to=['juansebastianduartes@gmail.com'])
     email.send()
 
 
