@@ -61,7 +61,7 @@
                          <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required>
                      </div>
                  </div>
-                 <div class="col-md-12">
+                 <div class="col-md-6">
                      <br>
                      <label>Estado</label>
                      <div class="input-group ">
@@ -73,6 +73,12 @@
                              <option value="tYES"{% if estado == "tYES" %}selected{% endif %}>Cancelado</option>
                          </select>
                      </div>
+                 </div>
+                <div class="col-md-6">
+                     <br>
+                     <label for="nota">Nota</label>
+                     <input type="number" class="form-control" id="nota"
+                            name="nota" placeholder="Numero de Nota" value="{{ nota }}" >
                  </div>
                  <div class="col-md-12">
                      <br>
@@ -131,6 +137,7 @@
                       <input type="hidden" name="fecha_fin" value="{{ fecha_fin }}">
                       <input type="hidden" name="pagina" value="{{ pagina }}">
                       <input type="hidden" name="estado" value="{{ estado }}">
+                      <input type="hidden" name="nota" value="{{ nota }}">
                   <div class="box-footer clearfix">
                       <ul class="pagination pagination-sm no-margin pull-right">
                           <p1>{{pagina}}-{{pagina_fin}}</p1>
