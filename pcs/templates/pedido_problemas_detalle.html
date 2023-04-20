@@ -176,13 +176,24 @@
                                         <input type="hidden" name="direccion" value="1">
                                     <label>Respuesta</label>
                                     {% if problema.peticion.descripcion == 'Solicitud de prorroga' %}
-                                        <h5>Se otorgara una prorroga para el dia {{ problema.fecha }}</h5>
+
+                                        <div class="col-md-6">
+                                            <label>Fecha Prorroga</label>
+                                            <div class="input-group ">
+                                                <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                <input type="date" class="form-control" id="fecha_prorroga" name="fecha_prorroga" value="{{ problema.fecha }}" required>
+                                            </div>
+                                            <br>
+                                        </div>
+                                        <div class="col-md-6">
                                     <select class="form-control select2 " style="width: 100%;" name="respuesta" required>
 
                                         <option value="" selected disabled></option>
-                                        <option value="Se ha aceptado la prorroga hasta el {{ problema.fecha }}  para el pedido {{ problema.num_pedido }}">Aceptar</option>
+                                        <option value="Se ha aceptado la prorroga  para el pedido {{ problema.num_pedido }}">Aceptar</option>
                                         <option value="Se ha rechazado la prorroga para el pedido {{ problema.num_pedido }}">Rechazar</option>
                                     </select>
+                                            <br>
+                                        </div>
                                         <br>
                                      {% else %}
                                     <textarea required name="respuesta" class="form-control" rows="3" placeholder="Respuesta"></textarea>
