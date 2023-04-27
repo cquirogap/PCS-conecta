@@ -384,6 +384,9 @@ def facturas_api():
         errores.save()
 
 
+
+
+
 def prueba():
     url = "https://192.168.1.20:50000/b1s/v1/Login"
 
@@ -412,11 +415,17 @@ def prueba():
                 lista_correos.append(str(empresa.nombre))
             else:
                 pass
-    empresas_str = ', '.join(lista_correos)
+    lista_correos=lista_correos[4:]
+    empresas_str = '\n '.join(lista_correos)
     email = EmailMessage(' EMPRESAS SIN CORREO' ,
-                         'las empresas que no tienen correos son los siguientes: '
+                         'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
                          + empresas_str ,
-                         to=['juansebastianduartes@gmail.com'])
+                         to=['coordtecnologia@pcsocial.org'])
+    email.send()
+    email = EmailMessage(' EMPRESAS SIN CORREO',
+                         'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
+                         + empresas_str,
+                         to=['analistati@pcsocial.org'])
     email.send()
 
 
@@ -453,10 +462,9 @@ def tarea_correo_pedido():
         response = response['value']
         for datos in response:
             if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
-                try:
-                    pedido_almacenado = PedidosAlmacenados.objects.get(pedido=datos['DocNum'])
+                if PedidosAlmacenados.objects.filter(pedido=datos['DocNum']).exists():
                     pass
-                except:
+                else:
                     try:
                         dependencias = 'LOGISTICA Y DESPACHOS'
                         url3 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
