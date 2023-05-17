@@ -40,7 +40,7 @@ urlpatterns.extend(
         # Administracion
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
-        url(r'^prueba/$', interlocutorc_views.prueba),
+        url(r'^prueba/$', interlocutorc_views.tokenisacion1),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
@@ -48,6 +48,11 @@ urlpatterns.extend(
         url(r'^configuracion/justificacion/registrar/$', configuracion_views.config_justificacion_registrar),
         url(r'^configuracion/justificacion/editar/(?P<id>[-\w]+)/$', configuracion_views.config_justificacion_editar),
         url(r'^configuracion/justificacion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_justificacion_borrar),
+        #Perfiles PCS
+        url(r'^configuracion/perfiles_pcs/$', configuracion_views.config_perfiles_pcs),
+        url(r'^configuracion/perfiles_pcs/registrar/$', configuracion_views.config_perfiles_registrar),
+        url(r'^configuracion/perfiles_pcs/editar/(?P<id>[-\w]+)/$', configuracion_views.config_perfiles_editar),
+        url(r'^configuracion/perfiles_pcs/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_perfiles_borrar),
         # Continentes
         url(r'^configuracion/continentes/$', configuracion_views.config_continentes),
         url(r'^configuracion/continentes/registrar/$', configuracion_views.config_continentes_registrar),
@@ -100,6 +105,12 @@ urlpatterns.extend(
         url(r'^configuracion/definiciones/grafica/(?P<grafica_id>\d+)/detalle/$', configuracion_views.detalle_grafica),
         url(r'^configuracion/definiciones/grafica_pcs_actuales/$', configuracion_views.admin_graficas_actuales_pcs_powerbi),
         url(r'^configuracion/definiciones/grafica_empresarios_actuales/$', configuracion_views.admin_graficas_actuales_empresarios_powerbi),
+        url(r'^configuracion/definiciones/grafica_comercial/$', configuracion_views.admin_graficas_comerciales_powerbi),
+        url(r'^configuracion/definiciones/grafica_exportaciones/$', configuracion_views.admin_graficas_exportaciones_powerbi),
+        url(r'^configuracion/definiciones/grafica_desarrollo_empresarial/$', configuracion_views.admin_graficas_desarrollo_empresarial_powerbi),
+        url(r'^configuracion/definiciones/grafica_administrativo_financiero/$', configuracion_views.admin_graficas_administrativo_financiero_powerbi),
+        url(r'^configuracion/definiciones/grafica_mercadeo_innovacion/$', configuracion_views.admin_graficas_mercadeo_innovacion_powerbi),
+        url(r'^configuracion/definiciones/grafica_operaciones_logistica/$', configuracion_views.admin_graficas_operaciones_logistica_powerbi),
 
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),

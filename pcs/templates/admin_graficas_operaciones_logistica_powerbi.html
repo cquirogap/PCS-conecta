@@ -40,17 +40,17 @@
         {% endfor %}
       {% endif %}
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> PCS</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> EMPRESARIOS</a></li>
         <li><a href="#">Graficas </a></li>
       </ol>
 
 
     </section>
     <section class="content-header">
-     <div class="nav-tabs-custom">
+    <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
               {% if permiso_usuario.perfil_pcs.comercial  %}
-              <li><a href="/configuracion/definiciones/grafica_comercial/" >Comercial </a></li>
+              <li ><a href="/configuracion/definiciones/grafica_comercial/" >Comercial </a></li>
               {% endif %}
               {% if permiso_usuario.perfil_pcs.exportaciones  %}
               <li><a href="/configuracion/definiciones/grafica_exportaciones/" >Exportaciones</a></li>
@@ -59,17 +59,38 @@
               <li><a href="/configuracion/definiciones/grafica_desarrollo_empresarial/" >Desarrollo empresarial</a></li>
               {% endif %}
               {% if permiso_usuario.perfil_pcs.administrativo_financiero  %}
-              <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/" >Administrativo y financiero</a></li>
+              <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/">Administrativo y financiero</a></li>
               {% endif %}
               {% if permiso_usuario.perfil_pcs.mercadeo_innovacion  %}
               <li><a href="/configuracion/definiciones/grafica_mercadeo_innovacion/" >Mercadeo e innovación</a></li>
               {% endif %}
               {% if permiso_usuario.perfil_pcs.operaciones_logistica  %}
-              <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/" >Operaciones y logística</a></li>
+              <li  class="active"><a href="/configuracion/definiciones/grafica_operaciones_logistica/" data-toggle="tab">Operaciones y logística</a></li>
               {% endif %}
             </ul>
             {% csrf_token %}
      </div>
+      <h1>
+        {% for grafica in lista_graficas %}
+        <section class="invoice">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="page-header">
+                    {{ grafica.nombre }}
+                </h2>
+            </div>
+        </div>
+        <div class="row invoice-info">
+            <iframe title="grafica_ejemplo" width="1140" height="541.25" src="{{ grafica.grafico }}" frameborder="0" allowFullScreen="true" ></iframe>
+        </div>
+            </section>
+            <br>
+         {% endfor %}
+
+        <small></small>
+      </h1>
     </section>
 
 {% endblock %}

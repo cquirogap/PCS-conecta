@@ -1,0 +1,129 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/perfiles_pcs/">Perfiles PCS</a>
+        <small>Registrar Información</small>
+      </h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+            <br>
+            <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-ban"></i> Alerta!</h4>{{ message }}
+             </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="terapia">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <form role="form" action="/configuracion/perfiles_pcs/registrar/" method="POST">
+                              {% csrf_token %}
+                              <input type="hidden" value="{{ perfiles.id }}" name="id">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                     <label>Nombre</label>
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                       <input type="text" class="form-control" id="descripcion"
+                                             name="descripcion" placeholder="Descripcion" value="{{ perfiles.nombre }}"
+                                             style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                              required>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                       <label>Comercial</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="comercial" required>
+                                            <option value="1" {% if perfiles.comercial == 1 %}selected{% endif %}>SI</option>
+                                            <option value="0" {% if perfiles.comercial == 0 %}selected{% endif %}>NO</option>
+                                        </select>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                       <label>Exportaciones</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="exportaciones" required>
+                                            <option value="1" {% if perfiles.exportaciones == 1 %}selected{% endif %}>SI</option>
+                                            <option value="0" {% if perfiles.exportaciones == 0 %}selected{% endif %} >NO</option>
+                                        </select>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                       <label>Desarrollo empresarial</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="desarrollo_empresarial" required>
+                                            <option value="1" {% if perfiles.desarrollo_empresarial == 0 %}selected{% endif %}>SI</option>
+                                            <option value="0" {% if perfiles.desarrollo_empresarial == 0 %}selected{% endif %}>NO</option>
+                                        </select>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                       <label>Administrativo y financiero</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero" required>
+                                            <option value="1" {% if perfiles.administrativo_financiero == 1 %}selected{% endif %}>SI</option>
+                                            <option value="0" {% if perfiles.administrativo_financiero == 0 %}selected{% endif %}>NO</option>
+                                        </select>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                       <label>Mercadeo e innovación</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="mercadeo_innovacion" required>
+                                            <option value="1" {% if perfiles.mercadeo_innovacion == 1 %}selected{% endif %}>SI</option>
+                                            <option value="0" {% if perfiles.mercadeo_innovacion == 0 %}selected{% endif %}>NO</option>
+                                        </select>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                       <label>Operaciones y logística</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica" required>
+                                            <option value="1" {% if perfiles.operaciones_logistica == 1 %}selected{% endif %}>SI</option>
+                                            <option value="0" {% if perfiles.operaciones_logistica == 0 %}selected{% endif %}>NO</option>
+                                        </select>
+                                      </div>
+                                  </div>
+                              </div>
+                              <br>
+                              <!-- /.box-body -->
+                              <div>
+                              <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
+                            </div>
+                          </form>
+                      </div>
+                  </div>
+                    <!-- Tabla Continentes -->
+                </div>
+             </div>
+
+          <!-- /.nav-tabs-custom -->
+         </div>
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}s

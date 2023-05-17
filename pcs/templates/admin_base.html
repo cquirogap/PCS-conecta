@@ -290,11 +290,13 @@
             <i class="fa fa-file-text"></i> <span>Graficas</span>
           </a>
           <ul class="treeview-menu">
-
+            {% if  permiso_usuario.admin == 1 %}
             <li><a href="/configuracion/definiciones/graficas/"><i class="fa fa-circle-o"></i>Administrar</a></li>
+            {% endif %}
             <li><a href="/configuracion/definiciones/grafica_empresarios_actuales/"><i class="fa fa-circle-o"></i>Indicadores</a></li>
+            {% if  permiso_usuario.pcs == 1 %}
             <li><a href="/configuracion/definiciones/grafica_pcs_actuales/"><i class="fa fa-circle-o"></i>Indicadores PCS</a></li>		
-
+            {% endif %}
           </ul>
         </li>
         {% endif %}
@@ -814,10 +816,16 @@
     function mostrarInputs() {
         var select = document.getElementById("tipo_usuario");
         var divDatosCliente = document.getElementById("datoscliente");
+        var divDatosPcs = document.getElementById("datospcs");
         if (select.value == "EMPRESARIO") {
           divDatosCliente.style.display = "block";
         } else {
           divDatosCliente.style.display = "none";
+        }
+        if (select.value == "PCS") {
+          divDatosPcs.style.display = "block";
+        } else {
+          divDatosPcs.style.display = "none";
         }
       }
 </script>

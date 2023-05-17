@@ -87,16 +87,35 @@
                                   <div class="form-group">
                                           <label for="Tabla">Nombre Tabla</label>
                                           <input type="text" class="form-control"  min="0" max="999" id="tabla"
-                                           name="tabla" placeholder="Nombre Tabla" value="{{data_grafica.tabla}}" required>
+                                           name="tabla" placeholder="Nombre Tabla" value="{{data_grafica.tabla}}" >
 
                                       </div>
 
                                   <div class="form-group">
                                           <label for="codigo_pais">Nombre Campo</label>
                                           <input type="text" class="form-control"  min="0" max="999" id="campo"
-                                           name="campo" placeholder="Nombre Campo" value="{{data_grafica.campo}}" required>
+                                           name="campo" placeholder="Nombre Campo" value="{{data_grafica.campo}}" >
 
                                       </div>
+
+                              </div>
+                              <div id="datospcs" style="display:none;">
+                                  <div class="form-group">
+                                   <label>Area</label>
+                                  <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                      <select class="form-control select2 " style="width: 100%;" name="area"  id="area"  >
+                                           <option value="1" selected disabled></option>
+                                              <option value="comercial" {% if  data_grafica.area == 'comercial'%}selected{% endif %}>Comercial</option>
+                                              <option value="exportaciones" {% if  data_grafica.area == 'exportaciones'%}selected{% endif %}>Exportaciones</option>
+                                              <option value="desarrollo_empresarial" {% if  data_grafica.area == 'desarrollo_empresarial'%}selected{% endif %}>Desarrollo empresarial</option>
+                                              <option value="administrativo_financiero" {% if  data_grafica.area == 'administrativo_financiero'%}selected{% endif %}>Administrativo y financiero </option>
+                                              <option value="mercadeo_innovacion" {% if  data_grafica.area == 'mercadeo_innovacion'%}selected{% endif %}>Mercadeo e innovación</option>
+                                              <option value="operaciones_logistica" {% if  data_grafica.area == 'operaciones_logistica'%}selected{% endif %}>Operaciones y logística</option>
+                                      </select>
+                                  </div>
+                              </div>
+
 
                               </div>
 

@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/justificacion/">Justificacion</a>
+        <a href="/configuracion/perfiles_pcs/">Perfiles</a>
         <small>Configuracion</small>
       </h1>
 
@@ -51,18 +51,18 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#justificacion" data-toggle="tab">Justificacion</a></li>
-              <li ><a href="/configuracion/perfiles_pcs/" >Perfiles PCS</a></li>
+              <li ><a href="/configuracion/justificacion/" data-toggle="tab">Justificacion</a></li>
+              <li class="active"><a href="#" data-toggle="tab">Perfiles PCS</a></li>
 
             </ul>
             {% csrf_token %}
             <div class="tab-content">
                 <!-- barras de acceso -->
-                <div class="active tab-pane" id="justificacion">
+                <div class="active tab-pane" id="perfiles">
                     <br>
                     <div class="row">
                           <div class="col-md-2">
-                              <a href="/configuracion/justificacion/registrar/">
+                              <a href="/configuracion/perfiles_pcs/registrar/">
                                 <button type="button" class="btn btn-primary">
                                     <span class='glyphicon glyphicon-edit'></span> Registrar</button>
                               </a>
@@ -73,7 +73,7 @@
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                  <h3 class="box-title">Justificacion</h3>
+                                  <h3 class="box-title">Perfiles</h3>
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body table-responsive no-padding">
@@ -88,19 +88,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for justificacion in lista_justificacion %}
+                                        {% for perfiles in lista_perfiles %}
                                             <tr>
 
-                                                <td>{{justificacion.id}}</td>
-                                                <td>{{justificacion.descripcion}}</td>
+                                                <td>{{perfiles.id}}</td>
+                                                <td>{{perfiles.nombre}}</td>
 
                                                 <td><center><a class="btn btn-info btn-sm"
-                                                       href="/configuracion/justificacion/editar/{{justificacion.id}}/"
+                                                       href="/configuracion/perfiles_pcs/editar/{{perfiles.id}}/"
                                                        title="Editar ">
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                 </a></center></td>
                                                 <td><center><a class="btn btn-info btn-sm"
-                                                       href="/configuracion/justificacion/borrar/{{justificacion.id}}/"
+                                                       href="/configuracion/perfiles_pcs/borrar/{{perfiles.id}}/"
                                                        title="Eliminar ">
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                 </a></center></td>

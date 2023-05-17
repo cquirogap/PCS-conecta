@@ -36,6 +36,24 @@ class Permisos(models.Model):
     reporte_balance = models.BooleanField(default=True)
 
 
+class Perfiles_PCS(models.Model):
+    nombre = models.CharField(max_length=100, null=True)
+    comercial = models.BooleanField(default=True)
+    exportaciones = models.BooleanField(default=True)
+    desarrollo_empresarial = models.BooleanField(default=True)
+    administrativo_financiero = models.BooleanField(default=True)
+    mercadeo_innovacion = models.BooleanField(default=True)
+    operaciones_logistica = models.BooleanField(default=True)
+
+
+class Graficas (models.Model):
+    nombre = models.CharField(max_length=45)
+    tipo_usuario = models.CharField(max_length=45,default=None)
+    grafico = models.CharField(max_length=100)
+    tabla = models.CharField(max_length=100,default='',null=True)
+    campo = models.CharField(max_length=100,default='',null=True)
+    area = models.CharField(max_length=100,default='',null=True)
+
 class Usuarios_datos(models.Model):
 
     id = models.IntegerField(primary_key=True)
@@ -48,6 +66,11 @@ class Usuarios_datos(models.Model):
     atencion = models.IntegerField(default=1)
     creado = models.DateTimeField(null=True)
     modificado = models.DateTimeField(null=True)
+    pcs = models.BooleanField(default=False)
+    perfil_pcs = models.ForeignKey(Perfiles_PCS, default=1)
+
+
+
 
 
 class HistoriaUsuario(models.Model):

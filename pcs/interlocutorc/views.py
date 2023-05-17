@@ -383,6 +383,50 @@ def facturas_api():
         )
         errores.save()
 
+def tokenisacion1(request):
+
+
+    url = 'https://login.microsoftonline.com/common/oauth2/token'
+
+    data = {
+        'grant_type': 'password',
+        'resource': 'https://analysis.windows.net/powerbi/api',
+        'client_id': 'a77e1c67-79c8-4dfb-bc49-27f416a217fb',
+        'client_secret': '7ZW8Q~Cbv6hW1vRbK7ZqAd4kutMNQM5kpetIJc8V',
+        'username': 'analistati@pcsocial.org',
+        'password': 'csAti2017*'
+    }
+
+    response = requests.post(url, data=data)
+
+    if response.ok:
+        token = response.json()['access_token']
+        print('Token de acceso:', token)
+    else:
+        print('Error al obtener token de acceso:', response.text)
+
+
+def tokenisacion(request):
+
+
+    url = 'https://login.microsoftonline.com/common/oauth2/token'
+
+    data = {
+        'grant_type': 'password',
+        'resource': 'https://analysis.windows.net/powerbi/api',
+        'client_id': '1797e711-50ea-439b-87a0-0a2adfdf753b',
+        'client_secret': 'bzf8Q~yE1UlITKI2ZXdlBc5aSLiz2g_ZwVpXZcsT',
+        'username': 'JUANDUARTESIERRA@EndToEnd721.onmicrosoft.com',
+        'password': 'Jua3213196945*'
+    }
+
+    response = requests.post(url, data=data)
+
+    if response.ok:
+        token = response.json()['access_token']
+        vaca=1
+    else:
+        print('Error al obtener token de acceso:', response.text)
 
 
 
