@@ -216,6 +216,7 @@ urlpatterns.extend(
         url(r'^configuracion/usuarios/registrar/$', configuracion_views.config_usuarios_registrar),
         url(r'^registrar/usuarios_externos/$', configuracion_views.config_usuarios_registrar_externos),
         url(r'^registrar/usuarios_externos_atencion/$', configuracion_views.config_usuarios_aten_registrar_externos),
+        url(r'^registrar/usuarios_externos_pcs/$', configuracion_views.config_usuarios_pcs_registrar_externos),
         url(r'^registrar/usuarios_externos_comp/$', configuracion_views.config_usuarios_registrar_externos_comp),
         url(r'^registrar/olvidar_contrasena/$', configuracion_views.config_usuarios_olvidar_contrasena),
         url(r'^configuracion/usuarios/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_borrar),

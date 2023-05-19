@@ -284,7 +284,7 @@
           </ul>
         </li>
         {% endif %}
-      {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1 %}
+      {% if permiso_usuario.empresa.tipo == 'Empresario'  or permiso_usuario.admin == 1 or permiso_usuario.pcs == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Graficas</span>
@@ -293,7 +293,9 @@
             {% if  permiso_usuario.admin == 1 %}
             <li><a href="/configuracion/definiciones/graficas/"><i class="fa fa-circle-o"></i>Administrar</a></li>
             {% endif %}
+            {% if permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/definiciones/grafica_empresarios_actuales/"><i class="fa fa-circle-o"></i>Indicadores</a></li>
+            {% endif %}
             {% if  permiso_usuario.pcs == 1 %}
             <li><a href="/configuracion/definiciones/grafica_pcs_actuales/"><i class="fa fa-circle-o"></i>Indicadores PCS</a></li>		
             {% endif %}
@@ -313,7 +315,7 @@
           </ul>
         </li>
         {% endif %}
-        {% if  permiso_usuario.atencion == 1 or permiso_usuario.admin == 1 %}
+        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-pencil"></i> <span>Comercial</span>
@@ -359,7 +361,7 @@
 
 
 
-        {% if  permiso_usuario.atencion == 1  or permiso_usuario.admin == 1 %}
+        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Finanzas</span>
@@ -390,7 +392,7 @@
           </ul>
         </li>
         {% endif %}
-        {% if  permiso_usuario.atencion == 1 or permiso_usuario.admin == 1 %}
+        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Indicadores</span>
@@ -406,7 +408,7 @@
           </ul>
         </li>
         {% endif %}
-        {% if  permiso_usuario.atencion == 1 or permiso_usuario.admin == 1 %}
+        {% if   permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Logistico</span>
