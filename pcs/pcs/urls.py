@@ -103,6 +103,7 @@ urlpatterns.extend(
         #PowerBi
         url(r'^configuracion/definiciones/graficas/$', configuracion_views.admin_graficas_powerbi),
         url(r'^configuracion/definiciones/grafica/(?P<grafica_id>\d+)/detalle/$', configuracion_views.detalle_grafica),
+        url(r'^configuracion/definiciones/borrar_grafica/(?P<grafica_id>[-\w]+)/$', configuracion_views.config_graficas_borrar),
         url(r'^configuracion/definiciones/grafica_pcs_actuales/$', configuracion_views.admin_graficas_actuales_pcs_powerbi),
         url(r'^configuracion/definiciones/grafica_empresarios_actuales/$', configuracion_views.admin_graficas_actuales_empresarios_powerbi),
         url(r'^configuracion/definiciones/grafica_comercial/$', configuracion_views.admin_graficas_comerciales_powerbi),

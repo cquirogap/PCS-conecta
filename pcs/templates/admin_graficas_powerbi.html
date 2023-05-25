@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="#">Graficas Administrar</a>
+        <a href="/configuracion/definiciones/graficas/">Graficas Administrar</a>
         <small>Administrar</small>
       </h1>
 
@@ -156,6 +156,11 @@
                                     <td><center><a class="btn btn-info btn-sm" href="/configuracion/definiciones/grafica/{{ grafica.id }}/detalle/" title="Editar pais">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                     </a></center></td>
+                                    <td><center><a class="btn btn-info btn-sm"
+                                                   href="/configuracion/definiciones/borrar_grafica/{{grafica.id}}/"
+                                                       title="Eliminar ">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </a></center></td>
                                 </tr>
                                 {% endfor %}
                                 </tbody>
