@@ -788,7 +788,44 @@
 <!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
 <script src="{% static 'plugins/flot/jquery.flot.categories.min.js' %}"></script>
 <script src="{% static 'dist/js/fundacionrv/mobiscroll.javascript.min.js'%}"></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+<script>
 
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var selectedDateInput = document.getElementById('selected-date');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridWeek',
+           header: {
+                    left: 'prev',
+                    right: 'next'
+                },
+	   events: [
+          {% for datosf in dato_fechas %}
+          {
+            title: '',
+            start: '{{ datosf.ano }}-{{ datosf.mes }}-{{ datosf.dia }}'
+          },
+           {% endfor %}
+
+        ],
+        eventClick: function(info) {
+          var selectedEvent = document.querySelector('.selected-event');
+          if (selectedEvent) {
+            selectedEvent.classList.remove('selected-event');
+          }
+
+          // Agregar clase al evento seleccionado actualmente
+          info.el.classList.add('selected-event');
+
+          selectedDateInput.value = info.event.start.toISOString().slice(0, 10);
+        }
+        });
+        calendar.render();
+      });
+
+</script>
 <script>
   var now = new Date();
   mobiscroll.datepicker('#demo-colored', {

@@ -1,6 +1,26 @@
 {% extends 'admin_base.html' %}
 {% load static %}
 {% block content %}
+    <style>
+    #calendar {
+      font-family: Arial, sans-serif;
+      max-height: 135px; /* Ajusta la altura máxima del calendario según tu preferencia */
+      overflow-y: auto; /* Agrega una barra de desplazamiento vertical si el contenido del calendario excede la altura máxima */
+      max-width: 100%; /* Ajusta el ancho máximo del calendario según tu preferencia */
+      margin: 0 auto; /* Centra el calendario horizontalmente */
+    }
+
+    .fc-event {
+      font-size: 100%; /* Tamaño de fuente de los eventos */
+        padding: 5px 10px; /* Espacio interno de los eventos */
+      background-color: #1C93DC; /* Cambia el color de fondo de los eventos */
+      color: #FFFFFF; /* Cambia el color del texto de los eventos */
+      border-color: #1C93DC;
+    }
+    .selected-event {
+    background-color: #00263D; /* Cambiar este valor al color deseado */
+    }
+    </style>
     <section class="content-header" xmlns="http://www.w3.org/1999/html">
         <h1 class="pull-right"> <a href="/configuracion/solicitud_inventarios/cliente/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
       <h1><a href="#">Inventarios</a><small>Administración </small></h1>
@@ -63,7 +83,8 @@
                  </div>
                  <div class="col-md-6">
                      <label>Fecha Corte</label>
-                     <input type="hidden" name="fecha_fin" value="{{ diahoy }}" id="demo-colored">
+                     <div id='calendar' ></div>
+                     <input type="hidden" id="selected-date" name="selected_date" value="{{ diahoy }}">
                  </div>
 
 
