@@ -46,6 +46,25 @@
 
 
     </section>
+    <style>
+    .embed-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* Proporción 16:9 para videos responsivos */
+      height: 0;
+      overflow: hidden;
+    }
+
+    .embed-container iframe,
+    .embed-container object,
+    .embed-container embed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
     <section class="content-header">
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
@@ -83,7 +102,9 @@
             </div>
         </div>
         <div class="row invoice-info">
-            <iframe title="grafica_ejemplo" width="1140" height="541.25" src="{{ grafica.grafico }}" frameborder="0" allowFullScreen="true" ></iframe>
+            <div class="embed-container">
+        <iframe title="grafica_ejemplo" src="{{ grafica.grafico }}" frameborder="0" allowfullscreen="true"></iframe>
+        </div>
         </div>
             </section>
             <br>

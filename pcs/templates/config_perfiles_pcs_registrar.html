@@ -2,7 +2,9 @@
 {% load static %}
 {% block content %}
     <section class="content-header">
+    <h1> <a href="/configuracion/perfiles_pcs/"><i class="fa fa-mail-forward"></i>Volver</a></h1><br>
       <h1>
+
         <a href="/configuracion/perfiles_pcs/">Perfiles PCS</a>
         <small>Registrar Información</small>
       </h1>
@@ -25,8 +27,10 @@
             <div class="tab-content">
                 <!-- barras de acceso -->
                 <div class="active tab-pane" id="terapia">
+
                     <div class="row">
                       <div class="col-md-6">
+
                           <form role="form" action="/configuracion/perfiles_pcs/registrar/" method="POST">
                               {% csrf_token %}
                               <input type="hidden" value="{{ perfiles.id }}" name="id">

@@ -287,17 +287,17 @@
       {% if permiso_usuario.empresa.tipo == 'Empresario'  or permiso_usuario.admin == 1 or permiso_usuario.pcs == 1 %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-file-text"></i> <span>Graficas</span>
+            <i class="fa fa-file-text"></i> <span>Indicadores Graficas</span>
           </a>
           <ul class="treeview-menu">
             {% if  permiso_usuario.admin == 1 %}
-            <li><a href="/configuracion/definiciones/graficas/"><i class="fa fa-circle-o"></i>Administrar</a></li>
+            <li><a href="/configuracion/definiciones/graficas/"><i class="fa fa-circle-o"></i>Registrar Indicador</a></li>
             {% endif %}
             {% if permiso_usuario.empresa.tipo == 'Empresario' %}
-            <li><a href="/configuracion/definiciones/grafica_empresarios_actuales/"><i class="fa fa-circle-o"></i>Indicadores</a></li>
+            <li><a href="/configuracion/definiciones/grafica_empresarios_actuales/"><i class="fa fa-circle-o"></i>Indicadores Empresario</a></li>
             {% endif %}
             {% if  permiso_usuario.pcs == 1 %}
-            <li><a href="/configuracion/definiciones/grafica_pcs_actuales/"><i class="fa fa-circle-o"></i>Indicadores PCS</a></li>		
+            <li><a href="/configuracion/definiciones/grafica_pcs_actuales/"><i class="fa fa-circle-o"></i>Indicadores Internos PCS</a></li>
             {% endif %}
           </ul>
         </li>
