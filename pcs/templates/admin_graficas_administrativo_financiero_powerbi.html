@@ -3,8 +3,8 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="#">Graficas PCS</a>
-        <small>Gestionar</small>
+        <a href="#">Graficas Administrativo y financiero PCS</a>
+        <small>{{ grafica_id }}</small>
       </h1>
 
 
@@ -68,24 +68,216 @@
     <section class="content-header">
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
-              {% if permiso_usuario.perfil_pcs.comercial  %}
-              <li ><a href="/configuracion/definiciones/grafica_comercial/" >Comercial </a></li>
-              {% endif %}
-              {% if permiso_usuario.perfil_pcs.exportaciones  %}
-              <li><a href="/configuracion/definiciones/grafica_exportaciones/" >Exportaciones</a></li>
-              {% endif %}
-              {% if permiso_usuario.perfil_pcs.desarrollo_empresarial  %}
-              <li><a href="/configuracion/definiciones/grafica_desarrollo_empresarial/" >Desarrollo empresarial</a></li>
-              {% endif %}
-              {% if permiso_usuario.perfil_pcs.administrativo_financiero  %}
-              <li  class="active"><a href="/configuracion/definiciones/grafica_administrativo_financiero/" data-toggle="tab">Administrativo y financiero</a></li>
-              {% endif %}
-              {% if permiso_usuario.perfil_pcs.mercadeo_innovacion  %}
-              <li><a href="/configuracion/definiciones/grafica_mercadeo_innovacion/" >Mercadeo e innovación</a></li>
-              {% endif %}
-              {% if permiso_usuario.perfil_pcs.operaciones_logistica  %}
-              <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/" >Operaciones y logística</a></li>
-              {% endif %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Comercial <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% if permiso_usuario.perfil_pcs.comercial_direccion  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_direccion/">Dirección</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_coordinacion_1  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_coordinacion_1/">Coordinación 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_coordinacion_2  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_coordinacion_2/">Coordinación 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_senior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_senior_1/">Analista senior 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_senior_2  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_senior_2/">Analista senior 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_senior_3  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_senior_3/">Analista senior 3</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_senior_4  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_senior_4/">Analista senior 4</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_senior_5  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_senior_5/">Analista senior 5</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_senior_6  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_senior_6/">Analista senior 6</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_junior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_junior_1/">Analista junior 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_junior_2  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_junior_2/">Analista junior 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_junior_3  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_junior_3/">Analista junior 3</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_junior_4  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_junior_4/">Analista junior 4</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_junior_5  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_junior_5/">Analista junior 5</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_junior_6  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_junior_6/">Analista junior 6</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_junior_7  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_junior_7/">Analista junior 7</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.comercial_analista_junior_8  %}
+                <li><a href="/configuracion/definiciones/grafica_comercial/comercial_analista_junior_8/">Analista junior 8</a></li>
+                {% endif %}
+
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exportaciones <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% if permiso_usuario.perfil_pcs.exportaciones_direccion  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_direccion/">Dirección</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_Coordinacion_1  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_Coordinacion_1/">Coordinación 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_analista_senior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_analista_senior_1/">Analista senior 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_analista_senior_2  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_analista_senior_2/">Analista senior 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_analista_senior_3  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_analista_senior_3/">Analista senior 3</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_analista_junior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_analista_junior_1/">Analista junior 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_analista_junior_2  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_analista_junior_2/">Analista junior 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_analista_junior_3  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_analista_junior_3/">Analista junior 3</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_analista_junior_4  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_analista_junior_4/">Analista junior 4</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.exportaciones_analista_junior_5  %}
+                <li><a href="/configuracion/definiciones/grafica_exportaciones/exportaciones_analista_junior_5/">Analista junior 5</a></li>
+                {% endif %}
+
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Desarrollo empresarial <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% if permiso_usuario.perfil_pcs.desarrollo_empresarial_direccion  %}
+                <li><a href="/configuracion/definiciones/grafica_desarrollo_empresarial/desarrollo_empresarial_direccion/">Dirección</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.desarrollo_empresarial_coordinacion_1  %}
+                <li><a href="/configuracion/definiciones/grafica_desarrollo_empresarial/desarrollo_empresarial_coordinacion_1/">Coordinación 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.desarrollo_empresarial_coordinacion_2  %}
+                <li><a href="/configuracion/definiciones/grafica_desarrollo_empresarial/desarrollo_empresarial_coordinacion_2/">Coordinación 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.desarrollo_empresarial_analista_senior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_desarrollo_empresarial/desarrollo_empresarial_analista_senior_1/">Analista senior 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.desarrollo_empresarial_analista_junior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_desarrollo_empresarial/desarrollo_empresarial_analista_junior_1/">Analista junior 1</a></li>
+                {% endif %}
+
+
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administrativo y financiero <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_direccion  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_direccion/">Dirección</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_coordinacion_1  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_coordinacion_1/">Coordinación 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_coordinacion_2  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_coordinacion_2/">Coordinación 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_coordinacion_3  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_coordinacion_3/">Coordinación 3</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_analista_senior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_analista_senior_1/">Analista senior 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_analista_senior_2  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_analista_senior_2/">Analista senior 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_analista_senior_3  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_analista_senior_3/">Analista senior 3</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_analista_senior_4  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_analista_senior_4/">Analista senior 4</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_analista_senior_5  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_analista_senior_5/">Analista senior 5</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.administrativo_financiero_analista_junior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_administrativo_financiero/administrativo_financiero_analista_junior_1/">Analista junior 1</a></li>
+                {% endif %}
+
+
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mercadeo e innovación <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% if permiso_usuario.perfil_pcs.mercadeo_innovacion_direccion  %}
+                <li><a href="/configuracion/definiciones/grafica_mercadeo_innovacion/mercadeo_innovacion_direccion/">Dirección</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.mercadeo_innovacion_coordinacion_1  %}
+                <li><a href="/configuracion/definiciones/grafica_mercadeo_innovacion/mercadeo_innovacion_coordinacion_1/">Coordinación 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.mercadeo_innovacion_coordinacion_2  %}
+                <li><a href="/configuracion/definiciones/grafica_mercadeo_innovacion/mercadeo_innovacion_coordinacion_2/">Coordinación 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.mercadeo_innovacion_analista_senior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_mercadeo_innovacion/mercadeo_innovacion_analista_senior_1/">Analista senior 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.mercadeo_innovacion_analista_junior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_mercadeo_innovacion/mercadeo_innovacion_analista_junior_1/">Analista junior 1</a></li>
+                {% endif %}
+
+
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Operaciones y logística <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_direccion  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_direccion/">Dirección</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_coordinacion_1  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_coordinacion_1/">Coordinación 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_coordinacion_2  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_coordinacion_2/">Coordinación 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_analista_senior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_analista_senior_1/">Analista senior 1</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_analista_senior_2  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_analista_senior_2/">Analista senior 2</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_analista_senior_3  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_analista_senior_3/">Analista senior 3</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_analista_senior_4  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_analista_senior_4/">Analista senior 4</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_analista_senior_5  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_analista_senior_5/">Analista senior 5</a></li>
+                {% endif %}
+                {% if permiso_usuario.perfil_pcs.operaciones_logistica_analista_junior_1  %}
+                <li><a href="/configuracion/definiciones/grafica_operaciones_logistica/operaciones_logistica_analista_junior_1/">Analista junior 1</a></li>
+                {% endif %}
+
+
+            </ul>
+        </li>
+
+
             </ul>
             {% csrf_token %}
      </div>

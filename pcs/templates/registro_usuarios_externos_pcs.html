@@ -49,8 +49,10 @@
                  <!-- Formulario Pacientes -->
                 <div class="row">
                   <div class="col-md-12">
-                      <form role="form" action="/registrar/usuarios_externos_pcs/" method="POST" enctype="multipart/form-data">
+
+                      <form role="form" action="/registrar/usuarios_externos_pcs/{{ id }}/" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
+                          <input type="hidden" value="{{ id }}" name="perfil">
                           <div class="row">
                               <div class="col-md-6">
                                  <label>Empresa</label>

@@ -100,18 +100,68 @@
 
                               </div>
                               <div id="datospcs" style="display:none;">
-                                  <div class="form-group">
+                              <div class="form-group">
                                    <label>Area</label>
                                   <div class="input-group ">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                       <select class="form-control select2 " style="width: 100%;" name="area"  id="area"  >
                                            <option value="1" selected disabled></option>
-                                              <option value="comercial" {% if  data_grafica.area == 'comercial'%}selected{% endif %}>Comercial</option>
-                                              <option value="exportaciones" {% if  data_grafica.area == 'exportaciones'%}selected{% endif %}>Exportaciones</option>
-                                              <option value="desarrollo_empresarial" {% if  data_grafica.area == 'desarrollo_empresarial'%}selected{% endif %}>Desarrollo empresarial</option>
-                                              <option value="administrativo_financiero" {% if  data_grafica.area == 'administrativo_financiero'%}selected{% endif %}>Administrativo y financiero </option>
-                                              <option value="mercadeo_innovacion" {% if  data_grafica.area == 'mercadeo_innovacion'%}selected{% endif %}>Mercadeo e innovación</option>
-                                              <option value="operaciones_logistica" {% if  data_grafica.area == 'operaciones_logistica'%}selected{% endif %}>Operaciones y logística</option>
+                                              <option value="comercial_direccion" {% if  data_grafica.area == 'comercial_direccion'%}selected{% endif %}>Comercial(Dirección)</option>
+                                          <option value="exportaciones_direccion" {% if  data_grafica.area == 'exportaciones_direccion'%}selected{% endif %}>Exportaciones(Dirección)</option>
+                                        <option value="desarrollo_empresarial_direccion" {% if  data_grafica.area == 'desarrollo_empresarial_direccion'%}selected{% endif %}>Desarrollo empresarial(Dirección)</option>
+                                        <option value="administrativo_financiero_direccion" {% if  data_grafica.area == 'administrativo_financiero_direccion'%}selected{% endif %}>Administrativo y financiero(Dirección)</option>
+                                        <option value="mercadeo_innovacion_direccion" {% if  data_grafica.area == 'mercadeo_innovacion_direccion'%}selected{% endif %}>Mercadeo e innovación(Dirección)</option>
+                                        <option value="operaciones_logistica_direccion" {% if  data_grafica.area == 'operaciones_logistica_direccion'%}selected{% endif %}>Operaciones y logística(Dirección)</option>
+                                        <option value="comercial_coordinacion_1" {% if  data_grafica.area == 'comercial_coordinacion_1'%}selected{% endif %}>Comercial (Coordinación 1)</option>
+                                        <option value="comercial_coordinacion_2" {% if  data_grafica.area == 'comercial_coordinacion_2'%}selected{% endif %}>Comercial (Coordinación 2)</option>
+                                        <option value="exportaciones_Coordinacion_1" {% if  data_grafica.area == 'exportaciones_Coordinacion_1'%}selected{% endif %}>Exportaciones (Coordinación 1)</option>
+                                        <option value="desarrollo_empresarial_coordinacion_1" {% if  data_grafica.area == 'desarrollo_empresarial_coordinacion_1'%}selected{% endif %}>Desarrollo Empresarial (Coordinación 1)</option>
+                                        <option value="desarrollo_empresarial_coordinacion_2" {% if  data_grafica.area == 'desarrollo_empresarial_coordinacion_2'%}selected{% endif %}>Desarrollo Empresarial (Coordinación 2)</option>
+                                        <option value="administrativo_financiero_coordinacion_1" {% if  data_grafica.area == 'administrativo_financiero_coordinacion_1'%}selected{% endif %}>Administrativo y Financiero (Coordinación 1)</option>
+                                        <option value="administrativo_financiero_coordinacion_2" {% if  data_grafica.area == 'administrativo_financiero_coordinacion_2'%}selected{% endif %}>Administrativo y Financiero (Coordinación 2)</option>
+                                        <option value="administrativo_financiero_coordinacion_3" {% if  data_grafica.area == 'administrativo_financiero_coordinacion_3'%}selected{% endif %}>Administrativo y Financiero (Coordinación 3)</option>
+                                        <option value="mercadeo_innovacion_coordinacion_1" {% if  data_grafica.area == 'mercadeo_innovacion_coordinacion_1'%}selected{% endif %}>Mercadeo e Innovación (Coordinación 1)</option>
+                                        <option value="mercadeo_innovacion_coordinacion_2" {% if  data_grafica.area == 'mercadeo_innovacion_coordinacion_2'%}selected{% endif %}>Mercadeo e Innovación (Coordinación 2)</option>
+                                        <option value="operaciones_logistica_coordinacion_1" {% if  data_grafica.area == 'operaciones_logistica_coordinacion_1'%}selected{% endif %}>Operaciones y Logística (Coordinación 1)</option>
+                                        <option value="operaciones_logistica_coordinacion_2" {% if  data_grafica.area == 'operaciones_logistica_coordinacion_2'%}selected{% endif %}>Operaciones y Logística (Coordinación 2)</option>
+                                        <option value="comercial_analista_senior_1" {% if  data_grafica.area == 'comercial_analista_senior_1'%}selected{% endif %}>Comercial (Analista senior 1)</option>
+                                        <option value="comercial_analista_senior_2" {% if  data_grafica.area == 'comercial_analista_senior_2'%}selected{% endif %}>Comercial (Analista senior 2)</option>
+                                        <option value="comercial_analista_senior_3" {% if  data_grafica.area == 'comercial_analista_senior_3'%}selected{% endif %}>Comercial (Analista senior 3)</option>
+                                        <option value="comercial_analista_senior_4" {% if  data_grafica.area == 'comercial_analista_senior_4'%}selected{% endif %}>Comercial (Analista senior 4)</option>
+                                        <option value="comercial_analista_senior_5" {% if  data_grafica.area == 'comercial_analista_senior_5'%}selected{% endif %}>Comercial (Analista senior 5)</option>
+                                        <option value="comercial_analista_senior_6" {% if  data_grafica.area == 'comercial_analista_senior_6'%}selected{% endif %}>Comercial (Analista senior 6)</option>
+                                        <option value="exportaciones_analista_senior_1" {% if  data_grafica.area == 'exportaciones_analista_senior_1'%}selected{% endif %}>Exportaciones (Analista senior 1)</option>
+                                        <option value="exportaciones_analista_senior_2" {% if  data_grafica.area == 'exportaciones_analista_senior_2'%}selected{% endif %}>Exportaciones (Analista senior 2)</option>
+                                        <option value="exportaciones_analista_senior_3" {% if  data_grafica.area == 'exportaciones_analista_senior_3'%}selected{% endif %}>Exportaciones (Analista senior 3)</option>
+                                        <option value="desarrollo_empresarial_analista_senior_1" {% if  data_grafica.area == 'desarrollo_empresarial_analista_senior_1'%}selected{% endif %}>Desarrollo Empresarial (Analista senior 1)</option>
+                                        <option value="administrativo_financiero_analista_senior_1" {% if  data_grafica.area == 'administrativo_financiero_analista_senior_1'%}selected{% endif %}>Administrativo y Financiero (Analista senior 1)</option>
+                                        <option value="administrativo_financiero_analista_senior_2" {% if  data_grafica.area == 'administrativo_financiero_analista_senior_2'%}selected{% endif %}>Administrativo y Financiero (Analista senior 2)</option>
+                                        <option value="administrativo_financiero_analista_senior_3" {% if  data_grafica.area == 'administrativo_financiero_analista_senior_3'%}selected{% endif %}>Administrativo y Financiero (Analista senior 3)</option>
+                                        <option value="administrativo_financiero_analista_senior_4" {% if  data_grafica.area == 'administrativo_financiero_analista_senior_4'%}selected{% endif %}>Administrativo y Financiero (Analista senior 4)</option>
+                                        <option value="administrativo_financiero_analista_senior_5" {% if  data_grafica.area == 'administrativo_financiero_analista_senior_5'%}selected{% endif %}>Administrativo y Financiero (Analista senior 5)</option>
+                                        <option value="mercadeo_innovacion_analista_senior_1" {% if  data_grafica.area == 'mercadeo_innovacion_analista_senior_1'%}selected{% endif %}>Mercadeo e Innovación (Analista senior 1)</option>
+                                        <option value="operaciones_logistica_analista_senior_1" {% if  data_grafica.area == 'operaciones_logistica_analista_senior_1'%}selected{% endif %}>Operaciones y Logística (Analista senior 1)</option>
+                                        <option value="operaciones_logistica_analista_senior_2" {% if  data_grafica.area == 'operaciones_logistica_analista_senior_2'%}selected{% endif %}>Operaciones y Logística (Analista senior 2)</option>
+                                        <option value="operaciones_logistica_analista_senior_3" {% if  data_grafica.area == 'operaciones_logistica_analista_senior_3'%}selected{% endif %}>Operaciones y Logística (Analista senior 3)</option>
+                                        <option value="operaciones_logistica_analista_senior_4" {% if  data_grafica.area == 'operaciones_logistica_analista_senior_4'%}selected{% endif %}>Operaciones y Logística (Analista senior 4)</option>
+                                        <option value="operaciones_logistica_analista_senior_5" {% if  data_grafica.area == 'operaciones_logistica_analista_senior_5'%}selected{% endif %}>Operaciones y Logística (Analista senior 5)</option>
+                                        <option value="comercial_analista_junior_1" {% if  data_grafica.area == 'comercial_analista_junior_1'%}selected{% endif %}>Comercial (Analista junior 1)</option>
+                                        <option value="comercial_analista_junior_2" {% if  data_grafica.area == 'comercial_analista_junior_2'%}selected{% endif %}>Comercial (Analista junior 2)</option>
+                                        <option value="comercial_analista_junior_3" {% if  data_grafica.area == 'comercial_analista_junior_3'%}selected{% endif %}>Comercial (Analista junior 3)</option>
+                                        <option value="comercial_analista_junior_4" {% if  data_grafica.area == 'comercial_analista_junior_4'%}selected{% endif %}>Comercial (Analista junior 4)</option>
+                                        <option value="comercial_analista_junior_5" {% if  data_grafica.area == 'comercial_analista_junior_5'%}selected{% endif %}>Comercial (Analista junior 5)</option>
+                                        <option value="comercial_analista_junior_6" {% if  data_grafica.area == 'comercial_analista_junior_6'%}selected{% endif %}>Comercial (Analista junior 6)</option>
+                                        <option value="comercial_analista_junior_7" {% if  data_grafica.area == 'comercial_analista_junior_7'%}selected{% endif %}>Comercial (Analista junior 7)</option>
+                                        <option value="comercial_analista_junior_8" {% if  data_grafica.area == 'comercial_analista_junior_8'%}selected{% endif %}>Comercial (Analista junior 8)</option>
+                                        <option value="exportaciones_analista_junior_1" {% if  data_grafica.area == 'exportaciones_analista_junior_1'%}selected{% endif %}>Exportaciones (Analista junior 1)</option>
+                                        <option value="exportaciones_analista_junior_2" {% if  data_grafica.area == 'exportaciones_analista_junior_2'%}selected{% endif %}>Exportaciones (Analista junior 2)</option>
+                                        <option value="exportaciones_analista_junior_3" {% if  data_grafica.area == 'exportaciones_analista_junior_3'%}selected{% endif %}>Exportaciones (Analista junior 3)</option>
+                                        <option value="exportaciones_analista_junior_4" {% if  data_grafica.area == 'exportaciones_analista_junior_4'%}selected{% endif %}>Exportaciones (Analista junior 4)</option>
+                                        <option value="exportaciones_analista_junior_5" {% if  data_grafica.area == 'exportaciones_analista_junior_5'%}selected{% endif %}>Exportaciones (Analista junior 5)</option>
+                                        <option value="desarrollo_empresarial_analista_junior_1" {% if  data_grafica.area == 'desarrollo_empresarial_analista_junior_1'%}selected{% endif %}>Desarrollo Empresarial (Analista junior 1)</option>
+                                        <option value="administrativo_financiero_analista_junior_1" {% if  data_grafica.area == 'administrativo_financiero_analista_junior_1'%}selected{% endif %}>Administrativo y Financiero (Analista junior 1)</option>
+                                        <option value="mercadeo_innovacion_analista_junior_1" {% if  data_grafica.area == 'mercadeo_innovacion_analista_junior_1'%}selected{% endif %}>Mercadeo e Innovación (Analista junior 1)</option>
+                                        <option value="operaciones_logistica_analista_junior_1" {% if  data_grafica.area == 'operaciones_logistica_analista_junior_1'%}selected{% endif %}>Operaciones y Logística (Analista junior 1)</option>
                                       </select>
                                   </div>
                               </div>
@@ -181,5 +231,4 @@
           </div>
 
     </section>
-
 {% endblock %}

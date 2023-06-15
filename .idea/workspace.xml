@@ -5,11 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/configuracion/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/configuracion/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/pcs/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/pcs/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_actuales_pcs_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_actuales_pcs_powerbi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_administrativo_financiero_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_administrativo_financiero_powerbi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_comerciales_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_comerciales_powerbi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_desarrollo_empresarial_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_desarrollo_empresarial_powerbi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_exportaciones_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_exportaciones_powerbi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_mercadeo_innovacion_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_mercadeo_innovacion_powerbi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_operaciones_logistica_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_operaciones_logistica_powerbi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_powerbi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/config_perfiles_pcs_registrar.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/config_perfiles_pcs_registrar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/registro_usuarios_externos_pcs.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/registro_usuarios_externos_pcs.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +55,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Janus/Documents/GitHub/pcs-conecta/pcs/interlocutorc",
+    "last_opened_file_path": "C:/Users/Janus/Documents/GitHub/pcs-conecta/pcs/templates",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -133,6 +144,7 @@
       <workItem from="1675981332728" duration="165000" />
       <workItem from="1678153717140" duration="300000" />
       <workItem from="1679868313220" duration="333000" />
+      <workItem from="1686792341601" duration="303000" />
     </task>
     <servers />
   </component>
