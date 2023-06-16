@@ -460,17 +460,20 @@ def prueba():
             else:
                 pass
     lista_correos=lista_correos[4:]
-    empresas_str = '\n '.join(lista_correos)
-    email = EmailMessage(' EMPRESAS SIN CORREO' ,
-                         'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
-                         + empresas_str ,
-                         to=['coordtecnologia@pcsocial.org'])
-    email.send()
-    email = EmailMessage(' EMPRESAS SIN CORREO',
-                         'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
-                         + empresas_str,
-                         to=['analistati@pcsocial.org'])
-    email.send()
+    if lista_correos==[]:
+        pass
+    else:
+        empresas_str = '\n '.join(lista_correos)
+        email = EmailMessage(' EMPRESAS SIN CORREO' ,
+                             'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
+                             + empresas_str ,
+                             to=['coordtecnologia@pcsocial.org'])
+        email.send()
+        email = EmailMessage(' EMPRESAS SIN CORREO',
+                             'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
+                             + empresas_str,
+                             to=['analistati@pcsocial.org'])
+        email.send()
 
 
 def tarea_correo_pedido():

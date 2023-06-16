@@ -101,6 +101,7 @@ class Graficas (models.Model):
     nombre = models.CharField(max_length=45)
     tipo_usuario = models.CharField(max_length=45,default=None)
     grafico = models.CharField(max_length=100)
+    nivel = models.IntegerField(default=10)
     tabla = models.CharField(max_length=100,default='',null=True)
     campo = models.CharField(max_length=100,default='',null=True)
     area = models.CharField(max_length=100,default='',null=True)
