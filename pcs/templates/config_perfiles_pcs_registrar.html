@@ -62,8 +62,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_direccion" required>
-                                            <option value="1" {% if perfiles.comercial_direccion == 1 %}selected{% endif %}>SI</option>
                                             <option value="0" {% if perfiles.comercial_direccion == 0 %}selected{% endif %}>NO</option>
+                                            <option value="1" {% if perfiles.comercial_direccion == 1 %}selected{% endif %}>SI</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -72,8 +73,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_direccion" required>
+					    <option value="0" {% if perfiles.exportaciones_direccion == 0 %}selected{% endif %} >NO</option>	
                                             <option value="1" {% if perfiles.exportaciones_direccion == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_direccion == 0 %}selected{% endif %} >NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -84,8 +86,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="desarrollo_empresarial_direccion" required>
+					    <option value="0" {% if perfiles.desarrollo_empresarial_direccion == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.desarrollo_empresarial_direccion == 0 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.desarrollo_empresarial_direccion == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -94,8 +97,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_direccion" required>
+					    <option value="0" {% if perfiles.administrativo_financiero_direccion == 0 %}selected{% endif %}>NO</option> 
                                             <option value="1" {% if perfiles.administrativo_financiero_direccion == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_direccion == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -106,8 +110,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="mercadeo_innovacion_direccion" required>
+					    <option value="0" {% if perfiles.mercadeo_innovacion_direccion == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.mercadeo_innovacion_direccion == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.mercadeo_innovacion_direccion == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -116,8 +121,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_direccion" required>
+					    <option value="0" {% if perfiles.operaciones_logistica_direccion == 0 %}selected{% endif %}>NO</option>	
                                             <option value="1" {% if perfiles.operaciones_logistica_direccion == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_direccion == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -136,8 +142,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_coordinacion_1" required>
+					    <option value="0" {% if perfiles.comercial_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_coordinacion_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -146,8 +153,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_coordinacion_2" required>
+<option value="0" {% if perfiles.comercial_coordinacion_2 == 0 %}selected{% endif %} >NO</option>
                                             <option value="1" {% if perfiles.comercial_coordinacion_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_coordinacion_2 == 0 %}selected{% endif %} >NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -158,8 +166,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_Coordinacion_1" required>
+<option value="0" {% if perfiles.exportaciones_Coordinacion_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_Coordinacion_1 == 0 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_Coordinacion_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -168,8 +177,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="desarrollo_empresarial_coordinacion_1" required>
+<option value="0" {% if perfiles.desarrollo_empresarial_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.desarrollo_empresarial_coordinacion_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.desarrollo_empresarial_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -180,8 +190,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="desarrollo_empresarial_coordinacion_2" required>
+<option value="0" {% if perfiles.desarrollo_empresarial_coordinacion_2 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.desarrollo_empresarial_coordinacion_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.desarrollo_empresarial_coordinacion_2 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -190,8 +201,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_coordinacion_1" required>
+<option value="0" {% if perfiles.administrativo_financiero_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_coordinacion_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -202,8 +214,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_coordinacion_2" required>
+<option value="0" {% if perfiles.administrativo_financiero_coordinacion_2 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_coordinacion_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_coordinacion_2 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -212,8 +225,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_coordinacion_3" required>
+<option value="0" {% if perfiles.administrativo_financiero_coordinacion_3 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_coordinacion_3 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_coordinacion_3 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -224,8 +238,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="mercadeo_innovacion_coordinacion_1" required>
+<option value="0" {% if perfiles.mercadeo_innovacion_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.mercadeo_innovacion_coordinacion_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.mercadeo_innovacion_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -234,8 +249,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="mercadeo_innovacion_coordinacion_2" required>
+<option value="0" {% if perfiles.mercadeo_innovacion_coordinacion_2 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.mercadeo_innovacion_coordinacion_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.mercadeo_innovacion_coordinacion_2 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -246,8 +262,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_coordinacion_1" required>
+<option value="0" {% if perfiles.operaciones_logistica_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.operaciones_logistica_coordinacion_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_coordinacion_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -256,8 +273,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_coordinacion_2" required>
+<option value="0" {% if perfiles.operaciones_logistica_coordinacion_2 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.operaciones_logistica_coordinacion_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_coordinacion_2 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -277,8 +295,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_senior_1" required>
+<option value="0" {% if perfiles.comercial_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_senior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -287,8 +306,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_senior_2" required>
+<option value="0" {% if perfiles.comercial_analista_senior_2 == 0 %}selected{% endif %} >NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_senior_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_senior_2 == 0 %}selected{% endif %} >NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -299,8 +319,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_senior_3" required>
+<option value="0" {% if perfiles.comercial_analista_senior_3 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_senior_3 == 0 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_senior_3 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -309,8 +330,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_senior_4" required>
+<option value="0" {% if perfiles.comercial_analista_senior_4 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_senior_4 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_senior_4 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -321,8 +343,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_senior_5" required>
+ <option value="0" {% if perfiles.comercial_analista_senior_5 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_senior_5 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_senior_5 == 0 %}selected{% endif %}>NO</option>
+                                           
                                         </select>
                                       </div>
                                   </div>
@@ -331,8 +354,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_senior_6" required>
+<option value="0" {% if perfiles.comercial_analista_senior_6 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_senior_6 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_senior_6 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -343,8 +367,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_analista_senior_1" required>
+<option value="0" {% if perfiles.exportaciones_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_analista_senior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -353,8 +378,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_analista_senior_2" required>
+<option value="0" {% if perfiles.exportaciones_analista_senior_2 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_analista_senior_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_analista_senior_2 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -365,8 +391,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_analista_senior_3" required>
+<option value="0" {% if perfiles.exportaciones_analista_senior_3 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_analista_senior_3 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_analista_senior_3 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -375,8 +402,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="desarrollo_empresarial_analista_senior_1" required>
+<option value="0" {% if perfiles.desarrollo_empresarial_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.desarrollo_empresarial_analista_senior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.desarrollo_empresarial_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -387,8 +415,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_analista_senior_1" required>
+<option value="0" {% if perfiles.administrativo_financiero_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_analista_senior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -397,8 +426,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_analista_senior_2" required>
+<option value="0" {% if perfiles.administrativo_financiero_analista_senior_2 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_analista_senior_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_analista_senior_2 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -409,8 +439,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_analista_senior_3" required>
+<option value="0" {% if perfiles.administrativo_financiero_analista_senior_3 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_analista_senior_3 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_analista_senior_3 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -419,8 +450,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_analista_senior_4" required>
+<option value="0" {% if perfiles.administrativo_financiero_analista_senior_4 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_analista_senior_4 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_analista_senior_4 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -431,8 +463,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_analista_senior_5" required>
+<option value="0" {% if perfiles.administrativo_financiero_analista_senior_5 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_analista_senior_5 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_analista_senior_5 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -441,8 +474,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="mercadeo_innovacion_analista_senior_1" required>
+<option value="0" {% if perfiles.mercadeo_innovacion_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.mercadeo_innovacion_analista_senior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.mercadeo_innovacion_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -453,8 +487,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_analista_senior_1" required>
+<option value="0" {% if perfiles.operaciones_logistica_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.operaciones_logistica_analista_senior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_analista_senior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -463,8 +498,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_analista_senior_2" required>
+<option value="0" {% if perfiles.operaciones_logistica_analista_senior_2 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.operaciones_logistica_analista_senior_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_analista_senior_2 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -475,8 +511,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_analista_senior_3" required>
+<option value="0" {% if perfiles.operaciones_logistica_analista_senior_3 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.operaciones_logistica_analista_senior_3 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_analista_senior_3 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -485,8 +522,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_analista_senior_4" required>
+<option value="0" {% if perfiles.operaciones_logistica_analista_senior_4 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.operaciones_logistica_analista_senior_4 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_analista_senior_4 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -497,8 +535,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_analista_senior_5" required>
+<option value="0" {% if perfiles.operaciones_logistica_analista_senior_5 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.operaciones_logistica_analista_senior_5 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_analista_senior_5 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -517,8 +556,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_junior_1" required>
+<option value="0" {% if perfiles.comercial_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_junior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -527,8 +567,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_junior_2" required>
+<option value="0" {% if perfiles.comercial_analista_junior_2 == 0 %}selected{% endif %} >NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_junior_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_junior_2 == 0 %}selected{% endif %} >NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -539,8 +580,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_junior_3" required>
+<option value="0" {% if perfiles.comercial_analista_junior_3 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_junior_3 == 0 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_junior_3 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -549,8 +591,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_junior_4" required>
+<option value="0" {% if perfiles.comercial_analista_junior_4 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_junior_4 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_junior_4 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -561,8 +604,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_junior_5" required>
+<option value="0" {% if perfiles.comercial_analista_junior_5 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_junior_5 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_junior_5 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -571,8 +615,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_junior_6" required>
+<option value="0" {% if perfiles.comercial_analista_junior_6 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_junior_6 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_junior_6 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -583,8 +628,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_junior_7" required>
+<option value="0" {% if perfiles.comercial_analista_junior_7 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_junior_7 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_junior_7 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -593,8 +639,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="comercial_analista_junior_8" required>
+<option value="0" {% if perfiles.comercial_analista_junior_8 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.comercial_analista_junior_8 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.comercial_analista_junior_8 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -605,8 +652,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_analista_junior_1" required>
+<option value="0" {% if perfiles.exportaciones_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_analista_junior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -615,8 +663,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_analista_junior_2" required>
+<option value="0" {% if perfiles.exportaciones_analista_junior_2 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_analista_junior_2 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_analista_junior_2 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -627,8 +676,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_analista_junior_3" required>
+<option value="0" {% if perfiles.exportaciones_analista_junior_3 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_analista_junior_3 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_analista_junior_3 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -637,8 +687,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_analista_junior_4" required>
+<option value="0" {% if perfiles.exportaciones_analista_junior_4 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_analista_junior_4 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_analista_junior_4 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -649,8 +700,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="exportaciones_analista_junior_5" required>
+<option value="0" {% if perfiles.exportaciones_analista_junior_5 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.exportaciones_analista_junior_5 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.exportaciones_analista_junior_5 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -659,8 +711,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="desarrollo_empresarial_analista_junior_1" required>
+<option value="0" {% if perfiles.desarrollo_empresarial_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.desarrollo_empresarial_analista_junior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.desarrollo_empresarial_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -671,8 +724,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="administrativo_financiero_analista_junior_1" required>
+<option value="0" {% if perfiles.administrativo_financiero_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.administrativo_financiero_analista_junior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.administrativo_financiero_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -681,8 +735,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="mercadeo_innovacion_analista_junior_1" required>
+<option value="0" {% if perfiles.mercadeo_innovacion_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.mercadeo_innovacion_analista_junior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.mercadeo_innovacion_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
@@ -693,8 +748,9 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                         <select class="form-control select2 " style="width: 100%;" name="operaciones_logistica_analista_junior_1" required>
+<option value="0" {% if perfiles.operaciones_logistica_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
                                             <option value="1" {% if perfiles.operaciones_logistica_analista_junior_1 == 1 %}selected{% endif %}>SI</option>
-                                            <option value="0" {% if perfiles.operaciones_logistica_analista_junior_1 == 0 %}selected{% endif %}>NO</option>
+                                            
                                         </select>
                                       </div>
                                   </div>
