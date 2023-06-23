@@ -112,6 +112,7 @@ urlpatterns.extend(
         url(r'^configuracion/definiciones/grafica_administrativo_financiero/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_administrativo_financiero_powerbi),
         url(r'^configuracion/definiciones/grafica_mercadeo_innovacion/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_mercadeo_innovacion_powerbi),
         url(r'^configuracion/definiciones/grafica_operaciones_logistica/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_operaciones_logistica_powerbi),
+        url(r'^configuracion/definiciones/grafica_adicional/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_adicional_powerbi),
 
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),

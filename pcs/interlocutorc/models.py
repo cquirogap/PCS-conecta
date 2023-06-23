@@ -95,6 +95,7 @@ class Perfiles_PCS(models.Model):
     administrativo_financiero_analista_junior_1 = models.BooleanField(default=True)
     mercadeo_innovacion_analista_junior_1 = models.BooleanField(default=True)
     operaciones_logistica_analista_junior_1 = models.BooleanField(default=True)
+    analista_senior_2 = models.BooleanField(default=False)
 
 
 class Graficas (models.Model):
