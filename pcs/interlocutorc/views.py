@@ -127,6 +127,7 @@ class ApiFacturas(ModelViewSet):
     serializer_class = FacturasSerializer
     now = datetime.now(pytz.timezone('America/Bogota'))
     hoy = now.date()
+    hoy = hoy + timedelta(days=10)	
     objetos_a = FacturasApi.objects.filter(FechaPagoFactura__gte=hoy)
     ids_b = RespuestaFacturaApi.objects.values_list('NumeroFactura', flat=True)
     queryset = [objeto for objeto in objetos_a if objeto.NumeroFactura not in ids_b]
