@@ -107,6 +107,11 @@ class Graficas (models.Model):
     campo = models.CharField(max_length=100,default='',null=True)
     area = models.CharField(max_length=100,default='',null=True)
 
+
+class EstadoSistema(models.Model):
+    estado=models.BooleanField(default=1)
+
+
 class Usuarios_datos(models.Model):
 
     id = models.IntegerField(primary_key=True)
@@ -121,6 +126,7 @@ class Usuarios_datos(models.Model):
     modificado = models.DateTimeField(null=True)
     pcs = models.BooleanField(default=False)
     perfil_pcs = models.ForeignKey(Perfiles_PCS, default=1)
+    estado_sistema=models.ForeignKey(EstadoSistema, default=1)
 
 
 
@@ -157,6 +163,8 @@ class HistorialEmailReEnviados(models.Model):
     hora=models.TimeField(null=True)
     tipo = models.CharField(max_length=100, null=True, default=None)
     email = models.CharField(max_length=100, null=True, default=None)
+
+
 
 
 

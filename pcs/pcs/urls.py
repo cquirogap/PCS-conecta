@@ -152,6 +152,7 @@ urlpatterns.extend(
         url(r'^configuracion/servicio_credilisto/excel_general/$', configuracion_views.reporte_servicio_credilisto),
         url(r'^configuracion/historial_email/$', configuracion_views.config_historial_email),
         url(r'^configuracion/reenviar_pedido/$', configuracion_views.config_reenviar_pedido),
+        url(r'^configuracion/estado_sistema/$', configuracion_views.config_estado_sistema),
         url(r'^configuracion/historial_respuesta_pedido/$', configuracion_views.config_historial_respuesta_pedido),
         url(r'^configuracion/historial_correos_enviados/$', configuracion_views.config_historial_correos_enviados),
         url(r'^configuracion/historial_correos_no_enviados/$', configuracion_views.config_historial_correos_no_enviados),

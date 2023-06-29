@@ -1,0 +1,92 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="#">Historial</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Compañia</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
+              <li><a href="/configuracion/empresas/" >Compañia</a></li>
+                <li><a href="/configuracion/perfiles_pcs/" >Perfiles PCS</a></li>
+              <li><a href="/configuracion/historial_empresas/" >Historial</a></li>
+              <li><a href="/configuracion/historial_email/" >Historial Email de Pedidos</a></li>
+              <li><a href="/configuracion/historial_respuesta_pedido/">Envio Respuesta Pedido</a></li>
+                <li ><a href="/configuracion/indicadores_envio_email/" >Indicador Envio Email</a></li>
+                <li ><a href="/configuracion/historial_correos_enviados/" >Correos Enviados</a></li>
+                <li ><a href="/configuracion/reenviar_pedido/" >Email Correos ReEnviados</a></li>
+                <li class="active"><a href="#" data-toggle="tab">Estado Del Sistema</a></li>
+            </ul>
+            {% csrf_token %}
+            <div class="tab-content">
+                <form role="form" action="/configuracion/estado_sistema/" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <input type="hidden" value="{{ estado.estado }}" name="estado">
+                        <center>
+                            <p>El estado actual de el sistema es {% if estado.estado == 1 %} activo {% else %} inactivo {% endif %} </p>
+                            <br>
+                            {% if estado.estado == 1 %}
+                               <button type="submit" class="btn btn-danger">Desactivar</button>
+
+                            {% else %}
+                                <button type="submit" class="btn btn-success">Activar </button>
+                            {% endif %}
+                        </center>
+                    </div>
+                </form>
+                <!-- barras de acceso -->
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

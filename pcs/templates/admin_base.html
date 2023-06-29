@@ -251,6 +251,19 @@
         </div>
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
+      {% if permiso_usuario.estado_sistema.estado == 0 %}
+      <ul class="sidebar-menu">
+        <li class="header">BARRA DE NAVEGACION</li>
+        {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1 %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-warning text-yellow"></i> <span>TEMPORALMENTE FUERA <br>DE SERVICIO</span>
+          </a>
+
+        </li>
+        {% endif %}
+      </ul>
+      {% else %}
       <ul class="sidebar-menu">
         <li class="header">BARRA DE NAVEGACION</li>
         {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1 %}
@@ -414,7 +427,7 @@
             <i class="fa fa-file-text"></i> <span>Logistico</span>
           </a>
           <ul class="treeview-menu">
-            
+
           </ul>
         </li>
         {% endif %}
@@ -510,6 +523,7 @@
         </li>
         {% endif %}
       </ul>
+       {% endif %}
     </section>
     <!-- /.sidebar -->
   </aside>
