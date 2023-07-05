@@ -282,7 +282,7 @@ def tarea_api():
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
         hora = now.time()
-        errores = HistorialErrorTarea(
+        errores = HistorialErrorApi(
             accion='Fin de tarea',
             fecha=hoy,
             hora=hora,
@@ -363,7 +363,7 @@ def facturas_api():
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
         hora = now.time()
-        errores = HistorialErrorTarea(
+        errores = HistorialErrorApi(
             accion='Fin de tarea',
             fecha=hoy,
             hora=hora,
