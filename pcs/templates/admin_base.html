@@ -254,14 +254,26 @@
       {% if permiso_usuario.estado_sistema.estado == 0 %}
       <ul class="sidebar-menu">
         <li class="header">BARRA DE NAVEGACION</li>
-        {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1 %}
+
         <li class="treeview">
           <a href="#">
             <i class="fa fa-warning text-yellow"></i> <span>TEMPORALMENTE FUERA <br>DE SERVICIO</span>
           </a>
 
         </li>
+	{% if  permiso_usuario.admin == 1 %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-gears"></i> <span>Configuracion</span>
+          </a>
+          <ul class="treeview-menu">
+            {% if  permiso_usuario.admin == 1 %}
+            <li><a href="/configuracion/usuarios/"><i class="fa fa-circle-o"></i>Usuarios</a></li>
+            {% endif %}
+          </ul>
+        </li>
         {% endif %}
+
       </ul>
       {% else %}
       <ul class="sidebar-menu">
