@@ -268,7 +268,7 @@
           </a>
           <ul class="treeview-menu">
             {% if  permiso_usuario.admin == 1 %}
-            <li><a href="/configuracion/usuarios/"><i class="fa fa-circle-o"></i>Usuarios</a></li>
+            <li><a href="/configuracion/estado_sistema/"><i class="fa fa-circle-o"></i>Estado Del Sistema</a></li>
             {% endif %}
           </ul>
         </li>
@@ -288,6 +288,8 @@
             <li><a href="/configuracion/continentes/"><i class="fa fa-circle-o"></i>Localizacion</a></li>
 
             <li><a href="/configuracion/usuarios/"><i class="fa fa-circle-o"></i>Usuarios</a></li>
+            <li><a href="/configuracion/historial_empresas/"><i class="fa fa-circle-o"></i>Historiales</a></li>
+            <li><a href="/configuracion/estado_sistema/"><i class="fa fa-circle-o"></i>Estado Del Sistema</a></li>
             <li><a href="/configuracion/justificacion/"><i class="fa fa-circle-o"></i>Definiciones</a></li>
             {% endif %}
             {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1  %}

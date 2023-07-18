@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="#">Historial</a>
+        <a href="#">Estado del Sistema</a>
         <small>Configuracion</small>
       </h1>
 
@@ -51,16 +51,9 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
-              <li><a href="/configuracion/empresas/" >Compañia</a></li>
-                <li><a href="/configuracion/perfiles_pcs/" >Perfiles PCS</a></li>
-              <li><a href="/configuracion/historial_empresas/" >Historial</a></li>
-              <li><a href="/configuracion/historial_email/" >Historial Email de Pedidos</a></li>
-              <li><a href="/configuracion/historial_respuesta_pedido/">Envio Respuesta Pedido</a></li>
-                <li ><a href="/configuracion/indicadores_envio_email/" >Indicador Envio Email</a></li>
-                <li ><a href="/configuracion/historial_correos_enviados/" >Correos Enviados</a></li>
-                <li ><a href="/configuracion/reenviar_pedido/" >Email Correos ReEnviados</a></li>
+
                 <li class="active"><a href="#" data-toggle="tab">Estado Del Sistema</a></li>
+                <li ><a href="/configuracion/historial_estado_sistema/" >Historial Estado Del Sistema</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
@@ -69,7 +62,13 @@
                     <div class="row">
                         <input type="hidden" value="{{ estado.estado }}" name="estado">
                         <center>
+                            <div class="col-sm-12">
                             <p>El estado actual de el sistema es {% if estado.estado == 1 %} activo {% else %} inactivo {% endif %} </p>
+                            {% if estado.estado == 1 %}
+                                <br>
+                                <input type="text" class="form-control" id="razon"
+                                               name="razon" placeholder="Motivo de Desactivacion del Sistema" value="{{ pedido }}" required>
+                            {% endif %}
                             <br>
                             {% if estado.estado == 1 %}
                                <button type="submit" class="btn btn-danger">Desactivar</button>
@@ -77,6 +76,7 @@
                             {% else %}
                                 <button type="submit" class="btn btn-success">Activar </button>
                             {% endif %}
+                            </div>
                         </center>
                     </div>
                 </form>

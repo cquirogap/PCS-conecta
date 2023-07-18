@@ -441,6 +441,7 @@ def prueba():
     respuesta = ast.literal_eval(response.text)
     empresas= Empresas.objects.all()
     lista_correos = []
+    lista_correos_no_existentes = []
     for empresa in empresas:
         
         url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
@@ -453,7 +454,20 @@ def prueba():
         response = ast.literal_eval(response.text)
         response = response['value']
         if response==[]:
-            lista_correos.append(str(empresa.nombre))
+            url5 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('validacionempresariossap')/List?NombreEmpresario='" + str(
+                empresa.nombre) + "'"
+
+            headers = {
+                'Prefer': 'odata.maxpagesize=999999',
+                'Cookie': 'B1SESSION=' + respuesta['SessionId']
+            }
+            response5 = requests.request("GET", url5, headers=headers, verify=False)
+            response5 = ast.literal_eval(response5.text)
+            response5 = response5['value']
+            if response5 == []:
+                lista_correos_no_existentes.append(str(empresa.nombre))
+            else:
+                lista_correos.append(str(empresa.nombre))
         else:
             response=response[0]['E_MailL']
             if response=='':
@@ -461,6 +475,7 @@ def prueba():
             else:
                 pass
     lista_correos=lista_correos[4:]
+    lista_correos_no_existentes=lista_correos_no_existentes[2:]
     if lista_correos==[]:
         pass
     else:
@@ -472,6 +487,21 @@ def prueba():
         email.send()
         email = EmailMessage(' EMPRESAS SIN CORREO',
                              'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
+                             + empresas_str,
+                             to=['analistati@pcsocial.org'])
+        email.send()
+
+    if lista_correos_no_existentes==[]:
+        pass
+    else:
+        empresas_str = '\n '.join(lista_correos_no_existentes)
+        email = EmailMessage(' EMPRESA NO REGISTRADA' ,
+                             'las empresas que no se encuentran registradas en SAP son los siguientes: \n'
+                             + empresas_str ,
+                             to=['coordtecnologia@pcsocial.org'])
+        email.send()
+        email = EmailMessage(' EMPRESAS SIN CORREO',
+                             'las empresas que no se encuentran registradas en SAP son los siguientes: \n'
                              + empresas_str,
                              to=['analistati@pcsocial.org'])
         email.send()

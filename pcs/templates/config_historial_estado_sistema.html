@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/perfiles/">Compañia</a>
+        <a href="#">Historial Estado del Sistema</a>
         <small>Configuracion</small>
       </h1>
 
@@ -51,61 +51,81 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
-              <li class="active"><a href="#perfiles" data-toggle="tab">Compañia</a></li>
-              <li><a href="/configuracion/perfiles_pcs/" >Perfiles PCS</a></li>
+              <li ><a href="/configuracion/estado_sistema/" >Estado Del Sistema</a></li>
+                <li class="active"><a href="/configuracion/historial_estado_sistema/" data-toggle="tab"> Historial Estado Del Sistema</a></li>
+
             </ul>
             {% csrf_token %}
             <div class="tab-content">
+                <form role="form" action="/configuracion/historial_estado_sistema/" method="POST">
+                    {% csrf_token %}
+                    <br>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <label>Fecha inicial</label>
+                        <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" value="{{ fecha_inicio }}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Fecha final</label>
+                        <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <br>
+                    </div>
+
+                    <div class="col-md-12">
+                        <br>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit"  class="btn btn-primary btn-block btn-flat" >
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            <span class="glyphicon glyphicon-search"></span>Consultar
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" id="buscar_historial_email_reenviado_button"  class="btn btn-success btn-block btn-flat" >
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            <span class="glyphicon glyphicon-search"></span>Excel
+                        </button>
+                    </div>
+                </div>
+                </form>
                 <!-- barras de acceso -->
                 <div class="active tab-pane" id="perfiles">
                     <br>
-                    <div class="row">
-                          <div class="col-md-2">
-                              <a href="/configuracion/empresas/registrar/">
-                                <button type="button" class="btn btn-primary">
-                                    <span class='glyphicon glyphicon-edit'></span> Registrar</button>
-                              </a>
-                          </div>
-                    </div>
+
                     <br>
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box">
-                                <div class="box-header">
-                                  <h3 class="box-title">Compañia</h3>
-                                </div>
+                                <br>
                                 <!-- /.box-header -->
                                 <div class="box-body table-responsive no-padding">
                                   <table id="empresas" class="table table-bordered table-hover dataTables">
                                     <thead>
                                         <tr>
-                                            <th>Nit</th>
-                                            <th>Nombre</th>
-                                            <th>Telefono</th>
-                                            <th>Direccion</th>
-                                            <th></th>
-                                            <th></th>
+                                            <th>Usuario</th>
+                                            <th>Fecha</th>
+                                            <th>Accion</th>
+                                            <th>Razon</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for empresas in lista_empresas %}
+                                        {% for historial in lista_historial %}
                                             <tr>
 
-                                                <td>{{empresas.nit}}</td>
-                                                <td>{{empresas.nombre}}</td>
-                                                <td>{{empresas.telefono}}</td>
-                                                <td>{{empresas.direccion}}</td>
-                                                <td><center><a class="btn btn-info btn-sm"
-                                                       href="/configuracion/empresas/editar/{{empresas.id}}/"
-                                                       title="Editar">
-                                                    <i class="glyphicon glyphicon-pencil"></i>
-                                                </a></center></td>
-                                                <td><center><a class="btn btn-info btn-sm"
-                                                       href="/configuracion/empresas/borrar/{{empresas.id}}/"
-                                                       title="Eliminar">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </a></center></td>
+                                                <td>{{historial.usuario.usuario}}</td>
+                                                <td>{{historial.fecha}}</td>
+                                                <td>{{historial.accion}}</td>
+                                                <td>{{historial.razon}}</td>
+
+
                                             </tr>
                                         {% endfor %}
                                     </tbody>
