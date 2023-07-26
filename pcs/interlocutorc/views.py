@@ -408,26 +408,30 @@ def tokenisacion1(request):
 
 
 def tokenisacion(request):
+    url = "https://192.168.1.20:50000/b1s/v1/Login"
 
+    payload = "{\"CompanyDB\":\"PRUEBAS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
-    url = 'https://login.microsoftonline.com/common/oauth2/token'
+    response = requests.request("POST", url, data=payload, verify=False)
+    respuesta = ast.literal_eval(response.text)
+    sessionId = respuesta['SessionId']
+    url2 = "https://192.168.1.20:50000/b1s/v1/BusinessPartners('P005375')"
+    payload_actualizacion = json.dumps({
+    "CardName": "ASOCIACION CANASTO DE LA ABUNDANCIA MONIYA KIRIGAI"
+    })
 
-    data = {
-        'grant_type': 'password',
-        'resource': 'https://analysis.windows.net/powerbi/api',
-        'client_id': '1797e711-50ea-439b-87a0-0a2adfdf753b',
-        'client_secret': 'bzf8Q~yE1UlITKI2ZXdlBc5aSLiz2g_ZwVpXZcsT',
-        'username': 'JUANDUARTESIERRA@EndToEnd721.onmicrosoft.com',
-        'password': 'Jua3213196945*'
+    headers = {
+        'Content-Type': 'application/json',
+        'Cookie': 'B1SESSION=' + sessionId
     }
 
-    response = requests.post(url, data=data)
+    response = requests.request("PATCH", url2, data=payload_actualizacion, headers=headers, verify=False)
 
-    if response.ok:
-        token = response.json()['access_token']
-        vaca=1
+    # Verificar la respuesta de la actualización
+    if response.status_code == 204:
+        print("Orden de compra actualizada correctamente.")
     else:
-        print('Error al obtener token de acceso:', response.text)
+        print("Error al actualizar la orden de compra. Código de estado:", response.status_code)
 
 
 

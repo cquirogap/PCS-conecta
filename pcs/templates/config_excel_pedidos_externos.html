@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="#">Servicio Crediya</a>
+        <a href="#">Pedidos Externos</a>
         <small>Configuracion</small>
       </h1>
 
@@ -41,7 +41,7 @@
       {% endif %}
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
-        <li><a href="#">Servicio Crediya</a></li>
+        <li><a href="#">Compañia</a></li>
       </ol>
 
 
@@ -51,44 +51,25 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#" data-toggle="tab">Servicio Crediya</a></li>
+
+                <li class="active"><a href="#" data-toggle="tab">Excel</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
-                <form role="form" action="/configuracion/historial_empresas/" method="POST">
+                <form role="form" action="/configuracion/excel_pedidos_externos/" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <br>
                     <div class="row">
-                    <div class="col-md-6">
-                        <label>Fecha inicial</label>
 
-                        <div class="input-group ">
-                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio"  value="{{ fecha_inicio }}" required>
-                        </div>
+                        <center>
+                            <div class="col-sm-12">
+                                <input type="file" name="excel" class="form-control" accept=".xlsx, .xls">
+                                <br>
+                                <button type="submit" class="btn btn-success">Enviar</button>
+                            </div>
+                        </center>
                     </div>
-                    <div class="col-md-6">
-                        <label>Fecha final</label>
-                        <div class="input-group ">
-                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" required>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <br>
-                    </div>
-
-                    <div class="col-md-12">
-                        <br>
-                    </div>
-                    <div class="col-md-12">
-                        <button type="button" id="buscar_lista_servicio_crediya_button"  class="btn btn-success btn-block btn-flat" >
-                            <span class="glyphicon glyphicon-folder-open"></span>
-                            <span class="glyphicon glyphicon-search"></span>Excel
-                        </button>
-                    </div>
-                </div>
                 </form>
+                <!-- barras de acceso -->
                 <!-- /.tab-content -->
           </div>
 

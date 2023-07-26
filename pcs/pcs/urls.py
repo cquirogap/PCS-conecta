@@ -40,7 +40,7 @@ urlpatterns.extend(
         # Administracion
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
-        url(r'^prueba/$', interlocutorc_views.prueba),
+        url(r'^prueba/$', interlocutorc_views.tokenisacion),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
@@ -165,6 +165,8 @@ urlpatterns.extend(
         url(r'^configuracion/historial_email/excel_general/$', configuracion_views.reporte_historial),
         url(r'^configuracion/historial_respuesta_pedido/excel_general/$', configuracion_views.reporte_historial_respuesta),
         url(r'^configuracion/historial_correos_enviados/excel_general/$', configuracion_views.reporte_correos_enviados),
+        #Excel Prueba
+        url(r'^configuracion/excel_pedidos_externos/$', configuracion_views.config_excel_pedidos_externos),
         # Soportes
         url(r'^configuracion/soportes/$', configuracion_views.config_soportes),
         url(r'^configuracion/soportes/registrar/$', configuracion_views.config_soportes_registrar),
