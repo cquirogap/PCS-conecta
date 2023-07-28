@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/pcs/configuracion/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/configuracion/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/pcs/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/pcs/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_powerbi.html" afterDir="false" />
-    </list>
+    <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -135,6 +129,7 @@
       <workItem from="1679868313220" duration="333000" />
       <workItem from="1686792341601" duration="303000" />
       <workItem from="1687999694294" duration="347000" />
+      <workItem from="1690506039885" duration="595000" />
     </task>
     <servers />
   </component>
