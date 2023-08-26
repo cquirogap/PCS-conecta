@@ -114,20 +114,40 @@
                                 });
                                 // Insertar el formulario clonado en el contenedor
                                 contenedorFormularios.appendChild(formularioClonado);
+            // Agregar el botón de eliminar al formulario clonado
+            const btnEliminar = document.createElement('button');
+            btnEliminar.innerHTML = '<i class="fa fa-minus"></i>';
+            btnEliminar.classList.add('btn-eliminar');
+            btnEliminar.setAttribute('type', 'button');
+            formularioClonado.appendChild(btnEliminar);
+            btnEliminar.addEventListener('click', function() {
+                contenedorFormularios.removeChild(formularioClonado);
+                if (contenedorFormularios.children.length === 1) {
+                    contenedorFormularios.lastChild.querySelector('.btn-eliminar').remove();
+                }
+            });
                             }
                             const btnDuplicar = document.createElement('button');
                             btnDuplicar.innerHTML = '<i class="fa fa-plus"></i>';
                             btnDuplicar.classList.add('btn-duplicar');
                             btnDuplicar.setAttribute('type', 'button');
                             btnDuplicar.addEventListener('click', clonarFormulario);
+                            const btnEliminar = document.createElement('button');
+                            btnEliminar.innerHTML = '<i class="fa fa-minus"></i>';
+                            btnEliminar.classList.add('btn-eliminar');
+                            btnEliminar.setAttribute('type', 'button');
+                            btnEliminar.style.display = 'none';
+
                             // Insertar el botón y el primer formulario
+
                             formularioOriginal.parentNode.insertBefore(contenedorFormularios, formularioOriginal);
+                            formularioOriginal.parentNode.insertBefore(btnEliminar, formularioOriginal);
                             formularioOriginal.parentNode.insertBefore(btnDuplicar, formularioOriginal);
                             contenedorFormularios.appendChild(formularioOriginal);
 
                         });
                     </script>
-                
+
 
 
                 </div>

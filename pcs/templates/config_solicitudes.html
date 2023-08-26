@@ -52,8 +52,9 @@
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
               <li class="active"><a href="#" data-toggle="tab">Solicitudes</a></li>
+                {% if resultado_booleano == True %}
               <li ><a href="/configuracion/respuesta_factura/" >Responder Facturas </a></li>
-
+                {% endif %}
             </ul>
             {% csrf_token %}
             <div class="tab-content">
@@ -78,6 +79,7 @@
                                             <th>Fecha</th>
                                             <th>Estado</th>
                                             <th>Detalle</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>

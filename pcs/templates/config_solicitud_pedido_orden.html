@@ -136,7 +136,15 @@
                                         <i class="glyphicon glyphicon-folder-open"></i>
                                         <i class="glyphicon glyphicon-zoom-in"></i>
                                         <br> Detalle Pedido
-                                    </a></center></td>
+                                    </a>   {% if dato.facturas_no_respondidas == 'True' %} <a class="btn btn-danger disabled "
+                                           href="#">
+                                        <i class="fa fa-download"></i>
+                                    </a> {% elif dato.documento_facturas_respondidas != None %}
+                                    <a class="btn btn-danger "
+                                           href="{{ dato.documento_facturas_respondidas }}">
+                                        <i class="fa fa-download"></i>
+                                    </a>
+                                        {% endif %}</center></td>
 
                                 </tr>
                                 {% endfor %}
