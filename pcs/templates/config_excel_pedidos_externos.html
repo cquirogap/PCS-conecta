@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="#">Pedidos Externos</a>
+        <a href="#">Pedidos Otros Canales</a>
         <small>Configuracion</small>
       </h1>
 
@@ -51,9 +51,14 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-
-                <li class="active"><a href="#" data-toggle="tab">Excel</a></li>
+                <li ><a href="/configuracion/orden_cliente_otroscanales/" >Pedidos Otros Canales </a></li>
+              <li class="active"><a href="#" data-toggle="tab">Excel Pedidos Otros Canales </a></li>
             </ul>
+              <br>
+              <a href="/configuracion/plantilla_excel_pedidos_externos/" class="btn btn-app btn-success btn-flat">
+                  <span class="badge bg-aqua">1</span>
+                  <i class="fa fa-download"></i> Plantilla
+              </a>
             {% csrf_token %}
             <div class="tab-content">
                 <form role="form" action="/configuracion/excel_pedidos_externos/" method="POST" enctype="multipart/form-data">

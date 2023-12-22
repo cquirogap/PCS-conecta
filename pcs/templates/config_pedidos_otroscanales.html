@@ -1,0 +1,203 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/orden_cliente_otroscanales/">Pedidos Otros Canales</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Solicitud</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#" data-toggle="tab">Pedidos Otros Canales </a></li>
+              <li ><a href="/configuracion/excel_pedidos_externos/" >Excel Pedidos Otros Canales </a></li>
+
+            </ul>
+            <form role="form" action="/configuracion/orden_cliente_otroscanales/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="paises">
+                    <br><br>
+                    <p>Seleccione los productos con sus respondidas cantidades solicitadas:</p>
+                    <br>
+                    <!-- ... tu código HTML existente ... -->
+                    <div id="formulario-duplicado">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Descripcion Producto</label>
+                                <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                <select class="form-control "  name="descripcion[]" required >
+                                    <option value="" selected disabled></option>
+                                    {% for pedido in pedidos %}
+                                        <option value="{{ pedido.n_producto }}_{{ pedido.nombre }}">{{ pedido.nombre }}</option>
+                                    {% endfor %}
+
+
+                                </select>
+
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                <label>Necesidad</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
+                                    <input type="number" class="form-control" min="1" name="necesidad[]" placeholder="Necesidad" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Observaciones</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
+                                    <input type="text" class="form-control" name="observaciones[]" placeholder="Observaciones" >
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Imagen</label>
+                                <img src="" alt="Imagen del producto" id="imagen-producto" style="max-width: 100%; height: 150px;width: 150px">
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function obtenerImagen(valorSeleccionado, imagenProducto) {
+            // Realizar una solicitud AJAX para obtener la imagen
+            fetch(`/ruta/obtener/imagen/?numero=${valorSeleccionado}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Actualizar la imagen con la URL recibida
+                    imagenProducto.src = data.imagen;
+                })
+                .catch(error => {
+                    imagenProducto.src = "";
+                    console.error('Error al obtener la imagen:', error);
+                });
+        }
+
+        // Evento cuando cambie el valor de cualquier campo select
+        document.addEventListener('change', function(event) {
+            const select = event.target;
+            const imagenProducto = select.closest('.row').querySelector('#imagen-producto');
+
+            if (select.name === 'descripcion[]') {
+                const valorSeleccionado = select.value;
+                obtenerImagen(valorSeleccionado, imagenProducto);
+            }
+        });
+    });
+</script>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const formularioOriginal = document.getElementById('formulario-duplicado');
+                            const contenedorFormularios = document.createElement('div');
+                            function clonarFormulario() {
+                                // Clonar la sección del formulario
+                                const formularioClonado = formularioOriginal.cloneNode(true);
+                                // Limpiar los valores de los campos clonados
+                                const camposClonados = formularioClonado.querySelectorAll('input, select');
+                                camposClonados.forEach(function(campo) {
+                                    campo.value = '';
+                                });
+                                const imagenProducto = formularioClonado.querySelector('#imagen-producto');
+                                imagenProducto.src = '';
+
+
+                                // Insertar el formulario clonado en el contenedor
+                                contenedorFormularios.appendChild(formularioClonado);
+                                // Agregar el botón de eliminar al formulario clonado
+                                const btnEliminar = document.createElement('button');
+                                btnEliminar.innerHTML = '<i class="fa fa-minus"></i>';
+                                btnEliminar.classList.add('btn-eliminar');
+                                btnEliminar.setAttribute('type', 'button');
+                                formularioClonado.appendChild(btnEliminar);
+                                btnEliminar.addEventListener('click', function() {
+                                    contenedorFormularios.removeChild(formularioClonado);
+                                    if (contenedorFormularios.children.length === 1) {
+                                        contenedorFormularios.lastChild.querySelector('.btn-eliminar').remove();
+                                    }
+                                });
+                            }
+                            const btnDuplicar = document.createElement('button');
+                            btnDuplicar.innerHTML = '<i class="fa fa-plus"></i>';
+                            btnDuplicar.classList.add('btn-duplicar');
+                            btnDuplicar.setAttribute('type', 'button');
+                            btnDuplicar.addEventListener('click', clonarFormulario);
+                            const btnEliminar = document.createElement('button');
+                            btnEliminar.innerHTML = '<i class="fa fa-minus"></i>';
+                            btnEliminar.classList.add('btn-eliminar');
+                            btnEliminar.setAttribute('type', 'button');
+                            btnEliminar.style.display = 'none';
+
+                            // Insertar el botón y el primer formulario
+
+                            formularioOriginal.parentNode.insertBefore(contenedorFormularios, formularioOriginal);
+                            formularioOriginal.parentNode.insertBefore(btnEliminar, formularioOriginal);
+                            formularioOriginal.parentNode.insertBefore(btnDuplicar, formularioOriginal);
+                            contenedorFormularios.appendChild(formularioOriginal);
+
+
+                        });
+                    </script>
+
+
+
+                </div>
+                <br>
+            <input type="submit" class="btn btn-primary btn-block btn-flat" value="ENVIAR">
+                <!-- /.tab-content -->
+          </div>
+            </form>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+    </div>
+    </section>
+
+{% endblock %}

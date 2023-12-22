@@ -1,0 +1,116 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <h1><a href="javascript:history.back()"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+</section>
+<section class="invoice">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+               Detalle Pedido # {{ pedido }}
+            </h2>
+        </div>
+    </div>
+    <div class="row no-print">
+
+    </div>
+
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            Cliente :<br>
+            <strong>{{pedido.empresa.nombre}}</strong><br><br>
+            Estado :<br>
+            <strong>{{pedido.estado}}</strong><br><br>
+
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Fecha:<br>
+            <strong>{{pedido.fecha}}</strong><br><br>
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Hora:<br>
+            <strong>{{ pedido.hora }}</strong><br><br>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Referencia</th>
+                        <th>Descripcion</th>
+                        <th>Necesidad </th>
+                        <th>Observacion </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for solicitud in pedidodetalle %}
+                <tr>
+                    <td>{{ solicitud.referencia }}
+                    {% for asignaciones in solicitud.asignaciones %}
+                        <br>
+                        <small>{{ asignaciones.empresa.nombre }}</small>
+                        {% endfor %}
+                    </td>
+                <td>{{ solicitud.nombre }}</td>
+                    <td>{{ solicitud.cantidad }}
+                    {% for asignaciones in solicitud.asignaciones %}
+                        <br>
+                        <small>{{ asignaciones.cantidad }}
+                        </small>
+                        {% endfor %}</td>
+                    <td>{{ solicitud.observaciones }}</td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+
+    <br>
+
+    <br>
+    <div class="row no-print">
+
+    </div>
+</section>
+
+{% endblock %}

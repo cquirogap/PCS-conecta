@@ -1,0 +1,187 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <h1><a href="javascript:history.back()"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+</section>
+<section class="invoice">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+               Detalle Pedido # {{ pedido }}
+            </h2>
+        </div>
+    </div>
+    <div class="row no-print">
+
+    </div>
+
+    <div class="row invoice-info">
+        <div class="col-sm-4 invoice-col">
+            Cliente :<br>
+            <strong>{{pedido.empresa.nombre}}</strong><br><br>
+            Estado :<br>
+            <strong>{{pedido.estado}}</strong><br><br>
+
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Fecha:<br>
+            <strong>{{pedido.fecha}}</strong><br><br>
+            <form role="form" action="/configuracion/orden_pcs_otroscanales/fecha_minima/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+            <input type="hidden" name="id"  value="{{ pedido.pk }}">
+            <input type="hidden" name="pedido" value="{{ pedido }}">
+            <label>Fecha Mínima</label>
+            <div class="input-group ">
+                <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_minima" value="{{ pedido.fecha_minima|date:'Y-m-d' }}" >
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-info btn-flat">Guardar</button>
+                </span>
+            </div>
+            </form>
+        </div>
+        <div class="col-sm-4 invoice-col">
+            Fecha:<br>
+            <strong>{{pedido.fecha}}</strong><br><br>
+            <form role="form" action="/configuracion/orden_pcs_otroscanales/fecha_maxima/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+            <input type="hidden" name="id"  value="{{ pedido.pk }}">
+            <input type="hidden" name="pedido" value="{{ pedido }}">
+            <label>Fecha Máxima</label>
+            <div class="input-group ">
+                <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_maxima" value="{{ pedido.fecha_maxima|date:'Y-m-d' }}" >
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-info btn-flat">Guardar</button>
+                </span>
+            </div>
+            </form>
+        </div>
+    </div>
+    <br><br>
+    <br>
+    <div class="row">
+        <input type="hidden" id="pedido_pk" value="{{ pedido.pk }}">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Referencia</th>
+                        <th>Descripcion</th>
+                        <th>Necesidad </th>
+                        <th>Observacion </th>
+                        <th>Editar </th>
+                        <th>Asignar Empresario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for solicitud in pedidodetalle %}
+                <tr>
+                    <td>{{ solicitud.referencia }}
+                    {% for asignaciones in solicitud.asignaciones %}
+                        <br>
+                        <small>{{ asignaciones.empresa.nombre }}</small>
+                        {% endfor %}
+                    </td>
+                <td>{{ solicitud.nombre }}</td>
+                    <td>{{ solicitud.cantidad }}
+                    {% for asignaciones in solicitud.asignaciones %}
+                        <br>
+                        <small>{{ asignaciones.cantidad }}
+                        </small>
+                        {% endfor %}</td>
+                    <td>{{ solicitud.observaciones }}
+                        </td>
+                <td>{% for asignaciones in solicitud.asignaciones %}
+                        <br>
+                        <a class="btn btn-social-icon btn-bitbucket"
+                              href="/configuracion/orden_pcs_otroscanales/detalle/{{ pedido }}/?asignacion={{ asignaciones.pk }}">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                        </small>
+                        {% endfor %}</td>
+                    <td><form role="form" action="/configuracion/orden_pcs_otroscanales/detalles/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% if solicitud.id == asignacion_editar.num_detalle.pk %}
+                            <input type="hidden" value="{{ asignacion_editar.pk }}" name="id_asignacion" id="id_asignacion">
+                        {% endif %}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                            <select class="form-control select2" style="width: 100%;" name="empresa" required>
+                                <option value="T"  selected disabled></option>
+                                {% for empresa in empresas %}
+                                    <option value="{{ empresa.id }}" {% if solicitud.id == asignacion_editar.num_detalle.pk %}
+                                            {% if asignacion_editar.empresa.id == empresa.id %}selected{% endif %}{% endif %}>
+                                        {{ empresa.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+                        <div class="input-group ">
+                            <span class="input-group-addon"><i class="fa fa-navicon  "></i></span>
+                            <input type="number" class="form-control" id="cantidad"
+                                   name="cantidad" placeholder="Cantidad"  {% if solicitud.id == asignacion_editar.num_detalle.pk %}
+                                   value="{{ asignacion_editar.cantidad }}"{% endif %} required>
+                        </div>
+                        <input type="hidden" name="id" value="{{ solicitud.id }}">
+                        <input type="hidden" name="pedido" value="{{ pedido }}">
+                        <br>
+                        <button type="submit" class="btn btn-block btn-primary btn-flat">ASIGNAR</button>
+                    </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+
+    <br>
+
+    <br>
+    <div class="row no-print">
+
+    </div>
+
+</section>
+<button type="button" id="buscar_edi_otros_canales_button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+        <i class="fa fa-download"></i> Generate EDI
+    </button>
+{% endblock %}

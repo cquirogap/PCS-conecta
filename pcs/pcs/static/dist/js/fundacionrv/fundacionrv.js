@@ -1816,6 +1816,180 @@ $(function () {
 
 
 
+    //BUSCAR PEDIDOS OTROS CANALES
+        var busqueda_pedidos_otros_canales = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa = $("#empresa_input").val() || "";
+        empresa = empresa.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+
+        $.ajax({
+                type: "GET",
+                data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+                url: '/configuracion/pedidos_otros_canales/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa='+empresa+'&pedido='+pedido+'&estado='+estado,
+                dataType:'json',
+                success: function(data) {
+                    // Cargar en tabla
+                        casos = data.datos;
+                        contador = 1;
+                        var lineas = '';
+                        var estado = '';
+                        var table_body = $("#tabla_infoc_medicamentos tbody")
+                        table_body.empty();
+                        for(var i=0;i<casos.length; i++)
+                                 {
+
+
+                                lineas +=   "<tr>" +
+                                            "<td> Pedido #"+casos[i].num_pedido+"</td>" +
+                                            "<td>"+casos[i].fecha+"</td>" +
+                                            "<td>"+casos[i].hora+"</td>" ;
+                                            if (casos[i].estado === 'en proceso') {
+                                                lineas += "<td><span class='label label-info'>" + casos[i].estado + "</span></td>";
+                                            } else {
+                                                lineas += "<td><span class='label label-primary'>" + casos[i].estado + "</span></td>";
+                                            }
+                                lineas += "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/" + casos[i].num_pedido +
+    "'><i class='fa fa-mail-forward'></i></a> </td>" +
+    "</tr>";
+                               }
+                        table_body.append(lineas)
+    }
+    });
+    }
+
+
+    $("#busqueda_pedidos_otros_canales").click(
+       function (e) {
+           busqueda_pedidos_otros_canales()
+       }
+    )
+
+
+
+    var busqueda_pedidos_otros_canales_clientes = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+
+        $.ajax({
+                type: "GET",
+                data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+                url: '/configuracion/pedidos_otros_canales/informacion_cliente/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&pedido='+pedido,
+                dataType:'json',
+                success: function(data) {
+                    // Cargar en tabla
+                        casos = data.datos;
+                        contador = 1;
+                        var lineas = '';
+                        var estado = '';
+                        var table_body = $("#tabla_infoc_medicamentos tbody")
+                        table_body.empty();
+                        for(var i=0;i<casos.length; i++)
+                                 {
+
+
+                                lineas +=   "<tr>" +
+                                            "<td> Pedido #"+casos[i].num_pedido+"</td>" +
+                                            "<td>"+casos[i].fecha+"</td>" +
+                                            "<td>"+casos[i].hora+"</td>" ;
+                                            if (casos[i].estado === 'en proceso') {
+                                                lineas += "<td><span class='label label-info'>" + casos[i].estado + "</span></td>";
+                                            } else {
+                                                lineas += "<td><span class='label label-primary'>" + casos[i].estado + "</span></td>";
+                                            }
+                                lineas += "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales_cliente/detalle/" + casos[i].num_pedido +
+    "'><i class='fa fa-mail-forward'></i></a> </td>" +
+    "</tr>";
+                               }
+                        table_body.append(lineas)
+    }
+    });
+    }
+
+
+    $("#busqueda_pedidos_otros_canales_clientes").click(
+       function (e) {
+           busqueda_pedidos_otros_canales_clientes()
+       }
+    )
+
+
+
+
+
+
+
+        //BUSCAR PEDIDOS OTROS CANALES EMPRESARIOS
+        var busqueda_pedidos_otros_canales_empresarios = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa_input = $("#empresa_input").val() || "";
+        empresa_input = empresa_input.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+
+        $.ajax({
+                type: "GET",
+                data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+                url: '/configuracion/pedidos_otros_canales_empresarios/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa_input='+empresa_input+'&pedido='+pedido+'&estado='+estado,
+                dataType:'json',
+                success: function(data) {
+                    // Cargar en tabla
+                        casos = data.datos;
+                        contador = 1;
+                        var lineas = '';
+                        var estado = '';
+                        var table_body = $("#tabla_infoc_medicamentos tbody")
+                        table_body.empty();
+                        for(var i=0;i<casos.length; i++)
+                                 {
+
+
+                                lineas +=   "<tr>" +
+                                            "<td> Pedido #"+casos[i].num_pedido+"</td>" +
+                                            "<td>"+casos[i].cantidad+"</td>" +
+                                            "<td>"+casos[i].referencia+"</td>" +
+                                            "<td>"+casos[i].nombre+"</td>" +
+                                            "<td>"+casos[i].observaciones+"</td>" +
+                                            "<td>"+casos[i].empresa+"</td>" +
+                                            "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/"+ casos[i].num_pedido +
+                                            "'><i class='fa fa-mail-forward'></i></a> </td>"+
+
+                                            "</tr>";
+                               }
+                        table_body.append(lineas)
+    }
+    });
+    }
+
+
+    $("#busqueda_pedidos_otros_canales_empresarios").click(
+       function (e) {
+           busqueda_pedidos_otros_canales_empresarios()
+       }
+    )
+
+
+
+
+
 
                                              //BUSCAR CONSOLIDADO EN EXCEL
 
@@ -1871,6 +2045,22 @@ $(function () {
     $("#buscar_lista_pedido_excel_button").click(
        function (e) {
            buscar_lista_pedido_excel()
+       }
+    )
+
+    var buscar_edi_otros_canales = function () {
+
+        pedido_pk = $("#pedido_pk").val() || "";
+        pedido_pk = pedido_pk.replace(/\s+/g, '');
+
+
+        window.location.href = '/configuracion/orden_pcs_otroscanales/detalle_edi/?pedido_pk='+pedido_pk
+
+    }
+
+    $("#buscar_edi_otros_canales_button").click(
+       function (e) {
+           buscar_edi_otros_canales()
        }
     )
 

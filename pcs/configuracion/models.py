@@ -139,6 +139,8 @@ class LogRespuestaPedido(models.Model):
 
 
 
+
+
 class PedidosNovedades(models.Model):
     numero = models.CharField(max_length=20)
     cantidad = models.CharField(max_length=20)
@@ -191,10 +193,52 @@ class Empresas(models.Model):
     paises = models.ForeignKey(Paises, default=1)
     departamentos = models.ForeignKey(Departamentos, default=1)
     municipios = models.ForeignKey(Municipios, default=1)
+    edi = models.CharField(max_length=45, null=True, default='1')
 
 
     def __unicode__(self):
         return str(self.cargo)
+
+class PedidosOtrosCanales(models.Model):
+    num_pedido = models.IntegerField(default=None,primary_key=True)
+    empresa = models.ForeignKey(Empresas, default=None,null=True)
+    fecha = models.DateField(null=True)
+    hora = models.TimeField(null=True,default='01:01:00')
+    estado=models.CharField(max_length=80,null=True,default='en proceso')
+    fecha_minima = models.DateField(null=True)
+    fecha_maxima = models.DateField(null=True)
+
+    def __unicode__(self):
+        return str(self.num_pedido)
+
+class DetallesPedidosOtrosCanales(models.Model):
+    num_pedido = models.ForeignKey(PedidosOtrosCanales, default=1)
+    cantidad = models.IntegerField(default=1)
+    referencia = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=100,default='')
+    observaciones = models.CharField(max_length=80,null=True)
+    empresa = models.ForeignKey(Empresas, default=None,null=True)
+
+    def __unicode__(self):
+        return str(self.nombre)
+
+
+class AsignacionPedidosOtrosCanales(models.Model):
+    num_detalle = models.ForeignKey(DetallesPedidosOtrosCanales, default=1)
+    cantidad = models.IntegerField(default=1)
+    empresa = models.ForeignKey(Empresas, default=None,null=True)
+
+    def __unicode__(self):
+        return str(self.nombre)
+
+
+class ImagenesOtrosCanales(models.Model):
+    referencia = models.CharField(max_length=50)
+    imagen = models.CharField(max_length=200, null=True)
+
+    def __unicode__(self):
+        return str(self.referencia)
+
 
 class Opciones(models.Model):
     descripcion = models.CharField(max_length=20)

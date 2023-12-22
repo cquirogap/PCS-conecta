@@ -100,6 +100,26 @@ urlpatterns.extend(
         url(r'^configuracion/respuesta_factura/$', configuracion_views.config_respuesta_factura_pedido),
         url(r'^configuracion/solicitudes_generales/$', configuracion_views.config_solicitudes_generales),
         url(r'^configuracion/solicitudes_generales/informacion/$', configuracion_views.informacion_complementaria_consulta_solicitud),
+        url(r'^configuracion/pedidos_otros_canales/informacion/$', configuracion_views.informacion_pedidos_otros_canales_solicitud),
+        url(r'^configuracion/pedidos_otros_canales/informacion_cliente/$', configuracion_views.informacion_pedidos_otros_canales_solicitud_cliente),
+        url(r'^configuracion/pedidos_otros_canales_empresarios/informacion/$', configuracion_views.informacion_pedidos_otros_canales_empresario_solicitud),
+
+
+        #Otros Pedidos
+        url(r'^configuracion/orden_cliente_otroscanales/$', configuracion_views.config_ordenes_otroscanales),
+        url(r'^ruta/obtener/imagen/$', configuracion_views.obtener_imagen_producto),
+        url(r'^configuracion/orden_pcs_otroscanales/$', configuracion_views.config_ordenes_otroscanales_pcs),
+        url(r'^configuracion/orden_pcs_otroscanales_cliente/$', configuracion_views.config_ordenes_otroscanales_pcs_cliente),
+        url(r'^configuracion/orden_empresiario_otroscanales/$', configuracion_views.config_ordenes_otroscanales_empresario),
+        url(r'^configuracion/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario),
+        url(r'^configuracion/imagen_empresiario_otroscanales/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_imagen_otroscanales_empresario_borrar),
+        url(r'^configuracion/registrar/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario_registrar),
+        url(r'^configuracion/orden_pcs_otroscanales/detalle/(?P<id>[-\w]+)/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle),
+        url(r'^configuracion/orden_pcs_otroscanales/detalle_edi/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle_edi),
+        url(r'^configuracion/orden_pcs_otroscanales_cliente/detalle/(?P<id>[-\w]+)/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle_cliente),
+        url(r'^configuracion/orden_pcs_otroscanales/detalles/$', configuracion_views.config_ordenes_otroscanales_pcs_detalles),
+        url(r'^configuracion/orden_pcs_otroscanales/fecha_minima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_minima),
+        url(r'^configuracion/orden_pcs_otroscanales/fecha_maxima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_maxima),
 
         #PowerBi
         url(r'^configuracion/definiciones/graficas/$', configuracion_views.admin_graficas_powerbi),
@@ -168,6 +188,7 @@ urlpatterns.extend(
         url(r'^configuracion/historial_correos_enviados/excel_general/$', configuracion_views.reporte_correos_enviados),
         #Excel Prueba
         url(r'^configuracion/excel_pedidos_externos/$', configuracion_views.config_excel_pedidos_externos),
+        url(r'^configuracion/plantilla_excel_pedidos_externos/$', configuracion_views.config_plantilla_excel_pedidos_externos),
         # Soportes
         url(r'^configuracion/soportes/$', configuracion_views.config_soportes),
         url(r'^configuracion/soportes/registrar/$', configuracion_views.config_soportes_registrar),
@@ -223,6 +244,7 @@ urlpatterns.extend(
         url(r'^configuracion/usuarios/registrar/$', configuracion_views.config_usuarios_registrar),
         url(r'^registrar/usuarios_externos/$', configuracion_views.config_usuarios_registrar_externos),
         url(r'^registrar/usuarios_externos_atencion/$', configuracion_views.config_usuarios_aten_registrar_externos),
+        url(r'^registrar/usuarios_otros_canales_atencion/$', configuracion_views.config_usuarios_otros_canales_registrar_externos),
         url(r'^registrar/usuarios_externos_pcs/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_pcs_registrar_externos),
         url(r'^registrar/usuarios_externos_comp/$', configuracion_views.config_usuarios_registrar_externos_comp),
         url(r'^registrar/olvidar_contrasena/$', configuracion_views.config_usuarios_olvidar_contrasena),

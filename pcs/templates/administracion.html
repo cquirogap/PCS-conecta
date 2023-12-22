@@ -19,6 +19,7 @@
       {% endif %}
     </section>
     <br>
+    {% if   permiso_usuario.empresa.tipo != 'Cadena'  %}
     <div class="col-md-12">
           <div class="box box-solid">
             <!-- /.box-header -->
@@ -28,8 +29,8 @@
                   <li data-target="#carousel-example-generic" data-slide-to="0" class=""></li>
                     <li data-target="#carousel-example-generic" data-slide-to="1" class="activate"></li>
                     <li data-target="#carousel-example-generic" data-slide-to="3" class=""></li>
-		    <li data-target="#carousel-example-generic" data-slide-to="4" class=""></li>
-		    <li data-target="#carousel-example-generic" data-slide-to="5" class=""></li>	
+                    <li data-target="#carousel-example-generic" data-slide-to="4" class=""></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="5" class=""></li>
                 </ol>
                 <div class="carousel-inner">
 		  <div class="item">
@@ -44,7 +45,7 @@
                       <a href="https://www.pcsocial.org/">
                     <img src="{% static 'dist/img/banner.png'%}"></a>
                   </div>
-		  <div class="item">
+                    <div class="item">
                       <a href="#">
                     <img src="{% static 'dist/img/bannerinicial.png'%}" ></a>
                   </div>
@@ -55,6 +56,35 @@
                     <div class="item ">
                       <a href="https://docs.google.com/forms/d/1gCag7LmA7KTrfsBKV_ZY4VArsKrpRwN38LDyJ_le9Wk/viewform?edit_requested=true&pli=1">
                     <img src="{% static 'dist/img/BN-05.png'%}" alt="Second slide"></a>
+                  </div>
+
+                </div>
+                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                  <span class="fa fa-angle-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                  <span class="fa fa-angle-right"></span>
+                </a>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+    {% else %}
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="4" class=""></li>
+                </ol>
+                <div class="carousel-inner">
+
+                  <div class="item active">
+                      <a href="#">
+                    <img src="{% static 'dist/img/BN-20.png'%}" ></a>
                   </div>
                 </div>
                 <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -69,6 +99,7 @@
           </div>
           <!-- /.box -->
         </div>
+    {% endif %}
 
 {% endblock %}
 

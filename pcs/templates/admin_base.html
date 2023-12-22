@@ -311,6 +311,20 @@
           </ul>
         </li>
         {% endif %}
+        {% if  permiso_usuario.admin == 1 %}
+        <li class="treeview">
+          <a href="#">
+                <i class="fa fa-file-text"></i> <span>Pedidos Otros Canales</span>
+          </a>
+          <ul class="treeview-menu">
+
+            <li><a href="/configuracion/orden_pcs_otroscanales/"><i class="fa fa-circle-o"></i>Pedidos Clientes</a></li>
+            <li><a href="/configuracion/orden_empresiario_otroscanales/"><i class="fa fa-circle-o"></i>Asignaciones Pedidos </a></li>
+            <li><a href="/configuracion/imagen_empresiario_otroscanales/"><i class="fa fa-circle-o"></i>Configurar Imagenes </a></li>
+
+          </ul>
+        </li>
+        {% endif %}
       {% if permiso_usuario.empresa.tipo == 'Empresario'  or permiso_usuario.admin == 1 or permiso_usuario.pcs == 1 %}
         <li class="treeview">
           <a href="#">
@@ -342,7 +356,7 @@
           </ul>
         </li>
         {% endif %}
-        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
+        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-pencil"></i> <span>Comercial</span>
@@ -351,16 +365,16 @@
             {% if permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-circle-o"></i>Pedido</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
+            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' %}
             <li><a href="/configuracion/solicitud_pedido/"><i class="fa fa-circle-o"></i>Orden de ventas</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
+            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' %}
             <li><a href="/configuracion/solicitud_factura_deudores/"><i class="fa fa-circle-o"></i>Factura de Deudores</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
+            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' %}
             <li><a href="/configuracion/solicitud_entrega/"><i class="fa fa-circle-o"></i>Entrega</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
+            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' %}
             <li><a href="/configuracion/solicitud_devolucion/"><i class="fa fa-circle-o"></i>Devolucion</a></li>
             {% endif %}
             <li><a href="/configuracion/solicitud_catalogo_productos/"><i class="fa fa-circle-o"></i>Catalogo de Productos</a></li>
@@ -368,6 +382,22 @@
           </ul>
         </li>
         {% endif %}
+
+        {% if  permiso_usuario.empresa.tipo == 'Cadena'  %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-pencil"></i> <span>Comercial</span>
+          </a>
+          <ul class="treeview-menu">
+            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
+            <li><a href="/configuracion/orden_cliente_otroscanales/"><i class="fa fa-circle-o"></i>Pedido Otros Canales</a></li>
+            <li><a href="/configuracion/orden_pcs_otroscanales_cliente/"><i class="fa fa-circle-o"></i>Historial Solicitudes</a></li>
+            {% endif %}
+
+          </ul>
+        </li>
+        {% endif %}
+
 
         {% if permisos.pacientes == True or permisos.administrador == True %}
         <li class="treeview">
@@ -388,7 +418,7 @@
 
 
 
-        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
+        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Finanzas</span>
@@ -400,18 +430,18 @@
             {% if permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_credito_proveedores/"><i class="fa fa-circle-o"></i>Notas Credito </a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
+            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' %}
             <li><a href="/configuracion/solicitud_pagos_recibidos/"><i class="fa fa-circle-o"></i>Comprobande de egreso</a></li>
             {% elif permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_comprobante_egreso/"><i class="fa fa-circle-o"></i>Comprobande de egreso</a></li>
             {% elif permiso_usuario.empresa.tipo == 'pcs' %}
             <li><a href="/configuracion/solicitud_comprobante_egreso_pcs/"><i class="fa fa-circle-o"></i>Comprobande de egreso</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
+            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' %}
             <li><a href="/configuracion/solicitud_notas_debito/"><i class="fa fa-circle-o"></i>Notas Debito Clientes</a></li>
             <li><a href="/configuracion/solicitud_notas_credito/"><i class="fa fa-circle-o"></i>Notas Credito Clientes</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.empresa.tipo == 'Empresario' %}
+            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_estado_cuenta/grupos/{{permiso_usuario.empresa.nit }}"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
             {% elif permiso_usuario.empresa.tipo == 'pcs' %}
             <li><a href="/configuracion/solicitud_estado_cuenta/"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
@@ -419,7 +449,7 @@
           </ul>
         </li>
         {% endif %}
-        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
+        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Indicadores</span>
@@ -435,7 +465,7 @@
           </ul>
         </li>
         {% endif %}
-        {% if   permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
+        {% if   permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Logistico</span>
@@ -900,5 +930,6 @@
         }
       }
 </script>
+
 </body>
 </html>
