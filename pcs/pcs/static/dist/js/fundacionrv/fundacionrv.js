@@ -1815,6 +1815,426 @@ $(function () {
 
 
 
+    //BUSCAR CREDITOS CREDIYA
+
+    var buscar_crediya_solicitudes = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa = $("#empresa_input").val() || "";
+        empresa = empresa.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+
+        $.ajax({
+                type: "GET",
+                data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+                url: '/configuracion/servicio_crediya_consulta/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa='+empresa+'&estado='+estado,
+                dataType:'json',
+                success: function(data) {
+                    // Cargar en tabla
+                        casos = data.datos;
+                        contador = 1;
+                        var lineas = '';
+                        var estado = '';
+                        var table_body = $("#tabla_infoc_medicamentos tbody")
+                        table_body.empty();
+                        for(var i=0;i<casos.length; i++)
+                                 {
+
+
+                                lineas +=   "<tr>" +
+                                            "<td>"+casos[i].empresa+"</td>" +
+                                            "<td>"+ casos[i].pedido +
+                                            "<td>"+ casos[i].fecha_solicitud +
+                                            "</td>" +
+                                            "<td>"+ casos[i].fecha +
+                                            "</td>" +
+                                            "<td>"+ casos[i].vencimiento +
+                                            "</td>" +
+                                            "<td>"+ casos[i].valor_preaprobado +
+                                            "</td>" +
+                                            "<td>"+casos[i].interes+"</td>" ;
+                                            if (casos[i].estado === 'Preaprobado') {
+                                                lineas += "<td><div class=\"btn-group\"> "
+                                                            +"<button type=\"button\" class=\"btn btn-btn btn-success aceptar-btn\" " +
+                                                    "data-pedido='"+ casos[i].pedido +"' data-toggle='modal' data-target='#AceptarCredito'>ACEPTAR</button>"
+                                                            +"<button type=\"button\" class=\"btn btn-btn btn-danger denegar-btn\" " +
+                                                    "data-pedido='"+ casos[i].pedido +"' data-toggle='modal' data-target='#DenegarCredito'>DENEGAR</button>"
+                                                            +"</div></td>";
+
+                                            } else if (casos[i].estado === 'Aprobado') {
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-success\">Aprobado</span></td>";}
+                                            else{
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-danger\">Negado</span></td>";
+                                            }
+                                lineas+=
+                                            "<td>"+casos[i].usuario_aprobacion+"</td>" +
+                                            "<td>"+casos[i].fecha_aprobacion+"</td>" +
+                                            "</tr>";
+                               }
+                        table_body.append(lineas)
+                        $(".aceptar-btn").click(function () {
+                            var pedido = $(this).data("pedido");
+                            $("#pedido_modal").text(pedido);
+                            $("#numeropedido1").val(pedido);
+                        });
+                        $(".denegar-btn").click(function () {
+                            var pedido = $(this).data("pedido");
+                            $("#pedido_modal2").text(pedido);
+                            $("#numeropedido2").val(pedido);
+                        });
+    }
+    });
+    }
+
+
+    $("#busqueda_solicitudes_crediya").click(
+       function (e) {
+           buscar_crediya_solicitudes()
+       }
+    )
+
+
+    $(document).ready(function () {
+        $(".aceptar-btn").click(function () {
+            var pedido = $(this).data("pedido");
+            $("#pedido_modal").text(pedido);
+            $("#numeropedido1").val(pedido);
+        });
+        $(".denegar-btn").click(function () {
+            var pedido = $(this).data("pedido");
+            $("#pedido_modal2").text(pedido);
+            $("#numeropedido2").val(pedido);
+        });
+    });
+
+
+
+
+
+
+
+     //BUSCAR CREDITOS CREDILISTO
+
+    var buscar_credilisto_solicitudes = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa = $("#empresa_input").val() || "";
+        empresa = empresa.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+
+        $.ajax({
+                type: "GET",
+                data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+                url: '/configuracion/servicio_credilisto_consulta/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa='+empresa+'&estado='+estado,
+                dataType:'json',
+                success: function(data) {
+                    // Cargar en tabla
+                        casos = data.datos;
+                        contador = 1;
+                        var lineas = '';
+                        var estado = '';
+                        var table_body = $("#tabla_infoc_medicamentos tbody")
+                        table_body.empty();
+                        for(var i=0;i<casos.length; i++)
+                                 {
+
+
+                                lineas +=   "<tr>" +
+                                            "<td>"+casos[i].empresa+"</td>" +
+                                            "<td>"+ casos[i].factura +
+                                            "<td>"+ casos[i].facturacliente +
+                                            "<td>"+ casos[i].fechafactura +
+                                            "</td>" +
+                                            "<td>"+ casos[i].fecha +
+                                            "</td>" +
+                                            "<td>"+ casos[i].vencimiento +
+                                            "</td>" +
+                                            "<td>"+ casos[i].valor_preaprobado +
+                                            "</td>" +
+                                            "<td>"+casos[i].interes+"</td>" ;
+                                            if (casos[i].estado === 'Preaprobado') {
+                                                lineas += "<td><div class=\"btn-group\"> "
+                                                            +"<button type=\"button\" class=\"btn btn-btn btn-success aceptarcredi-btn\" " +
+                                                    "data-pedido='"+ casos[i].factura +"' data-toggle='modal' data-target='#AceptarCredito'>ACEPTAR</button>"
+                                                            +"<button type=\"button\" class=\"btn btn-btn btn-danger denegarcredi-btn\" " +
+                                                    "data-pedido='"+ casos[i].factura +"' data-toggle='modal' data-target='#DenegarCredito'>DENEGAR</button>"
+                                                            +"</div></td>";
+
+                                            } else if (casos[i].estado === 'Aprobado') {
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-success\">Aprobado</span></td>";}
+                                            else{
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-danger\">Negado</span></td>";
+                                            }
+                                lineas+=
+                                            "<td>"+casos[i].usuario_aprobacion+"</td>" +
+                                            "<td>"+casos[i].fecha_aprobacion+"</td>" +
+                                            "</tr>";
+                               }
+                        table_body.append(lineas)
+                        $(".aceptarcredi-btn").click(function () {
+                            var pedido = $(this).data("pedido");
+                            $("#pedido_modal").text(pedido);
+                            $("#numeropedido1").val(pedido);
+                        });
+                        $(".denegarcredi-btn").click(function () {
+                            var pedido = $(this).data("pedido");
+                            $("#pedido_modal2").text(pedido);
+                            $("#numeropedido2").val(pedido);
+                        });
+    }
+    });
+    }
+
+
+    $("#busqueda_solicitudes_credilisto").click(
+       function (e) {
+           buscar_credilisto_solicitudes()
+       }
+    )
+
+    $(document).ready(function () {
+        $(".aceptarcredi-btn").click(function () {
+            var pedido = $(this).data("pedido");
+            $("#pedido_modal").text(pedido);
+            $("#numeropedido1").val(pedido);
+        });
+        $(".denegarcredi-btn").click(function () {
+            var pedido = $(this).data("pedido");
+            $("#pedido_modal2").text(pedido);
+            $("#numeropedido2").val(pedido);
+        });
+    });
+
+
+    $(document).ready(function () {
+        $(".aceptardocumentos-btn").click(function () {
+            var id = $(this).data("id");
+            $("#numerosoli").val(id);
+        });
+        $(".denegardocumentos-btn").click(function () {
+            var id = $(this).data("id");
+            $("#numerosolis").val(id);
+        });
+    });
+
+
+ //BUSCAR CREDITOS CREDIYA EMPRESARIO
+
+    var buscar_crediya_historiales = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+
+        $.ajax({
+                type: "GET",
+                data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+                url: '/configuracion/servicio_crediya_historial/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&estado='+estado,
+                dataType:'json',
+                success: function(data) {
+                    // Cargar en tabla
+                        casos = data.datos;
+                        contador = 1;
+                        var lineas = '';
+                        var estado = '';
+                        var table_body = $("#tabla_infoc_medicamentos tbody")
+                        table_body.empty();
+                        for(var i=0;i<casos.length; i++)
+                                 {
+
+
+                                lineas +=   "<tr>" +
+                                            "<td>"+casos[i].empresa+"</td>" +
+                                            "<td>"+ casos[i].pedido +
+                                            "<td>"+ casos[i].fecha_solicitud +
+                                            "</td>" +
+                                            "<td>"+ casos[i].fecha +
+                                            "</td>" +
+                                            "<td>"+ casos[i].fecha_vencimiento +
+                                            "</td>" +
+                                            "<td>"+ casos[i].valor_preaprobado +
+                                            "</td>" +
+                                            "<td>"+casos[i].interes+"</td>" ;
+                                            if (casos[i].estado === 'Preaprobado') {
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-info\">PreAprobado</span></td><td></td>";
+
+                                            } else if (casos[i].estado === 'Aprobado') {
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-success\">Aprobado</span></td><td></td>";}
+                                            else{
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-danger\">Negado</span></td>"+
+                                                "<td><button type=\"button\" class=\"btn btn-primary razon-btn\"\n" +
+                                                    "data-razon='"+ casos[i].razon + "' data-toggle=\"modal\" data-dismiss=\"modal\"\n" +
+                                                    "data-target=\"#RazonNegado\">RESPUESTA</button></td>";
+                                            }
+                                lineas+=
+                                            "<td>"+casos[i].fecha_aprobado+"</td>" +
+                                            "</tr>";
+                               }
+                        table_body.append(lineas)
+                        $(".razon-btn").click(function () {
+                            var razon = $(this).data("razon");
+                            $("#razonnegado").text(razon);
+                        });
+    }
+    });
+    }
+
+
+    $("#busqueda_historiales_crediya").click(
+       function (e) {
+           buscar_crediya_historiales()
+       }
+    )
+
+
+
+
+
+     //BUSCAR CREDITOS CREDILISTO EMPRESARIO
+
+    var buscar_credilisto_historiales = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+
+        $.ajax({
+                type: "GET",
+                data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+                url: '/configuracion/servicio_credilisto_historial/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&estado='+estado,
+                dataType:'json',
+                success: function(data) {
+                    // Cargar en tabla
+                        casos = data.datos;
+                        contador = 1;
+                        var lineas = '';
+                        var estado = '';
+                        var table_body = $("#tabla_infoc_medicamentos tbody")
+                        table_body.empty();
+                        for(var i=0;i<casos.length; i++)
+                                 {
+
+
+                                lineas +=   "<tr>" +
+                                            "<td>"+casos[i].empresa+"</td>" +
+                                            "<td>"+ casos[i].pedido +
+                                            "<td>"+casos[i].factura_cliente+"</td>" +
+                                            "<td>"+ casos[i].fecha_solicitud +
+                                            "</td>" +
+                                            "<td>"+ casos[i].fecha +
+                                            "</td>" +
+                                            "<td>"+ casos[i].fecha_vencimiento +
+                                            "</td>" +
+                                            "<td>"+ casos[i].valor_preaprobado +
+                                            "</td>" +
+                                            "<td>"+casos[i].interes+"</td>" ;
+                                            if (casos[i].estado === 'Preaprobado') {
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-info\">PreAprobado</span></td><td></td>";
+
+                                            } else if (casos[i].estado === 'Aprobado') {
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-success\">Aprobado</span></td><td></td>";}
+                                            else{
+                                                lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-danger\">Negado</span></td>"+
+                                                "<td><button type=\"button\" class=\"btn btn-primary razon-btn\"\n" +
+                                                    "data-razon='"+ casos[i].razon + "' data-toggle=\"modal\" data-dismiss=\"modal\"\n" +
+                                                    "data-target=\"#RazonNegado\">RESPUESTA</button></td>";
+                                            }
+                                lineas+=
+                                            "<td>"+casos[i].fecha_aprobado+"</td>" +
+                                            "</tr>";
+                               }
+                        table_body.append(lineas)
+                        $(".razon-btn").click(function () {
+                            var razon = $(this).data("razon");
+                            $("#razonnegado").text(razon);
+                        });
+    }
+    });
+    }
+
+
+    $("#busqueda_historiales_credilisto").click(
+       function (e) {
+           buscar_credilisto_historiales()
+       }
+    )
+
+
+
+
+    //CALCULAR VALORES CREDIYA
+    $(document).ready(function () {
+        $('.solicitud-btn').click(function () {
+            var pedidoId = $(this).data('id');
+            var pedidoPedido = $(this).data('pedido');
+            var pedidoFecha = $(this).data('fecha');
+            var pedidoVencimiento = $(this).data('vencimiento');
+            $.ajax({
+                url: '/configuracion/servicio_crediya_lista/',
+                method: 'GET',
+                data: { pedido_id: pedidoId },
+                success: function (data) {
+                    $('#numeroPedido').text(pedidoPedido);
+                    $('#numeroPedido1').val(pedidoPedido);
+                    $('#fecha_pedido').val(pedidoFecha);
+                    $('#desembolso').text(data.valor1);
+                    $('#desembolso1').val(data.valor1);
+                    $('#intereses').text(data.valor2);
+                    $('#intereses1').val(data.valor2);
+                    $('#desembolsos').text(data.valor3);
+                    $('#desembolsos1').val(data.valor3);
+                    $('#valor_orden').val(pedidoId);
+                    $('#fecha_vencimiento').val(pedidoVencimiento);
+                }
+            });
+        });
+    });
+
+
+    //CALCULAR VALORES CREDILISTO
+    $(document).ready(function () {
+        $('.solicitud-credilisto-btn').click(function () {
+            var facturaId = $(this).data('id');
+            var facturaFactura = $(this).data('factura');
+            var facturaFecha = $(this).data('fecha');
+            var facturaVencimiento = $(this).data('vencimiento');
+            var facturaReferencia = $(this).data('referencia');
+            $.ajax({
+                url: '/configuracion/servicio_credilisto_lista/',
+                method: 'GET',
+                data: { factura_id: facturaId , factura_vencimiento: facturaVencimiento },
+                success: function (data) {
+                    $('#numeroFactura').text(facturaFactura);
+                    $('#numeroFacturaCliente').text(facturaReferencia);
+                    $('#interescre').text(data.valor2);
+                    $('#ochentaporciento').text(data.valor3);
+                    $('#diferencia').text(data.diferencia);
+                    $('#desembolsocredi').text(data.valor1);
+                    $('#numeroPedido1').val(facturaFactura);
+                    $('#intereses1').val(data.valor2);
+                    $('#desembolso1').val(data.valor1);
+                    $('#fecha_pedido').val(facturaFecha);
+                    $('#valor_orden').val(facturaId);
+                    $('#fecha_vencimiento').val(facturaVencimiento);
+                    $('#factura_cliente').val(facturaReferencia);
+                }
+            });
+        });
+    });
 
     //BUSCAR PEDIDOS OTROS CANALES
         var busqueda_pedidos_otros_canales = function () {
@@ -3656,12 +4076,20 @@ function printDiv(divName) {
 }
 
 function VerEmpresas() {
-        element = document.getElementById("content");
+        element = document.getElementById("formulario");
         check = document.getElementById("check");
         check_persona=document.getElementById("check_personas")
+        var pagare = document.getElementById('pagare_formato');
+        var contrato = document.getElementById('contrato_formato');
+        var carta = document.getElementById('carta_formato');
+        var ficha = document.getElementById('ficha_formato');
         if (check.checked) {
             check_persona.style.display='none';
             element.style.display='block';
+            pagare.href = '/bodega/PAGAREPERSONANATURAL.pdf';
+            contrato.href = '/bodega/CONTRATOCREDITO.pdf';
+            carta.href = '/bodega/CARTADEINSTRUCCIONESPERSONANATURAL.pdf';
+            ficha.href = '/bodega/FichaNegociación.pdf';
         }
         else {
             check_persona.style.display='block';
@@ -3671,12 +4099,20 @@ function VerEmpresas() {
 
 
 function VerPersonas() {
-        element = document.getElementById("content_personas");
+        element = document.getElementById("formulario");
         check = document.getElementById("check_personas");
         check_empresa=document.getElementById("check")
+        var pagare = document.getElementById('pagare_formato');
+        var contrato = document.getElementById('contrato_formato');
+        var carta = document.getElementById('carta_formato');
+        var ficha = document.getElementById('ficha_formato');
         if (check.checked) {
             check_empresa.style.display='none'
             element.style.display='block';
+            pagare.href = '/bodega/PAGAREPERSONAJURIDICA.pdf';
+            contrato.href = '/bodega/CONTRATOCREDITO.pdf';
+            carta.href = '/bodega/CARTADEINSTRUCCIONESPERSONAJURIDICA.pdf';
+            ficha.href = '/bodega/FichaNegociación.pdf';
         }
         else {
             check_empresa.style.display='block';

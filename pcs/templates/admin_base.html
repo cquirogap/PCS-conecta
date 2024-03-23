@@ -278,7 +278,7 @@
       {% else %}
       <ul class="sidebar-menu">
         <li class="header">BARRA DE NAVEGACION</li>
-        {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1 %}
+        {% if permiso_usuario.atencion == 3 or permiso_usuario.atencion == 2 or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-gears"></i> <span>Configuracion</span>
@@ -292,21 +292,24 @@
             <li><a href="/configuracion/estado_sistema/"><i class="fa fa-circle-o"></i>Estado Del Sistema</a></li>
             <li><a href="/configuracion/justificacion/"><i class="fa fa-circle-o"></i>Definiciones</a></li>
             {% endif %}
-            {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1  %}
+            {% if permiso_usuario.atencion == 3 or permiso_usuario.atencion == 2 or permiso_usuario.admin == 1  %}
             <li><a href="/configuracion/peticion/"><i class="fa fa-circle-o"></i>Atencion</a></li>
             {% endif %}
           </ul>
         </li>
         {% endif %}
-        {% if permiso_usuario.atencion != 1 or permiso_usuario.admin == 1 %}
+        {% if permiso_usuario.atencion != 1  or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Solicitudes</span>
           </a>
           <ul class="treeview-menu">
-
+            {% if permiso_usuario.atencion == 3 or permiso_usuario.atencion == 2 or permiso_usuario.admin == 1 %}
             <li><a href="/configuracion/solicitudes/"><i class="fa fa-circle-o"></i>Mis solicitudes pendientes</a></li>
             <li><a href="/configuracion/solicitudes_generales/"><i class="fa fa-circle-o"></i>Consultas Generales</a></li>
+            {% endif %}
+            <li><a href="/configuracion/servicio_crediya_consulta/"><i class="fa fa-circle-o"></i>Solicitudes Crédito</a></li>
+            <li><a href="/configuracion/documentos_creditos/"><i class="fa fa-circle-o"></i>Documentos Credito</a></li>
 
           </ul>
         </li>
@@ -352,6 +355,7 @@
 
             <li><a href="/configuracion/servicio_crediya/"><i class="fa fa-circle-o"></i>Servicio CrediYa</a></li>
             <li><a href="/configuracion/servicio_credilisto/"><i class="fa fa-circle-o"></i>Servicio CrediListo</a></li>
+
 
           </ul>
         </li>
@@ -445,6 +449,10 @@
             <li><a href="/configuracion/solicitud_estado_cuenta/grupos/{{permiso_usuario.empresa.nit }}"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
             {% elif permiso_usuario.empresa.tipo == 'pcs' %}
             <li><a href="/configuracion/solicitud_estado_cuenta/"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
+            {% endif %}
+            {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1 %}
+            <li><a href="/configuracion/servicio_crediya_registro/"><i class="fa fa-circle-o"></i>Solicitar Creditos </a></li>
+            <li><a href="/configuracion/servicio_crediya_historial/"><i class="fa fa-circle-o"></i>Mis Creditos </a></li>
             {% endif %}
           </ul>
         </li>

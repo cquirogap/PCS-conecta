@@ -1,0 +1,194 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/documentos_creditos/">Documentos de Creditos </a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Opciones</a></li>
+      </ol>
+
+
+    </section>
+    <div class="modal fade" id="AceptarCredito" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form role="form" action="/configuracion/documentos_creditos/" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header bg-primary text-white">
+                        <h4 class="modal-title" id="exampleModalLabel">Aprobar Documentos</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <input type="hidden" name="numerosoli" id="numerosoli">
+                    <input type="hidden" name="respuesta" value="Aprobado">
+                    <div class="modal-body">
+                        ¿Estás seguro de aprobar estos documentos?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success" id="solicitarCreditoBtn">Aprobar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="DenegarCredito" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form role="form" action="/configuracion/documentos_creditos/" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header bg-primary text-white">
+                        <h4 class="modal-title" id="exampleModalLabel">Denegar Documentos</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <input type="hidden" name="numerosoli" id="numerosolis">
+                    <input type="hidden" name="respuesta" value="Negado">
+                    <div class="modal-body">
+                        ¿Estás seguro de denegar estos documentos <span id="pedido_modal2"></span>?
+                        <br>
+                        <textarea class="form-control" rows="3" required placeholder="Motivos de denegado" name="razon" id="razon"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-danger" id="solicitarCreditoBtn">Denegar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            {% csrf_token %}
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="opciones">
+                    <br>
+                    <div class="row">
+                          <div class="col-md-2">
+                              <a href="/configuracion/registrar_documentos_creditos/">
+                                <button type="button" class="btn btn-primary">
+                                    <span class='glyphicon glyphicon-edit'></span> Registrar</button>
+                              </a>
+                          </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                  <h3 class="box-title">Opciones</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive no-padding">
+                                  <table id="opciones" class="table table-bordered table-hover dataTables">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Empresa</th>
+                                            <th>Fecha Emisión</th>
+                                            <th>Documentos</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                            <th></th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for documento in documentos %}
+                                            <tr>
+
+                                                    <td>{{documento.Empresa.nombre}}</td>
+                                                    <td>{{documento.FechaEmision|date:"Y-m-d"}}</td>
+                                                    <td><div class=btn-group>
+                                            <a type="button" target="_blank" href='{{ documento.pagare }}' class="btn btn-default">Pagaré</a>
+                                            <a type="button" target="_blank" href='{{ documento.contrato }}' class="btn btn-default">Contrato</a>
+                                            <a type="button" target="_blank" href='{{ documento.carta }}' class="btn btn-default">Carta</a>
+                                            <a type="button" target="_blank" href='{{ documento.ficha }}' class="btn btn-default">Ficha</a>
+                                            </div></td>
+                                                    <td>
+                                                        {% if documento.estado == 'Pendiente' %}
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-btn btn-success aceptardocumentos-btn"
+                                                                    data-id='{{ documento.pk }}' data-toggle='modal' data-target='#AceptarCredito'>ACEPTAR</button>
+                                                            <button type="button" class="btn btn-btn btn-danger denegardocumentos-btn"
+                                                                    data-id='{{ documento.pk }}' data-toggle='modal' data-target='#DenegarCredito'>DENEGAR</button>
+                                                        </div>
+                                                        {% else %}
+                                                        {{ documento.estado  }}
+                                                        {% endif %}
+                                                    </td>
+
+                                                <td><center><a class="btn btn-info btn-sm"
+                                                       href="/configuracion/editar_documentos_creditos/{{ documento.pk }}/"
+                                                       title="Editar ">
+                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                </a></center></td>
+                                            <td><center><a class="btn btn-info btn-sm"
+                                                       href="/configuracion/historial_documentos_creditos/{{ documento.pk }}/"
+                                                       title="Historial ">
+                                                    <i class="fa  fa-archive"></i>
+                                                </a></center></td>
+
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <!-- /.box-body -->
+                          </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

@@ -1,0 +1,243 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/servicio_credilisto_registro/">Solicitar Credito Facturas</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Solicitar Creditos Facturas</a></li>
+      </ol>
+
+
+    </section>
+    <div class="modal fade" id="DocumentoFIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <form role="form" action="/configuracion/servicio_credilisto_registro/" method="POST">
+            {% csrf_token %}
+      <div class="modal-header bg-primary text-white">
+        <h4 class="modal-title" id="exampleModalLabel">Solicitud de Crédito</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+            <input type="hidden" name="total_desembolso" id="desembolso1">
+            <input type="hidden" name="numero_pedido" id="numeroPedido1">
+            <input type="hidden" name="intereses" id="intereses1">
+            <input type="hidden" name="fecha_pedido" id="fecha_pedido">
+            <input type="hidden" name="valor_orden" id="valor_orden">
+            <input type="hidden" name="fecha_vencimiento" id="fecha_vencimiento">
+            <input type="hidden" name="factura_cliente" id="factura_cliente">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="numeroPedido" style="font-weight: bold;font-size: 1.2em">Número de factura:</label>
+              <h4 class="form-control-static" id="numeroFactura"></h4>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="bg-info p-3 rounded">
+              <div class="text-white" style="font-weight: bold;font-size: 1.2em">Puede solicitar hasta el 80% del anticipo</div>
+              <h4 class="text-white font-weight-bold" id="ochentaporciento"></h4>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+              <div class="form-group">
+              <label style="font-weight: bold;font-size: 1.2em">Nombre de la Empresa:</label>
+              <h4 class="form-control-static">{{ empresa}}</h4>
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <div class="bg-info p-3 rounded">
+              <div class="text-white" style="font-weight: bold;font-size: 1.2em">Tasa de Interés</div>
+              <h4 class="text-white font-weight-bold">1.6%MA</h4>
+            </div>
+          </div>
+        </div>
+          <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="intereses" style="font-weight: bold;font-size: 1.2em">Intereses:</label>
+              <h4 class="form-control-static" id="interescre"></h4>
+            </div>
+          </div>
+              <div class="col-md-6">
+            <div class="form-group">
+              <label for="intereses" style="font-weight: bold;font-size: 1.2em">Número de la factura del cliente:</label>
+              <h4 class="form-control-static" id="numeroFacturaCliente"></h4>
+            </div>
+          </div>
+        </div>
+          <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="intereses" style="font-weight: bold;font-size: 1.2em">Diferencia de Días:</label>
+              <h4 class="form-control-static" id="diferencia"> </h4>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="bg-primary text-white p-3 rounded">
+                <center>
+              <div class="text-white"><h4>Valor total de desembolso:</h4></div>
+              <h3 id="desembolsocredi" class="text-white font-weight-bold"></h3>
+                    </center>
+            </div>
+          </div>
+        </div>
+          <div class="col-xs-12">
+              <br>
+              <div class="checkbox icheck">
+                  <label>
+                      <input id='acepta_terminos' style="transform: scale(1.2)" name='acepta_terminos' type="checkbox" required> <p style="font-size: 1.1em">He leído y acepto  las políticas de privacidad
+
+                      <a target="_blank" href="https://www.pcsocial.org/politica-privacidad" >  Ver Términos de Uso </a></p>
+                  </label>
+              </div>
+              <div class="checkbox icheck">
+                  <label>
+                      <input id='acepta_terminos' style="transform: scale(1.2)" name='acepta_terminos' type="checkbox" required> <p style="font-size: 1.1em">He leído y acepto las políticas de servicios financieros
+
+                      <a target="_blank" href="/bodega/POLITICAS_SERVICIOS_FINANCIEROS_PCS.pdf" >  Ver Términos de Uso(obligatorio) </a></p>
+                  </label>
+              </div>
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary" id="solicitarCreditoBtn">Solicitar Crédito</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li ><a href="/configuracion/servicio_crediya_registro/" >CREDIYA</a></li>
+              <li class="active"><a href="/configuracion/servicio_credilisto_registro/" data-toggle="tab">CREDILISTO</a></li>
+
+            </ul>
+            {% csrf_token %}
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="imagenes">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+
+                                <br>
+                                <!-- /.box-header -->
+                                <form role="form" action="/configuracion/servicio_credilisto_registro/" method="POST">
+                                    <input type="hidden" value="{{ fecha_fin }}" name="fecha_fin">
+                                    <input type="hidden" value="{{ fecha_inicio }}" name="fecha_inicio">
+                                <div class="box-body table-responsive no-padding">
+
+                                    {% csrf_token %}
+                                  <table id="empresas" class="table table-bordered table-hover dataTables">
+
+                                      <br>
+
+                                    <thead>
+                                        <tr>
+                                            <th>Referencia</th>
+                                            <th>Factura</th>
+                                            <th>Valor</th>
+                                            <th>Fecha de Factura</th>
+                                            <th>Fecha Vencimiento</th>
+                                            <th>Solicitud</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for datos in facturas %}
+                                            <tr >
+                                                <td>{{ datos.referencia }}</td>
+                                                <td>{{ datos.factura }}</td>
+                                                <td>{{ datos.total }}</td>
+                                                <td>{{ datos.fecha_formateada }}</td>
+                                                <td>{{ datos.fecha_formateada_ven }}</td>
+                                            <td>
+                                                    {% if datos.estado == None %}
+                                                    <button type="button" class="btn btn-primary solicitud-credilisto-btn"
+                                                            data-toggle="modal" data-dismiss="modal"
+                                                            data-id="{{ datos.total }}" data-factura="{{ datos.factura }}"
+                                                            data-fecha="{{ datos.fecha_factura }}" data-vencimiento="{{ datos.fecha_vencimiento }}"
+                                                            data-referencia="{{ datos.referencia }}"
+                                                            data-target="#DocumentoFIModal">SOLICITAR</button>
+                                                    {% elif datos.estado == 'Preaprobado' %}
+                                                        <span style="font-weight: bold;font-size: 1.2em" class="label label-warning">Preaprobado</span>
+                                                    {% elif datos.estado == 'Negado' %}
+                                                        <span style="font-weight: bold;font-size: 1.2em" class="label label-danger">Negado</span>
+                                                    {% elif datos.estado == 'Aprobado' %}
+                                                        <span style="font-weight: bold;font-size: 1.2em" class="label label-success">Aprobado</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                  </table>
+                                </div>
+                                    <br>
+
+                                </form>
+                                <!-- /.box-body -->
+                          </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

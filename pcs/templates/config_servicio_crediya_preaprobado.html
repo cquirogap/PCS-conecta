@@ -1,0 +1,118 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/servicio_crediya_registro/">Solicitar Aprobación Documentos</a>
+        <small>Configuración</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuración</a></li>
+        <li><a href="#">Solicitar Aprobación Documentos</a></li>
+      </ol>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="callout callout-info">
+                          <div class="col-md-12">
+                                <div class="col-sm-6 invoice-col">
+                                    <div class="col-sm-7 invoice-col">
+                                    <p style="font-weight: bold;font-size: 1.4em">Persona Natural</p>
+                                    </div>
+                                    <div class="col-sm-2 invoice-col">
+                                    <input type="checkbox" name="check" id="check" value="empresa" style="transform: scale(1.4)" onchange="javascript:VerEmpresas()" />
+                                    </div>
+                                </div>
+                              <div class="col-sm-6 invoice-col">
+                                  <div class="col-sm-7 invoice-col">
+                                    <p style="font-weight: bold;font-size: 1.4em">Persona Juridica</p>
+                                  </div>
+                                  <div class="col-sm-2 invoice-col">
+                                    <input type="checkbox" name="check" id="check_personas" value="persona" style="transform: scale(1.4)" onchange="javascript:VerPersonas()" />
+                                  </div>
+                                  </div>
+
+                              </div>
+                              <br>
+                          </div>
+            <!-- Documentos necesarios para la aprobación del crédito -->
+            <form role="form" id="formulario" enctype="multipart/form-data" action="/configuracion/servicio_crediya_preaprobados/" method="POST" style="display:none;">
+                {% csrf_token %}
+                <div class="form-group">
+
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h1 class="box-title">Documentos Necesarios para la Aprobación del Crédito</h1>
+                    </div>
+                    <div class="box-body">
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                <label for="pagare" style="font-weight: bold;font-size: 1.4em">Pagaré:</label>
+                                <input type="file" class="form-control" id="pagare" name="pagare" required  ></div>
+                                <div class="col-md-2">
+                                    <a id="pagare_formato" class="btn btn-app" target="_blank" href="/bodega/PAGARE.pdf">
+                                    <i class="fa  fa-file-word-o"></i> Formato
+                                </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                <label for="contrato" style="font-weight: bold;font-size: 1.4em">Contrato de Crédito:</label>
+                                <input type="file" class="form-control" id="contrato" name="contrato" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <a id="contrato_formato" class="btn btn-app" target="_blank" href="/bodega/CONTRATO CREDITO.pdf">
+                                    <i class="fa  fa-file-word-o"></i> Formato
+                                </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                <label for="carta" style="font-weight: bold;font-size: 1.4em">Carta de Instrucciones:</label>
+                                <input type="file" class="form-control" id="carta" name="carta" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <a id="carta_formato" class="btn btn-app" target="_blank" href="/bodega/CARTA DE INSTRUCCIONES.pdf">
+                                    <i class="fa  fa-file-word-o"></i> Formato
+                                </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                <label for="ficha" style="font-weight: bold;font-size: 1.4em">Ficha de Negociación:</label>
+                                <input type="file" class="form-control" id="ficha" name="ficha" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <a id="ficha_formato" class="btn btn-app" target="_blank" href="/bodega/SOLICITUD DE SERVICIO FINANCIERO.pdf">
+                                    <i class="fa  fa-file-word-o"></i> Formato
+                                </a>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <br>
+                              <div class="checkbox icheck">
+                                <label>
+                                    <input id='acepta_terminos' style="transform: scale(1.2)" name='acepta_terminos' type="checkbox" required> <p style="font-size: 1.2em">He leído y acepto  las políticas de privacidad
+
+                                    <a target="_blank" href="https://www.pcsocial.org/politica-privacidad" >  Ver Términos de Uso </a></p>
+                                </label>
+                              </div>
+                            </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de enviar solicitud -->
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary btn-block">Enviar Solicitud</button>
+            </div>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

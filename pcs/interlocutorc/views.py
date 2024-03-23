@@ -4,13 +4,15 @@
 import datetime
 import json
 
+from django.conf import settings
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from interlocutorc.forms import *
 from interlocutorc.models import *
 from configuracion.models import *
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage,EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.contrib import messages
 from datetime import date
 from datetime import datetime,timedelta
@@ -20,9 +22,11 @@ import pytz
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from interlocutorc.serializers import PostSerializer,FacturasSerializer,RespuestaOrdenSerializer,RespuestaFacturaSerializer,MyDataSerializer
+from rest_framework import status
+from interlocutorc.serializers import PostSerializer,FacturasSerializer,RespuestaOrdenSerializer,RespuestaFacturaSerializer,MyDataSerializer,RespuestaOrdenesSerializer
 import re
 from itertools import groupby
+
 # Create your views here.
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
@@ -138,6 +142,14 @@ class RespuestaOrdenApi(ModelViewSet):
     hoy = now.date()
     queryset = RespuestaOrdenCompraApi.objects.all()
 
+class RespuestaOrdenesApi(ModelViewSet):
+    queryset = RespuestaOrdenCompraApis.objects.all()
+    serializer_class = RespuestaOrdenesSerializer
+
+
+
+
+
 class RespuestaFacturaApi(ModelViewSet):
     serializer_class = RespuestaFacturaSerializer
     now = datetime.now(pytz.timezone('America/Bogota'))
@@ -222,6 +234,479 @@ def panel_ayuda(request):
                                                         })
     else:
         pass
+
+
+
+
+def pruebacorreos():
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorApi(
+            accion='Inicio de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
+        url = "https://192.168.1.20:50000/b1s/v1/Login"
+
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+
+        response = requests.request("POST", url, data=payload, verify=False)
+
+        respuesta = ast.literal_eval(response.text)
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(hoy) + "'"
+
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = response.text
+        response = response.replace('null', ' " " ')
+        response = ast.literal_eval(response)
+        response = response['value']
+        for datos in response:
+            if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
+                try:
+                    pedido_almacenado = ClientesApi.objects.get(NumeroPedido=datos['DocNum'])
+                    pass
+                except:
+                    fecha_pedido=str(datos['DocDueDate'])
+                    fecha_pedido = datetime.strptime(fecha_pedido, '%Y%m%d')
+                    fecha_hoy = str(datos['DocDate'])
+                    fecha_hoy = datetime.strptime(fecha_hoy, '%Y%m%d')
+                    nuevo_pedido = ClientesApi(
+                        NombreEmpresa=datos['CardName'],
+                        Identificacion=datos['LicTradNum'],
+                        TipoIdentificacion='NIT',
+                        Correo=datos['E_Mail'],
+                        ValorOrden=format(int(datos['DocTotal']) - int(datos['VatSum']), '0,.0f'),
+                        FechaEntrega=fecha_pedido,
+                        FechaPago=fecha_pedido,
+                        FechaHoy=fecha_hoy,
+                        NumeroPedido=datos['DocNum'],
+                    )
+                    nuevo_pedido.save()
+                    intereses_minimo = 40000
+                    valor_total=int(datos['DocTotal']) - int(datos['VatSum'])
+                    medio=valor_total/2
+                    interes = 0.018 * medio
+                    if intereses_minimo > interes:
+                        interes = intereses_minimo
+                    desembolso = medio - interes
+                    desembolso = "{:,.0f}".format(desembolso)
+                    interes = "{:,.0f}".format(interes)
+                    html_content = render_to_string('basecorreropedidos.html', {
+                        'numero_orden': datos['DocNum'],
+                        'nombre_empresa': datos['CardName'],
+                        'intereses': interes,
+                        'tasa_interes': '1.8%MA',
+                        'valor_desembolso': desembolso,
+                    })
+
+                    # Crear el correo electrónico
+                    subject = 'Aviso de Crédito '+str(datos['DocNum'])
+                    from_email = 'conectaportalweb@gmail.com'
+                    to = ['serviciofinanciero@pcsocial.org']  # Lista de destinatarios
+                    text_content = 'Este es un correo electronico con formato HTML.'
+
+                    # Configurar el correo electrónico con formato alternativo (HTML)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+                    msg.attach_alternative(html_content, "text/html")
+
+                    # Enviar el correo electrónico
+                    msg.send()
+            else:
+                pass
+
+
+
+
+
+def pruebacorreosfactura():
+
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        hoy_filtro = date.today()
+        hoy_filtro = hoy_filtro + timedelta(days=10)
+        hoy_filtro = hoy_filtro.strftime("%Y-%m-%d")
+        errores = HistorialErrorApi(
+            accion='Inicio de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
+        url = "https://192.168.1.20:50000/b1s/v1/Login"
+
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+
+        response = requests.request("POST", url, data=payload, verify=False)
+
+        respuesta = ast.literal_eval(response.text)
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultasFacturasApis2')/List?fecha='" + hoy_filtro +"'"
+
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = response.text
+        response = response.replace('null', ' " " ')
+        response = ast.literal_eval(response)
+        response = response['value']
+        for datos in response:
+            if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
+                try:
+                    pedido_almacenado = FacturasApi.objects.get(NumeroFactura=datos['DocNum'])
+                    pass
+                except:
+                    fecha_pedido=str(datos['DocDueDate'])
+                    fecha_pedido = datetime.strptime(fecha_pedido, '%Y%m%d')
+                    fecha_hoy = str(datos['DocDate'])
+                    fecha_hoy = datetime.strptime(fecha_hoy, '%Y%m%d')
+                    nuevo_factura = FacturasApi(
+                        NombreEmpresa=datos['CardName'],
+                        Identificacion=datos['LicTradNum'],
+                        TipoIdentificacion='NIT',
+                        Correo=datos['E_Mail'],
+                        ValorFacturaEmitida=datos['DocTotal'],
+                        FechaPagoFactura=fecha_pedido,
+                        FechaHoy=fecha_hoy,
+                        NumeroFactura=datos['DocNum'],
+                        Referencia2=datos['NumAtCard'],
+                    )
+                    nuevo_factura.save()
+                    fecha_pedido=fecha_pedido.date()
+                    diferencia = (fecha_pedido - hoy).days
+                    intereses_minimo = 40000
+                    valor_total = int(datos['DocTotal'])
+                    medio = valor_total*0.8
+                    interes=diferencia*0.000533333*medio
+                    if intereses_minimo > interes:
+                        interes = intereses_minimo
+                    desembolso = medio - interes
+                    desembolso = "{:,.0f}".format(desembolso)
+                    interes = "{:,.0f}".format(interes)
+                    html_content = render_to_string('basecorrerofactura.html', {
+                        'numero_orden': datos['DocNum'],
+                        'nombre_empresa': datos['CardName'],
+                        'intereses': interes,
+                        'tasa_interes': '1.6%MA',
+                        'diferencia': diferencia,
+                        'valor_desembolso': desembolso,
+                        'referencia': datos['NumAtCard'],
+                    })
+
+                    # Crear el correo electrónico
+                    subject = 'Aviso de Crédito CrediListo ' + str(datos['DocNum'])
+                    from_email = 'conectaportalweb@gmail.com'
+                    to = ['serviciofinanciero@pcsocial.org']  # Lista de destinatarios
+                    text_content = 'Este es un correo electronico con formato HTML.'
+
+                    # Configurar el correo electrónico con formato alternativo (HTML)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+                    msg.attach_alternative(html_content, "text/html")
+
+                    # Enviar el correo electrónico
+                    msg.send()
+            else:
+                pass
+
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorApi(
+            accion='Fin de tarea',
+            fecha=hoy,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+        )
+        errores.save()
+
+
+
+
+
+def pruebasap(request):
+    # URL para autenticarse y obtener el SessionId
+    url = "https://192.168.1.20:50000/b1s/v1/Login"
+
+    payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+
+    response = requests.request("POST", url, data=payload, verify=False)
+
+    respuesta = ast.literal_eval(response.text)
+
+    url = "https://192.168.1.20:50000/b1s/v1/VendorPayments"
+
+    payload = json.dumps({
+        "DocNum": 41058,
+        "DocType": "rSupplier",
+        "HandWritten": "tNO",
+        "Printed": "tYES",
+        "DocDate": "2024-03-21T00:00:00Z",
+        "CardCode": "P005367",
+        "CardName": "PISCU S.A.S",
+        "Address": "CR 48 A 80 13 000000  MEDELLIN COLOMBIA",
+        "CashAccount": None,
+        "DocCurrency": "$",
+        "CashSum": 0,
+        "CheckAccount": None,
+        "TransferAccount": "11100502",
+        "TransferSum": 6110010,
+        "TransferDate": "2024-03-21T00:00:00Z",
+        "TransferReference": None,
+        "LocalCurrency": "tNO",
+        "DocRate": 0,
+        "Reference1": "3",
+        "Reference2": None,
+        "CounterReference": None,
+        "Remarks": "esto es una prueba",
+        "JournalRemarks": "Cancelado",
+        "SplitTransaction": "tNO",
+        "ContactPersonCode": 10308,
+        "ApplyVAT": "tNO",
+        "TaxDate": "2024-03-21T00:00:00Z",
+        "BankCode": None,
+        "BankAccount": None,
+        "DiscountPercent": 0,
+        "ProjectCode": None,
+        "CurrencyIsLocal": "tNO",
+        "DeductionPercent": 0,
+        "DeductionSum": 0,
+        "CashSumFC": 0,
+        "CashSumSys": 0,
+        "BoeAccount": None,
+        "BillOfExchangeAmount": 0,
+        "BillofExchangeStatus": None,
+        "BillOfExchangeAmountFC": 0,
+        "BillOfExchangeAmountSC": 0,
+        "BillOfExchangeAgent": None,
+        "WTCode": None,
+        "WTAmount": 0,
+        "WTAmountFC": 0,
+        "WTAmountSC": 0,
+        "WTAccount": None,
+        "WTTaxableAmount": 0,
+        "Proforma": "tNO",
+        "PayToBankCode": None,
+        "PayToBankBranch": None,
+        "PayToBankAccountNo": None,
+        "PayToCode": "PRINCIPAL",
+        "PayToBankCountry": None,
+        "IsPayToBank": "tNO",
+        "DocEntry": 3,
+        "PaymentPriority": "bopp_Priority_6",
+        "TaxGroup": None,
+        "BankChargeAmount": 0,
+        "BankChargeAmountInFC": 0,
+        "BankChargeAmountInSC": 0,
+        "UnderOverpaymentdifference": 0,
+        "UnderOverpaymentdiffSC": 0,
+        "WtBaseSum": 0,
+        "WtBaseSumFC": 0,
+        "WtBaseSumSC": 0,
+        "VatDate": "2024-03-21T00:00:00Z",
+        "TransactionCode": "",
+        "PaymentType": "bopt_None",
+        "TransferRealAmount": 0,
+        "DocObjectCode": "bopot_OutgoingPayments",
+        "DocTypte": "rSupplier",
+        "DueDate": "2024-03-21T00:00:00Z",
+        "LocationCode": None,
+        "Cancelled": "tYES",
+        "ControlAccount": "23359525",
+        "UnderOverpaymentdiffFC": 0,
+        "AuthorizationStatus": "pasWithout",
+        "BPLID": None,
+        "BPLName": None,
+        "VATRegNum": None,
+        "BlanketAgreement": None,
+        "PaymentByWTCertif": "tNO",
+        "Cig": None,
+        "Cup": None,
+        "AttachmentEntry": None,
+        "SignatureInputMessage": None,
+        "SignatureDigest": None,
+        "CertificationNumber": None,
+        "PrivateKeyVersion": None,
+        "U_HBT_AreVal": "Comun",
+        "U_HBT_Tercero": None,
+        "U_GSP_TPVREF": None,
+        "U_GSP_TPVLINE": None,
+        "U_GSP_TPVPAYMETHOD": None,
+        "U_HBT1_CPTO": "Pago",
+        "U_HBT_PagoAnticipo": "N",
+        "U_BP_Confd": "N",
+        "U_BP_DocNr": None,
+        "U_BP_Seque": None,
+        "PaymentChecks": [],
+        "PaymentInvoices": [],
+        "PaymentCreditCards": [],
+        "PaymentAccounts": [],
+        "PaymentDocumentReferencesCollection": [],
+        "BillOfExchange": {},
+        "WithholdingTaxCertificatesCollection": [],
+        "ElectronicProtocols": [],
+        "CashFlowAssignments": [],
+        "Payments_ApprovalRequests": [],
+        "WithholdingTaxDataWTXCollection": []
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Cookie': 'B1SESSION=746b4846-e7b4-11ee-c000-000c2986aa05-140529280101248-4921; ROUTEID=.node4'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response.text)
+
+
+def prubasap2(request):
+    url = "https://192.168.1.20:50000/b1s/v1/Login"
+
+    payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+
+    response = requests.request("POST", url, data=payload, verify=False)
+
+    respuesta = ast.literal_eval(response.text)
+    # URL del endpoint de PaymentDrafts
+    url_pagos_efectuados = "https://192.168.1.20:50000/b1s/v1/VendorPayments"
+
+    # Datos del nuevo pago efectuado que quieres enviar
+    nuevo_pago_efectuado = {
+            "DocType": "rSupplier",
+            "HandWritten": "tNO",
+            "Printed": "tNO",
+            "DocDate": "2024-03-22T00:00:00Z",
+            "CardCode": "P005367",
+            "CashAccount": "42100516",
+            "DocCurrency": "$",
+            "CashSum": 40000.0,
+            "CheckAccount": None,
+            "TransferAccount": "11100502",
+            "TransferSum": 419000.0,
+            "TransferDate": "2024-03-22T00:00:00Z",
+            "TransferReference": None,
+            "LocalCurrency": "tNO",
+            "DocRate": 0.0,
+            "Reference2": None,
+            "CounterReference": None,
+            "Remarks": None,
+            "JournalRemarks": "ANTICIPO OC 121303 prueba",
+            "SplitTransaction": "tNO",
+            "ApplyVAT": "tNO",
+            "TaxDate": "2024-03-22T00:00:00Z",
+            "BankCode": None,
+            "BankAccount": None,
+            "DiscountPercent": 0.0,
+            "ProjectCode": None,
+            "CurrencyIsLocal": "tNO",
+            "DeductionPercent": 0.0,
+            "DeductionSum": 0.0,
+            "CashSumFC": 0.0,
+            "BoeAccount": None,
+            "BillOfExchangeAmount": 0.0,
+            "BillofExchangeStatus": None,
+            "BillOfExchangeAmountFC": 0.0,
+            "BillOfExchangeAmountSC": 0.0,
+            "BillOfExchangeAgent": None,
+            "WTCode": None,
+            "WTAmount": 0.0,
+            "WTAmountFC": 0.0,
+            "WTAmountSC": 0.0,
+            "WTAccount": None,
+            "WTTaxableAmount": 0.0,
+            "Proforma": "tNO",
+            "PayToBankCode": None,
+            "PayToBankBranch": None,
+            "PayToBankAccountNo": None,
+            "PayToCode": "PRINCIPAL",
+            "PayToBankCountry": None,
+            "IsPayToBank": "tNO",
+            "PaymentPriority": "bopp_Priority_6",
+            "TaxGroup": None,
+            "BankChargeAmount": 0.0,
+            "BankChargeAmountInFC": 0.0,
+            "BankChargeAmountInSC": 0.0,
+            "UnderOverpaymentdifference": 0.0,
+            "UnderOverpaymentdiffSC": 0.0,
+            "WtBaseSum": 0.0,
+            "WtBaseSumFC": 0.0,
+            "WtBaseSumSC": 0.0,
+            "VatDate": "2024-03-22T00:00:00Z",
+            "TransactionCode": "",
+            "PaymentType": "bopt_None",
+            "TransferRealAmount": 0.0,
+            "DocObjectCode": "bopot_OutgoingPayments",
+            "DocTypte": "rSupplier",
+            "DueDate": "2024-03-22T00:00:00Z",
+            "LocationCode": None,
+            "Cancelled": "tNO",
+            "UnderOverpaymentdiffFC": 0.0,
+            "AuthorizationStatus": "pasWithout",
+            "BPLID": None,
+            "BPLName": None,
+            "VATRegNum": None,
+            "BlanketAgreement": None,
+            "PaymentByWTCertif": "tNO",
+            "Cig": None,
+            "Cup": None,
+            "AttachmentEntry": None,
+            "SignatureInputMessage": None,
+            "SignatureDigest": None,
+            "CertificationNumber": None,
+            "PrivateKeyVersion": None,
+            "U_HBT_AreVal": "Comun",
+            "U_HBT_Tercero": None,
+            "U_GSP_TPVREF": None,
+            "U_GSP_TPVLINE": None,
+            "U_GSP_TPVPAYMETHOD": None,
+            "U_HBT1_CPTO": "Pago",
+            "U_HBT_PagoAnticipo": "N",
+            "U_BP_Confd": "N",
+            "U_BP_DocNr": None,
+            "U_BP_Seque": None,
+            "PaymentChecks": [],
+            "PaymentInvoices": [],
+            "PaymentCreditCards": [],
+            "PaymentAccounts": [],
+            "PaymentDocumentReferencesCollection": [],
+            "BillOfExchange": {},
+            "WithholdingTaxCertificatesCollection": [],
+            "ElectronicProtocols": [],
+            "CashFlowAssignments": [],
+            "Payments_ApprovalRequests": [],
+            "WithholdingTaxDataWTXCollection": []
+    }
+
+    # Convierte los datos a formato JSON
+    payload_pagos_efectuados = json.dumps(nuevo_pago_efectuado)
+
+    # Encabezados de la solicitud HTTP
+    headers_pagos_efectuados = {
+        'Content-Type': 'application/json',
+        # Agrega aquí tu cookie de sesión
+        'Cookie': 'B1SESSION=' + respuesta['SessionId']
+    }
+
+    # Realiza la solicitud POST al Service Layer para crear un nuevo pago efectuado
+    response_pagos_efectuados = requests.post(url_pagos_efectuados, headers=headers_pagos_efectuados,
+                                              data=payload_pagos_efectuados, verify=False)
+
+    # Verifica el estado de la respuesta
+    if response_pagos_efectuados.status_code == 201:
+        print("Pago efectuado creado exitosamente.")
+    else:
+        print("Error al crear el pago efectuado:", response_pagos_efectuados.text)
+
 
 def tarea_api():
     try:
@@ -436,7 +921,7 @@ def tokenisacion(request):
 
 
 
-def prueba():
+def prueba(request):
     url = "https://192.168.1.20:50000/b1s/v1/Login"
 
     payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
@@ -446,43 +931,39 @@ def prueba():
     empresas= Empresas.objects.all()
     lista_correos = []
     lista_correos_no_existentes = []
-    lista_correos_simbolos_especiales = []
     for empresa in empresas:
-        try:
-            url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
+        
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
+
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = ast.literal_eval(response.text)
+        response = response['value']
+        if response==[]:
+            url5 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('validacionempresariossap')/List?NombreEmpresario='" + str(
+                empresa.nombre) + "'"
 
             headers = {
                 'Prefer': 'odata.maxpagesize=999999',
                 'Cookie': 'B1SESSION=' + respuesta['SessionId']
             }
-            response = requests.request("GET", url2, headers=headers, verify=False)
-            response = ast.literal_eval(response.text)
-            response = response['value']
-            if response==[]:
-                url5 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('validacionempresariossap')/List?NombreEmpresario='" + str(
-                    empresa.nombre) + "'"
-
-                headers = {
-                    'Prefer': 'odata.maxpagesize=999999',
-                    'Cookie': 'B1SESSION=' + respuesta['SessionId']
-                }
-                response5 = requests.request("GET", url5, headers=headers, verify=False)
-                response5 = ast.literal_eval(response5.text)
-                response5 = response5['value']
-                if response5 == []:
-                    lista_correos_no_existentes.append(str(empresa.nombre))
-                else:
-                    lista_correos.append(str(empresa.nombre))
+            response5 = requests.request("GET", url5, headers=headers, verify=False)
+            response5 = ast.literal_eval(response5.text)
+            response5 = response5['value']
+            if response5 == []:
+                lista_correos_no_existentes.append(str(empresa.nombre))
             else:
-                response=response[0]['E_MailL']
-                if response=='':
-                    lista_correos.append(str(empresa.nombre))
-                else:
-                    pass
-        except UnicodeEncodeError:
-            lista_correos_simbolos_especiales.append(empresa.nombre)
-
-    lista_correos=lista_correos[2:]
+                lista_correos.append(str(empresa.nombre))
+        else:
+            response=response[0]['E_MailL']
+            if response=='':
+                lista_correos.append(str(empresa.nombre))
+            else:
+                pass
+    lista_correos=lista_correos[4:]
     lista_correos_no_existentes=lista_correos_no_existentes[2:]
     if lista_correos==[]:
         pass
@@ -513,20 +994,15 @@ def prueba():
                              + empresas_str,
                              to=['analistati@pcsocial.org'])
         email.send()
-    if lista_correos_simbolos_especiales==[]:
-        pass
-    else:
-        empresas_str = '\n '.join(lista_correos_simbolos_especiales)
-        email = EmailMessage(' EMPRESA NO REGISTRADA' ,
-                             'Las empresas que hacen uso de símbolos especiales son las siguientes: \n'
-                             + empresas_str ,
-                             to=['coordtecnologia@pcsocial.org'])
-        email.send()
-        email = EmailMessage(' EMPRESAS SIN CORREO',
-                             'Las empresas que hacen uso de símbolos especiales son las siguientes: \n'
-                             + empresas_str,
-                             to=['analistati@pcsocial.org'])
-        email.send()
+
+
+
+def pruebacorreo(request):
+    email = EmailMessage(' PRUEBA',
+                         'esto es una prueba',
+                         to=['juansebastianduartes@gmail.com'],
+                         from_email=settings.OUTLOOK_EMAIL_HOST_USER)
+    email.send()
 
 
 def tarea_correo_pedido():

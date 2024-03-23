@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviso de Crédito</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            color: #007bff;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .column {
+            display: flex;
+            justify-content: space-between;
+        }
+        .highlight {
+            background-color: #2196F3;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Tienes una nueva orden de compra</h1>
+            <p>Puedes solicitar el adelanto para este pedido</p>
+        </div>
+        <div class="section">
+            <h2 class="section-title">Detalles del Pedido</h2>
+            <div class="column">
+                <div>
+                    <p style="font-size: 1.3em"><strong>Número de las órdenes de compra:</strong> {{ numero_orden }}</p>
+                    <p style="font-size: 1.3em"><strong>Nombre de la Empresa:</strong> {{ nombre_empresa }}</p>
+                    <p style="font-size: 1.3em"><strong>Intereses:</strong> {{ intereses }}</p>
+                </div>
+                <div>
+                    <p style="font-size: 1.3em"><strong>Puede solicitar hasta el 50% del anticipo</strong></p>
+                    <p style="font-size: 1.3em"><strong>Tasa de Interés:</strong> {{ tasa_interes }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="highlight">
+            <h2>Valor total de desembolso</h2>
+            <p style="font-size: 1.3em">{{ valor_desembolso }}</p>
+        </div>
+        <a  href="http://127.0.0.1:8000/configuracion/servicio_crediya_registro/" class="button"><p style="color:white;font-size: 1.3em ">Solicitar</p></a>
+    </div>
+</body>
+</html>

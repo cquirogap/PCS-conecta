@@ -223,6 +223,61 @@ class RespuestaOrdenCompraApi(models.Model):
     NumeroOrdenCompra = models.CharField(max_length=100, null=True,default='0')
     Interes = models.CharField(max_length=100, null=True,default='0')
 
+class CrediyaPreaprobado(models.Model):
+    Empresa = models.ForeignKey(Empresas, default=1)
+    TipoIdentificacion = models.CharField(max_length=100, null=True,default='NIT')
+    ValorAprobado = models.CharField(max_length=100, null=True,default='0')
+    NumeroOrdenCompra = models.CharField(max_length=100, null=True,default='0')
+    Interes = models.CharField(max_length=100, null=True,default='0')
+    estado = models.CharField(max_length=100, null=True, default=None)
+    FechaEmision = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    FechaVencimiento = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    FechaSolicitud = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    ValorOrden = models.CharField(max_length=100, null=True, default=None)
+    Correo = models.CharField(max_length=100, null=True,default=None)
+    FechaRespuesta = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    UsuarioRespuesta = models.ForeignKey(User, default=1)
+    Razon = models.CharField(max_length=500, null=True, default=None)
+
+class DocumentosCredito(models.Model):
+    Empresa = models.ForeignKey(Empresas, default=1)
+    pagare = models.CharField(max_length=100, null=True, default=None)
+    contrato = models.CharField(max_length=100, null=True, default=None)
+    carta = models.CharField(max_length=100, null=True, default=None)
+    ficha = models.CharField(max_length=100, null=True, default=None)
+    estado = models.CharField(max_length=100, null=True, default=None)
+    FechaEmision = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    Correo = models.CharField(max_length=100, null=True, default=None)
+    Razon = models.CharField(max_length=500, null=True, default=None)
+
+class HistorialDocumentosCredito(models.Model):
+    documento = models.ForeignKey(DocumentosCredito, default=1)
+    pagare = models.CharField(max_length=100, null=True, default=None)
+    contrato = models.CharField(max_length=100, null=True, default=None)
+    carta = models.CharField(max_length=100, null=True, default=None)
+    ficha = models.CharField(max_length=100, null=True, default=None)
+    estado = models.CharField(max_length=100, null=True, default=None)
+    FechaRespuesta = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    UsuarioRespuesta = models.ForeignKey(User, default=1)
+    Razon = models.CharField(max_length=500, null=True, default=None)
+
+class CrediListoPreaprobado(models.Model):
+    Empresa = models.ForeignKey(Empresas, default=1)
+    TipoIdentificacion = models.CharField(max_length=100, null=True,default='NIT')
+    ValorAprobado = models.CharField(max_length=100, null=True,default='0')
+    NumeroFactura = models.CharField(max_length=100, null=True,default='0')
+    NumeroFacturaCliente = models.CharField(max_length=100, null=True,default='0')
+    Interes = models.CharField(max_length=100, null=True,default='0')
+    estado = models.CharField(max_length=100, null=True, default=None)
+    FechaEmision = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    FechaVencimiento = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    FechaSolicitud = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    ValorFactura = models.CharField(max_length=100, null=True, default=None)
+    Correo = models.CharField(max_length=100, null=True,default=None)
+    FechaRespuesta = models.DateField(null=True, default=datetime.date(1, 1, 1))
+    UsuarioRespuesta = models.ForeignKey(User, default=1)
+    Razon = models.CharField(max_length=500, null=True, default=None)
+
 
 class RespuestaFacturaApi(models.Model):
     Identificacion = models.CharField(max_length=100, null=True,default='0000')
@@ -231,3 +286,16 @@ class RespuestaFacturaApi(models.Model):
     FechaEmision = models.DateField(null=True,default=datetime.date(1, 1, 1))
     NumeroFactura = models.CharField(max_length=100, null=True,default='0')
     Interes = models.CharField(max_length=100, null=True,default='0')
+
+
+class RespuestaOrdenCompraApis(models.Model):
+    NombreEmpresa = models.CharField(max_length=255)
+    Identificacion = models.CharField(max_length=255)
+    TipoIdentificacion = models.CharField(max_length=255)
+    ReferenciaOrdenes = models.CharField(max_length=255)
+    ValorAprobado = models.CharField(max_length=255)
+    FechaEmision = models.DateField(null=True, blank=True)
+    Interes = models.CharField(max_length=255)
+    NumeroOrdenCompra = models.CharField(max_length=255)
+    Estado = models.IntegerField(null=True, blank=True)
+

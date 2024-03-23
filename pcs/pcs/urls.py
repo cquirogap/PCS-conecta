@@ -40,7 +40,10 @@ urlpatterns.extend(
         # Administracion
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
-        url(r'^prueba/$', interlocutorc_views.tokenisacion),
+        url(r'^prueba/$', interlocutorc_views.pruebacorreos),
+        url(r'^prueba_factura/$', interlocutorc_views.pruebacorreosfactura),
+        url(r'^pruebasap/$', interlocutorc_views.prubasap2),
+        url(r'^pruebacorreo/$', interlocutorc_views.pruebacorreo),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
@@ -121,6 +124,26 @@ urlpatterns.extend(
         url(r'^configuracion/orden_pcs_otroscanales/fecha_minima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_minima),
         url(r'^configuracion/orden_pcs_otroscanales/fecha_maxima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_maxima),
 
+
+        #Registrar crediya y Credilisto
+        url(r'^configuracion/documentos_creditos/$', configuracion_views.config_documentos_creditos),
+        url(r'^configuracion/registrar_documentos_creditos/$', configuracion_views.config_registro_documentos_creditos),
+        url(r'^configuracion/editar_documentos_creditos/(?P<id>[-\w]+)/$', configuracion_views.config_editar_documentos_creditos),
+        url(r'^configuracion/historial_documentos_creditos/(?P<id>[-\w]+)/$', configuracion_views.config_historial_documentos_creditos),
+        url(r'^configuracion/servicio_crediya_registro/$', configuracion_views.config_servicio_crediya_registro),
+        url(r'^configuracion/servicio_crediya_preaprobado/$', configuracion_views.config_servicio_crediya_preaprobado),
+        url(r'^configuracion/servicio_crediya_preaprobados/$', configuracion_views.config_servicio_crediya_preaprobados),
+        url(r'^configuracion/servicio_crediya_lista/$', configuracion_views.config_servicio_crediya_lista),
+        url(r'^configuracion/servicio_credilisto_lista/$', configuracion_views.config_servicio_credilisto_lista),
+        url(r'^configuracion/servicio_crediya_consulta/$', configuracion_views.config_crediya_consulta_generales),
+        url(r'^configuracion/servicio_credilisto_consulta/$', configuracion_views.config_credilisto_consulta_generales),
+        url(r'^configuracion/servicio_crediya_historial/$', configuracion_views.config_crediya_consulta_historial),
+        url(r'^configuracion/servicio_credilisto_historial/$', configuracion_views.config_credilisto_consulta_historial),
+        url(r'^configuracion/servicio_crediya_historial/informacion/$', configuracion_views.informacion_complementaria_historial_crediya),
+        url(r'^configuracion/servicio_credilisto_historial/informacion/$', configuracion_views.informacion_complementaria_historial_credilisto),
+        url(r'^configuracion/servicio_crediya_consulta/informacion/$', configuracion_views.informacion_complementaria_consulta_crediya),
+        url(r'^configuracion/servicio_credilisto_consulta/informacion/$', configuracion_views.informacion_complementaria_consulta_credilisto),
+        url(r'^configuracion/servicio_credilisto_registro/$', configuracion_views.config_servicio_credilisto_registro),
         #PowerBi
         url(r'^configuracion/definiciones/graficas/$', configuracion_views.admin_graficas_powerbi),
         url(r'^configuracion/definiciones/grafica/(?P<grafica_id>\d+)/detalle/$', configuracion_views.detalle_grafica),
@@ -244,6 +267,7 @@ urlpatterns.extend(
         url(r'^configuracion/usuarios/registrar/$', configuracion_views.config_usuarios_registrar),
         url(r'^registrar/usuarios_externos/$', configuracion_views.config_usuarios_registrar_externos),
         url(r'^registrar/usuarios_externos_atencion/$', configuracion_views.config_usuarios_aten_registrar_externos),
+        url(r'^registrar/usuarios_externos_creditos/$', configuracion_views.config_usuarios_creditos_registrar_externos),
         url(r'^registrar/usuarios_otros_canales_atencion/$', configuracion_views.config_usuarios_otros_canales_registrar_externos),
         url(r'^registrar/usuarios_externos_pcs/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_pcs_registrar_externos),
         url(r'^registrar/usuarios_externos_comp/$', configuracion_views.config_usuarios_registrar_externos_comp),
