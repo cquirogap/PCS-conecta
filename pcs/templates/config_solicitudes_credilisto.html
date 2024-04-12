@@ -55,8 +55,13 @@
                     </div>
                     <input type="hidden" name="numeropedido" id="numeropedido1">
                     <input type="hidden" name="respuesta" value="Aprobado">
+                    <input type="hidden" name="estado" id="estado" required>
+                    <input type="hidden" name="pedido_sap" id="pedido_sap" required>
+                    <input type="hidden" name="valor_sap" id="valor_sap" required>
                     <div class="modal-body">
                         ¿Estás seguro de aprobar el crédito con número de factura <span id="pedido_modal"></span>?
+                        <br>
+                        <span id="PedidosCruzados" ></span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

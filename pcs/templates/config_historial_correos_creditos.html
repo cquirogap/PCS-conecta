@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/historial_empresas/">Historial</a>
+        <a href="#">Historial Correos Creditos</a>
         <small>Configuracion</small>
       </h1>
 
@@ -41,7 +41,7 @@
       {% endif %}
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
-        <li><a href="#">Compañia</a></li>
+        <li><a href="#">Historial</a></li>
       </ol>
 
 
@@ -51,18 +51,18 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#" data-toggle="tab">Historial General</a></li>
+              <li><a href="/configuracion/historial_empresas/" >Historial General</a></li>
               <li><a href="/configuracion/historial_email/" >Historial Email de Pedidos</a></li>
               <li><a href="/configuracion/historial_respuesta_pedido/">Envio Respuesta Pedido</a></li>
               <li ><a href="/configuracion/indicadores_envio_email/" >Indicador Envio Email</a></li>
                 <li ><a href="/configuracion/historial_correos_enviados/" >Correos Enviados</a></li>
                 <li ><a href="/configuracion/reenviar_pedido/" >Email Correos ReEnviados</a></li>
-                <li ><a href="/configuracion/historial_correos_creditos/" >Email Correos Aviso Creditos</a></li>
+                 <li class="active" data-toggle="tab"><a href="#" >Email Correos Aviso Creditos</a></li>
                 <li ><a href="/configuracion/historial_correos_creditos_errores/" >Historial excepciones créditos</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
-                <form role="form" action="/configuracion/historial_empresas/" method="POST">
+                <form role="form" action="/configuracion/historial_correos_creditos/" method="POST">
                     {% csrf_token %}
                     <br>
                     <div class="row">
@@ -80,23 +80,35 @@
                          <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" required>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <br>
+                            <label>Pedido</label>
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input type="number" class="form-control" id="pedido"
+                                       name="pedido" placeholder="Numero de Pedido" value="{{ pedido }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                         <br>
-                    </div>
+                        <label>Tipo Credito</label>
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                <select class="form-control select2 " style="width: 100%;" name="tipo_credito" id="tipo_credito">
+                                    <option value="" selected disabled></option>
+                                    <option value="crediya" {% if tipo_credito == 'crediya' %}selected{% endif %}>CREDIYA</option>
+                                    <option value="credilisto" {% if tipo_credito == 'credilisto' %}selected{% endif %}>CREDILISTO</option>
 
+                                </select>
+                            </div>
+                    </div>
                     <div class="col-md-12">
                         <br>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <button type="submit"  class="btn btn-primary btn-block btn-flat" >
                             <span class="glyphicon glyphicon-folder-open"></span>
                             <span class="glyphicon glyphicon-search"></span>Consultar
-                        </button>
-                    </div>
-                    <div class="col-md-6">
-                        <button type="button" id="buscar_historial_empresa_excel_button"  class="btn btn-success btn-block btn-flat" >
-                            <span class="glyphicon glyphicon-folder-open"></span>
-                            <span class="glyphicon glyphicon-search"></span>Excel
                         </button>
                     </div>
                 </div>
@@ -109,27 +121,28 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box">
-                                <div class="box-header">
-                                </div>
+                                <br>
                                 <!-- /.box-header -->
                                 <div class="box-body table-responsive no-padding">
                                   <table id="empresas" class="table table-bordered table-hover dataTables">
                                     <thead>
                                         <tr>
-                                            <th>Usuario</th>
                                             <th>Empresa</th>
+                                            <th>Pedido/Factura</th>
                                             <th>Accion</th>
                                             <th>Fecha</th>
+                                            <th>Hora</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for historial in lista_historial %}
                                             <tr>
 
-                                                <td>{{historial.usuario.usuario}}</td>
-                                                <td>{{historial.usuario.empresa.nombre}}</td>
+                                                <td>{{historial.empresa}}</td>
+                                                <td>{{historial.pedido}}</td>
                                                 <td>{{historial.accion}}</td>
                                                 <td>{{historial.fecha}}</td>
+                                                <td>{{historial.hora}}</td>
 
 
                                             </tr>

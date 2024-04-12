@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 from interlocutorc.forms import *
 from interlocutorc.models import *
 from configuracion.models import *
-from django.core.mail import EmailMessage,EmailMultiAlternatives
+from django.core.mail import EmailMessage,EmailMultiAlternatives,send_mail
 from django.template.loader import render_to_string
 from django.contrib import messages
 from datetime import date
@@ -239,6 +239,7 @@ def panel_ayuda(request):
 
 
 def pruebacorreos():
+    try:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
         hora = now.time()
@@ -248,6 +249,7 @@ def pruebacorreos():
             hora=hora,
             empresa='No Corresponde',
             pedido='No Corresponde',
+            tipo='crediya',
         )
         errores.save()
         url = "https://192.168.1.20:50000/b1s/v1/Login"
@@ -289,23 +291,47 @@ def pruebacorreos():
                         FechaHoy=fecha_hoy,
                         NumeroPedido=datos['DocNum'],
                     )
-                    nuevo_pedido.save()
-                    intereses_minimo = 40000
-                    valor_total=int(datos['DocTotal']) - int(datos['VatSum'])
-                    medio=valor_total/2
-                    interes = 0.018 * medio
-                    if intereses_minimo > interes:
-                        interes = intereses_minimo
-                    desembolso = medio - interes
-                    desembolso = "{:,.0f}".format(desembolso)
-                    interes = "{:,.0f}".format(interes)
-                    html_content = render_to_string('basecorreropedidos.html', {
-                        'numero_orden': datos['DocNum'],
-                        'nombre_empresa': datos['CardName'],
-                        'intereses': interes,
-                        'tasa_interes': '1.8%MA',
-                        'valor_desembolso': desembolso,
-                    })
+                    try:
+                        nuevo_pedido.save()
+                    except:
+                        errores = HistorialErrorApi(
+                            accion='Error al registrar el pedido',
+                            fecha=hoy,
+                            hora=hora,
+                            empresa=datos['CardName'],
+                            pedido=datos['DocNum'],
+                            tipo='crediya',
+                        )
+                        errores.save()
+                        pass
+                    try:
+                        intereses_minimo = 40000
+                        valor_total=int(datos['DocTotal']) - int(datos['VatSum'])
+                        medio=valor_total/2
+                        interes = 0.018 * medio
+                        if intereses_minimo > interes:
+                            interes = intereses_minimo
+                        desembolso = medio - interes
+                        desembolso = "{:,.0f}".format(desembolso)
+                        interes = "{:,.0f}".format(interes)
+                        html_content = render_to_string('basecorreropedidos.html', {
+                            'numero_orden': datos['DocNum'],
+                            'nombre_empresa': datos['CardName'],
+                            'intereses': interes,
+                            'tasa_interes': '1.8%MA',
+                            'valor_desembolso': desembolso,
+                        })
+                    except:
+                        errores = HistorialErrorApi(
+                            accion='Error al calcular valores',
+                            fecha=hoy,
+                            hora=hora,
+                            empresa=datos['CardName'],
+                            pedido=datos['DocNum'],
+                            tipo='crediya',
+                        )
+                        errores.save()
+                        pass
 
                     # Crear el correo electrónico
                     subject = 'Aviso de Crédito '+str(datos['DocNum'])
@@ -318,16 +344,42 @@ def pruebacorreos():
                     msg.attach_alternative(html_content, "text/html")
 
                     # Enviar el correo electrónico
-                    msg.send()
+                    try:
+                        msg.send()
+                    except:
+                        errores = HistorialErrorApi(
+                            accion='Error al enviar el correo',
+                            fecha=hoy,
+                            hora=hora,
+                            empresa=datos['CardName'],
+                            pedido=datos['DocNum'],
+                            tipo='crediya',
+                        )
+                        errores.save()
+                        pass
             else:
                 pass
+    except:
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorApi(
+                accion='Error de conexion',
+                fecha=hoy,
+                hora=hora,
+                empresa='No Corresponde',
+                pedido='No Corresponde',
+                tipo='crediya',
+            )
+        errores.save()
+
 
 
 
 
 
 def pruebacorreosfactura():
-
+    try:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
         hora = now.time()
@@ -340,6 +392,7 @@ def pruebacorreosfactura():
             hora=hora,
             empresa='No Corresponde',
             pedido='No Corresponde',
+            tipo='credilisto',
         )
         errores.save()
         url = "https://192.168.1.20:50000/b1s/v1/Login"
@@ -381,27 +434,51 @@ def pruebacorreosfactura():
                         NumeroFactura=datos['DocNum'],
                         Referencia2=datos['NumAtCard'],
                     )
-                    nuevo_factura.save()
-                    fecha_pedido=fecha_pedido.date()
-                    diferencia = (fecha_pedido - hoy).days
-                    intereses_minimo = 40000
-                    valor_total = int(datos['DocTotal'])
-                    medio = valor_total*0.8
-                    interes=diferencia*0.000533333*medio
-                    if intereses_minimo > interes:
-                        interes = intereses_minimo
-                    desembolso = medio - interes
-                    desembolso = "{:,.0f}".format(desembolso)
-                    interes = "{:,.0f}".format(interes)
-                    html_content = render_to_string('basecorrerofactura.html', {
-                        'numero_orden': datos['DocNum'],
-                        'nombre_empresa': datos['CardName'],
-                        'intereses': interes,
-                        'tasa_interes': '1.6%MA',
-                        'diferencia': diferencia,
-                        'valor_desembolso': desembolso,
-                        'referencia': datos['NumAtCard'],
-                    })
+                    try:
+                        nuevo_factura.save()
+                    except:
+                        errores = HistorialErrorApi(
+                            accion='Error al registrar la factura',
+                            fecha=hoy,
+                            hora=hora,
+                            empresa=datos['CardName'],
+                            pedido=datos['DocNum'],
+                            tipo='credilisto',
+                        )
+                        errores.save()
+                        pass
+                    try:
+                        fecha_pedido=fecha_pedido.date()
+                        diferencia = (fecha_pedido - hoy).days
+                        intereses_minimo = 40000
+                        valor_total = int(datos['DocTotal'])
+                        medio = valor_total*0.8
+                        interes=diferencia*0.000533333*medio
+                        if intereses_minimo > interes:
+                            interes = intereses_minimo
+                        desembolso = medio - interes
+                        desembolso = "{:,.0f}".format(desembolso)
+                        interes = "{:,.0f}".format(interes)
+                        html_content = render_to_string('basecorrerofactura.html', {
+                            'numero_orden': datos['DocNum'],
+                            'nombre_empresa': datos['CardName'],
+                            'intereses': interes,
+                            'tasa_interes': '1.6%MA',
+                            'diferencia': diferencia,
+                            'valor_desembolso': desembolso,
+                            'referencia': datos['NumAtCard'],
+                        })
+                    except:
+                        errores = HistorialErrorApi(
+                            accion='Error al calcular valores',
+                            fecha=hoy,
+                            hora=hora,
+                            empresa=datos['CardName'],
+                            pedido=datos['DocNum'],
+                            tipo='credilisto',
+                        )
+                        errores.save()
+                        pass
 
                     # Crear el correo electrónico
                     subject = 'Aviso de Crédito CrediListo ' + str(datos['DocNum'])
@@ -414,7 +491,19 @@ def pruebacorreosfactura():
                     msg.attach_alternative(html_content, "text/html")
 
                     # Enviar el correo electrónico
-                    msg.send()
+                    try:
+                        msg.send()
+                    except:
+                        errores = HistorialErrorApi(
+                            accion='Error al enviar el correo',
+                            fecha=hoy,
+                            hora=hora,
+                            empresa=datos['CardName'],
+                            pedido=datos['DocNum'],
+                            tipo='credilisto',
+                        )
+                        errores.save()
+                        pass
             else:
                 pass
 
@@ -427,10 +516,22 @@ def pruebacorreosfactura():
             hora=hora,
             empresa='No Corresponde',
             pedido='No Corresponde',
+            tipo='credilisto',
         )
         errores.save()
 
-
+    except:
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
+        errores = HistorialErrorApi(
+                accion='Error de conexion',
+                fecha=hoy,
+                hora=hora,
+                empresa='No Corresponde',
+                pedido='No Corresponde',
+            )
+        errores.save()
 
 
 
@@ -577,7 +678,7 @@ def prubasap2(request):
     response = requests.request("POST", url, data=payload, verify=False)
 
     respuesta = ast.literal_eval(response.text)
-    # URL del endpoint de PaymentDrafts
+    # URL del endpoint de VendorPayments
     url_pagos_efectuados = "https://192.168.1.20:50000/b1s/v1/VendorPayments"
 
     # Datos del nuevo pago efectuado que quieres enviar
@@ -585,25 +686,25 @@ def prubasap2(request):
             "DocType": "rSupplier",
             "HandWritten": "tNO",
             "Printed": "tNO",
-            "DocDate": "2024-03-22T00:00:00Z",
-            "CardCode": "P005367",
+            "DocDate": "2024-04-04T00:00:00Z",
+            "CardCode": "P004075",
             "CashAccount": "42100516",
             "DocCurrency": "$",
             "CashSum": 40000.0,
             "CheckAccount": None,
             "TransferAccount": "11100502",
             "TransferSum": 419000.0,
-            "TransferDate": "2024-03-22T00:00:00Z",
+            "TransferDate": "2024-04-04T00:00:00Z",
             "TransferReference": None,
             "LocalCurrency": "tNO",
             "DocRate": 0.0,
             "Reference2": None,
             "CounterReference": None,
             "Remarks": None,
-            "JournalRemarks": "ANTICIPO OC 121303 prueba",
+            "JournalRemarks": "ANTICIPO OC 121303",
             "SplitTransaction": "tNO",
             "ApplyVAT": "tNO",
-            "TaxDate": "2024-03-22T00:00:00Z",
+            "TaxDate": "2024-04-04T00:00:00Z",
             "BankCode": None,
             "BankAccount": None,
             "DiscountPercent": 0.0,
@@ -641,13 +742,13 @@ def prubasap2(request):
             "WtBaseSum": 0.0,
             "WtBaseSumFC": 0.0,
             "WtBaseSumSC": 0.0,
-            "VatDate": "2024-03-22T00:00:00Z",
+            "VatDate": "2024-04-04T00:00:00Z",
             "TransactionCode": "",
             "PaymentType": "bopt_None",
             "TransferRealAmount": 0.0,
             "DocObjectCode": "bopot_OutgoingPayments",
             "DocTypte": "rSupplier",
-            "DueDate": "2024-03-22T00:00:00Z",
+            "DueDate": "2024-04-04T00:00:00Z",
             "LocationCode": None,
             "Cancelled": "tNO",
             "UnderOverpaymentdiffFC": 0.0,
@@ -675,7 +776,31 @@ def prubasap2(request):
             "U_BP_DocNr": None,
             "U_BP_Seque": None,
             "PaymentChecks": [],
-            "PaymentInvoices": [],
+            "PaymentInvoices": [
+                {
+                    "DocEntry": 857585,
+                    "SumApplied": -459000.0,
+                    "AppliedFC": 0.0,
+                    "DocRate": 0.0,
+                    "DocLine": 2,
+                    "InvoiceType": "it_PaymentAdvice",
+                    "DiscountPercent": 0.0,
+                    "PaidSum": 0.0,
+                    "InstallmentId": 1,
+                    "WitholdingTaxApplied": 0.0,
+                    "WitholdingTaxAppliedFC": 0.0,
+                    "WitholdingTaxAppliedSC": 0.0,
+                    "LinkDate": None,
+                    "DistributionRule": None,
+                    "DistributionRule2": None,
+                    "DistributionRule3": None,
+                    "DistributionRule4": None,
+                    "DistributionRule5": None,
+                    "TotalDiscount": 0.0,
+                    "TotalDiscountFC": 0.0,
+                    "TotalDiscountSC": 0.0
+                }
+            ],
             "PaymentCreditCards": [],
             "PaymentAccounts": [],
             "PaymentDocumentReferencesCollection": [],
@@ -998,11 +1123,13 @@ def prueba(request):
 
 
 def pruebacorreo(request):
-    email = EmailMessage(' PRUEBA',
-                         'esto es una prueba',
-                         to=['juansebastianduartes@gmail.com'],
-                         from_email=settings.OUTLOOK_EMAIL_HOST_USER)
-    email.send()
+    send_mail(
+        'Asunto',
+        'Mensaje.',
+        settings.EMAIL_HOST_USER_2,  # Usando la segunda dirección de correo
+        ['juansebastianduartes@gmail.com'],
+        fail_silently=False,
+    )
 
 
 def tarea_correo_pedido():

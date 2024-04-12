@@ -143,6 +143,7 @@ urlpatterns.extend(
         url(r'^configuracion/servicio_credilisto_historial/informacion/$', configuracion_views.informacion_complementaria_historial_credilisto),
         url(r'^configuracion/servicio_crediya_consulta/informacion/$', configuracion_views.informacion_complementaria_consulta_crediya),
         url(r'^configuracion/servicio_credilisto_consulta/informacion/$', configuracion_views.informacion_complementaria_consulta_credilisto),
+        url(r'^configuracion/servicio_credilisto_consulta/cruces/$', configuracion_views.informacion_complementaria_consulta_cruces_credilisto),
         url(r'^configuracion/servicio_credilisto_registro/$', configuracion_views.config_servicio_credilisto_registro),
         #PowerBi
         url(r'^configuracion/definiciones/graficas/$', configuracion_views.admin_graficas_powerbi),
@@ -200,6 +201,8 @@ urlpatterns.extend(
         url(r'^configuracion/estado_sistema/$', configuracion_views.config_estado_sistema),
         url(r'^configuracion/historial_respuesta_pedido/$', configuracion_views.config_historial_respuesta_pedido),
         url(r'^configuracion/historial_correos_enviados/$', configuracion_views.config_historial_correos_enviados),
+        url(r'^configuracion/historial_correos_creditos/$', configuracion_views.config_historial_correos_creditos),
+        url(r'^configuracion/historial_correos_creditos_errores/$', configuracion_views.config_historial_correos_creditos_error),
         url(r'^configuracion/historial_correos_no_enviados/$', configuracion_views.config_historial_correos_no_enviados),
         url(r'^configuracion/enviar_correos_no_enviados/$', configuracion_views.config_enviar_correos_no_enviados),
         url(r'^configuracion/historial_correos_no_registrados/$', configuracion_views.config_historial_correos_no_registrados),

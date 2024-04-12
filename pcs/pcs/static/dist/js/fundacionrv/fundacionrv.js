@@ -1982,7 +1982,22 @@ $(function () {
                         $(".aceptarcredi-btn").click(function () {
                             var pedido = $(this).data("pedido");
                             $("#pedido_modal").text(pedido);
+                            $("#PedidosCruzados").text('ESPERE UN MOMENTO POR FAVOR');
                             $("#numeropedido1").val(pedido);
+                            $.ajax({
+                                url: '/configuracion/servicio_credilisto_consulta/cruces/',
+                                method: 'GET',
+                                data: {pedido: pedido},
+                                success: function(response) {
+                                    $("#PedidosCruzados").text(response.resultado);
+                                    $("#estado").val(response.estado);
+                                    $("#pedido_sap").val(response.pedido);
+                                    $("#valor_sap").val(response.valor);
+                                    },
+                                error: function(xhr, status, error) {
+                                    console.error(xhr.responseText);
+                                }
+                            });
                         });
                         $(".denegarcredi-btn").click(function () {
                             var pedido = $(this).data("pedido");
@@ -2004,7 +2019,22 @@ $(function () {
         $(".aceptarcredi-btn").click(function () {
             var pedido = $(this).data("pedido");
             $("#pedido_modal").text(pedido);
+            $("#PedidosCruzados").text('ESPERE UN MOMENTO POR FAVOR');
             $("#numeropedido1").val(pedido);
+            $.ajax({
+            url: '/configuracion/servicio_credilisto_consulta/cruces/',
+            method: 'GET',
+            data: {pedido: pedido},
+            success: function(response) {
+                $("#PedidosCruzados").text(response.resultado);
+                $("#estado").val(response.estado);
+                $("#pedido_sap").val(response.pedido);
+                $("#valor_sap").val(response.valor);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
         });
         $(".denegarcredi-btn").click(function () {
             var pedido = $(this).data("pedido");

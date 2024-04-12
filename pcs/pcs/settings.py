@@ -152,6 +152,11 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
 EMAIL_HOST_PASSWORD = 'baecxhtxwejobzgn'
 
+EMAIL_HOST_2 = 'smtp.live.com'
+EMAIL_PORT_2 = 587
+EMAIL_HOST_USER_2 = 'serviciofinanciero@pcsocial.org'
+EMAIL_HOST_PASSWORD_2 = 'csSef2017*'
+EMAIL_USE_TLS_2 = True
 
 
 
