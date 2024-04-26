@@ -2209,6 +2209,8 @@ $(function () {
     //CALCULAR VALORES CREDIYA
     $(document).ready(function () {
         $('.solicitud-btn').click(function () {
+            $("#mensajeConfirmacion").hide();
+            $("#solicitarCreditoBtn").show();
             var pedidoId = $(this).data('id');
             var pedidoPedido = $(this).data('pedido');
             var pedidoFecha = $(this).data('fecha');
@@ -2238,6 +2240,8 @@ $(function () {
     //CALCULAR VALORES CREDILISTO
     $(document).ready(function () {
         $('.solicitud-credilisto-btn').click(function () {
+            $("#mensajeConfirmacion").hide();
+            $("#solicitarCreditoBtn").show();
             var facturaId = $(this).data('id');
             var facturaFactura = $(this).data('factura');
             var facturaFecha = $(this).data('fecha');
@@ -2322,6 +2326,46 @@ $(function () {
        }
     )
 
+
+
+$(document).ready(function() {
+    $("#solicitarCreditoBtn").click(function(event) {
+
+        var aceptaTerminosChecked = $("#acepta_terminos").prop("checked");
+        var aceptaCondicionesChecked = $("#acepta_condiciones").prop("checked");
+
+        if (!aceptaTerminosChecked || !aceptaCondicionesChecked) {
+            // Si alguno de los checkboxes no está marcado, no proceder con la validación
+            alert("Debe aceptar los términos y condiciones antes de continuar.");
+            return;
+        }
+        // Realizar la validación del campo "intereses"
+        var intereses = $("#intereses1").val();
+        var interesesSinComa = intereses.replace(",", "");
+
+        // Convertir el valor sin coma a un entero
+        var intereses = parseInt(interesesSinComa, 10);
+        if (intereses < 40001) {
+            $("#costoServicio").text(`Señor empresario, el costo de la solicitud del servicio es de ${intereses}, ¿desea continuar?`);
+            // Muestra el mensaje de confirmación si los intereses son menores a 40,000
+            $("#mensajeConfirmacion").show();
+            $("#solicitarCreditoBtn").hide();
+        } else {
+            // Si los intereses son mayores o iguales a 40,000, envía el formulario
+            $("#miFormulario").submit();
+        }
+    });
+
+    // Manejar el clic en el botón Aceptar
+    $("#btnAceptar").click(function() {
+        // Realizar las acciones necesarias al aceptar
+        console.log("Aceptado");
+        // Envía el formulario
+        $("#miFormulario").submit();
+    });
+
+
+});
 
 
     var busqueda_pedidos_otros_canales_clientes = function () {

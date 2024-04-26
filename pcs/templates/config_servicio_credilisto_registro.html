@@ -49,7 +49,7 @@
     <div class="modal fade" id="DocumentoFIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-        <form role="form" action="/configuracion/servicio_credilisto_registro/" method="POST">
+        <form role="form" action="/configuracion/servicio_credilisto_registro/" id="miFormulario" method="POST">
             {% csrf_token %}
       <div class="modal-header bg-primary text-white">
         <h4 class="modal-title" id="exampleModalLabel">Solicitud de Crédito</h4>
@@ -89,7 +89,7 @@
           </div>
           <div class="col-md-6">
             <div class="bg-info p-3 rounded">
-              <div class="text-white" style="font-weight: bold;font-size: 1.2em">Tasa de Interés</div>
+              <div class="text-white" style="font-weight: bold;font-size: 1.2em">Tasa Comisión</div>
               <h4 class="text-white font-weight-bold">1.6%MA</h4>
             </div>
           </div>
@@ -97,7 +97,7 @@
           <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="intereses" style="font-weight: bold;font-size: 1.2em">Intereses:</label>
+              <label for="intereses" style="font-weight: bold;font-size: 1.2em">Comisión:</label>
               <h4 class="form-control-static" id="interescre"></h4>
             </div>
           </div>
@@ -137,7 +137,7 @@
               </div>
               <div class="checkbox icheck">
                   <label>
-                      <input id='acepta_terminos' style="transform: scale(1.2)" name='acepta_terminos' type="checkbox" required> <p style="font-size: 1.1em">He leído y acepto las políticas de servicios financieros
+                      <input id='acepta_condiciones' style="transform: scale(1.2)" name='acepta_terminos' type="checkbox" required> <p style="font-size: 1.1em">He leído y acepto las políticas de servicios financieros
 
                       <a target="_blank" href="/bodega/POLITICAS_SERVICIOS_FINANCIEROS_PCS.pdf" >  Ver Términos de Uso(obligatorio) </a></p>
                   </label>
@@ -145,9 +145,16 @@
           </div>
 
       </div>
+      <div id="mensajeConfirmacion" style="display: none">
+          <center>
+        <p id="costoServicio" style="font-weight: bold;font-size: 1.2em"></p>
+        <button type="button" class="btn btn-success" id="btnAceptar">Aceptar</button>
+        <button type="button" class="btn btn-danger" id="btnRechazar" data-dismiss="modal">Rechazar</button>
+          </center>
+    </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="submit" class="btn btn-primary" id="solicitarCreditoBtn">Solicitar Crédito</button>
+        <button type="button" class="btn btn-primary" id="solicitarCreditoBtn">Solicitar Crédito</button>
       </div>
         </form>
     </div>

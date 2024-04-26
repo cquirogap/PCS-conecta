@@ -305,12 +305,15 @@ def pruebacorreos():
                         errores.save()
                         pass
                     try:
-                        intereses_minimo = 40000
+                        intereses_minimo = 20000
+                        intereses_segundo = 40000
                         valor_total=int(datos['DocTotal']) - int(datos['VatSum'])
                         medio=valor_total/2
                         interes = 0.018 * medio
                         if intereses_minimo > interes:
                             interes = intereses_minimo
+                        elif intereses_segundo > interes:
+                            interes = intereses_segundo
                         desembolso = medio - interes
                         desembolso = "{:,.0f}".format(desembolso)
                         interes = "{:,.0f}".format(interes)
@@ -450,12 +453,15 @@ def pruebacorreosfactura():
                     try:
                         fecha_pedido=fecha_pedido.date()
                         diferencia = (fecha_pedido - hoy).days
-                        intereses_minimo = 40000
+                        intereses_minimo = 20000
+                        intereses_segundo = 40000
                         valor_total = int(datos['DocTotal'])
                         medio = valor_total*0.8
                         interes=diferencia*0.000533333*medio
                         if intereses_minimo > interes:
                             interes = intereses_minimo
+                        elif intereses_segundo > interes:
+                            interes= intereses_segundo
                         desembolso = medio - interes
                         desembolso = "{:,.0f}".format(desembolso)
                         interes = "{:,.0f}".format(interes)
