@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/servicio_crediya_registro/">Solicitar Credito Pedido</a>
+        <a href="/configuracion/servicio_crediya_registro/">Servicio Financiero Pedido</a>
         <small>Configuracion</small>
       </h1>
 
@@ -52,7 +52,7 @@
         <form role="form" action="/configuracion/servicio_crediya_registro/" id="miFormulario" method="POST">
             {% csrf_token %}
       <div class="modal-header bg-primary text-white">
-        <h4 class="modal-title" id="exampleModalLabel">Solicitud de Crédito</h4>
+        <h4 class="modal-title" id="exampleModalLabel">Servicio Financiero</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -97,7 +97,7 @@
           <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label for="intereses" style="font-weight: bold;font-size: 1.2em">Comisión:</label>
+              <label for="intereses" style="font-weight: bold;font-size: 1.2em">Costo Comisión:</label>
               <h4 class="form-control-static" id="intereses"></h4>
             </div>
           </div>
@@ -148,6 +148,7 @@
   </div>
 </div>
     <section>
+
     {% if documentos == None or documentos.estado == 'Negado'%}
         <div class="pad margin no-print">
             <div class="callout callout-danger" style="margin-bottom: 0!important;">
@@ -188,7 +189,7 @@
                 <button type="button" class="btn btn-default pull-right" style="margin-right: 5px;">
                     <i class="fa fa-pencil"></i> Actualizar
                 </button></a>
-                <h4><i class="fa fa-info"></i> PUEDES SOLICITAR TUS CRÉDITOS:</h4>
+                <h4><i class="fa fa-info"></i> SOLICITA TUS SERVICIOS FINANCIEROS:</h4>
 
             </div>
         </div>
@@ -197,8 +198,8 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#Pedidos" data-toggle="tab">CREDIYA</a></li>
-              <li ><a href="/configuracion/servicio_credilisto_registro/" >CREDILISTO</a></li>
+              <li  style="background-color: #00c0ef !important;"><a style="color: white" href="#Pedidos" data-toggle="tab">CREDIYA</a></li>
+              <li style="background-color: #0075C9 !important;"><a style="color: white" href="/configuracion/servicio_credilisto_registro/" >CREDILISTO</a></li>
 
             </ul>
             {% csrf_token %}
