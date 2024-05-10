@@ -157,6 +157,12 @@
 
             </a>
           </li>
+            <li class="dropdown user user-menu">
+            <a href="https://www.endtoendt.com/helpdesk" >
+              <i class="fa fa-cogs"> Soporte</i>
+
+            </a>
+          </li>
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
@@ -450,7 +456,7 @@
             {% elif permiso_usuario.empresa.tipo == 'pcs' %}
             <li><a href="/configuracion/solicitud_estado_cuenta/"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1 %}
+            {% if permiso_usuario.empresa.tipo == 'pcs' and permiso_usuario.empresa.temporada == 0 or permiso_usuario.admin == 1 and permiso_usuario.empresa.temporada == 0 %}
             <li><a href="/configuracion/servicio_crediya_registro/"><i class="fa fa-circle-o"></i>Servicios Financieros </a></li>
             <li><a href="/configuracion/servicio_crediya_historial/"><i class="fa fa-circle-o"></i>Mis Creditos </a></li>
             {% endif %}

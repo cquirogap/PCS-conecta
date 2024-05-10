@@ -190,6 +190,19 @@
 
                                 </div>
                               <br>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                       <label>Empresa Temporada</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="temporada" required>
+                                            <option value="1" {% if empresas.temporada == 1 %}selected{% endif %}>SI</option>
+                                            <option value="0"{% if empresas.temporada == 0 %}selected{% endif %}>NO</option>
+                                        </select>
+                                      </div>
+                                  </div>
+                                </div>
+                              <br>
                               <div>
                               <button type="submit" class="btn btn-primary btn-block btn-flat">Editar</button>
                             </div>
