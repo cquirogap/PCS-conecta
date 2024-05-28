@@ -405,7 +405,7 @@ def pruebacorreosfactura():
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultasFacturasApis2')/List?fecha='" + hoy_filtro +"'"
+        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultasFacturasApis3')/List?fecha='" + hoy_filtro +"'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
