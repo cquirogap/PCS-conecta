@@ -466,7 +466,7 @@
         {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-file-text"></i> <span>Indicadores</span>
+            <i class="fa fa-file-text"></i> <span>Informes</span>
           </a>
           <ul class="treeview-menu">
             <li><a href="/configuracion/solicitud_aviso_recibo/"><i class="fa fa-circle-o"></i>Aviso Recibo</a></li>
@@ -487,6 +487,20 @@
           <ul class="treeview-menu">
 		{% if permiso_usuario.empresa.tipo == 'Empresario' %}
             <li><a href="/configuracion/solicitud_pedido_orden/excel_csv/"><i class="fa fa-circle-o"></i>Orden de Compra</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        {% endif %}
+
+        {% if   permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-file-text"></i> <span>Formación</span>
+          </a>
+          <ul class="treeview-menu">
+		{% if permiso_usuario.empresa.tipo == 'Empresario' %}
+            <li><a href="#"><i class="fa fa-circle-o"></i>Formación empresario</a></li>
+            <li><a href="/configuracion/definiciones/grafica_formacion/"><i class="fa fa-circle-o"></i>Formación PCS</a></li>
             {% endif %}
           </ul>
         </li>

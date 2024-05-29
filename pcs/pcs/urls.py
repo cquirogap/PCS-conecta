@@ -158,6 +158,7 @@ urlpatterns.extend(
         url(r'^configuracion/definiciones/grafica_mercadeo_innovacion/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_mercadeo_innovacion_powerbi),
         url(r'^configuracion/definiciones/grafica_operaciones_logistica/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_operaciones_logistica_powerbi),
         url(r'^configuracion/definiciones/grafica_adicional/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_adicional_powerbi),
+        url(r'^configuracion/definiciones/grafica_formacion/$', configuracion_views.admin_graficas_formacion_powerbi),
 
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),
