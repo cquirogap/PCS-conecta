@@ -339,7 +339,7 @@ def pruebacorreos():
                     # Crear el correo electrónico
                     subject = 'Aviso de Crédito '+str(datos['DocNum'])
                     from_email = 'conectaportalweb@gmail.com'
-                    to = ['serviciofinanciero@pcsocial.org']  # Lista de destinatarios
+                    to = [datos['E_Mail']]  # Lista de destinatarios
                     text_content = 'Este es un correo electronico con formato HTML.'
 
                     # Configurar el correo electrónico con formato alternativo (HTML)
@@ -489,7 +489,7 @@ def pruebacorreosfactura():
                     # Crear el correo electrónico
                     subject = 'Aviso de Crédito CrediListo ' + str(datos['DocNum'])
                     from_email = 'conectaportalweb@gmail.com'
-                    to = ['serviciofinanciero@pcsocial.org']  # Lista de destinatarios
+                    to = [datos['E_Mail']]  # Lista de destinatarios
                     text_content = 'Este es un correo electronico con formato HTML.'
 
                     # Configurar el correo electrónico con formato alternativo (HTML)

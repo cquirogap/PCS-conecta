@@ -492,13 +492,13 @@
         </li>
         {% endif %}
 
-        {% if   permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
+        {% if   permiso_usuario.empresa.tipo == 'pcs'  or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-file-text"></i> <span>Formación</span>
           </a>
           <ul class="treeview-menu">
-		{% if permiso_usuario.empresa.tipo == 'Empresario' %}
+		{% if permiso_usuario.empresa.tipo == 'pcs' %}
             <li><a href="#"><i class="fa fa-circle-o"></i>Formación empresario</a></li>
             <li><a href="/configuracion/definiciones/grafica_formacion/"><i class="fa fa-circle-o"></i>Formación PCS</a></li>
             {% endif %}

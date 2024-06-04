@@ -268,6 +268,7 @@ urlpatterns.extend(
         url(r'^configuracion/usuario/$', configuracion_views.config_fechas_festivos),
         url(r'^configuracion/usuarios/$', configuracion_views.config_usuarios),
         url(r'^configuracion/usuarios/perfil/$', configuracion_views.config_usuarios_perfil),
+        url(r'^configuracion/usuarios/perfil_empresa/$', configuracion_views.config_usuarios_perfil_empresa),
         url(r'^configuracion/usuarios/registrar/$', configuracion_views.config_usuarios_registrar),
         url(r'^registrar/usuarios_externos/$', configuracion_views.config_usuarios_registrar_externos),
         url(r'^registrar/usuarios_externos_atencion/$', configuracion_views.config_usuarios_aten_registrar_externos),
