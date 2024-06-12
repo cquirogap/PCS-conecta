@@ -201,6 +201,16 @@
                                         </select>
                                       </div>
                                   </div>
+                                <div class="col-md-6">
+                                       <label>Empresa Cliente</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                        <select class="form-control select2 " style="width: 100%;" name="cliente" required>
+                                            <option value="1" {% if empresas.cliente == 1 %}selected{% endif %}>SI</option>
+                                            <option value="0"{% if empresas.cliente == 0 %}selected{% endif %}>NO</option>
+                                        </select>
+                                      </div>
+                                  </div>
                                 </div>
                               <br>
                               <div>

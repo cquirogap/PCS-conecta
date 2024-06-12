@@ -195,6 +195,7 @@ class Empresas(models.Model):
     municipios = models.ForeignKey(Municipios, default=1)
     edi = models.CharField(max_length=45, null=True, default='1')
     temporada = models.BooleanField(default=False)
+    cliente = models.BooleanField(default=False)
 
 
     def __unicode__(self):

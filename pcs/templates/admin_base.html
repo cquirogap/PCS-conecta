@@ -84,7 +84,7 @@
           </li>
             <li class="dropdown user user-menu">
             <a href="https://www.endtoendt.com/helpdesk" >
-              <i class="fa fa-cogs"> Soporte</i>
+              <i class="fa fa-ticket"> Soporte</i>
 
             </a>
           </li>
@@ -254,7 +254,7 @@
       {% if permiso_usuario.empresa.tipo == 'Empresario'  or permiso_usuario.admin == 1 or permiso_usuario.pcs == 1 %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-file-text"></i> <span>Indicadores Graficas</span>
+            <i class="fa fa-pie-chart"></i> <span>Indicadores Graficas</span>
           </a>
           <ul class="treeview-menu">
             {% if  permiso_usuario.admin == 1 %}
@@ -265,6 +265,9 @@
             {% endif %}
             {% if  permiso_usuario.pcs == 1 %}
             <li><a href="/configuracion/definiciones/grafica_pcs_actuales/"><i class="fa fa-circle-o"></i>Indicadores Internos PCS</a></li>
+            {% endif %}
+            {% if permiso_usuario.empresa.cliente == 1 %}
+            <li><a href="/configuracion/definiciones/grafica_empresario_clientes/"><i class="fa fa-circle-o"></i>Indicadores Clientes</a></li>
             {% endif %}
           </ul>
         </li>
@@ -286,7 +289,7 @@
         {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-pencil"></i> <span>Comercial</span>
+            <i class="fa fa-shopping-basket"></i> <span>Comercial</span>
           </a>
           <ul class="treeview-menu">
             {% if permiso_usuario.empresa.tipo == 'Empresario' %}
@@ -348,7 +351,7 @@
         {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-file-text"></i> <span>Finanzas</span>
+            <i class="fa fa-credit-card"></i> <span>Finanzas</span>
           </a>
           <ul class="treeview-menu">
             {% if permiso_usuario.empresa.tipo == 'pcs'  %}
@@ -399,7 +402,7 @@
         {% if   permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-file-text"></i> <span>Logistico</span>
+            <i class="fa fa-truck"></i> <span>Logistico</span>
           </a>
           <ul class="treeview-menu">
 		{% if permiso_usuario.empresa.tipo == 'Empresario' %}
@@ -412,11 +415,13 @@
         {% if   permiso_usuario.empresa.tipo == 'pcs'  or permiso_usuario.admin == 1 %}
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-file-text"></i> <span>Formación</span>
+            <i class="fa fa-graduation-cap"></i> <span>Formación</span>
           </a>
           <ul class="treeview-menu">
-		{% if permiso_usuario.empresa.tipo == 'pcs' %}
-            <li><a href="#"><i class="fa fa-circle-o"></i>Formación empresario</a></li>
+		{% if permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.admin == 1  %}
+            <li><a href="/configuracion/definiciones/grafica_formacion_empresario/"><i class="fa fa-circle-o"></i>Formación empresario</a></li>
+            {% endif %}
+            {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1  %}
             <li><a href="/configuracion/definiciones/grafica_formacion/"><i class="fa fa-circle-o"></i>Formación PCS</a></li>
             {% endif %}
           </ul>

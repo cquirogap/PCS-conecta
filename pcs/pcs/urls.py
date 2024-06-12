@@ -150,6 +150,7 @@ urlpatterns.extend(
         url(r'^configuracion/definiciones/grafica/(?P<grafica_id>\d+)/detalle/$', configuracion_views.detalle_grafica),
         url(r'^configuracion/definiciones/borrar_grafica/(?P<grafica_id>[-\w]+)/$', configuracion_views.config_graficas_borrar),
         url(r'^configuracion/definiciones/grafica_pcs_actuales/$', configuracion_views.admin_graficas_actuales_pcs_powerbi),
+        url(r'^configuracion/definiciones/grafica_empresario_clientes/$', configuracion_views.admin_graficas_empresario_cliente_powerbi),
         url(r'^configuracion/definiciones/grafica_empresarios_actuales/$', configuracion_views.admin_graficas_actuales_empresarios_powerbi),
         url(r'^configuracion/definiciones/grafica_comercial/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_comerciales_powerbi),
         url(r'^configuracion/definiciones/grafica_exportaciones/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_exportaciones_powerbi),
@@ -159,6 +160,7 @@ urlpatterns.extend(
         url(r'^configuracion/definiciones/grafica_operaciones_logistica/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_operaciones_logistica_powerbi),
         url(r'^configuracion/definiciones/grafica_adicional/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_adicional_powerbi),
         url(r'^configuracion/definiciones/grafica_formacion/$', configuracion_views.admin_graficas_formacion_powerbi),
+        url(r'^configuracion/definiciones/grafica_formacion_empresario/$', configuracion_views.admin_graficas_formacion_empresario_powerbi),
 
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),
