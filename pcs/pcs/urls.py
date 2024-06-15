@@ -119,6 +119,7 @@ urlpatterns.extend(
         url(r'^configuracion/registrar/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario_registrar),
         url(r'^configuracion/orden_pcs_otroscanales/detalle/(?P<id>[-\w]+)/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle),
         url(r'^configuracion/orden_pcs_otroscanales/detalle_edi/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle_edi),
+        url(r'^configuracion/orden_compra/edi_depacho/$', configuracion_views.config_ordenes_aviso_despacho_detalle_edi),
         url(r'^configuracion/orden_pcs_otroscanales_cliente/detalle/(?P<id>[-\w]+)/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle_cliente),
         url(r'^configuracion/orden_pcs_otroscanales/detalles/$', configuracion_views.config_ordenes_otroscanales_pcs_detalles),
         url(r'^configuracion/orden_pcs_otroscanales/fecha_minima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_minima),
@@ -161,6 +162,7 @@ urlpatterns.extend(
         url(r'^configuracion/definiciones/grafica_adicional/(?P<grafica_id>\w+)/$', configuracion_views.admin_graficas_adicional_powerbi),
         url(r'^configuracion/definiciones/grafica_formacion/$', configuracion_views.admin_graficas_formacion_powerbi),
         url(r'^configuracion/definiciones/grafica_formacion_empresario/$', configuracion_views.admin_graficas_formacion_empresario_powerbi),
+        url(r'^configuracion/definiciones/grafica_formacion_cliente/$', configuracion_views.admin_graficas_formacion_cliente_powerbi),
 
         #RespuestaPedido
         url(r'^configuracion/respuesta_pedido/$', configuracion_views.config_respuesta_pedido),

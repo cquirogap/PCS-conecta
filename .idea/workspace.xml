@@ -5,18 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e91c99f-d2dd-4002-bda0-2f751e3134a8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pcs/templates/config_historial_correos_creditos.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pcs/templates/config_historial_correos_creditos_error.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/configuracion/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/configuracion/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pcs/configuracion/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/configuracion/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/interlocutorc/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/interlocutorc/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/pcs/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/pcs/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/pcs/static/dist/js/fundacionrv/fundacionrv.js" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/pcs/static/dist/js/fundacionrv/fundacionrv.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pcs/pcs/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/pcs/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/templates/config_historial_correos_enviados.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/config_historial_correos_enviados.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/templates/config_historial_email.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/config_historial_email.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/templates/config_historial_empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/config_historial_empresas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pcs/templates/config_historial_respuesta_pedido.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/config_historial_respuesta_pedido.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcs/templates/admin_graficas_powerbi.html" beforeDir="false" afterPath="$PROJECT_DIR$/pcs/templates/admin_graficas_powerbi.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

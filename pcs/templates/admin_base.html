@@ -251,7 +251,7 @@
           </ul>
         </li>
         {% endif %}
-      {% if permiso_usuario.empresa.tipo == 'Empresario'  or permiso_usuario.admin == 1 or permiso_usuario.pcs == 1 %}
+      {% if permiso_usuario.empresa.tipo == 'Empresario'  or permiso_usuario.admin == 1 or permiso_usuario.pcs == 1 or permiso_usuario.empresa.tipo == 'Cadena' %}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-pie-chart"></i> <span>Indicadores Graficas</span>
@@ -266,7 +266,7 @@
             {% if  permiso_usuario.pcs == 1 %}
             <li><a href="/configuracion/definiciones/grafica_pcs_actuales/"><i class="fa fa-circle-o"></i>Indicadores Internos PCS</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.cliente == 1 %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/definiciones/grafica_empresario_clientes/"><i class="fa fa-circle-o"></i>Indicadores Clientes</a></li>
             {% endif %}
           </ul>
@@ -348,7 +348,7 @@
 
 
 
-        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 %}
+        {% if  permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.admin == 1 or permiso_usuario.empresa.tipo == 'Cadena'%}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-credit-card"></i> <span>Finanzas</span>
@@ -357,7 +357,7 @@
             {% if permiso_usuario.empresa.tipo == 'pcs'  %}
             <li><a href="/configuracion/solicitud_debito_proveedores/"><i class="fa fa-circle-o"></i>Notas Debito </a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Empresario' %}
+            {% if permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_credito_proveedores/"><i class="fa fa-circle-o"></i>Notas Credito </a></li>
             {% endif %}
             {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' %}
@@ -371,7 +371,7 @@
             <li><a href="/configuracion/solicitud_notas_debito/"><i class="fa fa-circle-o"></i>Notas Debito Clientes</a></li>
             <li><a href="/configuracion/solicitud_notas_credito/"><i class="fa fa-circle-o"></i>Notas Credito Clientes</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.empresa.tipo == 'Empresario' %}
+            {% if permiso_usuario.empresa.tipo == 'OtrosPedidos' or permiso_usuario.empresa.tipo == 'Empresario' or permiso_usuario.empresa.tipo == 'Cadena' %}
             <li><a href="/configuracion/solicitud_estado_cuenta/grupos/{{permiso_usuario.empresa.nit }}"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
             {% elif permiso_usuario.empresa.tipo == 'pcs' %}
             <li><a href="/configuracion/solicitud_estado_cuenta/"><i class="fa fa-circle-o"></i>Estado Cuenta</a></li>
@@ -412,7 +412,7 @@
         </li>
         {% endif %}
 
-        {% if   permiso_usuario.empresa.tipo == 'pcs'  or permiso_usuario.admin == 1 %}
+        {% if   permiso_usuario.empresa.tipo == 'pcs'  or permiso_usuario.admin == 1 or permiso_usuario.empresa.tipo == 'Cadena'%}
         <li class="treeview">
           <a href="#">
             <i class="fa fa-graduation-cap"></i> <span>Formación</span>
@@ -423,6 +423,9 @@
             {% endif %}
             {% if permiso_usuario.empresa.tipo == 'pcs' or permiso_usuario.admin == 1  %}
             <li><a href="/configuracion/definiciones/grafica_formacion/"><i class="fa fa-circle-o"></i>Formación PCS</a></li>
+            {% endif %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1  %}
+            <li><a href="/configuracion/definiciones/grafica_formacion_cliente/"><i class="fa fa-circle-o"></i>Formación Cliente</a></li>
             {% endif %}
           </ul>
         </li>

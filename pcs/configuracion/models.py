@@ -201,6 +201,11 @@ class Empresas(models.Model):
     def __unicode__(self):
         return str(self.cargo)
 
+
+class Consecutivo(models.Model):
+    valor = models.IntegerField(default=1)
+
+
 class PedidosOtrosCanales(models.Model):
     num_pedido = models.IntegerField(default=None,primary_key=True)
     empresa = models.ForeignKey(Empresas, default=None,null=True)
