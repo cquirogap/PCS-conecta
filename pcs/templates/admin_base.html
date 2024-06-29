@@ -871,7 +871,7 @@
         var select = document.getElementById("tipo_usuario");
         var divDatosCliente = document.getElementById("datoscliente");
         var divDatosPcs = document.getElementById("datospcs");
-        if (select.value == "EMPRESARIO") {
+        if (select.value != "PCS") {
           divDatosCliente.style.display = "block";
         } else {
           divDatosCliente.style.display = "none";

@@ -139,11 +139,28 @@
                                     </a>   {% if dato.facturas_no_respondidas == 'True' %} <a class="btn btn-danger disabled "
                                            href="#">
                                         <i class="fa fa-download"></i>
-                                    </a> {% elif dato.documento_facturas_respondidas != None %}
+                                        <br>Factura
+                                    </a>
+                                        {% if permiso_usuario.pcs == 1 %}
+                                        <a class="btn btn-success disabled "
+                                           href="#">
+                                        <i class="fa fa-download"></i>
+                                            <br>Despacho
+                                    </a>
+                                            {% endif %}
+                                    {% elif dato.documento_facturas_respondidas != None %}
                                     <a class="btn btn-danger "
                                            href="{{ dato.documento_facturas_respondidas }}">
                                         <i class="fa fa-download"></i>
+                                        <br>Factura
                                     </a>
+                                        {% if permiso_usuario.pcs == 1 %}
+                                    <a class="btn btn-success  "
+                                           href="/configuracion/orden_compra/edi_depacho/?pedido_pk={{ dato.n_pedido }}">
+                                        <i class="fa fa-download"></i>
+                                        <br>Despacho
+                                    </a>
+                                            {% endif %}
                                         {% endif %}</center></td>
 
                                 </tr>
