@@ -1,0 +1,177 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="#">Historial Codigos de Registro</a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Historial</a></li>
+      </ol>
+
+
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li><a href="/configuracion/usuarios/" >Usuarios</a></li>
+              <li><a href="/configuracion/empresas/" >Compañia</a></li>
+              <li ><a href="/configuracion/perfiles_pcs/"  >Perfiles PCS</a></li>
+                <li class="active"><a href="/configuracion/historial_codigos_registro/" data-toggle="tab">Codigos</a></li>
+            </ul>
+            {% csrf_token %}
+            <div class="tab-content">
+                <form role="form" action="/configuracion/historial_codigos_registro/" method="POST">
+                    {% csrf_token %}
+                    <br>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <label>Fecha inicial</label>
+                        <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" value="{{ fecha_inicio }}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Fecha final</label>
+                        <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                            <br>
+                            <label>Codigo</label>
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input type="text" class="form-control" id="Codigo"
+                                       name="Codigo" placeholder="Codigo de Registro" value="{{ Codigo }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <br>
+                            <label>Usuario</label>
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input type="text" class="form-control" id="usuario"
+                                       name="usuario" placeholder="Nombre de usuario" value="{{ usuario }}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                        <br>
+                        <label>Empresa</label>
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-binoculars"></i></span>
+                                <select class="form-control select2 " style="width: 100%;" name="empresa" id="empresa">
+                                    <option value="" selected disabled></option>
+                                    {% for empresa_nombre in empresas %}
+                                        <option value="{{ empresa_nombre.id }}"
+                                        {% if empresa == empresa_nombre.id %}selected{% endif %}>
+                                            {{empresa_nombre.nombre}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                    </div>
+                    <div class="col-md-12">
+                        <br>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit"  class="btn btn-primary btn-block btn-flat" >
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            <span class="glyphicon glyphicon-search"></span>Consultar
+                        </button>
+                    </div>
+                </div>
+                </form>
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="perfiles">
+                    <br>
+
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <br>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive no-padding">
+                                  <table id="empresas" class="table table-bordered table-hover dataTables">
+                                    <thead>
+                                        <tr>
+                                            <th>Generado para</th>
+                                            <th>Generado por</th>
+                                            <th>Usuario</th>
+                                            <th>Creado</th>
+                                            <th>Asignado</th>
+                                            <th>Código</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for historial in lista_historial %}
+                                            <tr>
+
+                                                <td>{{historial.codigoregistro.empresa}}</td>
+                                                <td>{{historial.empresa.nombre}}</td>
+                                                <td>{{historial.usuario.username}}</td>
+                                                <td>{{historial.codigoregistro.creado|date:"Y/m/d"}}</td>
+                                                <td>{{historial.codigoregistro.asignado|date:"Y/m/d"}}</td>
+                                                <td>{{historial.codigoregistro.codigo}}</td>
+
+
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <!-- /.box-body -->
+                          </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

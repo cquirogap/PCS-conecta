@@ -2270,6 +2270,26 @@ $(function () {
         });
     });
 
+
+
+    //CALCULAR VALORES CODIGO
+    $(document).ready(function () {
+        $('.solicitud-codigoregistro-btn').click(function () {
+            var facturaReferencia = 1;
+            $.ajax({
+                url: '/configuracion/servicio_codigo_registro_lista/',
+                method: 'GET',
+                data: { factura_id: facturaReferencia  },
+                success: function (data) {
+                    $('#numerocodigo').text(data.valor1);
+                    $('#numerocodigos').val(data.valor1);
+                }
+            });
+        });
+    });
+
+
+
     //BUSCAR PEDIDOS OTROS CANALES
         var busqueda_pedidos_otros_canales = function () {
 

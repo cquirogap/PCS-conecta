@@ -52,6 +52,7 @@
                       <form role="form" action="/registrar/usuarios_externos/" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
                           <input type="hidden" name="id" value="{{id}}">
+                          <input type="hidden" name="codigoregistro" value="{{codigoregistro}}">
                           <div class="row">
                               <div class="col-md-6">
                                  <label>Empresa</label>

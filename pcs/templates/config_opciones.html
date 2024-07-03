@@ -46,6 +46,47 @@
 
 
     </section>
+    <div class="modal fade" id="DocumentoFIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <form role="form" action="/configuracion/servicio_codigosregistro_registro/"  method="POST">
+            {% csrf_token %}
+      <div class="modal-header bg-primary text-white">
+        <h4 class="modal-title" id="exampleModalLabel">Código Registro Usuarios</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <input type="hidden" id="numerocodigos" name="codigoregistro">
+          <div class="row">
+          <div class="col-md-12">
+            <div class="bg-primary text-white p-3 rounded">
+                <center>
+              <div class="text-white"><h4>Creaste un Nuevo Código:</h4></div>
+              <h3 id="numerocodigo" class="text-white font-weight-bold"></h3>
+                    </center>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="numeroPedido"  style="font-weight: bold;font-size: 1.2em">Asigna Nombre de Empresa:</label>
+              <input type="text" class="form-control" name="empresa" id="empresa">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary" >Generar Código</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
     <section>
     <div class="col-md-12">
           <div class="nav-tabs-custom">
@@ -54,6 +95,7 @@
               <li class="active"><a href="#opciones" data-toggle="tab">Usuarios</a></li>
               <li><a href="/configuracion/empresas/" >Compañia</a></li>
               <li><a href="/configuracion/perfiles_pcs/" >Perfiles PCS</a></li>
+                <li><a href="/configuracion/historial_codigos_registro/" >Codigos</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
@@ -61,11 +103,17 @@
                 <div class="active tab-pane" id="opciones">
                     <br>
                     <div class="row">
-                          <div class="col-md-2">
+                          <div class="col-md-1">
                               <a href="/configuracion/usuarios/registrar/">
                                 <button type="button" class="btn btn-primary">
                                     <span class='glyphicon glyphicon-edit'></span> Registrar</button>
                               </a>
+                          </div>
+                        <div class="col-md-2">
+                                <button type="button" data-toggle="modal" data-dismiss="modal"  class="btn btn-primary solicitud-codigoregistro-btn"
+                                data-target="#DocumentoFIModal">
+                                    <span class='fa  fa-bars'></span> Generar Código</button>
+
                           </div>
                     </div>
                     <br>

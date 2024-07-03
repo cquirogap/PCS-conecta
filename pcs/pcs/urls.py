@@ -136,6 +136,7 @@ urlpatterns.extend(
         url(r'^configuracion/servicio_crediya_preaprobados/$', configuracion_views.config_servicio_crediya_preaprobados),
         url(r'^configuracion/servicio_crediya_lista/$', configuracion_views.config_servicio_crediya_lista),
         url(r'^configuracion/servicio_credilisto_lista/$', configuracion_views.config_servicio_credilisto_lista),
+        url(r'^configuracion/servicio_codigo_registro_lista/$', configuracion_views.config_servicio_codigoregistro_lista),
         url(r'^configuracion/servicio_crediya_consulta/$', configuracion_views.config_crediya_consulta_generales),
         url(r'^configuracion/servicio_credilisto_consulta/$', configuracion_views.config_credilisto_consulta_generales),
         url(r'^configuracion/servicio_crediya_historial/$', configuracion_views.config_crediya_consulta_historial),
@@ -146,6 +147,7 @@ urlpatterns.extend(
         url(r'^configuracion/servicio_credilisto_consulta/informacion/$', configuracion_views.informacion_complementaria_consulta_credilisto),
         url(r'^configuracion/servicio_credilisto_consulta/cruces/$', configuracion_views.informacion_complementaria_consulta_cruces_credilisto),
         url(r'^configuracion/servicio_credilisto_registro/$', configuracion_views.config_servicio_credilisto_registro),
+        url(r'^configuracion/servicio_codigosregistro_registro/$', configuracion_views.config_servicio_codigoregistro_registro),
         #PowerBi
         url(r'^configuracion/definiciones/graficas/$', configuracion_views.admin_graficas_powerbi),
         url(r'^configuracion/definiciones/grafica/(?P<grafica_id>\d+)/detalle/$', configuracion_views.detalle_grafica),
@@ -206,6 +208,7 @@ urlpatterns.extend(
         url(r'^configuracion/estado_sistema/$', configuracion_views.config_estado_sistema),
         url(r'^configuracion/historial_respuesta_pedido/$', configuracion_views.config_historial_respuesta_pedido),
         url(r'^configuracion/historial_correos_enviados/$', configuracion_views.config_historial_correos_enviados),
+        url(r'^configuracion/historial_codigos_registro/$', configuracion_views.config_historial_codigos_registro),
         url(r'^configuracion/historial_correos_creditos/$', configuracion_views.config_historial_correos_creditos),
         url(r'^configuracion/historial_correos_creditos_errores/$', configuracion_views.config_historial_correos_creditos_error),
         url(r'^configuracion/historial_correos_no_enviados/$', configuracion_views.config_historial_correos_no_enviados),
