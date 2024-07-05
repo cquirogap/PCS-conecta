@@ -85,6 +85,9 @@
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
                                                     <input type="hidden"  name="peticion" value="Facturar pedido sin novedades">
                                                     <input type="hidden"  name="justificacion" value="factura">
+                                                    {% for cliente in lista_cliente %}
+                                                    <input type="hidden"  name="cliente" value="{{ cliente.cliente }} ">
+                                                    {% endfor %}
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <br>
@@ -109,6 +112,9 @@
                                                     <input type="hidden"  name="peticion" value="Facturar Pedido con novedades">
                                                     <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
                                                     <input type="hidden"  name="justificacion" value="factura">
+                                                        {% for cliente in lista_cliente %}
+                                                    <input type="hidden"  name="cliente" value="{{ cliente.cliente }} ">
+                                                    {% endfor %}
                                                     <table class="table table-striped">
                                                         <thead>
                                                         <tr>
