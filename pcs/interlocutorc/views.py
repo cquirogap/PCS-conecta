@@ -1052,7 +1052,7 @@ def tokenisacion(request):
 
 
 
-def prueba(request):
+def prueba():
     url = "https://192.168.1.20:50000/b1s/v1/Login"
 
     payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
