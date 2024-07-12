@@ -115,6 +115,7 @@ class EstadoSistema(models.Model):
 class CodigosRegistros(models.Model):
     codigo = models.CharField(max_length=100)
     empresa = models.CharField(max_length=100, null=True)
+    codigo_cliente = models.CharField(max_length=100, null=True, default=None)
     creado = models.DateTimeField(null=True)
     asignado = models.DateTimeField(null=True)
     activo = models.BooleanField(default=True)

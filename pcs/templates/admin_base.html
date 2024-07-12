@@ -266,7 +266,7 @@
             {% if  permiso_usuario.pcs == 1 %}
             <li><a href="/configuracion/definiciones/grafica_pcs_actuales/"><i class="fa fa-circle-o"></i>Indicadores Internos PCS</a></li>
             {% endif %}
-            {% if permiso_usuario.empresa.tipo == 'Cadena' %}
+            {% if permiso_usuario.empresa.tipo == 'Cadena' or permiso_usuario.admin == 1 %}
             <li><a href="/configuracion/definiciones/grafica_empresario_clientes/"><i class="fa fa-circle-o"></i>Indicadores Clientes</a></li>
             {% endif %}
           </ul>

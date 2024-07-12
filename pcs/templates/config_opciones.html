@@ -71,9 +71,35 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div class="form-group">
-              <label for="numeroPedido"  style="font-weight: bold;font-size: 1.2em">Asigna Nombre de Empresa:</label>
-              <input type="text" class="form-control" name="empresa" id="empresa">
+              <label>Tipo de Empresa</label>
+              <div class="input-group ">
+                  <span class="input-group-addon"><i class="fas fa fa-group"></i></span>
+                  <select class="form-control select2 " style="width: 100%;" name="tipo_empresa" id="tipo_empresa" onchange = "obtener_empresa_tipo(this)" required>
+                      <option value="" selected disabled></option>
+                      <option value="cSupplier">Empresa Empresario</option>
+                      <option value="cCustomer">Empresa Cliente</option>
+                  </select>
+              </div>
+          </div>
+        <div class="col-md-12"><br></div>
+
+            <div class="col-md-12">
+                <label>Empresa</label>
+                <div class="input-group ">
+                    <span class="input-group-addon"><i class="fas fa fa-user"></i></span>
+                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" onchange = "obtener_empresa_codigo(this)" name="empresa_usuario" id="empresa_usuario" required>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12"><br></div>
+        </div>
+          <div class="row">
+          <div class="col-md-12">
+            <div class="bg-primary text-white p-3 rounded">
+                <center>
+              <div class="text-white"><h4>Creado para la Empresa:</h4></div>
+              <h3 id="codigoempresa" class="text-white font-weight-bold"></h3>
+                    </center>
             </div>
           </div>
         </div>

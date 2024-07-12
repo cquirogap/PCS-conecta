@@ -156,6 +156,19 @@
 
                                             </tr>
                                         {% endfor %}
+                                        {% for historial in lista_historiales %}
+                                            <tr>
+
+                                                <td>{{historial.empresa}}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{historial.creado|date:"Y/m/d"}}</td>
+                                                <td>{{historial.asignado|date:"Y/m/d"}}</td>
+                                                <td>{{historial.codigo}}</td>
+
+
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                   </table>
                                 </div>

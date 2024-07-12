@@ -4615,16 +4615,22 @@ function obtener_subseries_numero(selectObject) {
 
 
 
-//OBTENER DEPENDENCIA POR SUBSERIE
-function obtener_dependencias_subseries(selectObject) {
+//OBTENER EMPRESAS POR TIPO
+function obtener_empresa_codigo(selectObject) {
         var value = selectObject.value;
-        var select = document.getElementById('tipo_documento');
-        dependencias = $("#dependencias").val() || "";
-        dependencias = dependencias.replace(/\s+/g, '');
-        series = $("#series").val() || "";
-        series = series.replace(/\s+/g, '');
-        subseries = $("#subseries").val() || "";
-        subseries = subseries.replace(/\s+/g, '');
+        var codigo = value.split('-')[0];
+        $("#codigoempresa").text(codigo);
+
+    }
+
+
+
+
+function obtener_empresa_tipo(selectObject) {
+        var value = selectObject.value;
+        var select = document.getElementById('empresa_usuario');
+        tipo_empresa = $("#tipo_empresa").val() || "";
+        tipo_empresa = tipo_empresa.replace(/\s+/g, '');
 
         $.ajax({
             type: "GET",
@@ -4632,12 +4638,12 @@ function obtener_dependencias_subseries(selectObject) {
                 csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
 
             },
-            url: '/configuracion/trd/dependencia/datos/?dependencias='+dependencias+'&series='+series+'&subseries='+subseries,
+            url: '/configuracion/consultar/empresas_codigos/datos/?tipo_empresa='+tipo_empresa,
             dataType: 'json',
             success: function (data) {
                 // Cargar en Select
                 trd = data.datos;
-                var trd_valores=$(trd).filter(function (i,n){return n.subseries===value});
+                var trd_valores=$(trd).filter(function (i,n){return n.tipo_empresa===value});
 
 
                 select.options.length = 0;
@@ -4651,14 +4657,16 @@ function obtener_dependencias_subseries(selectObject) {
 
                 for (var i = 0; i < trd_valores.length; i++) {
                     var opt = document.createElement('option');
-                    opt.value = trd_valores[i].id;
-                    opt.innerHTML = trd_valores[i].descripcion;
+                    opt.value = trd_valores[i].codigo;
+                    opt.innerHTML = trd_valores[i].nombre;
                     select.appendChild(opt);
                 }
             }
         });
 
     }
+
+
 
 
 function obtener_dependencias_subseries_numero(selectObject) {

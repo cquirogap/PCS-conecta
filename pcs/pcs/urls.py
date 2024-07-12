@@ -209,6 +209,7 @@ urlpatterns.extend(
         url(r'^configuracion/historial_respuesta_pedido/$', configuracion_views.config_historial_respuesta_pedido),
         url(r'^configuracion/historial_correos_enviados/$', configuracion_views.config_historial_correos_enviados),
         url(r'^configuracion/historial_codigos_registro/$', configuracion_views.config_historial_codigos_registro),
+        url(r'^configuracion/consultar/empresas_codigos/datos/$', configuracion_views.config_consulta_empresario_tipo_codigos),
         url(r'^configuracion/historial_correos_creditos/$', configuracion_views.config_historial_correos_creditos),
         url(r'^configuracion/historial_correos_creditos_errores/$', configuracion_views.config_historial_correos_creditos_error),
         url(r'^configuracion/historial_correos_no_enviados/$', configuracion_views.config_historial_correos_no_enviados),
@@ -297,10 +298,8 @@ urlpatterns.extend(
         #_______________________________________________ ADMINISTRACION _____________________________________________
 
 
-        # Series
-        url(r'^configuracion/series/$', configuracion_views.config_series),
-        url(r'^configuracion/series/registrar/$', configuracion_views.config_series_registrar),
-        url(r'^configuracion/series/editar/(?P<id>[-\w]+)/$', configuracion_views.config_series_editar),
+
+
         # Sub Series
         url(r'^configuracion/subseries/$', configuracion_views.config_subseries),
         url(r'^configuracion/subseries/registrar/$', configuracion_views.config_subseries_registrar),
