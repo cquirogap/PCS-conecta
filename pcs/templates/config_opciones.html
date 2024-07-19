@@ -47,72 +47,72 @@
 
     </section>
     <div class="modal fade" id="DocumentoFIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-        <form role="form" action="/configuracion/servicio_codigosregistro_registro/"  method="POST">
-            {% csrf_token %}
-      <div class="modal-header bg-primary text-white">
-        <h4 class="modal-title" id="exampleModalLabel">Código Registro Usuarios</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <input type="hidden" id="numerocodigos" name="codigoregistro">
-          <div class="row">
-          <div class="col-md-12">
-            <div class="bg-primary text-white p-3 rounded">
-                <center>
-              <div class="text-white"><h4>Creaste un Nuevo Código:</h4></div>
-              <h3 id="numerocodigo" class="text-white font-weight-bold"></h3>
-                    </center>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-              <label>Tipo de Empresa</label>
-              <div class="input-group ">
-                  <span class="input-group-addon"><i class="fas fa fa-group"></i></span>
-                  <select class="form-control select2 " style="width: 100%;" name="tipo_empresa" id="tipo_empresa" onchange = "obtener_empresa_tipo(this)" required>
-                      <option value="" selected disabled></option>
-                      <option value="cSupplier">Empresa Empresario</option>
-                      <option value="cCustomer">Empresa Cliente</option>
-                  </select>
-              </div>
-          </div>
-        <div class="col-md-12"><br></div>
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form role="form" action="/configuracion/servicio_codigosregistro_registro/" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header bg-primary text-white">
+                        <h4 class="modal-title" id="exampleModalLabel">Código Registro Usuarios</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="numerocodigos" name="codigoregistro">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bg-primary text-white p-3 rounded">
+                                    <center>
+                                        <div class="text-white"><h4>Creaste un Nuevo Código:</h4></div>
+                                        <h3 id="numerocodigo" class="text-white font-weight-bold"></h3>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Tipo de Empresa</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fas fa fa-group"></i></span>
+                                    <select class="form-control select2" style="width: 100%;" name="tipo_empresa" id="tipo_empresa" onchange="obtener_empresa_tipo(this)" required>
+                                        <option value="" selected disabled></option>
+                                        <option value="cSupplier">Empresa Empresario</option>
+                                        <option value="cCustomer">Empresa Cliente</option>
+                                    </select>
+                                </div>
+                            </div>
 
-            <div class="col-md-12">
-                <label>Empresa</label>
-                <div class="input-group ">
-                    <span class="input-group-addon"><i class="fas fa fa-user"></i></span>
-                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" onchange = "obtener_empresa_codigo(this)" name="empresa_usuario" id="empresa_usuario" required>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-12"><br></div>
-        </div>
-          <div class="row">
-          <div class="col-md-12">
-            <div class="bg-primary text-white p-3 rounded">
-                <center>
-              <div class="text-white"><h4>Creado para la Empresa:</h4></div>
-              <h3 id="codigoempresa" class="text-white font-weight-bold"></h3>
-                    </center>
-            </div>
-          </div>
-        </div>
+                            <div class="col-md-12"><br></div>
+                            <div class="col-md-12">
+                                <label>Empresa</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fas fa fa-user"></i></span>
+                                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" onchange="obtener_empresa_codigo(this)" name="empresa_usuario" id="empresa_usuario" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12"><br></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bg-primary text-white p-3 rounded">
+                                    <center>
+                                        <div class="text-white"><h4>Creado para la Empresa:</h4></div>
+                                        <h3 id="codigoempresa" class="text-white font-weight-bold"></h3>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="submit" class="btn btn-primary" >Generar Código</button>
-      </div>
-        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Generar Código</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
     <section>
     <div class="col-md-12">
           <div class="nav-tabs-custom">

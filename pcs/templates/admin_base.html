@@ -883,6 +883,15 @@
         }
       }
 </script>
+<script>
+$(document).ready(function() {
+    $('#DocumentoFIModal').on('shown.bs.modal', function () {
+        $('#tipo_empresa, #empresa_usuario').select2({
+            dropdownParent: $('#DocumentoFIModal')
+        });
+    });
+});
+</script>
 
 </body>
 </html>
