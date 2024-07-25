@@ -408,7 +408,7 @@ urlpatterns.extend(
         #_______________________________________________ EXTERNO ____________________________________________________________
 
         # Login Referencia a  the 'django.contrib.auth.views.login' view to the /login/ URL.
-        url(r'^login/$', auth_views.login,{"template_name": "login.html",},name="login"),
+        url(r'^login/$', interlocutorc_views.CustomLoginView.as_view(), name='login'),
 
         # Login Redirect
         url(r'^login-redirect/', interlocutorc_views.definir_login, name="login-redirect"),

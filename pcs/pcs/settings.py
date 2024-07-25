@@ -122,12 +122,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+
 
 USE_I18N = True
 
 USE_L10N = True
-
+TIME_ZONE = 'America/Bogota'
 USE_TZ = True
 
 LOGIN_REDIRECT_URL = '/login-redirect/'
@@ -142,7 +142,7 @@ STATICFILES_DIRS = (
 )
 MEDIA_URL = '/bodega/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'bodega')
-
+LOGIN_URL = '/login/'
 
 
 # Email parameters

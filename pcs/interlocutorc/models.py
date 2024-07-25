@@ -120,6 +120,44 @@ class CodigosRegistros(models.Model):
     asignado = models.DateTimeField(null=True)
     activo = models.BooleanField(default=True)
 
+class LoginAttempt(models.Model):
+    codigo = models.CharField(max_length=255, unique=True)
+    intentos_fallidos = models.IntegerField(default=0)
+    ultimo_intento = models.DateTimeField(null=True, blank=True)
+    bloqueado_hasta = models.DateTimeField(null=True, blank=True)
+
+    def is_blocked(self):
+        # Restablecer los intentos si el bloqueo ha expirado
+        if self.bloqueado_hasta and timezone.now() >= self.bloqueado_hasta:
+            self.reset_attempts()
+            return False
+        return self.bloqueado_hasta and timezone.now() < self.bloqueado_hasta
+
+    def reset_attempts(self):
+        self.intentos_fallidos = 0
+        self.bloqueado_hasta = None
+        self.save()
+
+
+class LoginAttemptDjango(models.Model):  # Cambia el nombre del modelo si es necesario
+    username = models.CharField(max_length=255, unique=True)
+    intentos_fallidos = models.IntegerField(default=0)
+    bloqueado_hasta = models.DateTimeField(null=True, blank=True)
+
+
+    def is_blocked(self):
+        if self.bloqueado_hasta and timezone.now() >= self.bloqueado_hasta:
+            self.reset_attempts()
+            return False
+        return self.bloqueado_hasta and timezone.now() < self.bloqueado_hasta
+
+    def reset_attempts(self):
+        self.intentos_fallidos = 0
+        self.bloqueado_hasta = None
+        self.save()
+
+
+
 
 class Usuarios_datos(models.Model):
 

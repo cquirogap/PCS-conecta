@@ -1,5 +1,65 @@
 # -*- coding: utf-8 -*-
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
+from datetime import timedelta
+from .models import LoginAttemptDjango
+import logging
+
+logger = logging.getLogger(__name__)
+
+class CustomAuthenticationForm(AuthenticationForm):
+    error_messages = {
+        'invalid_login': _("Por favor, introduce un nombre de usuario y contrasena correctos. "
+                           "Nota: ambos campos pueden ser sensibles a mayusculas."),
+        'inactive': _("Esta cuenta esta inactiva."),
+        'blocked': _("Demasiados intentos fallidos. Intenta de nuevo después de {0}."),
+    }
+
+    def confirm_login_allowed(self, user):
+        login_attempt, created = LoginAttemptDjango.objects.get_or_create(username=user.username)
+
+        # Verificar si el usuario está bloqueado
+        if login_attempt.is_blocked():
+            raise forms.ValidationError(
+                self.error_messages['blocked'].format(login_attempt.bloqueado_hasta),
+                code='blocked',
+            )
+
+        # Resetear intentos si el login es exitoso
+        login_attempt.reset_attempts()
+
+    def clean(self):
+        logger.debug("Entrando en el método clean del formulario")
+        cleaned_data = super(CustomAuthenticationForm, self).clean()
+        username = self.cleaned_data.get('username')
+
+        if username:
+            login_attempt, created = LoginAttemptDjango.objects.get_or_create(username=username)
+            logger.debug("Intentos fallidos actuales: %d", login_attempt.intentos_fallidos)
+            if self.errors:
+                logger.debug("Errores encontrados en el formulario")
+                login_attempt.intentos_fallidos += 1
+                if login_attempt.intentos_fallidos >= 5:
+                    logger.info("Usuario %s bloqueado hasta %s", username, login_attempt.bloqueado_hasta)
+                    login_attempt.bloqueado_hasta = timezone.now() + timedelta(minutes=5)
+                    login_attempt.save()
+                    raise forms.ValidationError(
+                        self.error_messages['blocked'].format(login_attempt.bloqueado_hasta),
+                        code='blocked',
+                    )
+                else:
+                    login_attempt.save()
+                    logger.debug("Intentos fallidos incrementados a: %d", login_attempt.intentos_fallidos)
+
+        return cleaned_data
+
+
+
+
+
+
 
 
 class DatosAdicionales(forms.Form):

@@ -26,10 +26,16 @@ from rest_framework import status
 from interlocutorc.serializers import PostSerializer,FacturasSerializer,RespuestaOrdenSerializer,RespuestaFacturaSerializer,MyDataSerializer,RespuestaOrdenesSerializer
 import re
 from itertools import groupby
+from django.contrib.auth.views import LoginView
 
 # Create your views here.
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
+
+
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
+    template_name = 'login.html'
 
 
 
