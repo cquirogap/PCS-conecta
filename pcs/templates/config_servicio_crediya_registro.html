@@ -64,6 +64,7 @@
             <input type="hidden" name="fecha_pedido" id="fecha_pedido">
             <input type="hidden" name="valor_orden" id="valor_orden">
             <input type="hidden" name="fecha_vencimiento" id="fecha_vencimiento">
+            <input type="hidden" name="pedido_almacen" id="pedido_almacen">
       <div class="modal-body">
         <div class="row">
           <div class="col-md-6">
@@ -255,7 +256,7 @@
                                                     {% if datos.estado == None %}
                                                     <button type="button" class="btn btn-primary solicitud-btn"
                                                             data-toggle="modal" data-dismiss="modal"
-                                                            data-id="{{ datos.total }}" data-pedido="{{ datos.pedido }}" data-fecha="{{ datos.fecha_pedido }}" data-vencimiento="{{ datos.fecha_vencimiento }}"
+                                                            data-id="{{ datos.total }}" data-pedido="{{ datos.pedido }}" data-fecha="{{ datos.fecha_pedido }}" data-vencimiento="{{ datos.fecha_vencimiento }}" data-almacen="{{ datos.almacen }}"
                                                             data-target="#DocumentoFIModal">SOLICITAR</button>
                                                     {% elif datos.estado == 'Preaprobado' %}
                                                         <span style="font-weight: bold;font-size: 1.2em" class="label label-warning">Preaprobado</span>

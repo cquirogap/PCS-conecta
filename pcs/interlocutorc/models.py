@@ -294,8 +294,10 @@ class CrediyaPreaprobado(models.Model):
     ValorOrden = models.CharField(max_length=100, null=True, default=None)
     Correo = models.CharField(max_length=100, null=True,default=None)
     FechaRespuesta = models.DateField(null=True, default=datetime.date(1, 1, 1))
-    UsuarioRespuesta = models.ForeignKey(User, default=1)
+    UsuarioRespuesta = models.ForeignKey(User,related_name='respuestas' ,default=1)
+    UsuarioSolicitado = models.ForeignKey(User,related_name='solicitudes', default=1)
     Razon = models.CharField(max_length=500, null=True, default=None)
+    Almacen = models.CharField(max_length=100, null=True, default=None)
 
 class DocumentosCredito(models.Model):
     Empresa = models.ForeignKey(Empresas, default=1)
@@ -333,7 +335,8 @@ class CrediListoPreaprobado(models.Model):
     ValorFactura = models.CharField(max_length=100, null=True, default=None)
     Correo = models.CharField(max_length=100, null=True,default=None)
     FechaRespuesta = models.DateField(null=True, default=datetime.date(1, 1, 1))
-    UsuarioRespuesta = models.ForeignKey(User, default=1)
+    UsuarioRespuesta = models.ForeignKey(User, related_name='respuestascredilisto', default=1)
+    UsuarioSolicitado = models.ForeignKey(User, related_name='solicitudescredilisto', default=1)
     Razon = models.CharField(max_length=500, null=True, default=None)
 
 

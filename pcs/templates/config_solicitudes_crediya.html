@@ -193,6 +193,7 @@
                                     <tr>
                                         <th>EMPRESA</th>
                                         <th>PEDIDO</th>
+                                        <th>ALMACÉN</th>
                                         <th>FECHA SOLICITUD</th>
                                         <th>FECHA PEDIDO</th>
                                         <th>FECHA VENCIMIENTO</th>
@@ -209,6 +210,7 @@
                                     <tr>
                                         <td>{{ con.Empresa.nombre }}</td>
                                         <td>{{ con.NumeroOrdenCompra }}</td>
+                                        <td>{% if con.Almacen != None %}{{ con.Almacen }}{% endif %}</td>
                                         <td>{{ con.FechaSolicitud|date:"Y-m-d" }}</td>
                                         <td>{{ con.FechaEmision|date:"Y-m-d" }}</td>
                                         <td>{{ con.FechaVencimiento|date:"Y-m-d" }}</td>

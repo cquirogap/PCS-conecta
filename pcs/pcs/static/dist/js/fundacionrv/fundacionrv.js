@@ -1848,6 +1848,7 @@ $(function () {
                                 lineas +=   "<tr>" +
                                             "<td>"+casos[i].empresa+"</td>" +
                                             "<td>"+ casos[i].pedido +
+                                            "<td>"+ casos[i].almacen +
                                             "<td>"+ casos[i].fecha_solicitud +
                                             "</td>" +
                                             "<td>"+ casos[i].fecha +
@@ -2215,6 +2216,7 @@ $(function () {
             var pedidoPedido = $(this).data('pedido');
             var pedidoFecha = $(this).data('fecha');
             var pedidoVencimiento = $(this).data('vencimiento');
+            var pedidoAlmacen = $(this).data('almacen');
             $.ajax({
                 url: '/configuracion/servicio_crediya_lista/',
                 method: 'GET',
@@ -2231,6 +2233,7 @@ $(function () {
                     $('#desembolsos1').val(data.valor3);
                     $('#valor_orden').val(pedidoId);
                     $('#fecha_vencimiento').val(pedidoVencimiento);
+                    $('#pedido_almacen').val(pedidoAlmacen);
                 }
             });
         });
