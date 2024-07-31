@@ -2391,6 +2391,19 @@ $(document).ready(function() {
 });
 
 
+
+
+$(document).ready(function() {
+    $("#AprobarCreditoBtn").click(function(event) {
+        $("#AprobarCreditoBtn").hide();
+
+    });
+
+
+});
+
+
+
     var busqueda_pedidos_otros_canales_clientes = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";
