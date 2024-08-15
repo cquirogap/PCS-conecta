@@ -842,6 +842,56 @@
 
 </script>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const selectProducto = document.getElementById('select-n_producto');
+    const selectNombre = document.getElementById('select-nombre');
+    const selectPlu = document.getElementById('select-plu');
+
+    function sincronizarSelects(origen) {
+        const valorSeleccionado = origen.value.split('_');
+        const nProducto = valorSeleccionado[0];
+        const nombre = valorSeleccionado[1];
+        const plu = valorSeleccionado[2];
+
+        // Sincronizar select de número de producto
+        for (let option of selectProducto.options) {
+            if (option.value.startsWith(nProducto)) {
+                selectProducto.value = option.value;
+                break;
+            }
+        }
+
+        // Sincronizar select de nombre
+        for (let option of selectNombre.options) {
+            if (option.value.startsWith(nProducto)) {
+                selectNombre.value = option.value;
+                break;
+            }
+        }
+
+        // Sincronizar select de PLU
+        for (let option of selectPlu.options) {
+            if (option.value.startsWith(nProducto)) {
+                selectPlu.value = option.value;
+                break;
+            }
+        }
+    }
+
+    selectProducto.addEventListener('change', function() {
+        sincronizarSelects(selectProducto);
+    });
+
+    selectNombre.addEventListener('change', function() {
+        sincronizarSelects(selectNombre);
+    });
+
+    selectPlu.addEventListener('change', function() {
+        sincronizarSelects(selectPlu);
+    });
+});
+</script>
+<script>
   var now = new Date();
   mobiscroll.datepicker('#demo-colored', {
     controls: ['calendar'],       // More info about controls: https://docs.mobiscroll.com/5-18-1/javascript/calendar#opt-controls

@@ -196,6 +196,7 @@ class Empresas(models.Model):
     edi = models.CharField(max_length=45, null=True, default='1')
     temporada = models.BooleanField(default=False)
     cliente = models.BooleanField(default=False)
+    codigo = models.CharField(max_length=30, null=True, default='1')
 
 
     def __unicode__(self):
@@ -234,6 +235,7 @@ class AsignacionPedidosOtrosCanales(models.Model):
     num_detalle = models.ForeignKey(DetallesPedidosOtrosCanales, default=1)
     cantidad = models.IntegerField(default=1)
     empresa = models.ForeignKey(Empresas, default=None,null=True)
+    fecha = models.DateField(null=True)
 
     def __unicode__(self):
         return str(self.nombre)

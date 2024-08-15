@@ -110,6 +110,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {% for pedido in pedidos %}
+                                    <tr>
+                                        <td>{{ pedido.num_pedido }}</td>
+                                        <td>{{ pedido.fecha }}</td>
+                                        <td>{{ pedido.hora }}</td>
+                                        <td>{{ pedido.estado }}</td>
+                                        <td><a class='btn btn-info' href="/configuracion/orden_pcs_otroscanales/detalle/{{ pedido.num_pedido }}"><i class="fa fa-mail-forward"></i></a> </td>
+                                    </tr>
+                                {% endfor %}
                                 <!-- Espacio para los datos que cargan -->
                                 </tbody>
                                 <tfoot>

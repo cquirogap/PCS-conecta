@@ -2494,11 +2494,13 @@ $(document).ready(function() {
 
                                 lineas +=   "<tr>" +
                                             "<td> Pedido #"+casos[i].num_pedido+"</td>" +
+                                            "<td>"+casos[i].cliente+"</td>" +
                                             "<td>"+casos[i].cantidad+"</td>" +
+                                            "<td>"+casos[i].fecha+"</td>" +
                                             "<td>"+casos[i].referencia+"</td>" +
                                             "<td>"+casos[i].nombre+"</td>" +
-                                            "<td>"+casos[i].observaciones+"</td>" +
                                             "<td>"+casos[i].empresa+"</td>" +
+                                            "<td>"+casos[i].observaciones+"</td>" +
                                             "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/"+ casos[i].num_pedido +
                                             "'><i class='fa fa-mail-forward'></i></a> </td>"+
 
@@ -2517,6 +2519,29 @@ $(document).ready(function() {
     )
 
 
+
+var buscar_pedidos_otros_canales_excel = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa_input = $("#empresa_input").val() || "";
+        empresa_input = empresa_input.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/solicitud_pedido_asignaciones_otroscanales/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa_input='+empresa_input+'&pedido='+pedido+'&estado='+estado
+
+    }
+
+    $("#buscar_pedidos_otros_canales_excel_button").click(
+       function (e) {
+           buscar_pedidos_otros_canales_excel()
+       }
+    )
 
 
 

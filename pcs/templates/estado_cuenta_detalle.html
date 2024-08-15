@@ -149,9 +149,9 @@
                     <td>{{ estado.fecha_vencimiento }}</td>
                     <td>{{ estado.numero_origen }}</td>
                     <td>{{ estado.factura }}</td>
-                    <td>{{ estado.credito}}</td>
-                    <td>{{ estado.debito }}</td>
-                    <td>{{ estado.saldo_debito }}</td>
+                    <td {% if estado.factura %} style="color: green"{% else %}style="color: red" {% endif %}>{{ estado.credito}}</td>
+                    <td {% if estado.factura %} style="color: green"{% else %}style="color: red" {% endif %}>{{ estado.debito }}</td>
+                    <td {% if estado.factura %} style="color: green"{% else %}style="color: red" {% endif %}>{{ estado.saldo_debito }}</td>
                     <td>{% if estado.bloqueo == 'N' %}no{% elif estado.bloqueo == 'Y' %}si{% endif %}</td>
                     <td>{{ estado.causal_bloqueo }}</td>
                 </tr>

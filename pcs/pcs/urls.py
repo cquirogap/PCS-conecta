@@ -117,6 +117,7 @@ urlpatterns.extend(
         url(r'^configuracion/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario),
         url(r'^configuracion/imagen_empresiario_otroscanales/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_imagen_otroscanales_empresario_borrar),
         url(r'^configuracion/registrar/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario_registrar),
+        url(r'^configuracion/registrar/imagen_empresiario_otroscanales_masivo/$', configuracion_views.config_imagen_otroscanales_empresario_registrar_masivo),
         url(r'^configuracion/orden_pcs_otroscanales/detalle/(?P<id>[-\w]+)/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle),
         url(r'^configuracion/orden_pcs_otroscanales/detalle_edi/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle_edi),
         url(r'^configuracion/orden_compra/edi_depacho/$', configuracion_views.config_ordenes_aviso_despacho_detalle_edi),
@@ -367,6 +368,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_pedido_orden/cita_entrega/(?P<form_id>\d+)/(?P<novedad_id>\d+)/$', configuracion_views.pedido_problema_cita_entrega),
         url(r'^configuracion/solicitud_pedido_orden/excel/$', configuracion_views.reporte_pedido_detalle),
         url(r'^configuracion/solicitud_pedido_orden/excel_general/$', configuracion_views.reporte_pedido),
+        url(r'^configuracion/solicitud_pedido_asignaciones_otroscanales/excel_general/$', configuracion_views.reporte_otroscanales),
         url(r'^configuracion/solicitud_pedido_orden/excel_csv/$', configuracion_views.reporte_pedidos_csv),
 
         url(r'^configuracion/solicitud_comprobante_egreso/excel/$', configuracion_views.reporte_comprobante_detalle),

@@ -67,24 +67,45 @@
                     <div id="formulario-duplicado">
                         <div class="row">
                             <div class="col-md-3">
-                                <label>Descripcion Producto</label>
-                                <div class="input-group ">
-                                <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-                                <select class="form-control "  name="descripcion[]" required >
-                                    <option value="" selected disabled></option>
-                                    {% for pedido in pedidos %}
-                                        <option value="{{ pedido.n_producto }}_{{ pedido.nombre }}">{{ pedido.nombre }}</option>
-                                    {% endfor %}
+    <label>Número de Producto</label>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+        <select class="form-control select-n_producto" name="n_producto[]" required>
+            <option value="" selected disabled></option>
+            {% for pedido in pedidos %}
+                <option value="{{ pedido.codigo }}">{{ pedido.n_producto }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
 
+<div class="col-md-3">
+    <label>Descripción Producto</label>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+        <select class="form-control select-nombre" name="nombre[]" required>
+            <option value="" selected disabled></option>
+            {% for pedido in pedidos %}
+                <option value="{{ pedido.codigo }}">{{ pedido.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
 
-                                </select>
-
-
-                                </div>
-
-                            </div>
+<div class="col-md-3">
+    <label>PLU</label>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+        <select class="form-control select-plu" name="plu[]" required>
+            <option value="" selected disabled></option>
+            {% for pedido in pedidos %}
+                <option value="{{ pedido.codigo }}">{{ pedido.plu }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
                             <div class="col-md-3">
-                                <label>Necesidad</label>
+                                <label>Cantidad</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
                                     <input type="number" class="form-control" min="1" name="necesidad[]" placeholder="Necesidad" required>
@@ -125,7 +146,7 @@
             const select = event.target;
             const imagenProducto = select.closest('.row').querySelector('#imagen-producto');
 
-            if (select.name === 'descripcion[]') {
+            if (select.name === 'plu[]') {
                 const valorSeleccionado = select.value;
                 obtenerImagen(valorSeleccionado, imagenProducto);
             }
@@ -135,55 +156,96 @@
 
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
-                            const formularioOriginal = document.getElementById('formulario-duplicado');
-                            const contenedorFormularios = document.createElement('div');
-                            function clonarFormulario() {
-                                // Clonar la sección del formulario
-                                const formularioClonado = formularioOriginal.cloneNode(true);
-                                // Limpiar los valores de los campos clonados
-                                const camposClonados = formularioClonado.querySelectorAll('input, select');
-                                camposClonados.forEach(function(campo) {
-                                    campo.value = '';
-                                });
-                                const imagenProducto = formularioClonado.querySelector('#imagen-producto');
-                                imagenProducto.src = '';
+    const formularioOriginal = document.getElementById('formulario-duplicado');
+    const contenedorFormularios = document.createElement('div');
 
+    function sincronizarSelects(formulario) {
+        const selectProducto = formulario.querySelector('.select-n_producto');
+        const selectNombre = formulario.querySelector('.select-nombre');
+        const selectPlu = formulario.querySelector('.select-plu');
 
-                                // Insertar el formulario clonado en el contenedor
-                                contenedorFormularios.appendChild(formularioClonado);
-                                // Agregar el botón de eliminar al formulario clonado
-                                const btnEliminar = document.createElement('button');
-                                btnEliminar.innerHTML = '<i class="fa fa-minus"></i>';
-                                btnEliminar.classList.add('btn-eliminar');
-                                btnEliminar.setAttribute('type', 'button');
-                                formularioClonado.appendChild(btnEliminar);
-                                btnEliminar.addEventListener('click', function() {
-                                    contenedorFormularios.removeChild(formularioClonado);
-                                    if (contenedorFormularios.children.length === 1) {
-                                        contenedorFormularios.lastChild.querySelector('.btn-eliminar').remove();
-                                    }
-                                });
-                            }
-                            const btnDuplicar = document.createElement('button');
-                            btnDuplicar.innerHTML = '<i class="fa fa-plus"></i>';
-                            btnDuplicar.classList.add('btn-duplicar');
-                            btnDuplicar.setAttribute('type', 'button');
-                            btnDuplicar.addEventListener('click', clonarFormulario);
-                            const btnEliminar = document.createElement('button');
-                            btnEliminar.innerHTML = '<i class="fa fa-minus"></i>';
-                            btnEliminar.classList.add('btn-eliminar');
-                            btnEliminar.setAttribute('type', 'button');
-                            btnEliminar.style.display = 'none';
+        function actualizarSelects(origen) {
+            const valorSeleccionado = origen.value.split('_');
+            const nProducto = valorSeleccionado[0];
+            const nombre = valorSeleccionado[1];
+            const plu = valorSeleccionado[2];
 
-                            // Insertar el botón y el primer formulario
+            // Sincronizar select de número de producto
+            for (let option of selectProducto.options) {
+                if (option.value.startsWith(nProducto)) {
+                    selectProducto.value = option.value;
+                    break;
+                }
+            }
 
-                            formularioOriginal.parentNode.insertBefore(contenedorFormularios, formularioOriginal);
-                            formularioOriginal.parentNode.insertBefore(btnEliminar, formularioOriginal);
-                            formularioOriginal.parentNode.insertBefore(btnDuplicar, formularioOriginal);
-                            contenedorFormularios.appendChild(formularioOriginal);
+            // Sincronizar select de nombre
+            for (let option of selectNombre.options) {
+                if (option.value.startsWith(nProducto)) {
+                    selectNombre.value = option.value;
+                    break;
+                }
+            }
 
+            // Sincronizar select de PLU
+            for (let option of selectPlu.options) {
+                if (option.value.startsWith(nProducto)) {
+                    selectPlu.value = option.value;
+                    break;
+                }
+            }
+        }
 
-                        });
+        selectProducto.addEventListener('change', function() {
+            actualizarSelects(selectProducto);
+        });
+
+        selectNombre.addEventListener('change', function() {
+            actualizarSelects(selectNombre);
+        });
+
+        selectPlu.addEventListener('change', function() {
+            actualizarSelects(selectPlu);
+        });
+    }
+
+    function clonarFormulario() {
+        const formularioClonado = formularioOriginal.cloneNode(true);
+        const camposClonados = formularioClonado.querySelectorAll('input, select');
+        camposClonados.forEach(function(campo) {
+            campo.value = '';
+        });
+        const imagenProducto = formularioClonado.querySelector('#imagen-producto');
+        imagenProducto.src = '';
+
+        contenedorFormularios.appendChild(formularioClonado);
+
+        sincronizarSelects(formularioClonado);
+
+        const btnEliminar = document.createElement('button');
+        btnEliminar.innerHTML = '<i class="fa fa-minus"></i>';
+        btnEliminar.classList.add('btn-eliminar');
+        btnEliminar.setAttribute('type', 'button');
+        formularioClonado.appendChild(btnEliminar);
+        btnEliminar.addEventListener('click', function() {
+            contenedorFormularios.removeChild(formularioClonado);
+            if (contenedorFormularios.children.length === 1) {
+                contenedorFormularios.lastChild.querySelector('.btn-eliminar').remove();
+            }
+        });
+    }
+
+    const btnDuplicar = document.createElement('button');
+    btnDuplicar.innerHTML = '<i class="fa fa-plus"></i>';
+    btnDuplicar.classList.add('btn-duplicar');
+    btnDuplicar.setAttribute('type', 'button');
+    btnDuplicar.addEventListener('click', clonarFormulario);
+
+    formularioOriginal.parentNode.insertBefore(contenedorFormularios, formularioOriginal);
+    formularioOriginal.parentNode.insertBefore(btnDuplicar, formularioOriginal);
+    contenedorFormularios.appendChild(formularioOriginal);
+
+    sincronizarSelects(formularioOriginal);
+});
                     </script>
 
 
