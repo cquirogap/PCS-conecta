@@ -1158,13 +1158,10 @@ def prueba():
 
 
 def pruebacorreo(request):
-    send_mail(
-        'Asunto',
-        'Mensaje.',
-        settings.EMAIL_HOST_USER_2,  # Usando la segunda dirección de correo
-        ['juansebastianduartes@gmail.com'],
-        fail_silently=False,
-    )
+    email = EmailMessage('SERVICIO FINANCIERO CREDIYA DENEGADO',
+                         'Lamentablemente, su Servicio Financiero para el pedido : \n',
+                         to=['juansebastianduartes@gmail.com'])
+    email.send()
 
 
 def tarea_correo_pedido():

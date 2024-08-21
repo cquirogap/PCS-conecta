@@ -24,6 +24,7 @@ from interlocutorc.router import router_posts
 from pcs import settings
 from interlocutorc import views as interlocutorc_views
 from configuracion import views as configuracion_views
+
 from rest_framework.authtoken import views as views_api
 
 
@@ -369,6 +370,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_pedido_orden/excel/$', configuracion_views.reporte_pedido_detalle),
         url(r'^configuracion/solicitud_pedido_orden/excel_general/$', configuracion_views.reporte_pedido),
         url(r'^configuracion/solicitud_pedido_asignaciones_otroscanales/excel_general/$', configuracion_views.reporte_otroscanales),
+        url(r'^configuracion/solicitud_pedido_cliente_otroscanales/excel_general/$', configuracion_views.reporte_otroscanales_cliente),
         url(r'^configuracion/solicitud_pedido_orden/excel_csv/$', configuracion_views.reporte_pedidos_csv),
 
         url(r'^configuracion/solicitud_comprobante_egreso/excel/$', configuracion_views.reporte_comprobante_detalle),

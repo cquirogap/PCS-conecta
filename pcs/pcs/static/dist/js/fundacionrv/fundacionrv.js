@@ -2412,11 +2412,13 @@ $(document).ready(function() {
         fecha_fin = fecha_fin.replace(/\s+/g, '');
         pedido = $("#pedido").val() || "";
         pedido = pedido.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
 
         $.ajax({
                 type: "GET",
                 data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
-                url: '/configuracion/pedidos_otros_canales/informacion_cliente/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&pedido='+pedido,
+                url: '/configuracion/pedidos_otros_canales/informacion_cliente/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&pedido='+pedido+'&estado='+estado,
                 dataType:'json',
                 success: function(data) {
                     // Cargar en tabla
@@ -2474,11 +2476,13 @@ $(document).ready(function() {
         estado = estado.replace(/\s+/g, '');
         pedido = $("#pedido").val() || "";
         pedido = pedido.replace(/\s+/g, '');
+        codigo = $("#codigo").val() || "";
+        codigo = codigo.replace(/\s+/g, '');
 
         $.ajax({
                 type: "GET",
                 data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
-                url: '/configuracion/pedidos_otros_canales_empresarios/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa_input='+empresa_input+'&pedido='+pedido+'&estado='+estado,
+                url: '/configuracion/pedidos_otros_canales_empresarios/informacion/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&empresa_input='+empresa_input+'&pedido='+pedido+'&estado='+estado+'&codigo='+codigo,
                 dataType:'json',
                 success: function(data) {
                     // Cargar en tabla
@@ -2499,6 +2503,7 @@ $(document).ready(function() {
                                             "<td>"+casos[i].fecha+"</td>" +
                                             "<td>"+casos[i].referencia+"</td>" +
                                             "<td>"+casos[i].nombre+"</td>" +
+                                            "<td>"+casos[i].codigo+"</td>" +
                                             "<td>"+casos[i].empresa+"</td>" +
                                             "<td>"+casos[i].observaciones+"</td>" +
                                             "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/"+ casos[i].num_pedido +
@@ -2542,6 +2547,36 @@ var buscar_pedidos_otros_canales_excel = function () {
            buscar_pedidos_otros_canales_excel()
        }
     )
+
+
+
+
+
+
+
+
+var buscar_pedidos_otros_canales_cliente_excel = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/solicitud_pedido_cliente_otroscanales/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&pedido='+pedido+'&estado='+estado
+
+    }
+
+    $("#buscar_pedidos_otros_canales_cliete_excel_button").click(
+       function (e) {
+           buscar_pedidos_otros_canales_cliente_excel()
+       }
+    )
+
+
 
 
 

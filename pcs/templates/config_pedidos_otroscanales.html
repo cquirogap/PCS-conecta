@@ -66,14 +66,26 @@
                     <!-- ... tu código HTML existente ... -->
                     <div id="formulario-duplicado">
                         <div class="row">
-                            <div class="col-md-3">
-    <label>Número de Producto</label>
+                        <div class="col-md-3">
+    <label>Referencia</label>
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-        <select class="form-control select-n_producto" name="n_producto[]" required>
+        <select class="form-control select-plu" name="plu[]" >
             <option value="" selected disabled></option>
             {% for pedido in pedidos %}
-                <option value="{{ pedido.codigo }}">{{ pedido.n_producto }}</option>
+                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.plu }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+                            <div class="col-md-3">
+    <label>EAN</label>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+        <select class="form-control select-n_producto" name="n_producto[]" >
+            <option value="" selected disabled></option>
+            {% for pedido in pedidos %}
+                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.n_producto }}</option>
             {% endfor %}
         </select>
     </div>
@@ -86,29 +98,18 @@
         <select class="form-control select-nombre" name="nombre[]" required>
             <option value="" selected disabled></option>
             {% for pedido in pedidos %}
-                <option value="{{ pedido.codigo }}">{{ pedido.nombre }}</option>
+                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.nombre }}</option>
             {% endfor %}
         </select>
     </div>
 </div>
 
-<div class="col-md-3">
-    <label>PLU</label>
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-        <select class="form-control select-plu" name="plu[]" required>
-            <option value="" selected disabled></option>
-            {% for pedido in pedidos %}
-                <option value="{{ pedido.codigo }}">{{ pedido.plu }}</option>
-            {% endfor %}
-        </select>
-    </div>
-</div>
+
                             <div class="col-md-3">
                                 <label>Cantidad</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
-                                    <input type="number" class="form-control" min="1" name="necesidad[]" placeholder="Necesidad" required>
+                                    <input type="number" class="form-control" min="1" name="necesidad[]" placeholder="Cantidad" required>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -146,7 +147,7 @@
             const select = event.target;
             const imagenProducto = select.closest('.row').querySelector('#imagen-producto');
 
-            if (select.name === 'plu[]') {
+            if (select.name === 'nombre[]') {
                 const valorSeleccionado = select.value;
                 obtenerImagen(valorSeleccionado, imagenProducto);
             }

@@ -42,7 +42,18 @@
                                    <div class="col-md-12">
                                         <br>
                                     </div>
-                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                       <label>Estado</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                            <select class="form-control select2" style="width: 100%;" id="estado_input" >
+                                                <option value="T" selected disabled></option>
+                                                      <option value="asignado">asignado</option>
+                                                      <option value="en proceso">en proceso</option>
+                                                  </select>
+                                      </div>
+                                  </div>
+                                <div class="col-md-6">
                                     <label for="pedido">Pedido</label>
                                     <input type="number" class="form-control" id="pedido"
                                            name="pedido" placeholder="Numero de pedido" value="{{ pedido }}" >
@@ -53,15 +64,22 @@
                                       <div class="col-md-12">
                                           <br>
                                       </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <button id="busqueda_pedidos_otros_canales_clientes" class="btn btn-primary btn-block btn-flat" >
                                             <span class="glyphicon glyphicon-folder-open"></span>
                                             <span class="glyphicon glyphicon-search"></span> Consultar
                                         </button>
                                     </div>
+                                    <div class="col-md-6">
+                                    <button type="button" id="buscar_pedidos_otros_canales_cliete_excel_button"  class="btn btn-success btn-block btn-flat" >
+                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                        <span class="glyphicon glyphicon-search"></span>Excel
+                                    </button>
+                                </div>
                                 </div>
                                 <!--/ Busqueda-->
                             </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <h4 class="page-header">
@@ -77,12 +95,20 @@
                                         <th>PEDIDO</th>
                                         <th>FECHA</th>
                                         <th>HORA</th>
-                                        <th>DETALLE</th>
                                         <th>ESTADO</th>
+                                        <th>DETALLE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <!-- Espacio para los datos que cargan -->
+                                {% for pedido in pedidos %}
+                                    <tr>
+                                        <td>{{ pedido.num_pedido }}</td>
+                                        <td>{{ pedido.fecha }}</td>
+                                        <td>{{ pedido.hora }}</td>
+                                        <td>{{ pedido.estado }}</td>
+                                        <td><a class='btn btn-info' href="/configuracion/orden_pcs_otroscanales_cliente/detalle/{{ pedido.num_pedido }}"><i class="fa fa-mail-forward"></i></a> </td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -95,7 +121,9 @@
                       </div>
                         <!-- /.box -->
                     </div>
-                </div>
+                </div><button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right" style="margin-right: 5px;">
+        <i class="fa fa-download"></i> Generate PDF
+    </button>
                 <!-- Tabla existentes -->
 
             </div>
