@@ -150,7 +150,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
-EMAIL_HOST_PASSWORD = 'baecxhtxwejobzgn'
+EMAIL_HOST_PASSWORD = 'usgmfmngtrkgvwxb'
 
 EMAIL_HOST_2 = 'smtp.live.com'
 EMAIL_PORT_2 = 587
