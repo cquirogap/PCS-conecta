@@ -52,17 +52,17 @@
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
                 <li ><a href="/configuracion/orden_cliente_otroscanales/" >Pedidos Otros Canales </a></li>
-              <li class="active"><a href="#" data-toggle="tab">Excel Pedidos Otros Canales </a></li>
-                <li ><a href="/configuracion/excel_pedidos_externos_distribuido/" >Excel Pedidos Distribuidos </a></li>
+               <li ><a href="/configuracion/excel_pedidos_externos/" >Excel Pedidos Otros Canales </a></li>
+              <li class="active"><a href="#" >Excel Pedidos Distribuidos </a></li>
             </ul>
               <br>
-              <a href="/configuracion/plantilla_excel_pedidos_externos/" class="btn btn-app btn-success btn-flat">
+              <a href="/configuracion/plantilla_excel_pedidos_externos_distribuido/" class="btn btn-app btn-success btn-flat">
                   <span class="badge bg-aqua">1</span>
                   <i class="fa fa-download"></i> Plantilla
               </a>
             {% csrf_token %}
             <div class="tab-content">
-                <form role="form" action="/configuracion/excel_pedidos_externos/" method="POST" enctype="multipart/form-data">
+                <form role="form" action="/configuracion/excel_pedidos_externos_distribuido/" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
 

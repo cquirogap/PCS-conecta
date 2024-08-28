@@ -225,7 +225,9 @@ urlpatterns.extend(
         url(r'^configuracion/historial_correos_enviados/excel_general/$', configuracion_views.reporte_correos_enviados),
         #Excel Prueba
         url(r'^configuracion/excel_pedidos_externos/$', configuracion_views.config_excel_pedidos_externos),
+        url(r'^configuracion/excel_pedidos_externos_distribuido/$', configuracion_views.config_excel_pedidos_externos_distribuido),
         url(r'^configuracion/plantilla_excel_pedidos_externos/$', configuracion_views.config_plantilla_excel_pedidos_externos),
+        url(r'^configuracion/plantilla_excel_pedidos_externos_distribuido/$', configuracion_views.config_plantilla_excel_pedidos_externos_distribuido),
         # Soportes
         url(r'^configuracion/soportes/$', configuracion_views.config_soportes),
         url(r'^configuracion/soportes/registrar/$', configuracion_views.config_soportes_registrar),

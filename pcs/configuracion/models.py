@@ -215,6 +215,7 @@ class PedidosOtrosCanales(models.Model):
     estado=models.CharField(max_length=80,null=True,default='en proceso')
     fecha_minima = models.DateField(null=True)
     fecha_maxima = models.DateField(null=True)
+    numero_pedido_cliente = models.CharField(max_length=50,default=None,null=True)
 
     def __unicode__(self):
         return str(self.num_pedido)
