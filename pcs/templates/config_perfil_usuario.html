@@ -61,7 +61,7 @@
                       <li class="list-group-item">
                       <form action="/configuracion/usuarios/perfil_empresa/" method="POST">
                       {% csrf_token %}
-                         <b>Empresa</b><br> <select class="form-control select2 " style="width: 100%;" name="empresas" required {% if permiso_usuario.atencion == 1  %}disabled{% endif %}>
+                         <b>Empresa</b><br> <select class="form-control select2 " style="width: 100%;" name="empresas" required {% if permiso_usuario.atencion == 1 or permiso_usuario.atencion == 5 or permiso_usuario.atencion == 6 %}disabled{% endif %}>
 
                                               {% for empresas in lista_empresas %}
                                               <option value="{{ empresas.id }}" >{{empresas.nombre}}</option>

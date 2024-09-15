@@ -46,6 +46,41 @@
 
 
     </section>
+    <div class="modal fade" id="DocumentoFIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form role="form" action="/configuracion/servicio_empresa_registro_automatico/" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header bg-primary text-white">
+                        <h4 class="modal-title" id="exampleModalLabel">Registrar/Actualizar Automáticamente</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Codigo</label>
+                                <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-building-o "></i></span>
+                                                <input type="text" class="form-control" id="codigo"
+                                                name="codigo" placeholder="Codigo de la empresa"  required>
+                                          </div>
+                            </div>
+
+                            <div class="col-md-12"><br></div>
+                            <div class="col-md-12"><br></div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <section>
     <div class="col-md-12">
           <div class="nav-tabs-custom">
@@ -62,11 +97,17 @@
                 <div class="active tab-pane" id="perfiles">
                     <br>
                     <div class="row">
-                          <div class="col-md-2">
+                          <div class="col-md-1">
                               <a href="/configuracion/empresas/registrar/">
                                 <button type="button" class="btn btn-primary">
                                     <span class='glyphicon glyphicon-edit'></span> Registrar</button>
                               </a>
+                          </div>
+                         <div class="col-md-2">
+                                <button type="button" data-toggle="modal" data-dismiss="modal"  class="btn btn-primary "
+                                data-target="#DocumentoFIModal">
+                                    <span class='fa  fa-bars'></span> Registrar/Actualizar Automáticamente</button>
+
                           </div>
                     </div>
                     <br>

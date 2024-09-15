@@ -18,9 +18,12 @@
                                         <span class="dynamicSelect-dropdown">
                                             <select class="dynamicSelect-select" name="selectform">
                                                 <option selected value="Get in touch">Seleccione una opcion</option>
+                                                {% if permiso_usuario.atencion != 5 and permiso_usuario.atencion != 6 %}
                                                 <option value="form-1">Solicitud de prórroga</option>
+                                                {% endif %}
                                                 <option value="form-2">Facturar pedido sin novedades</option>
                                                 <option value="form-3">Facturar Pedido con novedades</option>
+                                                {% if permiso_usuario.atencion != 5 and permiso_usuario.atencion != 6 %}
                                                 <option value="form-4">No despachare pedido</option>
                                                 <option value="form-5">Suspender producto</option>
                                                 {% for cliente in lista_cliente %}
@@ -30,6 +33,7 @@
                                                 {% endfor %}
                                                 <option value="form-7">Despacho sin novedades SPE</option>
                                                 <option value="form-8">Despacho con novedades SPE</option>
+                                                {% endif %}
                                             </select>
                                         </span>
                                         <!-- Form 1 -->
@@ -81,6 +85,7 @@
                                                     {% csrf_token %}
                                                     {% for dato in lista_solicitud %}
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    <input type="hidden" name="empresa" value="{{ dato.nombre }}">
                                                     {% endfor %}
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
                                                     <input type="hidden"  name="peticion" value="Facturar pedido sin novedades">
@@ -107,7 +112,7 @@
                                                     {% csrf_token %}
                                                     {% for dato in lista_solicitud %}
                                                     <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
-
+                                                    <input type="hidden" name="empresa" value="{{ dato.nombre }}">
                                                     <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
                                                     <input type="hidden"  name="peticion" value="Facturar Pedido con novedades">
                                                     <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
