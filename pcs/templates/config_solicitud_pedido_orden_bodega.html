@@ -167,7 +167,7 @@
                                         <i class="fa fa-download"></i>
                                         <br>Factura
                                     </a>
-                                        {% if permiso_usuario.pcs == 1 %}
+                                        {% if permiso_usuario.pcs == 1 or permiso_usuario.atencion == 5 or permiso_usuario.atencion == 6 %}
                                         <a class="btn btn-success disabled "
                                            href="#">
                                         <i class="fa fa-download"></i>
@@ -180,7 +180,7 @@
                                         <i class="fa fa-download"></i>
                                         <br>Factura
                                     </a>
-                                        {% if permiso_usuario.pcs == 1 %}
+                                        {% if permiso_usuario.pcs == 1 or permiso_usuario.atencion == 5 or permiso_usuario.atencion == 6 %}
                                     <a class="btn btn-success  "
                                            href="/configuracion/orden_compra/edi_depacho/?pedido_pk={{ dato.n_pedido }}">
                                         <i class="fa fa-download"></i>
