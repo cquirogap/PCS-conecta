@@ -94,7 +94,7 @@
                         <select class="form-control select2 " style="width: 100%;" name="cliente" >
                             <option value="" selected disabled></option>
                             {% for empresas in empresas_clientes %}
-                                <option value="{{ empresas.nombre }}">{{empresas.nombre}}</option>
+                                <option value="{{ empresas.nombre }}"{% if cliente == empresas.nombre  %} selected{% endif %}>{{empresas.nombre}}</option>
                             {% endfor %}
                         </select>
                     </div>
