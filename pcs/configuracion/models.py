@@ -245,6 +245,7 @@ class AsignacionPedidosOtrosCanales(models.Model):
 class ImagenesOtrosCanales(models.Model):
     referencia = models.CharField(max_length=50)
     imagen = models.CharField(max_length=200, null=True)
+    descripcion = models.CharField(max_length=200, null=True)
 
     def __unicode__(self):
         return str(self.referencia)

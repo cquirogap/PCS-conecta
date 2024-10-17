@@ -71,6 +71,18 @@
     <label>Referencia</label>
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+        <select class="form-control select-referencias" name="referencia[]" >
+            <option value="" selected disabled></option>
+            {% for pedido in pedidos %}
+                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.codigo }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+                        <div class="col-md-3">
+    <label>Referencia</label>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
         <select class="form-control select-plu" name="plu[]" >
             <option value="" selected disabled></option>
             {% for pedido in pedidos %}
@@ -165,6 +177,7 @@
         const selectProducto = formulario.querySelector('.select-n_producto');
         const selectNombre = formulario.querySelector('.select-nombre');
         const selectPlu = formulario.querySelector('.select-plu');
+        const selectReferencia = formulario.querySelector('.select-referencias');
 
         function actualizarSelects(origen) {
             const valorSeleccionado = origen.value.split('_');
@@ -195,6 +208,13 @@
                     break;
                 }
             }
+            // Sincronizar select de Referencia
+            for (let option of selectReferencia.options) {
+                if (option.value.startsWith(nProducto)) {
+                    selectReferencia.value = option.value;
+                    break;
+                }
+            }
         }
 
         selectProducto.addEventListener('change', function() {
@@ -207,6 +227,10 @@
 
         selectPlu.addEventListener('change', function() {
             actualizarSelects(selectPlu);
+        });
+
+        selectReferencia.addEventListener('change', function() {
+            actualizarSelects(selectReferencia);
         });
     }
 
