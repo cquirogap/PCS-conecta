@@ -41,13 +41,13 @@ class CustomLoginView(LoginView):
 
 class MyListView(APIView):
     def get(self, request,start_date,end_date):
-        url = "https://192.168.1.20:50000/b1s/v1/Login"
+        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
         payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosIndicadorJSON')/List?FechaInicial='" + start_date + "'&FechaFinal='" + end_date + "'"
+        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosIndicadorJSON')/List?FechaInicial='" + start_date + "'&FechaFinal='" + end_date + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=9999',
@@ -258,14 +258,14 @@ def pruebacorreos():
             tipo='crediya',
         )
         errores.save()
-        url = "https://192.168.1.20:50000/b1s/v1/Login"
+        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
         payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(hoy) + "'"
+        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(hoy) + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -404,14 +404,14 @@ def pruebacorreosfactura():
             tipo='credilisto',
         )
         errores.save()
-        url = "https://192.168.1.20:50000/b1s/v1/Login"
+        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
         payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultasFacturasApis3')/List?fecha='" + hoy_filtro +"'"
+        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis3')/List?fecha='" + hoy_filtro +"'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -549,7 +549,7 @@ def pruebacorreosfactura():
 
 def pruebasap(request):
     # URL para autenticarse y obtener el SessionId
-    url = "https://192.168.1.20:50000/b1s/v1/Login"
+    url = "https://192.168.1.2:50000/b1s/v1/Login"
 
     payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
@@ -557,7 +557,7 @@ def pruebasap(request):
 
     respuesta = ast.literal_eval(response.text)
 
-    url = "https://192.168.1.20:50000/b1s/v1/VendorPayments"
+    url = "https://192.168.1.2:50000/b1s/v1/VendorPayments"
 
     payload = json.dumps({
         "DocNum": 41058,
@@ -683,7 +683,7 @@ def pruebasap(request):
 
 
 def prubasap2(request):
-    url = "https://192.168.1.20:50000/b1s/v1/Login"
+    url = "https://192.168.1.2:50000/b1s/v1/Login"
 
     payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
@@ -691,7 +691,7 @@ def prubasap2(request):
 
     respuesta = ast.literal_eval(response.text)
     # URL del endpoint de VendorPayments
-    url_pagos_efectuados = "https://192.168.1.20:50000/b1s/v1/VendorPayments"
+    url_pagos_efectuados = "https://192.168.1.2:50000/b1s/v1/VendorPayments"
 
     # Datos del nuevo pago efectuado que quieres enviar
     nuevo_pago_efectuado = {
@@ -858,14 +858,14 @@ def tarea_api():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.20:50000/b1s/v1/Login"
+        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
         payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaPedidosApis')/List?FechaHoy='" + str(hoy) + "'"
+        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis')/List?FechaHoy='" + str(hoy) + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -939,14 +939,14 @@ def facturas_api():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.20:50000/b1s/v1/Login"
+        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
         payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultasFacturasApis')/List"
+        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis')/List"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -1030,14 +1030,14 @@ def tokenisacion1(request):
 
 
 def tokenisacion(request):
-    url = "https://192.168.1.20:50000/b1s/v1/Login"
+    url = "https://192.168.1.2:50000/b1s/v1/Login"
 
     payload = "{\"CompanyDB\":\"PRUEBAS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
     response = requests.request("POST", url, data=payload, verify=False)
     respuesta = ast.literal_eval(response.text)
     sessionId = respuesta['SessionId']
-    url2 = "https://192.168.1.20:50000/b1s/v1/BusinessPartners('P005375')"
+    url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners('P005375')"
     payload_actualizacion = json.dumps({
     "CardName": "ASOCIACION CANASTO DE LA ABUNDANCIA MONIYA KIRIGAI"
     })
@@ -1059,7 +1059,7 @@ def tokenisacion(request):
 
 
 def prueba():
-    url = "https://192.168.1.20:50000/b1s/v1/Login"
+    url = "https://192.168.1.2:50000/b1s/v1/Login"
 
     payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
@@ -1071,7 +1071,7 @@ def prueba():
     lista_correos_simbolos_especiales = []
     for empresa in empresas:
         try:
-            url2 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
+            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
 
             headers = {
                 'Prefer': 'odata.maxpagesize=999999',
@@ -1083,7 +1083,7 @@ def prueba():
             response = ast.literal_eval(response)
             response = response['value']
             if response==[]:
-                url5 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('validacionempresariossap')/List?NombreEmpresario='" + str(
+                url5 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('validacionempresariossap')/List?NombreEmpresario='" + str(
                     empresa.nombre) + "'"
 
                 headers = {
@@ -1178,14 +1178,14 @@ def tarea_correo_pedido():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.20:50000/b1s/v1/Login"
+        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
         payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
         respuesta = ast.literal_eval(response.text)
-        url2 = "https://192.168.1.20:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
+        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
                + str(hoy) + "'"
 
         headers = {
@@ -1202,7 +1202,7 @@ def tarea_correo_pedido():
                 else:
                     try:
                         dependencias = 'LOGISTICA Y DESPACHOS'
-                        url3 = "https://192.168.1.20:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
+                        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
                                datos['CardCode'] + "'&dependencia='" + dependencias + "'"
                         response2 = requests.request("GET", url3, headers=headers, verify=False)
                         response2 = ast.literal_eval(response2.text)
