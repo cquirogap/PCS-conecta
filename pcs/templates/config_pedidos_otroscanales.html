@@ -68,54 +68,59 @@
                     <div id="formulario-duplicado">
                         <div class="row">
                         <div class="col-md-3">
-    <label>Referencia</label>
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-        <select class="form-control select-referencias" name="referencia[]" >
-            <option value="" selected disabled></option>
-            {% for pedido in pedidos %}
-                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.codigo }}</option>
-            {% endfor %}
-        </select>
-    </div>
-</div>
+                        <label>Referencia</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                            <input type="text" class="form-control predictivo" data-select-target=".select-referencias" placeholder="Buscar referencia">
+                            <select class="form-control select-referencias" name="referencia[]">
+                                <option value="" selected disabled></option>
+                                {% for pedido in pedidos %}
+                                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.codigo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
                         <div class="col-md-3">
-    <label>Referencia</label>
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-        <select class="form-control select-plu" name="plu[]" >
-            <option value="" selected disabled></option>
-            {% for pedido in pedidos %}
-                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.plu }}</option>
-            {% endfor %}
-        </select>
-    </div>
-</div>
+                        <label>PLU</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                            <input type="text" class="form-control predictivo" data-select-target=".select-plu" placeholder="Buscar PLU">
+                            <select class="form-control select-plu" name="plu[]">
+                                <option value="" selected disabled></option>
+                                {% for pedido in pedidos %}
+                                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.plu }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                             <div class="col-md-3">
-    <label>EAN</label>
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-        <select class="form-control select-n_producto" name="n_producto[]" >
-            <option value="" selected disabled></option>
-            {% for pedido in pedidos %}
-                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.n_producto }}</option>
-            {% endfor %}
-        </select>
-    </div>
-</div>
+                        <label>EAN</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                            <input type="text" class="form-control predictivo" data-select-target=".select-n_producto" placeholder="Buscar EAN">
+                            <select class="form-control select-n_producto" name="n_producto[]">
+                                <option value="" selected disabled></option>
+                                {% for pedido in pedidos %}
+                                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.n_producto }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
 <div class="col-md-3">
-    <label>Descripción Producto</label>
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-        <select class="form-control select-nombre" name="nombre[]" required>
-            <option value="" selected disabled></option>
-            {% for pedido in pedidos %}
-                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.nombre }}</option>
-            {% endfor %}
-        </select>
-    </div>
-</div>
+                        <label>Descripción Producto</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                            <input type="text" class="form-control predictivo" data-select-target=".select-nombre" placeholder="Buscar nombre">
+                            <select class="form-control select-nombre" name="nombre[]" required>
+                                <option value="" selected disabled></option>
+                                {% for pedido in pedidos %}
+                                <option value="{{ pedido.codigo }}_{{ pedido.nombre }}">{{ pedido.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
 
                             <div class="col-md-3">
@@ -170,6 +175,27 @@
 
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
+                            function aplicarAutocompletado() {
+            const predictivos = document.querySelectorAll('.predictivo');
+            predictivos.forEach(input => {
+                input.addEventListener('input', function() {
+                    const targetSelect = input.closest('.input-group').querySelector(input.getAttribute('data-select-target'));
+                    const filter = input.value.toLowerCase();
+                    const options = targetSelect.querySelectorAll('option');
+
+                    options.forEach(option => {
+                        const text = option.textContent.toLowerCase();
+                        if (text.includes(filter)) {
+                            option.style.display = '';
+                        } else {
+                            option.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
+        aplicarAutocompletado(); // Aplicar a los formularios originales
     const formularioOriginal = document.getElementById('formulario-duplicado');
     const contenedorFormularios = document.createElement('div');
 
@@ -244,6 +270,7 @@
         imagenProducto.src = '';
 
         contenedorFormularios.appendChild(formularioClonado);
+        aplicarAutocompletado(); 
 
         sincronizarSelects(formularioClonado);
 
