@@ -1,0 +1,596 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <div id="ArchivoModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="main-header">
+                                    <span class="close" data-dismiss="modal">&times;</span>
+                                    <div class="col-md-12">
+                                    <h2 class="page-header">
+                                    <strong>Respuesta Al Pedido</strong>
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="dynamicSelect">
+                                        <span class="dynamicSelect-dropdown">
+                                            <select class="dynamicSelect-select" name="selectform">
+                                                <option selected value="Get in touch">Seleccione una opcion</option>
+                                                {% if permiso_usuario.atencion != 5 and permiso_usuario.atencion != 6 %}
+                                                <option value="form-1">Solicitud de prórroga</option>
+                                                {% endif %}
+                                                <option value="form-2">Facturar pedido sin novedades</option>
+                                                <option value="form-3">Facturar Pedido con novedades</option>
+                                                {% if permiso_usuario.atencion != 5 and permiso_usuario.atencion != 6 %}
+                                                <option value="form-4">No despachare pedido</option>
+                                                <option value="form-5">Suspender producto</option>
+                                                {% for cliente in lista_cliente %}
+                                                {% if cliente.cliente == 'ALMACENES EXITO S.A.' or cliente.cliente == 'COLOMBIANA DE COMERCIO S.A.'  %}
+                                                <option value="form-6">Solicitud de cita entrega</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                                <option value="form-7">Despacho sin novedades SPE</option>
+                                                <option value="form-8">Despacho con novedades SPE</option>
+                                                {% endif %}
+                                            </select>
+                                        </span>
+                                        <!-- Form 1 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-1" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Solicitud de prorroga">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Fecha </label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                            <input type="date" class="form-control"  name="fecha_problema"  required>
+                                                        </div>
+                                                        <br>
+                                                    <label>Justificacion</label>
+                                                    <div class="input-group ">
+                                                        <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                                        <select class="form-control select2 " style="width: 100%;" name="justificacion" required>
+                                                            <option value="" selected disabled></option>
+                                                            {% for justificacion in lista_justificaciones %}
+                                                            <option value="{{ justificacion.id }}">{{justificacion.descripcion}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <br>
+                                                    {% if hoy < dato.fecha_entrega %}
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                                    {% else %}
+                                                    <center><strong>no es posible solicitar una prorroga se supero la fecha de vencimiento</strong></center>
+                                                        <br>
+                                                    <button type="button" disabled class="btn btn-block btn-default btn-xs">Enviar</button>
+                                                    {% endif %}
+                                                </div>
+                                                </div>
+                                                {% endfor %}
+                                                </form>
+                                            </div></div>
+                                        <!-- Form 2 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-2" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_seg_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    <input type="hidden" name="empresa" value="{{ dato.nombre }}">
+                                                    {% endfor %}
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Facturar pedido sin novedades">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                    {% for cliente in lista_cliente %}
+                                                    <input type="hidden"  name="cliente" value="{{ cliente.cliente }} ">
+                                                    {% endfor %}
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                    <label>Solicitar Factura</label>
+                                                    <br>
+                                                    <p>si desea solicitar la factura para este pedido da al boton solicitar</p>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Solicitar</button>
+                                                </div>
+                                                </div></form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 3 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-3" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_cuar_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    <input type="hidden" name="empresa" value="{{ dato.nombre }}">
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Facturar Pedido con novedades">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                        {% for cliente in lista_cliente %}
+                                                    <input type="hidden"  name="cliente" value="{{ cliente.cliente }} ">
+                                                    {% endfor %}
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Nombre de articulo</th>
+                                                            <th>Cantidad</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for articulo in dato.articulos %}
+                                                        <input type="hidden" value="{{articulo.nombre}}" name="nombre_prod[]">
+                                                        <input type="hidden" value="{{articulo.numero}}" name="numero_prod[]">
+                                                        <input type="hidden" value="{{articulo.cantidad}}" name="comprobante_cantidad[]">
+                                                        <tr>
+                                                            <td>{{ articulo.nombre }} </td>
+                                                            <td><input type="text" name="cantidad[]" value="{{ articulo.cantidad }}"> </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                                {% endfor %}
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 4 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-4" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_ter_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="No despachare pedido">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Justificacion</label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                                            <select class="form-control select2 " style="width: 100%;" name="justificacion" required>
+                                                                <option value="" selected disabled></option>
+                                                                <option value="Bajo monto">Bajo monto</option>
+                                                                <option value="Error unidad despacho">Error unidad despacho</option>
+                                                                <option value="Error condiciones comerciales">Error condiciones comerciales</option>
+                                                                <option value="Fuera de agenda">Fuera de agenda</option>
+                                                                <option value="Agotados">Agotados</option>
+                                                                <option value="Error codigo producto">Error código producto</option>
+                                                            </select>
+                                                        </div>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+
+                                                </div>
+                                                </div>
+                                                {% endfor %}
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 5 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-5" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_quin_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Suspender producto">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Justificacion</label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                                            <select class="form-control select2 " style="width: 100%;" name="justificacion" required>
+                                                                <option value="" selected disabled></option>
+                                                                <option value="Problema produccion">Problema producción</option>
+                                                                <option value="Problema materia prima">Problema materia prima</option>
+                                                            </select>
+                                                        </div>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+
+                                                </div>
+                                                </div>
+                                                {% endfor %}
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 6 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-6" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_sex_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    {% endfor %}
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    {% for cliente in lista_cliente %}
+                                                    <input type="hidden" name="codigo_pedido" value="{{cliente.numero_referencia}}" >
+                                                    {% if cliente.cliente == 'ALMACENES EXITO S.A.' %}
+                                                    <input type="hidden"  name="peticion" value="Solicitud de cita entrega(almacenes exito)">
+                                                    {% elif cliente.cliente == 'COLOMBIANA DE COMERCIO S.A.' %}
+                                                    <input type="hidden"  name="peticion" value="Solicitud de cita entrega(almacenes alkosto)">
+                                                    {% else %}
+                                                    <input type="hidden"  name="peticion" value="Solicitud de cita entrega">
+                                                    {% endif %}
+                                                    {% endfor %}
+
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                    <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Número de unidades</label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-dropbox"></i></span>
+                                                            <input type="text" class="form-control"
+                                                                   name="unidades"  value="{{ cantidad_pedidos }}" placeholder="Número de unidades" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Numero de cajas </label>
+                                                        <div class="input-group ">
+                                                            <span class="input-group-addon"><i class="fa fa-dropbox"></i></span>
+                                                            <input type="text" class="form-control"
+                                                                   name="cajas" value="{{ cantidad_cajas }}" placeholder="Numero de cajas" required>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+
+                                                    <br>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Tipo de vehículo </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-truck"></i></span>
+                                                                    <input type="text" class="form-control"
+                                                                           name="vehiculo" placeholder="Tipo de vehículo" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label>Fecha </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                                    <input type="date" class="form-control"  name="fecha_problema"  required>
+                                                                </div>
+                                                                <br>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Hora </label>
+                                                                <div class="input-group ">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                                    <input type="time" class="form-control"  name="hora"  required>
+                                                                </div>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+
+                                                        <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Solicitar</button>
+                                                </div>
+                                                </div></form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 7 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-7" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_sept_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+                                                    {% endfor %}
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Despacho sin novedades SPE">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                    <label>Solicitar Despacho</label>
+                                                    <br>
+                                                    <p>si desea solicitar despacho para este pedido da al boton solicitar</p>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Solicitar</button>
+                                                </div>
+                                                </div></form>
+                                            </div>
+                                        </div>
+                                        <!-- Form 8 -->
+                                        <div class="form-wrapper">
+                                            <div id="form-8" class="dynamicSelect-form">
+                                                <form role="form" action="/configuracion/respuesta_oct_pedido/" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {% for dato in lista_solicitud %}
+                                                    <input type="hidden" name="numero_pedido" value="{{ dato.n_pedido }}">
+
+                                                    <input type="hidden"  name="entry_pedido" value="{{ form_id }}">
+                                                    <input type="hidden"  name="peticion" value="Despacho con novedades SPE">
+                                                    <input type="hidden"  name="fecha_vencimiento" value="{{ dato.fecha_entrega }}">
+                                                    <input type="hidden"  name="justificacion" value="factura">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Nombre de articulo</th>
+                                                            <th>Cantidad</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for articulo in dato.articulos %}
+                                                        <input type="hidden" value="{{articulo.nombre}}" name="nombre_prod[]">
+                                                        <input type="hidden" value="{{articulo.numero}}" name="numero_prod[]">
+                                                        <input type="hidden" value="{{articulo.cantidad}}" name="comprobante_cantidad[]">
+                                                        <tr>
+                                                            <td>{{ articulo.nombre }} </td>
+                                                            <td><input type="text" name="cantidad[]" value="{{ articulo.cantidad }}"> </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                                {% endfor %}
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                          </div>
+
+                        </div>
+                    </div>
+    <div class="pull-right">
+        <div class="block">
+     <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal" class="custom-btn btn-11" title="¿Tienes un problema con este pedido?">RESPUESTA A LA ORDEN</a>
+    </div>
+    </div>
+    <h1> <a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    <br>
+    {% if peticion_activa != 'no' %}
+    <div class="alert alert-success alert-dismissible">
+        <a href="/configuracion/solicitud_pedido_orden/bodegas/problema/{{ form_id }}" class="btn btn-success pull-right" style="margin-right: 5px;">
+            <i class="fa fa-arrow-right"></i> Ver mas
+        </a>
+        <h4>Trazabilidad orden de venta</h4>
+    </div>
+    {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+</section>
+
+<div id="printableArea">
+<section class="invoice">
+    {% csrf_token %}
+    {% for dato in lista_solicitud %}
+    <div class="row no-print">
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                 PCS
+                <small class="pull-right">Orden de Venta {{ dato.DocNum }}</small>
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+   <div class="col-xs-8">
+      <p class="lead">SEÑOR(ES):</p>
+      <div class="col-sm-6 invoice-col">
+
+          <address>
+              <strong>NOMBRE: </strong>{{ dato.CardName }}<br>
+              <strong>NIT: </strong>{{ dato.LicTradNum }}<br>
+              <strong>DIR.FACTURA: </strong>{{ dato.Address }}<br>
+              <strong>CIUDAD: </strong>{{ dato.City}}<br>
+
+          </address>
+      </div>
+      <div class="col-sm-6 invoice-col">
+          <address>
+              <strong></strong><br>
+              <strong></strong><br>
+              <strong></strong><br>
+          </address>
+      </div>
+
+   </div>
+
+   <div class="col-xs-4">
+      <div class="table-responsive">
+         <table class="table">
+            <tbody>
+               <tr>
+                  <th style="width:50%">Fecha  Expedicion:</th>
+                  <td>{{ dato.DocDate }}</td>
+               </tr>
+               <tr>
+                  <th>Fecha Vencimiento</th>
+                  <td>{{dato.DocDueDate}}</td>
+               </tr>
+               <tr>
+               </tr>
+               <tr>
+                  <th></th>
+                  <td>{{cliente.cliente}}</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+    <div class="row no-print">
+
+    </div>
+
+        <hr>
+    <form role="form" action="/configuracion/solicitud_pedido_orden/bodegas/detalle/{{ form_id }}/" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="solicitud_input" name="solicitud_input" value="{{ dato.n_pedido }}">
+        <input type="hidden" name="pedido_num" value="{{ dato.DocNum }}">
+    <br>
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>EAN Producto</th>
+                        <th>Descripcion Producto</th>
+                        <th>Unidades Pedidas</th>
+                        <th>Cantidad.Uni.Emp. </th>
+                        <th>Unidades pedidas a despachar</th>
+                        <th>Empaques Despachados</th>
+                        <th>Empaques </th>
+                    </tr>
+                </thead>
+
+                {% csrf_token %}
+                <tbody>
+                {% for articulo in lista_detalle %}
+                    <input type="hidden" name="ean[]" value="{{ articulo.ean }}">
+                    <input type="hidden" name="descripcion[]" value="{{ articulo.descripc }}">
+                    <input type="hidden" name="u_pedidas[]" value="{{ articulo.unidades }}">
+                    <input type="hidden" name="c_uni_emp[]" value="{{ articulo.canti_empa }}">
+                <tr>
+                    <td>{{ articulo.ean }}</td>
+                    <td>{{ articulo.descripc }}</td>
+                    <td>{{ articulo.unidades }}</td>
+                    <td>{{ articulo.canti_empa }}</td>
+                    <td><input type="text" name="u_pedidas_desp[]" value="{{ articulo.unidades }}"></input></td>
+                    <td><input type="text" name="e_despachados[]" value="{{ articulo.emp_desp }}"></input></td>
+                    <td><input type="checkbox" name="check[]" value="{{ articulo.ean }}"></td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <div class="col-xs-6"></div>
+        <div class="col-xs-3">
+            <label>Tipo de Empaque</label>
+            <div class="input-group ">
+                <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                <select class="form-control select2 " style="width: 100%;" name="tipo_empaque" required>
+                    <option value="" selected disabled></option>
+                    <option value="estandar">Caja Estándar</option>
+                    <option value="mixta">Caja Mixta</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <label>Tipo de Embalaje</label>
+            <div class="input-group ">
+                <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                <select class="form-control select2 " style="width: 100%;" name="tipo_embalaje" required>
+                    <option value="" selected disabled></option>
+                    <option value="estibada">Estibada</option>
+                    <option value="sin_estibar">Sin Estibar</option>
+                </select>
+            </div>
+            <br>
+        </div>
+        <br>
+        <div class="col-xs-9"></div>
+        <div class="col-xs-3"><button type="submit" class="btn btn-block btn-primary btn">Enviar</button></div>
+        <div class="col-xs-12"><br><br></div>
+    </form>
+    <br><br><br><br>
+    <div class="row">
+   <div class="col-xs-9">
+       <table border="1" width="100%" height="100%">
+           <tr>
+               <th colspan="2"><br>PRENDA DOBLADA <br>.</th>
+           </tr>
+           <tr>
+               <td><small>CONSTANCIA DE ACEPTACION Y RECEPCION DE MERCANCIA</small> <br>C.C O NIT</td>
+               <td><br><br>FIRMA Y SELLO  CLIENTE <br></td>
+           </tr>
+       </table>
+
+   </div>
+
+   <div class="col-xs-3">
+      <div class="table-responsive">
+         <table class="table">
+            <tbody>
+               <tr>
+                  <th style="width:50%">SUBTOTAL:</th>
+                  <td>${{dato.DocTotal }}</td>
+               </tr>
+               <tr>
+                  <th>IVA</th>
+                  <td>${{dato.VatSum}}</td>
+               </tr>
+               <tr>
+                  <th>TOTAL</th>
+                  <td>${{ dato.DocTotal }}</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+
+</div>
+</div>
+    <button type="button" id="buscar_factura_excel_button" class="btn btn-success pull-right"><i class="fa  fa-file-excel-o"></i> Descargar</button>
+
+    <button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right" style="margin-right: 5px;">
+        <i class="fa fa-download"></i> Generate PDF
+    </button>
+     {% endfor %}
+    <div class="row no-print">
+
+    </div>
+</section>
+
+{% endblock %}

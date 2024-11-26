@@ -99,6 +99,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-6">
+
+                     <label for="pedido">N.P.Cliente</label>
+                     <input type="text" class="form-control" id="pedido_cliente"
+                            name="pedido_cliente" placeholder="Numero de pedido de cliente" value="{{ pedido_cliente }}" >
+                 </div>
 
                  <div class="col-md-12">
                      <br>
@@ -157,7 +163,7 @@
                                     </td>
 
                                     <td><center><a class="btn btn-info "
-                                           href="/configuracion/solicitud_pedido_orden/detalle/{{ dato.dato_interno }}"
+                                           href="/configuracion/solicitud_pedido_orden/bodegas/detalle/{{ dato.dato_interno }}"
                                            title="Ver detalle ">
                                         <i class="glyphicon glyphicon-folder-open"></i>
                                         <i class="glyphicon glyphicon-zoom-in"></i>

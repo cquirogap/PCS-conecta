@@ -152,6 +152,29 @@ class PedidosNovedades(models.Model):
         return str(self.nombre)
 
 
+class OrdenVenta(models.Model):
+    tipo_empaque =models.CharField(max_length=150)
+    tipo_embalaje =models.CharField(max_length=150)
+    entry = models.CharField(max_length=150)
+    pedido = models.CharField(max_length=150,default=1)
+    fecha = models.DateField(null=True)
+    hora = models.TimeField(null=True, default='01:01:00')
+    estado = models.CharField(max_length=50, default='activo')
+
+class DetalleOrdenVenta(models.Model):
+
+    ean = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=150)
+    u_pedidas = models.CharField(max_length=50)
+    cant_un_ped = models.CharField(max_length=50)
+    unidades_despachar = models.CharField(max_length=50)
+    empaques_despachado = models.CharField(max_length=50)
+    orden = models.ForeignKey(OrdenVenta, default=1)
+
+    def __unicode__(self):
+        return str(self.descripcion)
+
+
 class RespuestaCita(models.Model):
     orden_compra = models.CharField(max_length=80,default='1')
     unidades = models.CharField(max_length=20)

@@ -2772,6 +2772,45 @@ var buscar_pedidos_otros_canales_cliente_excel = function () {
     )
 
 
+    var buscar_lista_servicio_crediya_excel_informe = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/servicio_crediya/informe/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&estado='+estado
+
+    }
+
+    $("#buscar_lista_servicio_crediya_informe_button").click(
+       function (e) {
+           buscar_lista_servicio_crediya_excel_informe()
+       }
+    )
+
+
+    var buscar_lista_servicio_credilisto_excel_informe = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+
+        window.location.href = '/configuracion/servicio_credilisto/informe/excel_general/?fecha_inicio='+fecha_inicio+'&fecha_fin='+fecha_fin+'&estado='+estado
+
+    }
+
+    $("#buscar_lista_servicio_credilisto_informe_button").click(
+       function (e) {
+           buscar_lista_servicio_credilisto_excel_informe()
+       }
+    )
+
 
     var buscar_lista_servicio_credilisto_excel = function () {
 

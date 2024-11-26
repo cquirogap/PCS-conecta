@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="#">Servicio CrediListo</a>
+        <a href="#">Informe CrediListo</a>
         <small>Configuracion</small>
       </h1>
 
@@ -51,8 +51,8 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#" data-toggle="tab">Servicio CrediListo</a></li>
-                <li ><a href="/configuracion/servicio_credilisto/informe/" >Informe Aprobado/Negado</a></li>
+              <li ><a href="/configuracion/servicio_credilisto/" >Servicio CrediListo</a></li>
+              <li class="active"><a href="#" data-toggle="tab">Informe Aprobado/Negado</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">
@@ -62,9 +62,10 @@
                     <div class="row">
                     <div class="col-md-6">
                         <label>Fecha inicial</label>
+
                         <div class="input-group ">
                          <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio" value="{{ fecha_inicio }}" required>
+                         <input type="date" class="form-control" id="fecha_inicio_input" name="fecha_inicio"  value="{{ fecha_inicio }}" required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -74,6 +75,17 @@
                          <input type="date" class="form-control" id="fecha_fin_input" name="fecha_fin" value="{{ fecha_fin }}" required>
                         </div>
                     </div>
+                        <div class="col-md-12">
+                     <br>
+                     <label>Estado</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-filter"></i></span>
+                         <select class="form-control select2 " style="width: 100%;" name="estado" id="estado_input">
+                             <option value="Aprobado">Aprobado</option>
+                             <option value="Negado">Negado</option>
+                         </select>
+                     </div>
+                 </div>
                     <div class="col-md-12">
                         <br>
                     </div>
@@ -82,7 +94,7 @@
                         <br>
                     </div>
                     <div class="col-md-12">
-                        <button type="button" id="buscar_lista_servicio_credilisto_button"  class="btn btn-success btn-block btn-flat" >
+                        <button type="button" id="buscar_lista_servicio_credilisto_informe_button"  class="btn btn-success btn-block btn-flat" >
                             <span class="glyphicon glyphicon-folder-open"></span>
                             <span class="glyphicon glyphicon-search"></span>Excel
                         </button>
