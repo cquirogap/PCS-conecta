@@ -60,6 +60,10 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        {% if detalle_validacion.dependencia != None %}
+                        <th>Dependencia</th>
+                        <th>Nombre Dep.</th>
+                        {% endif %}
                         <th>EAN Producto</th>
                         <th>Descripcion Producto</th>
                         <th>Unidades Pedidas</th>
@@ -71,6 +75,10 @@
                 <tbody>
                 {% for novedad in pedido_novedades %}
                 <tr>
+                    {% if detalle_validacion.dependencia != None %}
+                    <td>{{ novedad.dependencia }}</td>
+                    <td>{{ novedad.direccion }}</td>
+                    {% endif %}
                     <td>{{ novedad.ean }}</td>
                     <td>{{ novedad.descripcion }} </td>
                     <td>{{ novedad.u_pedidas }} </td>

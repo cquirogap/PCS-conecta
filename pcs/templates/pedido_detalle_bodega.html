@@ -359,11 +359,7 @@
 
                         </div>
                     </div>
-    <div class="pull-right">
-        <div class="block">
-     <a data-toggle="modal" data-dismiss="modal" data-target="#ArchivoModal" class="custom-btn btn-11" title="¿Tienes un problema con este pedido?">RESPUESTA A LA ORDEN</a>
-    </div>
-    </div>
+
     <h1> <a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
     <br>
     {% if peticion_activa != 'no' %}
@@ -495,24 +491,113 @@
 
                 {% csrf_token %}
                 <tbody>
+                {% if direcciones %}
+                {% for articulo in lista_detalle %}
+                    {% for detalle in articulo.direcciones %}
+                        <input type="hidden" name="ean[]" value="{{ articulo.ean }}">
+                        <input type="hidden" name="descripcion[]" value="{{ articulo.descripc }}">
+                        <input type="hidden" name="u_pedidas[]" value="{{ articulo.unidades }}">
+                        <input type="hidden" name="c_uni_emp[]" value="{{ articulo.canti_empa }}">
+                        <input type="hidden" name="dependencia[]" value="{{ detalle.dependencia }}">
+                        <input type="hidden" name="direccion[]" value="{{ detalle.direccion }}">
+                        <input type="hidden" name="plu[]" value="{{ articulo.plu }}">
+                    <input type="hidden" name="tota_bruto[]" value="{{ articulo.tota_bruto }}">
+                    <input type="hidden" name="total_neto[]" value="{{ articulo.total_neto }}">
+                    {% endfor %}
+                <tr>
+                    <td>{{ articulo.ean }}<br>{% for detalle in articulo.direcciones %}
+                    <small>{{ detalle.dependencia }}</small><br>{% endfor %}</td>
+                    <td>{{ articulo.descripc }}<br>{% for detalle in articulo.direcciones %}
+                    <small>{{ detalle.direccion }}</small><br>{% endfor %}</td>
+                    <td>{{ articulo.unidades }}<br>{% for detalle in articulo.direcciones %}
+                    <small>{{ detalle.cantidad }}</small><br>{% endfor %}</td>
+                    <td>{{ articulo.canti_empa }}<br>{% for detalle in articulo.direcciones %}
+                    <small>{{ articulo.canti_empa }}</small><br>{% endfor %}</td>
+                    <td>{{ articulo.unidades }}<br>{% for detalle in articulo.direcciones %}
+                    <small><input
+                    type="text"
+                    name="u_pedidas_desp[]"
+                    class="u_pedidas_desp"
+                    data-c-uni-emp="{{ articulo.canti_empa }}"
+                    data-e-despachados-id="e_despachados_{{ forloop.counter }}"
+                    value="{{ detalle.cantidad }}"></small><br>{% endfor %}</td>
+                    <td>{{ articulo.emp_desp }}<br>{% for detalle in articulo.direcciones %}
+                    <small><input
+                    type="text"
+                    name="e_despachados[]"
+                    id="e_despachados_{{ forloop.counter }}"
+                    value="{{ detalle.empaques }}"
+                    readonly></small><br>{% endfor %}</td>
+                    <td><br>{% for detalle in articulo.direcciones %}
+                    <small><input type="checkbox" name="check[]" value="{{ detalle.dependencia }}"></small><br>{% endfor %}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
                 {% for articulo in lista_detalle %}
                     <input type="hidden" name="ean[]" value="{{ articulo.ean }}">
                     <input type="hidden" name="descripcion[]" value="{{ articulo.descripc }}">
                     <input type="hidden" name="u_pedidas[]" value="{{ articulo.unidades }}">
                     <input type="hidden" name="c_uni_emp[]" value="{{ articulo.canti_empa }}">
+                    <input type="hidden" name="plu[]" value="{{ articulo.plu }}">
+                    <input type="hidden" name="tota_bruto[]" value="{{ articulo.tota_bruto }}">
+                    <input type="hidden" name="total_neto[]" value="{{ articulo.total_neto }}">
                 <tr>
                     <td>{{ articulo.ean }}</td>
                     <td>{{ articulo.descripc }}</td>
                     <td>{{ articulo.unidades }}</td>
                     <td>{{ articulo.canti_empa }}</td>
-                    <td><input type="text" name="u_pedidas_desp[]" value="{{ articulo.unidades }}"></input></td>
-                    <td><input type="text" name="e_despachados[]" value="{{ articulo.emp_desp }}"></input></td>
+                    <td>
+                <input
+                    type="text"
+                    name="u_pedidas_desp[]"
+                    class="u_pedidas_desp"
+                    data-c-uni-emp="{{ articulo.canti_empa }}"
+                    data-e-despachados-id="e_despachados_{{ forloop.counter }}"
+                    value="{{ articulo.unidades }}">
+            </td>
+                    <td>
+                <input
+                    type="text"
+                    name="e_despachados[]"
+                    id="e_despachados_{{ forloop.counter }}"
+                    value="{{ articulo.emp_desp }}"
+                    readonly>
+            </td>
                     <td><input type="checkbox" name="check[]" value="{{ articulo.ean }}"></td>
 
                 </tr>
                 {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
+        <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Selecciona todos los campos de entrada `u_pedidas_desp`
+        const uPedidasInputs = document.querySelectorAll('.u_pedidas_desp');
+
+        // Añade un evento de escucha a cada campo
+        uPedidasInputs.forEach(input => {
+            input.addEventListener('input', function () {
+                // Obtén el valor del campo actual
+                const uPedidasValue = parseFloat(this.value) || 0;
+
+                // Obtén el valor del atributo data-c-uni-emp (cantidad por empaque)
+                const cUniEmp = parseFloat(this.dataset.cUniEmp) || 1;
+
+                // Calcula el nuevo valor de e_despachados
+                const eDespachadosValue = (uPedidasValue / cUniEmp).toFixed(2);
+
+                // Encuentra el campo correspondiente de e_despachados usando el id
+                const eDespachadosInput = document.getElementById(this.dataset.eDespachadosId);
+
+                // Actualiza el campo e_despachados
+                if (eDespachadosInput) {
+                    eDespachadosInput.value = eDespachadosValue;
+                }
+            });
+        });
+    });
+</script>
         </div>
     </div>
         <div class="col-xs-6"></div>

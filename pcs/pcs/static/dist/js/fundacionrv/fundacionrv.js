@@ -2792,6 +2792,13 @@ var buscar_pedidos_otros_canales_cliente_excel = function () {
     )
 
 
+
+
+
+
+
+
+
     var buscar_lista_servicio_credilisto_excel_informe = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";

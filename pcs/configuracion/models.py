@@ -157,14 +157,22 @@ class OrdenVenta(models.Model):
     tipo_embalaje =models.CharField(max_length=150)
     entry = models.CharField(max_length=150)
     pedido = models.CharField(max_length=150,default=1)
+    factura = models.CharField(max_length=150,default=1)
     fecha = models.DateField(null=True)
     hora = models.TimeField(null=True, default='01:01:00')
     estado = models.CharField(max_length=50, default='activo')
+    doc_respuesta = models.CharField(max_length=100, null=True, default=None)
+    doc_edi = models.CharField(max_length=100, null=True, default=None)
 
 class DetalleOrdenVenta(models.Model):
 
     ean = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=150)
+    dependencia = models.CharField(max_length=150,null=True,default=None)
+    direccion = models.CharField(max_length=150,null=True,default=None)
+    plu = models.CharField(max_length=150,null=True,default=None)
+    tota_bruto = models.CharField(max_length=150,null=True,default=None)
+    total_neto = models.CharField(max_length=150,null=True,default=None)
     u_pedidas = models.CharField(max_length=50)
     cant_un_ped = models.CharField(max_length=50)
     unidades_despachar = models.CharField(max_length=50)

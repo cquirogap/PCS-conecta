@@ -67,11 +67,56 @@
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Detalle</th>
+                        <th>Respuesta</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for problema in orden_venta %}
+                <div id="RespuestaModal{{ problema.id }}" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="main-header">
+                                    <span class="close" data-dismiss="modal">&times;</span>
+                                    <div class="col-md-12">
+                                    <h2 class="page-header">
+                                    <strong>Respuesta Peticion</strong>
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form" action="/configuracion/solicitud_pedido_orden/bodegas/problema/{{ form_id }}/" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="entry_pedido" value="{{problemas_titulo.entry_pedido}}">
+                                        <input type="hidden" name="num_pedido" value="{{ titulos.pedido }}">
+                                    <input type="hidden" name="problema" value="{{problema.id}}">
+                                        <input type="hidden" name="direccion" value="1">
+                                    <label>Adjunto</label>
 
+                                    <br>
+                                        <input type="hidden" value="1" name="doc">
+                                     <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-upload"></i></span>
+                                        <input id="adjunto" name="adjunto" type="file" required>
+                                    </div>
+                                        <br>
+                                        <label>Factura</label>
+                     <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-filter"></i></span>
+                         <select class="form-control select2 " style="width: 100%;" name="factura" id="factura">
+                            {% for fact in facturas %}
+                             <option value="{{ fact.DocNum }}">{{ fact.DocNum }}</option>
+                            {% endfor %}
+                         </select>
+                     </div>
+                                        <br>
+                                    <button type="submit" class="btn btn-block btn-primary btn-xs">Enviar</button>
+                                    </form>
+                                </div>
+
+                          </div>
+
+                        </div>
+                    </div>
                 <tr>
                     <td>{{ problema.pk }}</td>
                     <td>{{ problema.tipo_empaque }} </td>
@@ -86,6 +131,31 @@
                         <i class="glyphicon glyphicon-zoom-in"></i>
                         <br> Novedades Orden
                     </a></td>
+
+                    <td>
+                    {% if  permiso_usuario.atencion != 5  %}
+                    {% if  permiso_usuario.atencion != 6  %}
+                        {% if problema.estado == 'respondido' %}
+                        <a class="btn btn-danger "
+                                           href="{{ problema.doc_respuesta }}">
+                                        <i class="fa fa-download"></i>
+                                        <br>Factura
+                                    </a>
+                            <a class="btn btn-success  "
+                                           href="{{ problema.doc_edi }}">
+                                        <i class="fa fa-download"></i>
+                                        <br>Despacho
+                                    </a>
+                        {% else %}
+                        <a class="btn btn-info " data-toggle="modal" data-dismiss="modal" data-target="#RespuestaModal{{ problema.id }}"
+                               title="responder ">
+                                <i class="fa fa-mail-forward"></i>
+                                <br> Responder
+                            </a>
+                        {% endif %}
+                        {% endif %}
+                        {% endif %}
+                    </td>
 
                 </tr>
                 {% endfor %}

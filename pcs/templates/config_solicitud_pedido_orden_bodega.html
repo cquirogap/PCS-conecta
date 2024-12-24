@@ -36,7 +36,9 @@
       {% endif %}
 
     </section>
+
     <section>
+
     <div class="col-md-12">
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
@@ -162,43 +164,65 @@
                                         {{dato.total}}
                                     </td>
 
-                                    <td><center><a class="btn btn-info "
-                                           href="/configuracion/solicitud_pedido_orden/bodegas/detalle/{{ dato.dato_interno }}"
-                                           title="Ver detalle ">
-                                        <i class="glyphicon glyphicon-folder-open"></i>
-                                        <i class="glyphicon glyphicon-zoom-in"></i>
-                                        <br> Detalle Pedido
-                                    </a>   {% if dato.facturas_no_respondidas == 'True' %} <a class="btn btn-danger disabled "
-                                           href="#">
-                                        <i class="fa fa-download"></i>
-                                        <br>Factura
-                                    </a>
-                                        {% if permiso_usuario.pcs == 1 or permiso_usuario.atencion == 5 or permiso_usuario.atencion == 6 %}
-                                        <a class="btn btn-success disabled "
-                                           href="#">
-                                        <i class="fa fa-download"></i>
-                                            <br>Despacho
-                                    </a>
-                                            {% endif %}
-                                    {% elif dato.documento_facturas_respondidas != None %}
-                                    <a class="btn btn-danger "
-                                           href="{{ dato.documento_facturas_respondidas }}">
-                                        <i class="fa fa-download"></i>
-                                        <br>Factura
-                                    </a>
-                                        {% if permiso_usuario.pcs == 1 or permiso_usuario.atencion == 5 or permiso_usuario.atencion == 6 %}
-                                    <a class="btn btn-success  "
-                                           href="/configuracion/orden_compra/edi_depacho/?pedido_pk={{ dato.n_pedido }}">
-                                        <i class="fa fa-download"></i>
-                                        <br>Despacho
-                                    </a>
-                                            {% endif %}
-                                        {% endif %}</center></td>
+                                    <td>
+
+
+                                    <center>
+            <a class="btn btn-info"
+               href="/configuracion/solicitud_pedido_orden/bodegas/detalle/{{ dato.dato_interno }}"
+               title="Ver detalle">
+                <i class="glyphicon glyphicon-folder-open"></i>
+                <i class="glyphicon glyphicon-zoom-in"></i>
+                <br> Detalle Pedido
+            </a>
+
+            <!-- Botón para mostrar opciones de facturas -->
+            {% if dato.documento_facturas_respondidas %}
+
+                <a class="btn btn-danger btn-descarga"
+               href="/configuracion/solicitud_pedido_orden/bodegas/problema/{{ dato.dato_interno }}"
+               title="Ver Facturas">
+                <i class="fa fa-download"></i>
+                <br>Facturas
+            </a>
+            {% endif %}
+
+            <!-- Botón para mostrar opciones de despachos -->
+            {% if dato.documento_edi_respondidas %}
+                <a class="btn btn-success btn-descarga"
+               href="/configuracion/solicitud_pedido_orden/bodegas/problema/{{ dato.dato_interno }}"
+               title="Ver Despachos">
+                <i class="fa fa-download"></i>
+                <br>Despachos
+            </a>
+            {% endif %}
+        </center>
+
+
+
+</td>
 
                                 </tr>
                                 {% endfor %}
                           </tbody></table>
+                  <div id="modalDescargas" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="listaArchivos"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
                   </div>
+
                   <form role="form" action="/configuracion/solicitud_pedido_orden/bodegas/" method="POST">
                   {% csrf_token %}
                       <input type="hidden" name="fecha_inicio" value="{{ fecha_inicio }}">
@@ -219,6 +243,7 @@
           </div>
           <!-- /.nav-tabs-custom -->
     </div>
+
         <!-- /.col -->
     </section>
 
