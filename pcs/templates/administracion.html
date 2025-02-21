@@ -19,6 +19,7 @@
       {% endif %}
     </section>
     <br>
+    
     {% if   permiso_usuario.empresa.tipo != 'Cadena'  %}
     <div class="col-md-12">
           <div class="box box-solid">
@@ -30,36 +31,29 @@
                     <li data-target="#carousel-example-generic" data-slide-to="1" class="activate"></li>
                     <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
                     <li data-target="#carousel-example-generic" data-slide-to="3" class=""></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="4" class=""></li>
 
                 </ol>
                 <div class="carousel-inner">
-                    <div class="item ">
-                      <a href="#">
-                    <img src="{% static 'dist/img/BN_11.jpg'%}" alt="First slide"></a>
-                  </div>
+
                     <div class="item">
                       <a href="https://www.autor.com.co/">
                     <img src="{% static 'dist/img/BN_02.png'%}" ></a>
                   </div>
                   <div class="item">
                       <a href="https://www.pcsocial.org/">
-                    <img src="{% static 'dist/img/banner.png'%}"></a>
+                    <img src="{% static 'dist/img/banner.png'%}" alt="First slide"></a>
                   </div>
-                    <div class="item">
+                    <div class="item ">
                       <a href="#">
                     <img src="{% static 'dist/img/bannerinicial.png'%}" ></a>
                   </div>
                     
-                    <div class="item ">
+                    <div class="item active">
                       <a href="{% static 'dist/img/VIDEOPORTAL.mp4'%}" target="_blank">
                     <img src="{% static 'dist/img/BN_10.jpg'%}" ></a>
                   </div>
 
-                    <div class="item active">
-                      <a href="#">
-                    <img src="{% static 'dist/img/BN_NEW.jpg'%}" ></a>
-                  </div>
+
 
                 </div>
                 <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">

@@ -2020,6 +2020,7 @@ $(function () {
         $(".aceptarcredi-btn").click(function () {
             var pedido = $(this).data("pedido");
             $("#pedido_modal").text(pedido);
+            $("#AprobarCreditoBtn").prop("disabled", true);
             $("#PedidosCruzados").text('ESPERE UN MOMENTO POR FAVOR');
             $("#numeropedido1").val(pedido);
             $.ajax({
@@ -2031,6 +2032,7 @@ $(function () {
                 $("#estado").val(response.estado);
                 $("#pedido_sap").val(response.pedido);
                 $("#valor_sap").val(response.valor);
+                $("#AprobarCreditoBtn").prop("disabled", false);
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -2863,20 +2865,24 @@ var buscar_pedidos_otros_canales_cliente_excel = function () {
 
     var buscar_inventario_excel = function () {
 
-        cliente = $("#cliente_input").val() || "";
-        cliente = cliente.replace(/\s+/g, '');
-        fecha_fin = $("#selected-date").val() || "";
-        fecha_fin = fecha_fin.replace(/\s+/g, '');
+    cliente = $("#cliente_input").val() || "";
+    cliente = cliente.replace(/\s+/g, '');
+    fecha_fin = $("#selected-date").val() || "";
+    fecha_fin = fecha_fin.replace(/\s+/g, '');
 
-        window.location.href = '/configuracion/solicitud_inventarios/excel_general/?cliente='+cliente+'&fecha_fin='+fecha_fin
-
+    // Verificar si fecha_fin está vacío
+    if (fecha_fin === "") {
+        alert("Seleccione una fecha de corte"); // Muestra un mensaje de error
+        return; // Detener la ejecución de la función
     }
 
-    $("#buscar_inventario_excel_button").click(
-       function (e) {
-           buscar_inventario_excel()
-       }
-    )
+    // Si fecha_fin no está vacío, continuar con la redirección
+    window.location.href = '/configuracion/solicitud_inventarios/excel_general/?cliente=' + cliente + '&fecha_fin=' + fecha_fin;
+}
+
+    $("#buscar_inventario_excel_button").click(function (e) {
+        buscar_inventario_excel();
+    });
 
 
     var buscar_ventas_excel = function () {
