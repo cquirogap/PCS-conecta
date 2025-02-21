@@ -43,7 +43,7 @@ class MyListView(APIView):
     def get(self, request,start_date,end_date):
         url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
         respuesta = ast.literal_eval(response.text)
@@ -260,7 +260,7 @@ def pruebacorreos():
         errores.save()
         url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
@@ -406,7 +406,7 @@ def pruebacorreosfactura():
         errores.save()
         url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
@@ -551,7 +551,7 @@ def pruebasap(request):
     # URL para autenticarse y obtener el SessionId
     url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-    payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+    payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
     response = requests.request("POST", url, data=payload, verify=False)
 
@@ -685,7 +685,7 @@ def pruebasap(request):
 def prubasap2(request):
     url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-    payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+    payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
     response = requests.request("POST", url, data=payload, verify=False)
 
@@ -860,7 +860,7 @@ def tarea_api():
         errores.save()
         url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
@@ -941,7 +941,7 @@ def facturas_api():
         errores.save()
         url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
@@ -1032,7 +1032,7 @@ def tokenisacion1(request):
 def tokenisacion(request):
     url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-    payload = "{\"CompanyDB\":\"PRUEBAS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+    payload = "{\"CompanyDB\":\"PRUEBAS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
     response = requests.request("POST", url, data=payload, verify=False)
     respuesta = ast.literal_eval(response.text)
@@ -1061,7 +1061,7 @@ def tokenisacion(request):
 def prueba():
     url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-    payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+    payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
     response = requests.request("POST", url, data=payload, verify=False)
     respuesta = ast.literal_eval(response.text)
@@ -1180,7 +1180,7 @@ def tarea_correo_pedido():
         errores.save()
         url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager\",\"Password\":\"HYC909\"}"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
         response = requests.request("POST", url, data=payload, verify=False)
 
