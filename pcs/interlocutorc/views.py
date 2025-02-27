@@ -122,6 +122,8 @@ class MyListView(APIView):
                      info in grupos_ordenados]
 
         serializer = MyDataSerializer(resultado, many=True)
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
         return Response(serializer.data)
 
 
@@ -368,6 +370,8 @@ def pruebacorreos():
                         pass
             else:
                 pass
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
@@ -531,6 +535,8 @@ def pruebacorreosfactura():
             tipo='credilisto',
         )
         errores.save()
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
 
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
@@ -544,6 +550,8 @@ def pruebacorreosfactura():
                 pedido='No Corresponde',
             )
         errores.save()
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
 
 
 
@@ -912,6 +920,8 @@ def tarea_api():
             pedido='No Corresponde',
         )
         errores.save()
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
@@ -924,6 +934,8 @@ def tarea_api():
             pedido='No Corresponde',
         )
         errores.save()
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
 
 
 def facturas_api():
@@ -993,6 +1005,8 @@ def facturas_api():
             pedido='No Corresponde',
         )
         errores.save()
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
@@ -1005,6 +1019,8 @@ def facturas_api():
             pedido='No Corresponde',
         )
         errores.save()
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
 
 def tokenisacion1(request):
 
@@ -1154,6 +1170,8 @@ def prueba():
                              to=['analistati@pcsocial.org'])
         email.send()
 
+    url = "https://192.168.1.2:50000/b1s/v1/Logout"
+    response = requests.request("POST", url, verify=False)
 
 
 
@@ -1304,6 +1322,8 @@ def tarea_correo_pedido():
             pedido='No Corresponde',
         )
         errores.save()
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
@@ -1316,3 +1336,5 @@ def tarea_correo_pedido():
             pedido='No Corresponde',
         )
         errores.save()
+        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        response = requests.request("POST", url, verify=False)
