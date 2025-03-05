@@ -693,7 +693,7 @@ def pruebasap(request):
 def prubasap2(request):
     url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-    payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
+    payload = "{\"CompanyDB\":\"PRUEBACIERR24022025\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
     response = requests.request("POST", url, data=payload, verify=False)
 
@@ -706,15 +706,15 @@ def prubasap2(request):
             "DocType": "rSupplier",
             "HandWritten": "tNO",
             "Printed": "tNO",
-            "DocDate": "2024-04-04T00:00:00Z",
-            "CardCode": "P004075",
+            "DocDate": "2025-02-28T00:00:00Z",
+            "CardCode": "P004336",
             "CashAccount": "42100516",
             "DocCurrency": "$",
             "CashSum": 40000.0,
             "CheckAccount": None,
             "TransferAccount": "11100502",
             "TransferSum": 419000.0,
-            "TransferDate": "2024-04-04T00:00:00Z",
+            "TransferDate": "2025-02-28T00:00:00Z",
             "TransferReference": None,
             "LocalCurrency": "tNO",
             "DocRate": 0.0,
@@ -724,7 +724,7 @@ def prubasap2(request):
             "JournalRemarks": "ANTICIPO OC 121303",
             "SplitTransaction": "tNO",
             "ApplyVAT": "tNO",
-            "TaxDate": "2024-04-04T00:00:00Z",
+            "TaxDate": "2025-02-28T00:00:00Z",
             "BankCode": None,
             "BankAccount": None,
             "DiscountPercent": 0.0,
@@ -762,13 +762,13 @@ def prubasap2(request):
             "WtBaseSum": 0.0,
             "WtBaseSumFC": 0.0,
             "WtBaseSumSC": 0.0,
-            "VatDate": "2024-04-04T00:00:00Z",
+            "VatDate": "2025-02-28T00:00:00Z",
             "TransactionCode": "",
             "PaymentType": "bopt_None",
             "TransferRealAmount": 0.0,
             "DocObjectCode": "bopot_OutgoingPayments",
             "DocTypte": "rSupplier",
-            "DueDate": "2024-04-04T00:00:00Z",
+            "DueDate": "2025-02-28T00:00:00Z",
             "LocationCode": None,
             "Cancelled": "tNO",
             "UnderOverpaymentdiffFC": 0.0,
@@ -798,12 +798,12 @@ def prubasap2(request):
             "PaymentChecks": [],
             "PaymentInvoices": [
                 {
-                    "DocEntry": 857585,
-                    "SumApplied": -459000.0,
+                    "DocEntry": 151310,
+                    "SumApplied": -76874.0,
                     "AppliedFC": 0.0,
                     "DocRate": 0.0,
                     "DocLine": 2,
-                    "InvoiceType": "it_PaymentAdvice",
+                    "InvoiceType": "it_PurchaseCreditNote",
                     "DiscountPercent": 0.0,
                     "PaidSum": 0.0,
                     "InstallmentId": 1,

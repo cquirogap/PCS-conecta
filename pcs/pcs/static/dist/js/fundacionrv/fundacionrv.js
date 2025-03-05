@@ -2174,7 +2174,8 @@ $(function () {
                                             "</td>" +
                                             "<td>"+ casos[i].valor_preaprobado +
                                             "</td>" +
-                                            "<td>"+casos[i].interes+"</td>" ;
+                                            "<td>"+casos[i].interes+"</td>"+
+                                            "<td>"+casos[i].interesapl+"</td>" ;
                                             if (casos[i].estado === 'Preaprobado') {
                                                 lineas +="<td> <span style=\"font-weight: bold;font-size: 1.2em\" class=\"label label-info\">PreAprobado</span></td><td></td>";
 
