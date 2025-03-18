@@ -2330,6 +2330,7 @@ $(function () {
                                 lineas +=   "<tr>" +
                                             "<td> Pedido #"+casos[i].num_pedido+"</td>" +
                                             "<td>"+casos[i].fecha+"</td>" +
+                                            "<td>"+casos[i].fecha_entrega+"</td>" +
                                             "<td>"+casos[i].hora+"</td>" ;
                                             if (casos[i].estado === 'en proceso') {
                                                 lineas += "<td><span class='label label-info'>" + casos[i].estado + "</span></td>";
@@ -2438,6 +2439,7 @@ $(document).ready(function() {
                                 lineas +=   "<tr>" +
                                             "<td> Pedido #"+casos[i].num_pedido+"</td>" +
                                             "<td>"+casos[i].fecha+"</td>" +
+                                            "<td>"+casos[i].fecha_entrega+"</td>" +
                                             "<td>"+casos[i].hora+"</td>" ;
                                             if (casos[i].estado === 'en proceso') {
                                                 lineas += "<td><span class='label label-info'>" + casos[i].estado + "</span></td>";
@@ -2445,8 +2447,10 @@ $(document).ready(function() {
                                                 lineas += "<td><span class='label label-primary'>" + casos[i].estado + "</span></td>";
                                             }
                                 lineas += "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales_cliente/detalle/" + casos[i].num_pedido +
+    "'><i class='fa fa-mail-forward'></i></a> </td><td> <a class='btn btn-danger' href='/configuracion/orden_pcs_otroscanales_cliente/eliminar/" + casos[i].num_pedido +
     "'><i class='fa fa-mail-forward'></i></a> </td>" +
     "</tr>";
+
                                }
                         table_body.append(lineas)
     }

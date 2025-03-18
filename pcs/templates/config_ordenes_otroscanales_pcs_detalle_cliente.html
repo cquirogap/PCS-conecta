@@ -38,11 +38,11 @@
 </section>
 <section class="invoice">
     {% csrf_token %}
-
+    <div id="printableArea">
     <div class="row">
         <div class="col-md-12">
             <h2 class="page-header">
-               Detalle Pedido # {{ pedido }}
+               Detalle Pedido # {% if pedido.numero_pedido_cliente %} {{ pedido.numero_pedido_cliente }}{% else %}{{ pedido }}{% endif %}
             </h2>
         </div>
     </div>
@@ -59,8 +59,10 @@
 
         </div>
         <div class="col-sm-4 invoice-col">
-            Fecha:<br>
+            Fecha elaboración:<br>
             <strong>{{pedido.fecha}}</strong><br><br>
+            Fecha Entrega:<br>
+            <strong>{% if pedido.fecha_entrega == None %}{% else %}{{ pedido.fecha_entrega }}{% endif %}</strong><br><br>
         </div>
         <div class="col-sm-4 invoice-col">
             Hora:<br>
@@ -109,8 +111,12 @@
 
     <br>
     <div class="row no-print">
-
+<button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right" style="margin-right: 5px;">
+        <i class="fa fa-download"></i> Generar PDF
+    </button>
     </div>
+    </div>
+
 </section>
 
 {% endblock %}

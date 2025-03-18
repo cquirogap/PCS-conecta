@@ -103,18 +103,20 @@
                               <table id="tabla_infoc_medicamentos" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>PEDIDO</th>
-                                        <th>FECHA</th>
+                                        <th>NRO PEDIDO</th>
+                                        <th>FECHA ELABORACION</th>
+                                        <th>FECHA ENTREGA</th>
                                         <th>HORA</th>
-                                        <th>DETALLE</th>
                                         <th>ESTADO</th>
+                                        <th>DETALLE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {% for pedido in pedidos %}
                                     <tr>
-                                        <td>{{ pedido.num_pedido }}</td>
+                                        <td>{% if pedido.numero_pedido_cliente %}{{ pedido.numero_pedido_cliente }}{% else %}{{ pedido.num_pedido }}{% endif %}</td>
                                         <td>{{ pedido.fecha }}</td>
+                                        <td>{% if pedido.fecha_entrega == None %}{% else %}{{ pedido.fecha_entrega }}{% endif %}</td>
                                         <td>{{ pedido.hora }}</td>
                                         <td>{{ pedido.estado }}</td>
                                         <td><a class='btn btn-info' href="/configuracion/orden_pcs_otroscanales/detalle/{{ pedido.num_pedido }}"><i class="fa fa-mail-forward"></i></a> </td>

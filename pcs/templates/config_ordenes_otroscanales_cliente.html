@@ -6,6 +6,37 @@
         <a href="/configuracion/orden_pcs_otroscanales/">Consulta General</a>
         <small>Otros Canales</small>
       </h1>
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Otros Canales</a></li>
         <li><a href="#">Consulta</a></li>
@@ -93,20 +124,24 @@
                                 <thead>
                                     <tr>
                                         <th>PEDIDO</th>
-                                        <th>FECHA</th>
+                                        <th>FECHA ELABORACION</th>
+                                        <th>FECHA ENTREGA</th>
                                         <th>HORA</th>
                                         <th>ESTADO</th>
                                         <th>DETALLE</th>
+                                        <th>ELIMINAR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {% for pedido in pedidos %}
                                     <tr>
-                                        <td>{{ pedido.num_pedido }}</td>
+                                        <td>{% if pedido.numero_pedido_cliente %}{{ pedido.numero_pedido_cliente }}{% else %}{{ pedido.num_pedido }}{% endif %}</td>
                                         <td>{{ pedido.fecha }}</td>
+                                        <td>{% if pedido.fecha_entrega == None %}{% else %}{{ pedido.fecha_entrega }}{% endif %}</td>
                                         <td>{{ pedido.hora }}</td>
                                         <td>{{ pedido.estado }}</td>
                                         <td><a class='btn btn-info' href="/configuracion/orden_pcs_otroscanales_cliente/detalle/{{ pedido.num_pedido }}"><i class="fa fa-mail-forward"></i></a> </td>
+                                        <td><a class='btn btn-danger' href="/configuracion/orden_pcs_otroscanales_cliente/eliminar/{{ pedido.num_pedido }}"><i class="fa fa-trash"></i></a> </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

@@ -42,7 +42,7 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="page-header">
-               Detalle Pedido # {{ pedido }}
+               Detalle Pedido # {% if pedido.numero_pedido_cliente %} {{ pedido.numero_pedido_cliente }}{% else %}{{ pedido }}{% endif %}
             </h2>
         </div>
     </div>
@@ -59,7 +59,7 @@
 
         </div>
         <div class="col-sm-4 invoice-col">
-            Fecha:<br>
+            Fecha elaboración:<br>
             <strong>{{pedido.fecha}}</strong><br><br>
             <form role="form" action="/configuracion/orden_pcs_otroscanales/fecha_minima/" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -76,8 +76,8 @@
             </form>
         </div>
         <div class="col-sm-4 invoice-col">
-            Fecha:<br>
-            <strong>{{pedido.fecha}}</strong><br><br>
+            Fecha Entrega:<br>
+            <strong>{% if pedido.fecha_entrega == None %}{% else %}{{ pedido.fecha_entrega }}{% endif %}</strong><br><br>
             <form role="form" action="/configuracion/orden_pcs_otroscanales/fecha_maxima/" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
             <input type="hidden" name="id"  value="{{ pedido.pk }}">
@@ -133,6 +133,10 @@
                               href="/configuracion/orden_pcs_otroscanales/detalle/{{ pedido }}/?asignacion={{ asignaciones.pk }}">
                         <i class="fa fa-pencil"></i>
                     </a>
+                    <a class="btn btn-social-icon btn-google"
+                              href="/configuracion/orden_pcs_otroscanales/eliminar/{{ pedido }}/?asignacion={{ asignaciones.pk }}">
+                        <i class="fa fa-trash"></i>
+                    </a>
                         </small>
                         {% endfor %}</td>
                     <td><form role="form" action="/configuracion/orden_pcs_otroscanales/detalles/" method="POST" enctype="multipart/form-data">
@@ -182,6 +186,6 @@
 
 </section>
 <button type="button" id="buscar_edi_otros_canales_button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-        <i class="fa fa-download"></i> Generate EDI
+        <i class="fa fa-download"></i> Generar EDI
     </button>
 {% endblock %}
