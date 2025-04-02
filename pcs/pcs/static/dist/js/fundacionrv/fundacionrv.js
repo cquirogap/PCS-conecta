@@ -2329,6 +2329,7 @@ $(function () {
 
                                 lineas +=   "<tr>" +
                                             "<td> Pedido #"+casos[i].num_pedido+"</td>" +
+                                            "<td>"+casos[i].num_pedido_CLI+"</td>" +
                                             "<td>"+casos[i].fecha+"</td>" +
                                             "<td>"+casos[i].fecha_entrega+"</td>" +
                                             "<td>"+casos[i].hora+"</td>" ;

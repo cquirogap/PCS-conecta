@@ -175,6 +175,48 @@
             </table>
         </div>
     </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("buscar_edi_otros_canales_button").addEventListener("click", function () {
+        let filas = document.querySelectorAll("tbody tr");
+        let productos = {};
+
+        filas.forEach(fila => {
+            let referencia = fila.cells[0].innerText.trim(); // Obtiene la referencia del producto
+            let cantidadSolicitada = parseInt(fila.cells[2].childNodes[0].nodeValue.trim()) || 0; // Obtiene la cantidad solicitada
+
+            let asignaciones = fila.cells[2].querySelectorAll("small"); // Busca las asignaciones en la misma fila
+            let cantidadAsignada = 0;
+
+            asignaciones.forEach(asignacion => {
+                cantidadAsignada += parseInt(asignacion.innerText.trim()) || 0;
+            });
+
+            // Guardar en el objeto productos para validación
+            productos[referencia] = {
+                cantidadSolicitada,
+                cantidadAsignada
+            };
+        });
+
+        // Validar si las cantidades coinciden
+        let errores = [];
+        for (let producto in productos) {
+            if (productos[producto].cantidadSolicitada !== productos[producto].cantidadAsignada) {
+                errores.push(`Producto: ${producto} → Solicitado: ${productos[producto].cantidadSolicitada}, Asignado: ${productos[producto].cantidadAsignada}`);
+            }
+        }
+
+        // Si hay errores, mostrar alerta y detener el proceso
+        if (errores.length > 0) {
+            alert("⚠️ Error: Las siguientes asignaciones no coinciden con las cantidades solicitadas:\n\n" + errores.join("\n"));
+        } else {
+            alert("✅ Todas las asignaciones son correctas. Procediendo con la generación del EDI.");
+            // Aquí podrías agregar la lógica para continuar con la generación del EDI.
+        }
+    });
+});
+</script>
     <br>
 
     <br>
