@@ -1960,7 +1960,8 @@ $(function () {
                                             "</td>" +
                                             "<td>"+ casos[i].valor_preaprobado +
                                             "</td>" +
-                                            "<td>"+casos[i].interes+"</td>" ;
+                                            "<td>"+casos[i].interes+"</td>" +
+                                            "<td>"+casos[i].interes_aplicado+"</td>";
                                             if (casos[i].estado === 'Preaprobado') {
                                                 lineas += "<td><div class=\"btn-group\"> "
                                                             +"<button type=\"button\" class=\"btn btn-btn btn-success aceptarcredi-btn\" " +
