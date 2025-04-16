@@ -2018,13 +2018,17 @@ $(function () {
     )
 
     $(document).ready(function () {
-        $(".aceptarcredi-btn").click(function () {
-            var pedido = $(this).data("pedido");
-            $("#pedido_modal").text(pedido);
-            $("#AprobarCreditoBtn").prop("disabled", true);
-            $("#PedidosCruzados").text('ESPERE UN MOMENTO POR FAVOR');
-            $("#numeropedido1").val(pedido);
-            $.ajax({
+    $(".aceptarcredi-btn").click(function () {
+        var pedido = $(this).data("pedido");
+        $("#pedido_modal").text(pedido);
+        $("#AprobarCreditoBtn").prop("disabled", true);
+        $("#PedidosCruzados").text('ESPERE UN MOMENTO POR FAVOR');
+        $("#numeropedido1").val(pedido);
+
+        // Limpiar tabla anterior si existe
+        $("#tablaPendientesContainer").empty();
+
+        $.ajax({
             url: '/configuracion/servicio_credilisto_consulta/cruces/',
             method: 'GET',
             data: {pedido: pedido},
@@ -2034,18 +2038,79 @@ $(function () {
                 $("#pedido_sap").val(response.pedido);
                 $("#valor_sap").val(response.valor);
                 $("#AprobarCreditoBtn").prop("disabled", false);
+
+                // Si hay datos en consulta_pendientes, los mostramos como tabla
+                if (response.consulta_pendientes && response.consulta_pendientes.length > 0) {
+    var tablaHTML = `
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Seleccionar <input type="checkbox" id="seleccionar_todo_modal"></th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Saldo</th>
+                    <th>Origen</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+    response.consulta_pendientes.forEach(function(item, index) {
+        let rowId = `fila_${index}`;
+        tablaHTML += `
+            <tr id="${rowId}">
+                <td>
+                    <input type="checkbox" class="check-pendiente" 
+                        name="pendientes_seleccionados[]" 
+                        data-index="${index}"
+                        value="${item.tipo},${item.descripcion},${item.saldo},${item.origen},${item.entry}">
+                </td>
+                <td>${item.tipo}</td>
+                <td>${item.descripcion}</td>
+                <td>
+    <input type="number" class="form-control saldo-input" 
+        data-index="${index}" 
+        value="${item.saldo}" 
+        max="${item.saldo}" 
+        >
+</td>
+
+                <td>${item.origen}</td>
+            </tr>`;
+    });
+
+    tablaHTML += `</tbody></table>`;
+    $("#tablaPendientesContainer").html(tablaHTML);
+
+    // Seleccionar todos
+    $(document).off('change', '#seleccionar_todo_modal').on('change', '#seleccionar_todo_modal', function () {
+        var checked = this.checked;
+        $("#tablaPendientesContainer input[type='checkbox'].check-pendiente").prop('checked', checked);
+    });
+
+    // Actualizar el valor del checkbox cuando cambia el saldo
+    $(document).off('input', '.saldo-input').on('input', '.saldo-input', function () {
+        var index = $(this).data('index');
+        var nuevoSaldo = $(this).val();
+        var checkbox = $(`input.check-pendiente[data-index='${index}']`);
+        var partes = checkbox.val().split(',');
+        partes[2] = nuevoSaldo; // Reemplazamos el saldo
+        checkbox.val(partes.join(','));
+    });
+}
+
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
             }
         });
-        });
-        $(".denegarcredi-btn").click(function () {
-            var pedido = $(this).data("pedido");
-            $("#pedido_modal2").text(pedido);
-            $("#numeropedido2").val(pedido);
-        });
     });
+
+    $(".denegarcredi-btn").click(function () {
+        var pedido = $(this).data("pedido");
+        $("#pedido_modal2").text(pedido);
+        $("#numeropedido2").val(pedido);
+    });
+});
 
 
     $(document).ready(function () {
