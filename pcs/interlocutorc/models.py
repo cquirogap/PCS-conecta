@@ -342,6 +342,7 @@ class CrediListoPreaprobado(models.Model):
     EgresoCreado = models.CharField(max_length=100, null=True, default=None)
     Interes_aplicado = models.CharField(max_length=100, null=True, default='0')
     ValorAprobado_aplicado = models.CharField(max_length=100, null=True, default='0')
+    CrucesAplicados = models.CharField(max_length=100, null=True, default='')
 
 class RespuestaFacturaApi(models.Model):
     Identificacion = models.CharField(max_length=100, null=True,default='0000')
