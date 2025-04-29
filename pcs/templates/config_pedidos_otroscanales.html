@@ -165,13 +165,19 @@
         function aplicarEventosImagen(formulario) {
             formulario.addEventListener('change', function(event) {
                 const select = event.target;
+                const contenedor = select.closest('.row');
+                const imagenProducto = contenedor.querySelector('.imagen-producto');
+                const selectReferencia = contenedor.querySelector('.select-referencias'); // Selecciona la referencia actual
 
-                if (select.classList.contains('select-referencias')) {
-                    const valorSeleccionado = select.value;
-                    const contenedor = select.closest('.row');
-                    const imagenProducto = contenedor.querySelector('.imagen-producto');
+                // Solo actuamos si el cambio ocurrió en alguno de los selects relevantes
+                if (select.classList.contains('select-referencias') ||
+                    select.classList.contains('select-plu') ||
+                    select.classList.contains('select-n_producto') ||
+                    select.classList.contains('select-nombre')) {
 
-                    if (imagenProducto) {
+                    const valorSeleccionado = selectReferencia.value; // Siempre usamos el valor de referencia
+
+                    if (imagenProducto && valorSeleccionado) {
                         obtenerImagen(valorSeleccionado, imagenProducto);
                     }
                 }
