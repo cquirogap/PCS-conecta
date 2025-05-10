@@ -2050,6 +2050,7 @@ $(function () {
                     <th>Descripción</th>
                     <th>Saldo</th>
                     <th>Origen</th>
+                    <th>Fecha</th>
                 </tr>
             </thead>
             <tbody>`;
@@ -2075,6 +2076,7 @@ $(function () {
 </td>
 
                 <td>${item.origen}</td>
+                <td>${item.fecha}</td>
             </tr>`;
     });
 
