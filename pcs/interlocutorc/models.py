@@ -187,6 +187,16 @@ class HistoriaUsuario(models.Model):
     fecha=models.DateTimeField(null=True)
 
 
+class HistoriaDetallePedidos(models.Model):
+    usuario=models.ForeignKey(Usuarios_datos, default=1)
+    empresa=models.ForeignKey(Empresas, default=1)
+    accion=models.CharField(max_length=100, null=True)
+    pedido=models.CharField(max_length=100, null=True)
+    fecha=models.DateTimeField(null=True)
+    estado = models.IntegerField(default=0)
+
+
+
 class HistoriaEstadoSistema(models.Model):
     usuario=models.ForeignKey(Usuarios_datos, default=1)
     accion=models.CharField(max_length=100, null=True)

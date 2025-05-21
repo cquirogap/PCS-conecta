@@ -202,6 +202,7 @@ urlpatterns.extend(
         url(r'^configuracion/empresas/editar/(?P<id>[-\w]+)/$', configuracion_views.config_empresas_editar),
         url(r'^configuracion/empresas/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_empresas_borrar),
         url(r'^configuracion/historial_empresas/$', configuracion_views.config_historial_empresas),
+        url(r'^configuracion/historial_detalle_pedidos/$', configuracion_views.config_historial_detalle_pedidos),
         url(r'^configuracion/servicio_crediya/$', configuracion_views.config_servicio_crediya),
         url(r'^configuracion/servicio_crediya/informe/$', configuracion_views.config_servicio_crediya_informe),
         url(r'^configuracion/servicio_credilisto/informe/$', configuracion_views.config_servicio_credilisto_informe),
