@@ -27,6 +27,7 @@ from interlocutorc.serializers import PostSerializer,FacturasSerializer,Respuest
 import re
 from itertools import groupby
 from django.contrib.auth.views import LoginView
+import sys
 
 # Create your views here.
 # This view method handles the request for the root URL /
@@ -1201,7 +1202,7 @@ def pruebacorreo(request):
     email.send()
 
 
-def tarea_correo_pedido():
+def tarea_correo_pedido(request):
     try:
         estado = 'bost_Open'
         now = datetime.now(pytz.timezone('America/Bogota'))
@@ -1344,11 +1345,12 @@ def tarea_correo_pedido():
         url = "https://192.168.1.2:50000/b1s/v1/Logout"
         responselogout = requests.request("POST", url, verify=False)
     except:
+        error = str(sys.exc_info()[1])
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
         hora = now.time()
         errores = HistorialErrorTarea(
-            accion='Error de conexion',
+            accion='Error de conexion: ' + error,
             fecha=hoy,
             hora=hora,
             empresa='No Corresponde',
