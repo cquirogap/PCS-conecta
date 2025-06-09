@@ -154,6 +154,7 @@ EMAIL_HOST_PASSWORD = 'usgmfmngtrkgvwxb'
 
 
 
+X_FRAME_OPTIONS = 'ALLOWALL'
 
 
 
