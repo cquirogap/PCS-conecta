@@ -1208,6 +1208,9 @@ def tarea_correo_pedido(request):
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy=now.date()
         hora = now.time()
+        fecha_correos = request.POST['fecha_correos']
+        if fecha_correos == '':
+            fecha_correos=hoy
         errores = HistorialErrorTarea(
             accion='Inicio de tarea',
             fecha=hoy,
@@ -1224,7 +1227,7 @@ def tarea_correo_pedido(request):
 
         respuesta = ast.literal_eval(response.text)
         url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
-               + str(hoy) + "'"
+               + str(fecha_correos) + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -1360,7 +1363,7 @@ def tarea_correo_pedido(request):
         url = "https://192.168.1.2:50000/b1s/v1/Logout"
         responselogout = requests.request("POST", url, verify=False)
 
-
+    return HttpResponseRedirect('/configuracion/historial_email/')
 
 
 
