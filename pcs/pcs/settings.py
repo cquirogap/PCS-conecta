@@ -149,8 +149,8 @@ LOGIN_URL = '/login/'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
-EMAIL_HOST_PASSWORD = 'usgmfmngtrkgvwxb'
+EMAIL_HOST_USER = 'conectaportal6@gmail.com'
+EMAIL_HOST_PASSWORD = 'jqraxaypojkftpho'
 
 
 
@@ -159,7 +159,8 @@ X_FRAME_OPTIONS = 'ALLOWALL'
 
 
 CRONJOBS = [
-    ('0 */2 * * *', 'interlocutorc.views.tarea_correo_pedido_dos'),
+    ('0 14 * * *', 'interlocutorc.views.tarea_correo_pedido_dos'),
+    ('0 18 * * *', 'interlocutorc.views.tarea_correo_pedido_dos'),
     ('0 6 * * *', 'interlocutorc.views.prueba'),
     ('0 17 * * *', 'interlocutorc.views.prueba'),
     ('0 20 * * *', 'interlocutorc.views.pruebacorreos'),

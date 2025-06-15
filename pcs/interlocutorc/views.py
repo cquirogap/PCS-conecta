@@ -1202,7 +1202,7 @@ def pruebacorreo(request):
     email.send()
 
 
-def tarea_correo_pedido():
+def tarea_correo_pedido(request):
     try:
         estado = 'bost_Open'
         now = datetime.now(pytz.timezone('America/Bogota'))
