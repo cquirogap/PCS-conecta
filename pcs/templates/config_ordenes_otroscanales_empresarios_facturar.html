@@ -1,0 +1,154 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header">
+      <h1>
+        <a href="/configuracion/orden_empresiario_otroscanales/">Consulta General</a>
+        <small>Otros Canales</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Otros Canales</a></li>
+        <li><a href="#">Consulta</a></li>
+      </ol>
+    </section>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              {% csrf_token %}
+            <div class="tab-content">
+                <!-- dcasos_estado -->
+                <div class="active tab-pane" id="casos_medicamentos">
+                <!-- Tabla casos existentes -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <!-- Busqueda-->
+                                <div class="row">
+                                   <div class="col-md-6">
+                                           <label>Fecha inicial</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                <input type="date" class="form-control" id="fecha_inicio_input">
+                                          </div>
+                                      </div>
+                                   <div class="col-md-6">
+                                       <label>Fecha final</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                            <input type="date" class="form-control" id="fecha_fin_input">
+                                      </div>
+                                  </div>
+                                   <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                <div class="col-md-6">
+                                       <label>Estado</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                            <select class="form-control select2" style="width: 100%;" id="estado_input" >
+                                                      <option value="asignado" selected>asignado</option>
+                                                  </select>
+                                      </div>
+                                  </div>
+
+                                <div class="col-md-6">
+                                    <label for="pedido">Pedido</label>
+                                    <input type="number" class="form-control" id="pedido"
+                                           name="pedido" placeholder="Numero de pedido" value="{{ pedido }}" >
+                                </div>
+                                 <div class="col-md-12">
+                                           <br>
+                                      </div>
+                                     <div class="col-md-6">
+                                       <label>Empresa</label>
+                                      <div class="input-group ">
+                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                            <select class="form-control select2" style="width: 100%;" id="empresa_input" >
+                                                <option value="T" selected disabled></option>
+                                                      {% for empresa in empresas %}
+                                                      <option value="{{ empresa.id }}">
+                                                          {{empresa.nombre}}
+                                                      </option>
+                                                      {% endfor %}
+                                                  </select>
+                                      </div>
+                                  </div>
+                                <div class="col-md-6">
+                                    <label for="codigo">Referencia</label>
+                                    <input type="text" class="form-control" id="referencia"
+                                           name="referencia" placeholder="Referencia Producto" value="{{ referencia }}" >
+                                </div>
+                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                      <div class="col-md-12">
+                                           <br>
+                                      </div>
+                                    <div class="col-md-6">
+                                        <button id="busqueda_pedidos_otros_canales_empresarios_facturar" class="btn btn-primary btn-block btn-flat" >
+                                            <span class="glyphicon glyphicon-folder-open"></span>
+                                            <span class="glyphicon glyphicon-search"></span> Consultar
+                                        </button>
+                                    </div>
+                                <div class="col-md-6">
+                                    <button type="button" id="buscar_pedidos_otros_canales_excel_button"  class="btn btn-success btn-block btn-flat" >
+                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                        <span class="glyphicon glyphicon-search"></span>Excel
+                                    </button>
+                                </div>
+                                </div>
+                                <!--/ Busqueda-->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="page-header">
+                                    </h4>
+                                </div>
+                            </div>
+                            <div id="printableArea">
+                            <!-- /.box-header -->
+                            <div class="box-body table-responsive no-padding">
+                              <table id="tabla_infoc_medicamentos" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>PEDIDO</th>
+                                        <th>CLIENTE</th>
+                                        <th>CANTIDADA</th>
+                                        <th>FECHAA</th>
+                                        <th>REFERENCIA</th>
+                                        <th>DESCRIPCION</th>
+                                        <TH>CODIGO EMPRESA</TH>
+                                        <TH>EMPRESAA</TH>
+                                        <th>OBSERVACIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Espacio para los datos que cargan -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+
+                                    </tr>
+                                </tfoot>
+                              </table>
+                            </div>
+                            <!-- /.box-body -->
+                      </div>
+                        <!-- /.box -->
+                    </div>
+                </div><button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right" style="margin-right: 5px;">
+        <i class="fa fa-download"></i> Generate PDF
+    </button>
+                <!-- Tabla existentes -->
+
+            </div>
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

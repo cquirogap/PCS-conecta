@@ -44,7 +44,7 @@ urlpatterns.extend(
         url(r'^prueba/$', interlocutorc_views.tarea_correo_pedido),
         url(r'^prueba_factura/$', interlocutorc_views.pruebacorreosfactura),
         url(r'^pruebasap/$', interlocutorc_views.prubasap2),
-        url(r'^pruebacorreo/$', interlocutorc_views.pruebacorreo),
+        url(r'^pruebacorreo/$', interlocutorc_views.pruebacorreosfactura),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
@@ -107,6 +107,7 @@ urlpatterns.extend(
         url(r'^configuracion/pedidos_otros_canales/informacion/$', configuracion_views.informacion_pedidos_otros_canales_solicitud),
         url(r'^configuracion/pedidos_otros_canales/informacion_cliente/$', configuracion_views.informacion_pedidos_otros_canales_solicitud_cliente),
         url(r'^configuracion/pedidos_otros_canales_empresarios/informacion/$', configuracion_views.informacion_pedidos_otros_canales_empresario_solicitud),
+        url(r'^configuracion/pedidos_otros_canales_empresarios/facturar/$', configuracion_views.informacion_pedidos_otros_canales_empresario_facturar),
 
 
         #Otros Pedidos
@@ -115,6 +116,7 @@ urlpatterns.extend(
         url(r'^configuracion/orden_pcs_otroscanales/$', configuracion_views.config_ordenes_otroscanales_pcs),
         url(r'^configuracion/orden_pcs_otroscanales_cliente/$', configuracion_views.config_ordenes_otroscanales_pcs_cliente),
         url(r'^configuracion/orden_empresiario_otroscanales/$', configuracion_views.config_ordenes_otroscanales_empresario),
+        url(r'^configuracion/orden_empresiario_otroscanales_facturar/$', configuracion_views.config_ordenes_otroscanales_empresario_facturacion),
         url(r'^configuracion/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario),
         url(r'^configuracion/imagen_empresiario_otroscanales/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_imagen_otroscanales_empresario_borrar),
         url(r'^configuracion/registrar/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario_registrar),
@@ -155,6 +157,7 @@ urlpatterns.extend(
         url(r'^configuracion/servicio_empresa_registro_automatico/$', configuracion_views.config_servicio_registro_empresas_aut),
         #PowerBi
         url(r'^configuracion/definiciones/graficas/$', configuracion_views.admin_graficas_powerbi),
+        url(r'^configuracion/facturacion/otros_canales/$', configuracion_views.facturacion_otros_canales),
         url(r'^configuracion/definiciones/grafica/(?P<grafica_id>\d+)/detalle/$', configuracion_views.detalle_grafica),
         url(r'^configuracion/definiciones/borrar_grafica/(?P<grafica_id>[-\w]+)/$', configuracion_views.config_graficas_borrar),
         url(r'^configuracion/definiciones/grafica_pcs_actuales/$', configuracion_views.admin_graficas_actuales_pcs_powerbi),
@@ -208,6 +211,7 @@ urlpatterns.extend(
         url(r'^configuracion/servicio_credilisto/informe/$', configuracion_views.config_servicio_credilisto_informe),
         url(r'^configuracion/servicio_credilisto/$', configuracion_views.config_servicio_credilisto),
         url(r'^configuracion/historial_empresas/excel_general/$', configuracion_views.reporte_historial_empresa),
+        url(r'^configuracion/generacion_facturas/excel_general/$', configuracion_views.reporte_generacion_facturas),
         url(r'^configuracion/servicio_crediya/excel_general/$', configuracion_views.reporte_servicio_crediya),
         url(r'^configuracion/servicio_crediya/informe/excel_general/$', configuracion_views.reporte_servicio_crediya_informe),
         url(r'^configuracion/servicio_credilisto/informe/excel_general/$', configuracion_views.reporte_servicio_credilisto_informe),
