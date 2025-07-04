@@ -1390,7 +1390,7 @@ def tarea_correo_pedido_dos():
 
         respuesta = ast.literal_eval(response.text)
         errores = HistorialErrorTarea(
-            accion='Mensaje'+ respuesta,
+            accion='Mensaje'+ str(respuesta),
             fecha=hoy,
             hora=hora,
             empresa='No Corresponde',

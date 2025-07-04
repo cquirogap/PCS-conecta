@@ -4457,10 +4457,10 @@ function VerEmpresas() {
         if (check.checked) {
             check_persona.style.display='none';
             element.style.display='block';
-            pagare.href = '/bodega/PAGAREPERSONANATURAL.pdf';
-            contrato.href = '/bodega/CONTRATOCREDITO.pdf';
-            carta.href = '/bodega/CARTADEINSTRUCCIONESPERSONANATURAL.pdf';
-            ficha.href = '/bodega/FichaNegociación.pdf';
+            pagare.href = '/bodega/PAGAREPERSONANATURALNUEVO.pdf';
+            contrato.href = '/bodega/CONTRATOCREDITONUEVO.pdf';
+            carta.href = '/bodega/CARTADEINSTRUCCIONESPERSONANATURALNUEVO.pdf';
+            ficha.href = '/bodega/FichaNegociacion.pdf';
         }
         else {
             check_persona.style.display='block';
@@ -4480,10 +4480,10 @@ function VerPersonas() {
         if (check.checked) {
             check_empresa.style.display='none'
             element.style.display='block';
-            pagare.href = '/bodega/PAGAREPERSONAJURIDICA.pdf';
-            contrato.href = '/bodega/CONTRATOCREDITO.pdf';
-            carta.href = '/bodega/CARTADEINSTRUCCIONESPERSONAJURIDICA.pdf';
-            ficha.href = '/bodega/FichaNegociación.pdf';
+            pagare.href = '/bodega/PAGAREPERSONAJURIDICANUEVO.pdf';
+            contrato.href = '/bodega/CONTRATOCREDITONUEVO.pdf';
+            carta.href = '/bodega/CARTADEINSTRUCCIONESPERSONAJURIDICANUEVO.pdf';
+            ficha.href = '/bodega/FichaNegociacion.pdf';
         }
         else {
             check_empresa.style.display='block';
