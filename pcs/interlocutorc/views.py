@@ -1405,7 +1405,7 @@ def tarea_correo_pedido_dos():
         hoy = now.date()
         hora = now.time()
         errores = HistorialErrorTarea(
-            accion='Error de conexion: ' + error,
+            accion='Error de conexion prueba: ' + error,
             fecha=hoy,
             hora=hora,
             empresa='No Corresponde',

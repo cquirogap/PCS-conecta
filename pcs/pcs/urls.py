@@ -41,7 +41,7 @@ urlpatterns.extend(
         # Administracion
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
-        url(r'^prueba/$', interlocutorc_views.tarea_correo_pedido),
+        url(r'^prueba/$', interlocutorc_views.tarea_correo_pedido_dos),
         url(r'^prueba_factura/$', interlocutorc_views.pruebacorreosfactura),
         url(r'^pruebasap/$', interlocutorc_views.prubasap2),
         url(r'^pruebacorreo/$', interlocutorc_views.pruebacorreosfactura),
@@ -382,6 +382,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_pedido_orden/$', configuracion_views.config_solicitud_pedido_orden),
         url(r'^configuracion/solicitud_pedido_orden/bodegas/$', configuracion_views.config_solicitud_pedido_orden_bodega),
         url(r'^configuracion/solicitud_pedido_orden/detalle/(?P<form_id>\d+)/$', configuracion_views.pedido_detalle),
+        url(r'^configuracion/solicitud_asignacion/pdf/(?P<form_id>\d+)/$', configuracion_views.pedido_asignacion_pdf),
         url(r'^configuracion/solicitud_pedido_orden/bodegas/detalle/(?P<form_id>\d+)/$', configuracion_views.pedido_detalle_bodega),
         url(r'^configuracion/solicitud_pedido_orden/bodegas/problema/(?P<form_id>\d+)/$', configuracion_views.pedido_problema_detalle_bodegas),
         url(r'^configuracion/solicitud_pedido_orden/bodegas/novedades/(?P<form_id>\d+)/(?P<novedad_id>\d+)/$', configuracion_views.pedido_problema_novedades_bodegas),

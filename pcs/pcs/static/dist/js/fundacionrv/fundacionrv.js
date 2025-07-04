@@ -2314,9 +2314,21 @@ $(function () {
 
 
 $(document).ready(function () {
-    $(document).on('click', '.solicitud-btn-facturas', function () {
-        var pedidoId = $(this).data('id');
-        $('#numero_pedidoss').val(pedidoId);
+    $('#generarSeleccionados').on('click', function () {
+        let pedidosSeleccionados = [];
+
+        $('.pedido-checkbox:checked').each(function () {
+            pedidosSeleccionados.push($(this).val());
+        });
+
+        if (pedidosSeleccionados.length === 0) {
+            alert('Debe seleccionar al menos un pedido.');
+            $('#DocumentoFIModal').modal('hide');
+            return;
+        }
+
+        // Insertar lista en input oculto (separado por comas)
+        $('#numero_pedidoss').val(pedidosSeleccionados.join(','));
     });
 });
 
@@ -2401,27 +2413,34 @@ $(document).ready(function () {
                         var estado = '';
                         var table_body = $("#tabla_infoc_medicamentos tbody")
                         table_body.empty();
-                        for(var i=0;i<casos.length; i++)
-                                 {
+for (var i = 0; i < casos.length; i++) {
+    lineas += "<tr>";
 
+    // Checkbox
+    lineas += "<td><input type='checkbox' class='pedido-checkbox' value='" + casos[i].num_pedido + "'></td>";
 
-                                lineas +=   "<tr>" +
-                                            "<td> Pedido #"+casos[i].num_pedido+"</td>" +
-                                            "<td>"+casos[i].num_pedido_CLI+"</td>" +
-                                            "<td>"+casos[i].fecha+"</td>" +
-                                            "<td>"+casos[i].fecha_entrega+"</td>" +
-                                            "<td>"+casos[i].hora+"</td>" ;
-                                            if (casos[i].estado === 'en proceso') {
-                                                lineas += "<td><span class='label label-info'>" + casos[i].estado + "</span></td>";
-                                            } else {
-                                                lineas += "<td><span class='label label-primary'>" + casos[i].estado + "</span></td>";
-                                            }
-                                lineas += "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/" + casos[i].num_pedido +
-    "'><i class='fa fa-mail-forward'></i></a> </td>" ;
-                               lineas += "<td><button class='btn btn-primary solicitud-btn-facturas' data-toggle='modal' data-dismiss='modal' " +
-                                   "data-id='"+casos[i].num_pedido+"' data-target='#DocumentoFIModal'>GENERAR</button></td></tr>"
-                               }
-                        table_body.append(lineas)
+    // Datos del pedido
+    lineas += "<td>Pedido #" + casos[i].num_pedido + "</td>";
+    lineas += "<td>" + (casos[i].num_pedido_CLI || "") + "</td>";
+    lineas += "<td>" + (casos[i].fecha || "") + "</td>";
+    lineas += "<td>" + (casos[i].fecha_entrega || "") + "</td>";
+    lineas += "<td>" + (casos[i].hora || "") + "</td>";
+
+    // Estado con estilos
+    if (casos[i].estado === 'en proceso') {
+        lineas += "<td><span class='label label-info'>" + casos[i].estado + "</span></td>";
+    } else {
+        lineas += "<td><span class='label label-primary'>" + casos[i].estado + "</span></td>";
+    }
+
+    // Botón de detalles
+    lineas += "<td><a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/" + casos[i].num_pedido + "'><i class='fa fa-mail-forward'></i></a></td>";
+
+    lineas += "</tr>";
+}
+
+// Añadir al DOM
+table_body.append(lineas);
     }
     });
     }
@@ -2584,19 +2603,20 @@ $(document).ready(function() {
 
 
                                 lineas +=   "<tr>" +
-                                            "<td> Pedido #"+casos[i].num_pedido+"</td>" +
-                                            "<td>"+casos[i].cliente+"</td>" +
-                                            "<td>"+casos[i].cantidad+"</td>" +
-                                            "<td>"+casos[i].fecha+"</td>" +
-                                            "<td>"+casos[i].referencia+"</td>" +
-                                            "<td>"+casos[i].nombre+"</td>" +
-                                            "<td>"+casos[i].codigo+"</td>" +
-                                            "<td>"+casos[i].empresa+"</td>" +
-                                            "<td>"+casos[i].observaciones+"</td>" +
-                                            "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/"+ casos[i].num_pedido +
-                                            "'><i class='fa fa-mail-forward'></i></a> </td>"+
-
-                                            "</tr>";
+            "<td><input type='checkbox' class='pdf-checkbox' value='"+ casos[i].identificador +"'></td>" + // NUEVA CELDA
+            "<td> Pedido #"+casos[i].num_pedido+"</td>" +
+            "<td>"+casos[i].cliente+"</td>" +
+            "<td>"+casos[i].cantidad+"</td>" +
+            "<td>"+casos[i].fecha+"</td>" +
+            "<td>"+casos[i].referencia+"</td>" +
+            "<td>"+casos[i].nombre+"</td>" +
+            "<td>"+casos[i].codigo+"</td>" +
+            "<td>"+casos[i].empresa+"</td>" +
+            "<td>"+casos[i].observaciones+"</td>" +
+            "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/"+ casos[i].num_pedido +
+            "'><i class='fa fa-mail-forward'></i></a> </td>" +
+            "<td> <button class='btn btn-danger single-download' data-id='"+ casos[i].identificador +"'><i class='fa fa-file'></i></button> </td>" + // CAMBIADO A BOTÓN
+            "</tr>";
                                }
                         table_body.append(lineas)
     }
@@ -2611,7 +2631,35 @@ $(document).ready(function() {
     )
 
 
+// Descargar uno por uno desde botón individual
+$(document).on('click', '.single-download', function () {
+    const formId = $(this).data('id');
+    const link = document.createElement('a');
+    link.href = `/configuracion/solicitud_asignacion/pdf/${formId}`;
+    link.target = "_blank"; // opcional: para abrir en otra pestaña
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
 
+// Descargar múltiples PDFs con checkboxes
+$('#download-selected-pdfs').on('click', function () {
+    const selected = $('.pdf-checkbox:checked');
+    if (selected.length === 0) {
+        alert("Selecciona al menos un pedido para descargar.");
+        return;
+    }
+
+    selected.each(function () {
+        const formId = $(this).val();
+        const link = document.createElement('a');
+        link.href = `/configuracion/solicitud_asignacion/pdf/${formId}`;
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+});
 
 
 

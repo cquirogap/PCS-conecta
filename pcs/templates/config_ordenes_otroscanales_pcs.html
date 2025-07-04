@@ -84,7 +84,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="pedido">Número piezas:</label>
-                                    <input type="text" class="form-control" id="numero_piezas"
+                                    <input type="number" class="form-control" id="numero_piezas"
                                            name="numero_piezas" required>
             </div>
           </div>
@@ -94,14 +94,14 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="pedido">Peso neto:</label>
-                                    <input type="text" class="form-control" id="peso_neto"
+                                    <input type="number" class="form-control" id="peso_neto"
                                            name="peso_neto"  required>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="pedido">Peso bruto:</label>
-                                    <input type="text" class="form-control" id="peso_bruto"
+                                    <input type="number" class="form-control" id="peso_bruto"
                                            name="peso_bruto" required>
             </div>
           </div>
@@ -158,6 +158,8 @@
                                                       <option value="asignado">asignado</option>
                                                       <option value="en proceso">en proceso</option>
                                                       <option value="predistribuido">predistribuido</option>
+                                                      <option value="pendiente">pendiente</option>
+                                                      <option value="completado">completado</option>
                                                   </select>
                                       </div>
                                   </div>
@@ -210,6 +212,7 @@
                               <table id="tabla_infoc_medicamentos" class="table table-hover">
                                 <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th>NRO PEDIDO</th>
                                         <th>NRO PEDIDO CLI</th>
                                         <th>FECHA ELABORACION</th>
@@ -217,25 +220,22 @@
                                         <th>HORA</th>
                                         <th>ESTADO</th>
                                         <th>DETALLE</th>
-                                        <th>INFORME FACTURA</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {% for pedido in pedidos %}
-                                    <tr>
-                                        <td>{{ pedido.num_pedido }}</td>
-                                        <td>{% if pedido.numero_pedido_cliente %}{{ pedido.numero_pedido_cliente }}{% else %}{% endif %}</td>
-                                        <td>{{ pedido.fecha }}</td>
-                                        <td>{% if pedido.fecha_entrega == None %}{% else %}{{ pedido.fecha_entrega }}{% endif %}</td>
-                                        <td>{{ pedido.hora }}</td>
-                                        <td>{{ pedido.estado }}</td>
-                                        <td><a class='btn btn-info' href="/configuracion/orden_pcs_otroscanales/detalle/{{ pedido.num_pedido }}"><i class="fa fa-mail-forward"></i></a> </td>
-                                        <td><button type="button" class="btn btn-primary solicitud-btn-facturas"
-                                                            data-toggle="modal" data-dismiss="modal"
-                                                            data-id="{{ pedido.num_pedido }}"
-                                                            data-target="#DocumentoFIModal">GENERAR</button></td>
-                                    </tr>
-                                {% endfor %}
+<tr>
+    <td><input type="checkbox" class="pedido-checkbox" value="{{ pedido.num_pedido }}"></td>
+    <td>{{ pedido.num_pedido }}</td>
+    <td>{% if pedido.numero_pedido_cliente %}{{ pedido.numero_pedido_cliente }}{% endif %}</td>
+    <td>{% if pedido.fecha_entrega %}{{ pedido.fecha_entrega }}{% endif %}</td>
+    <td>{{ pedido.fecha }}</td>
+    <td>{{ pedido.hora }}</td>
+    <td>{{ pedido.estado }}</td>
+    <td><a class='btn btn-info' href="/configuracion/orden_pcs_otroscanales/detalle/{{ pedido.num_pedido }}"><i class="fa fa-mail-forward"></i></a></td>
+</tr>
+{% endfor %}
                                 <!-- Espacio para los datos que cargan -->
                                 </tbody>
                                 <tfoot>
@@ -244,6 +244,9 @@
                                     </tr>
                                 </tfoot>
                               </table>
+                            <button type="button" class="btn btn-primary mt-3" id="generarSeleccionados" data-toggle="modal" data-target="#DocumentoFIModal">
+    GENERAR FACTURAS SELECCIONADAS
+</button>
                             </div>
                             <!-- /.box-body -->
                       </div>
