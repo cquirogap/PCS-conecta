@@ -41,7 +41,7 @@ urlpatterns.extend(
         # Administracion
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
-        url(r'^prueba/$', interlocutorc_views.tarea_correo_pedido_dos),
+        url(r'^prueba/$', interlocutorc_views.tarea_correo_pedido),
         url(r'^prueba_factura/$', interlocutorc_views.pruebacorreosfactura),
         url(r'^pruebasap/$', interlocutorc_views.prubasap2),
         url(r'^pruebacorreo/$', interlocutorc_views.pruebacorreosfactura),
