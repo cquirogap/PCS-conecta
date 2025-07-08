@@ -1,43 +1,7 @@
-{% extends 'admin_base.html' %}
+
 {% load static %}
 {% block content %}
-<section class="content-header" xmlns="http://www.w3.org/1999/html">
 
-    <h1> <a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
-    <br>
-
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags %}
-                <br>
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                     <div class="alert alert-success alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
-                     </div>
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <div class="alert alert-success alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
-                    </div>
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
-                    <div class="alert alert-warning alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
-                    </div>
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
-                    </div>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-      {% endif %}
-</section>
 
 <div id="printableArea">
 <section class="invoice">
@@ -127,9 +91,9 @@
                 <tr>
                     <td>{{ articulo.num_detalle.referencia }}</td>
                     <td>{{ articulo.num_detalle.nombre  }} </td>
-                    <td>{{ articulo.cantidad }}  </td>
-                    <td>{{ preciocompra }}</td>
-                    <td>{{ total }}</td>
+                    <td><center>{{ articulo.cantidad }}</center>  </td>
+                    <td><center>{{ preciocompra }}</center></td>
+                    <td><center>{{ total }}</center></td>
 
                 </tr>
                 {% endfor %}
@@ -151,7 +115,7 @@
        </table>
 
    </div>
-
+        <br><br>
    <div class="col-xs-3">
       <div class="table-responsive">
          <table class="table">
@@ -177,12 +141,7 @@
 </div>
 
 
-    <button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right" style="margin-right: 5px;">
-        <i class="fa fa-download"></i> Generate PDF
-    </button>
-    <div class="row no-print">
 
-    </div>
 </section>
 
 {% endblock %}

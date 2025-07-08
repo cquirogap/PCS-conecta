@@ -116,6 +116,7 @@ urlpatterns.extend(
         url(r'^configuracion/orden_pcs_otroscanales/$', configuracion_views.config_ordenes_otroscanales_pcs),
         url(r'^configuracion/orden_pcs_otroscanales_cliente/$', configuracion_views.config_ordenes_otroscanales_pcs_cliente),
         url(r'^configuracion/orden_empresiario_otroscanales/$', configuracion_views.config_ordenes_otroscanales_empresario),
+        url(r'^configuracion/solicitud_asignacion/descargar_zip/$', configuracion_views.descargar_pedidos_zip),
         url(r'^configuracion/orden_empresiario_otroscanales_facturar/$', configuracion_views.config_ordenes_otroscanales_empresario_facturacion),
         url(r'^configuracion/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario),
         url(r'^configuracion/imagen_empresiario_otroscanales/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_imagen_otroscanales_empresario_borrar),

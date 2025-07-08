@@ -2615,7 +2615,6 @@ $(document).ready(function() {
             "<td>"+casos[i].observaciones+"</td>" +
             "<td> <a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/"+ casos[i].num_pedido +
             "'><i class='fa fa-mail-forward'></i></a> </td>" +
-            "<td> <button class='btn btn-danger single-download' data-id='"+ casos[i].identificador +"'><i class='fa fa-file'></i></button> </td>" + // CAMBIADO A BOTÓN
             "</tr>";
                                }
                         table_body.append(lineas)
@@ -2631,33 +2630,43 @@ $(document).ready(function() {
     )
 
 
-// Descargar uno por uno desde botón individual
-$(document).on('click', '.single-download', function () {
-    const formId = $(this).data('id');
-    const link = document.createElement('a');
-    link.href = `/configuracion/solicitud_asignacion/pdf/${formId}`;
-    link.target = "_blank"; // opcional: para abrir en otra pestaña
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-
-// Descargar múltiples PDFs con checkboxes
 $('#download-selected-pdfs').on('click', function () {
-    const selected = $('.pdf-checkbox:checked');
+    var selected = $('.pdf-checkbox:checked');
     if (selected.length === 0) {
-        alert("Selecciona al menos un pedido para descargar.");
+        alert("Selecciona al menos un pedido.");
         return;
     }
 
+    var ids = [];
     selected.each(function () {
-        const formId = $(this).val();
-        const link = document.createElement('a');
-        link.href = `/configuracion/solicitud_asignacion/pdf/${formId}`;
-        link.target = "_blank";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        ids.push($(this).val());
+    });
+
+    fetch('/configuracion/solicitud_asignacion/descargar_zip/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+        },
+        body: JSON.stringify({ ids: ids })
+    })
+    .then(function (response) {
+        if (!response.ok) throw new Error("Error generando ZIP");
+        return response.blob();
+    })
+    .then(function (blob) {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'pedidos.zip';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(function (error) {
+        console.error("Error:", error);
+        alert("Ocurrió un error al generar el archivo ZIP.");
     });
 });
 
