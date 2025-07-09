@@ -159,8 +159,6 @@ X_FRAME_OPTIONS = 'ALLOWALL'
 
 
 CRONJOBS = [
-    ('0 14 * * *', 'interlocutorc.views.tarea_correo_pedido_dos'),
-    ('0 18 * * *', 'interlocutorc.views.tarea_correo_pedido_dos'),
     ('0 6 * * *', 'interlocutorc.views.prueba'),
     ('0 17 * * *', 'interlocutorc.views.prueba'),
     ('0 20 * * *', 'interlocutorc.views.pruebacorreos'),
