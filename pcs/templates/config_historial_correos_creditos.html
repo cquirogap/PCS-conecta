@@ -63,6 +63,25 @@
             </ul>
             {% csrf_token %}
             <div class="tab-content">
+            <form role="form" action="/pruebacorreo/" method="POST">
+                    {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Envio Correos</label>
+                        <div class="input-group ">
+                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                         <input type="date" class="form-control" id="fecha_correos" name="fecha_correos"  >
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-2">
+                        <button type="submit"  class="btn btn-warning btn-block btn-flat" >
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            Enviar
+                        </button>
+                    </div>
+                </div>
+            </form>
                 <form role="form" action="/configuracion/historial_correos_creditos/" method="POST">
                     {% csrf_token %}
                     <br>

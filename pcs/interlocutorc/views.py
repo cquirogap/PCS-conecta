@@ -247,6 +247,245 @@ def panel_ayuda(request):
 
 
 
+
+
+def enviar_correos(request):
+    if request.method == 'POST':
+        fecha_input = request.POST.get('fecha_correos', '')
+
+        try:
+            if fecha_input:
+                fecha = datetime.strptime(fecha_input, '%Y-%m-%d').date()
+            else:
+                fecha = datetime.now(pytz.timezone('America/Bogota')).date()
+        except:
+            return HttpResponse("Fecha inválida.")
+
+        ejecutar_pedidos(fecha)
+        ejecutar_facturas(fecha)
+
+        return HttpResponse("Correos procesados exitosamente.")
+    else:
+        return HttpResponse("Método no permitido.")
+
+def ejecutar_pedidos(fecha):
+    try:
+        ahora = datetime.now(pytz.timezone('America/Bogota'))
+        hora = ahora.time()
+
+        HistorialErrorApi.objects.create(
+            accion='Inicio de tarea',
+            fecha=fecha,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+            tipo='crediya',
+        )
+
+        url = "https://192.168.1.2:50000/b1s/v1/Login"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
+        response = requests.post(url, data=payload, verify=False)
+        respuesta = ast.literal_eval(response.text)
+
+        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(fecha) + "'"
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+
+        response = requests.get(url2, headers=headers, verify=False)
+        response = response.text.replace('null', ' " " ')
+        data = ast.literal_eval(response)
+        pedidos = data['value']
+
+        for datos in pedidos:
+            if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
+                try:
+                    ClientesApi.objects.get(NumeroPedido=datos['DocNum'])
+                except:
+                    try:
+                        fecha_pedido = datetime.strptime(str(datos['DocDueDate']), '%Y%m%d')
+                        fecha_hoy = datetime.strptime(str(datos['DocDate']), '%Y%m%d')
+
+                        nuevo_pedido = ClientesApi(
+                            NombreEmpresa=datos['CardName'],
+                            Identificacion=datos['LicTradNum'],
+                            TipoIdentificacion='NIT',
+                            Correo=datos['E_Mail'],
+                            ValorOrden=format(int(datos['DocTotal']) - int(datos['VatSum']), '0,.0f'),
+                            FechaEntrega=fecha_pedido,
+                            FechaPago=fecha_pedido,
+                            FechaHoy=fecha_hoy,
+                            NumeroPedido=datos['DocNum'],
+                        )
+                        nuevo_pedido.save()
+
+                        # Calcular intereses
+                        valor_total = int(datos['DocTotal']) - int(datos['VatSum'])
+                        medio = valor_total / 2
+                        interes = max(0.018 * medio, 40000)
+
+                        if interes < 20000:
+                            interes = 20000
+
+                        desembolso = medio - interes
+                        desembolso = "{:,.0f}".format(desembolso)
+                        interes = "{:,.0f}".format(interes)
+
+                        html_content = render_to_string('basecorreropedidos.html', {
+                            'numero_orden': datos['DocNum'],
+                            'nombre_empresa': datos['CardName'],
+                            'intereses': interes,
+                            'tasa_interes': '1.8%MA',
+                            'valor_desembolso': desembolso,
+                        })
+
+                        subject = 'Aviso de Servicio Financiero ' + str(datos['DocNum'])
+                        from_email = 'conectaportalweb@gmail.com'
+                        to = [datos['E_Mail']]
+                        text_content = 'Este es un correo con formato HTML.'
+
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send()
+                    except:
+                        HistorialErrorApi.objects.create(
+                            accion='Error al registrar o enviar pedido',
+                            fecha=fecha,
+                            hora=hora,
+                            empresa=datos['CardName'],
+                            pedido=datos['DocNum'],
+                            tipo='crediya',
+                        )
+        # Logout
+        requests.post("https://192.168.1.2:50000/b1s/v1/Logout", verify=False)
+
+    except:
+        ahora = datetime.now(pytz.timezone('America/Bogota'))
+        HistorialErrorApi.objects.create(
+            accion='Error general pedidos',
+            fecha=fecha,
+            hora=ahora.time(),
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+            tipo='crediya',
+        )
+
+
+def ejecutar_facturas(fecha):
+    try:
+        ahora = datetime.now(pytz.timezone('America/Bogota'))
+        hora = ahora.time()
+        fecha_futura = fecha + timedelta(days=10)
+        fecha_futura_str = fecha_futura.strftime('%Y-%m-%d')
+
+        HistorialErrorApi.objects.create(
+            accion='Inicio de tarea',
+            fecha=fecha,
+            hora=hora,
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+            tipo='credilisto',
+        )
+
+        url = "https://192.168.1.2:50000/b1s/v1/Login"
+        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
+        response = requests.post(url, data=payload, verify=False)
+        respuesta = ast.literal_eval(response.text)
+
+        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis3')/List?fecha='" + fecha_futura_str + "'"
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': 'B1SESSION=' + respuesta['SessionId']
+        }
+
+        response = requests.get(url2, headers=headers, verify=False)
+        response = response.text.replace('null', ' " " ')
+        data = ast.literal_eval(response)
+        facturas = data['value']
+
+        for datos in facturas:
+            if Empresas.objects.filter(nombre=str(datos['CardName'])).exists():
+                try:
+                    FacturasApi.objects.get(NumeroFactura=datos['DocNum'])
+                except:
+                    try:
+                        fecha_pedido = datetime.strptime(str(datos['DocDueDate']), '%Y%m%d')
+                        fecha_hoy = datetime.strptime(str(datos['DocDate']), '%Y%m%d')
+                        diferencia = (fecha_pedido.date() - fecha).days
+
+                        nuevo_factura = FacturasApi(
+                            NombreEmpresa=datos['CardName'],
+                            Identificacion=datos['LicTradNum'],
+                            TipoIdentificacion='NIT',
+                            Correo=datos['E_Mail'],
+                            ValorFacturaEmitida=datos['DocTotal'],
+                            FechaPagoFactura=fecha_pedido,
+                            FechaHoy=fecha_hoy,
+                            NumeroFactura=datos['DocNum'],
+                            Referencia2=datos['NumAtCard'],
+                        )
+                        nuevo_factura.save()
+
+                        valor_total = int(datos['DocTotal'])
+                        medio = valor_total * 0.8
+                        interes = diferencia * 0.000533333 * medio
+                        interes = max(interes, 40000)
+                        if interes < 20000:
+                            interes = 20000
+                        desembolso = medio - interes
+
+                        desembolso = "{:,.0f}".format(desembolso)
+                        interes = "{:,.0f}".format(interes)
+
+                        html_content = render_to_string('basecorrerofactura.html', {
+                            'numero_orden': datos['DocNum'],
+                            'nombre_empresa': datos['CardName'],
+                            'intereses': interes,
+                            'tasa_interes': '1.6%MA',
+                            'diferencia': diferencia,
+                            'valor_desembolso': desembolso,
+                            'referencia': datos['NumAtCard'],
+                        })
+
+                        subject = 'Aviso de Servicio Financiero CrediListo ' + str(datos['DocNum'])
+                        from_email = 'conectaportalweb@gmail.com'
+                        to = [datos['E_Mail']]
+                        text_content = 'Este es un correo con formato HTML.'
+
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send()
+                    except:
+                        HistorialErrorApi.objects.create(
+                            accion='Error al registrar o enviar factura',
+                            fecha=fecha,
+                            hora=hora,
+                            empresa=datos['CardName'],
+                            pedido=datos['DocNum'],
+                            tipo='credilisto',
+                        )
+
+        requests.post("https://192.168.1.2:50000/b1s/v1/Logout", verify=False)
+
+    except:
+        ahora = datetime.now(pytz.timezone('America/Bogota'))
+        HistorialErrorApi.objects.create(
+            accion='Error general facturas',
+            fecha=fecha,
+            hora=ahora.time(),
+            empresa='No Corresponde',
+            pedido='No Corresponde',
+            tipo='credilisto',
+        )
+
+
+
+
+
+
+
+
 def pruebacorreos():
     try:
         now = datetime.now(pytz.timezone('America/Bogota'))

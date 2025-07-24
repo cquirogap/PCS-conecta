@@ -44,7 +44,7 @@ urlpatterns.extend(
         url(r'^prueba/$', interlocutorc_views.tarea_correo_pedido),
         url(r'^prueba_factura/$', interlocutorc_views.pruebacorreosfactura),
         url(r'^pruebasap/$', interlocutorc_views.prubasap2),
-        url(r'^pruebacorreo/$', interlocutorc_views.pruebacorreosfactura),
+        url(r'^pruebacorreo/$', interlocutorc_views.enviar_correos),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
