@@ -2733,6 +2733,111 @@ $("#busqueda_pedidos_otros_canales_empresarios_facturar").click(function (e) {
 });
 
 
+
+
+var busqueda_pedidos_otros_canales_empresarios_recibo = function () {
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    let fecha_inicio = $("#fecha_inicio_input").val() || "";
+    fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+    let fecha_fin = $("#fecha_fin_input").val() || "";
+    fecha_fin = fecha_fin.replace(/\s+/g, '');
+    let empresa_input = $("#empresa_input").val() || "";
+    empresa_input = empresa_input.replace(/\s+/g, '');
+    let estado = $("#estado_input").val() || "";
+    estado = estado.replace(/\s+/g, '');
+    let pedido = $("#pedido").val() || "";
+    pedido = pedido.replace(/\s+/g, '');
+    let referencia = $("#referencia").val() || "";
+    referencia = referencia.replace(/\s+/g, '');
+
+    $.ajax({
+        type: "GET",
+        data: {
+            csrfmiddlewaretoken: csrfToken
+        },
+        url: '/configuracion/pedidos_otros_canales_empresarios/recibo/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia,
+        dataType: 'json',
+        success: function (data) {
+            const casos = data.datos;
+            const table_body = $("#tabla_infoc_medicamentos tbody");
+            table_body.empty();
+            let lineas = '';
+
+            for (let i = 0; i < casos.length; i++) {
+                const idUnico = `novedades_${i}`;
+                const formId = `form_${i}`;
+
+                lineas += "<tr>" +
+
+                    "<td>Pedido #" + casos[i].num_pedido + "</td>" +
+                    "<td>" + casos[i].cliente + "</td>" +
+                    "<td>" + casos[i].cantidadped + "</td>" +
+                    "<td>" + casos[i].fecha + "</td>" +
+                    "<td>" + casos[i].referencia + "</td>" +
+                    "<td>" + casos[i].nombre + "</td>" +
+                    "<td>" + casos[i].codigo + "</td>" +
+                    "<td>" + casos[i].empresa + "</td>" +
+
+                    "<td>" +
+                        "<input type='number' class='form-control' min='0' max='" + casos[i].cantidad + "' " +
+                        "name='cantidad' value='" + casos[i].cantidad + "' form='" + formId + "'>" +
+                    "</td>" +
+
+                    "<td>" + casos[i].cantidad + "</td>" +
+
+                    "<td>" +
+                        "<div class='form-check'>" +
+                            "<input class='form-check-input toggle-novedad' type='checkbox' " +
+                            "id='" + idUnico + "_check' data-target='" + idUnico + "_textarea'>" +
+                            "<label class='form-check-label' for='" + idUnico + "_check'>Agregar</label>" +
+                        "</div>" +
+                        "<div class='mt-2'>" +
+                            "<textarea class='form-control d-none' style='display: none;' " +
+                            "name='novedad' id='" + idUnico + "_textarea' rows='2' " +
+                            "placeholder='Escribe una novedad...' form='" + formId + "'></textarea>" +
+                        "</div>" +
+                    "</td>" +
+
+                    "<td>" +
+                        "<form id='" + formId + "' action='/configuracion/recibo/otros_canales/' method='POST'>" +
+                            "<input type='hidden' name='csrfmiddlewaretoken' value='" + csrfToken + "'>" +
+                            "<input type='hidden' name='num_pedido' value='" + casos[i].pk + "'>" +
+                            "<button type='submit' class='btn btn-success'>" +
+                                "<i class='fa fa-check'></i>" +
+                            "</button>" +
+                        "</form>" +
+                    "</td>" +
+
+                    "</tr>";
+            }
+
+            table_body.append(lineas);
+
+            // Mostrar/ocultar textarea según estado del checkbox
+            $(".toggle-novedad").change(function () {
+                const targetId = $(this).data("target");
+                const textarea = $("#" + targetId);
+
+                if (this.checked) {
+                    textarea.removeClass("d-none").show();
+                } else {
+                    textarea.addClass("d-none").hide();
+                    textarea.val("");  // Limpia si se desmarca
+                }
+            });
+        }
+    });
+}
+
+$("#busqueda_pedidos_otros_canales_empresarios_recibo").click(function (e) {
+    busqueda_pedidos_otros_canales_empresarios_recibo();
+});
+
+
+
+
+
 var buscar_pedidos_otros_canales_excel = function () {
 
         fecha_inicio = $("#fecha_inicio_input").val() || "";

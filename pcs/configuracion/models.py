@@ -268,6 +268,7 @@ class AsignacionPedidosOtrosCanales(models.Model):
     num_detalle = models.ForeignKey(DetallesPedidosOtrosCanales, default=1)
     cantidad = models.IntegerField(default=1)
     cantidadfacturada = models.IntegerField(default=0)
+    cantidadrecibo = models.IntegerField(default=0)
     empresa = models.ForeignKey(Empresas, default=None,null=True)
     fecha = models.DateField(null=True)
 

@@ -108,6 +108,7 @@ urlpatterns.extend(
         url(r'^configuracion/pedidos_otros_canales/informacion_cliente/$', configuracion_views.informacion_pedidos_otros_canales_solicitud_cliente),
         url(r'^configuracion/pedidos_otros_canales_empresarios/informacion/$', configuracion_views.informacion_pedidos_otros_canales_empresario_solicitud),
         url(r'^configuracion/pedidos_otros_canales_empresarios/facturar/$', configuracion_views.informacion_pedidos_otros_canales_empresario_facturar),
+        url(r'^configuracion/pedidos_otros_canales_empresarios/recibo/$', configuracion_views.informacion_pedidos_otros_canales_empresario_recibo),
 
 
         #Otros Pedidos
@@ -118,6 +119,7 @@ urlpatterns.extend(
         url(r'^configuracion/orden_empresiario_otroscanales/$', configuracion_views.config_ordenes_otroscanales_empresario),
         url(r'^configuracion/solicitud_asignacion/descargar_zip/$', configuracion_views.descargar_pedidos_zip),
         url(r'^configuracion/orden_empresiario_otroscanales_facturar/$', configuracion_views.config_ordenes_otroscanales_empresario_facturacion),
+        url(r'^configuracion/orden_empresiario_otroscanales_recibo/$', configuracion_views.config_ordenes_otroscanales_empresario_recibo),
         url(r'^configuracion/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario),
         url(r'^configuracion/imagen_empresiario_otroscanales/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_imagen_otroscanales_empresario_borrar),
         url(r'^configuracion/registrar/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario_registrar),
@@ -159,6 +161,7 @@ urlpatterns.extend(
         #PowerBi
         url(r'^configuracion/definiciones/graficas/$', configuracion_views.admin_graficas_powerbi),
         url(r'^configuracion/facturacion/otros_canales/$', configuracion_views.facturacion_otros_canales),
+        url(r'^configuracion/recibo/otros_canales/$', configuracion_views.recibo_otros_canales),
         url(r'^configuracion/definiciones/grafica/(?P<grafica_id>\d+)/detalle/$', configuracion_views.detalle_grafica),
         url(r'^configuracion/definiciones/borrar_grafica/(?P<grafica_id>[-\w]+)/$', configuracion_views.config_graficas_borrar),
         url(r'^configuracion/definiciones/grafica_pcs_actuales/$', configuracion_views.admin_graficas_actuales_pcs_powerbi),
