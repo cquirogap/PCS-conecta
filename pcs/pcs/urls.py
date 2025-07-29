@@ -211,6 +211,7 @@ urlpatterns.extend(
         url(r'^configuracion/historial_empresas/$', configuracion_views.config_historial_empresas),
         url(r'^configuracion/historial_detalle_pedidos/$', configuracion_views.config_historial_detalle_pedidos),
         url(r'^configuracion/servicio_crediya/$', configuracion_views.config_servicio_crediya),
+        url(r'^configuracion/informe_recibo/$', configuracion_views.config_informe_recibo),
         url(r'^configuracion/servicio_crediya/informe/$', configuracion_views.config_servicio_crediya_informe),
         url(r'^configuracion/servicio_credilisto/informe/$', configuracion_views.config_servicio_credilisto_informe),
         url(r'^configuracion/servicio_credilisto/$', configuracion_views.config_servicio_credilisto),
