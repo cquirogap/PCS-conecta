@@ -73,7 +73,7 @@ class Command(BaseCommand):
                             if re.match(r"[^@]+@[^@]+\.[^@]+", correo):
                                 try:
                                     asunto = nombre_empresa + ' TIENES UN NUEVO PEDIDO ' + num_pedido
-                                    mensaje = 'Ha recibido un pedido nuevo.\n\nDetalle del pedido:\nhttp://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(datos['DocEntry']) + '/'
+                                    mensaje = 'Ha recibido un pedido nuevo.\n\nDetalle del pedido:\nhttp://160.153.178.159/configuracion/solicitud_pedido_orden/detalle/' + str(datos['DocEntry']) + '/'
                                     email = EmailMessage(asunto, mensaje, to=[correo])
                                     email.send()
 

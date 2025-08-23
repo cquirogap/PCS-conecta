@@ -1508,7 +1508,7 @@ def tarea_correo_pedido(request):
                                     try:
                                         email = EmailMessage(str(datos['CardName'])+' TIENES UN NUEVO PEDIDO '+str(datos['DocNum']),
                                                              'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                             + 'http://45.56.118.44/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                             + 'http://160.153.178.159/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                                  datos['DocEntry']) + '/',
                                                              to=[correos])
                                         email.send()
