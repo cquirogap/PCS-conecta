@@ -298,6 +298,7 @@ urlpatterns.extend(
         url(r'^configuracion/usuarios/$', configuracion_views.config_usuarios),
         url(r'^configuracion/usuarios/perfil/$', configuracion_views.config_usuarios_perfil),
         url(r'^configuracion/usuarios/perfil_empresa/$', configuracion_views.config_usuarios_perfil_empresa),
+        url(r'^configuracion/asignar_certificados/$', configuracion_views.procesar_pdfs),
         url(r'^configuracion/usuarios/perfil_empresa_despacho/$', configuracion_views.config_usuarios_perfil_empresa_despacho),
         url(r'^configuracion/usuarios/registrar/$', configuracion_views.config_usuarios_registrar),
         url(r'^registrar/usuarios_externos/$', configuracion_views.config_usuarios_registrar_externos),
@@ -399,6 +400,7 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_pedido_asignaciones_otroscanales/excel_general/$', configuracion_views.reporte_otroscanales),
         url(r'^configuracion/solicitud_pedido_cliente_otroscanales/excel_general/$', configuracion_views.reporte_otroscanales_cliente),
         url(r'^configuracion/solicitud_pedido_orden/excel_csv/$', configuracion_views.reporte_pedidos_csv),
+        url(r'^configuracion/solicitud_pedido_orden/certificados_retencion/$', configuracion_views.reporte_certificados_retencion),
 
         url(r'^configuracion/solicitud_comprobante_egreso/excel/$', configuracion_views.reporte_comprobante_detalle),
 

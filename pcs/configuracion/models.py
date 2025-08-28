@@ -285,6 +285,19 @@ class ImagenesOtrosCanales(models.Model):
         return str(self.referencia)
 
 
+
+class Documento(models.Model):
+    nit = models.CharField(max_length=20)   # ya no es unique
+    nombre = models.CharField(max_length=255)
+    fecha = models.DateField()
+    ruta = models.CharField(max_length=500)
+    archivo = models.CharField(max_length=255, unique=True)  # evita reprocesar el mismo archivo
+
+    def __unicode__(self):
+        return u"%s - %s (%s)" % (self.nit, self.nombre, self.fecha)
+
+
+
 class Opciones(models.Model):
     descripcion = models.CharField(max_length=20)
     creado = models.DateTimeField(null=True)
