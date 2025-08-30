@@ -28,6 +28,8 @@ import re
 from itertools import groupby
 from django.contrib.auth.views import LoginView
 import sys
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 # This view method handles the request for the root URL /
@@ -370,6 +372,89 @@ def ejecutar_pedidos(fecha):
             pedido='No Corresponde',
             tipo='crediya',
         )
+
+
+
+class ApiPedidos(APIView):
+    """
+    Endpoint que recibe una fecha (YYYY-MM-DD),
+    hace login en SAP Service Layer y devuelve pedidos ordenados y mapeados.
+    """
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, fecha):
+        try:
+            # 1. Login SAP Service Layer
+            url_login = "https://192.168.1.2:50000/b1s/v1/Login"
+            payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
+            response = requests.post(url_login, data=payload, verify=False)
+
+            if response.status_code != 200:
+                return Response(
+                    {"error": "Error en login SAP", "detalle": response.text},
+                    status=status.HTTP_502_BAD_GATEWAY
+                )
+
+            respuesta = ast.literal_eval(response.text)
+            session_id = respuesta.get("SessionId")
+            if not session_id:
+                return Response({"error": "No se recibió SessionId de SAP"}, status=status.HTTP_502_BAD_GATEWAY)
+
+            # 2. Consulta con fecha
+            url_query = (
+                "https://192.168.1.2:50000/b1s/v1/SQLQueries('serviciospeventas')"
+                "/List?fecha='" + str(fecha) + "'"
+            )
+            headers = {
+                'Prefer': 'odata.maxpagesize=999999',
+                'Cookie': 'B1SESSION=' + session_id
+            }
+
+            response = requests.get(url_query, headers=headers, verify=False)
+            if response.status_code != 200:
+                return Response(
+                    {"error": "Error al consultar pedidos", "detalle": response.text},
+                    status=status.HTTP_502_BAD_GATEWAY
+                )
+
+            # 3. Parsear respuesta
+            response_text = response.text.replace('null', ' " " ')
+            data = ast.literal_eval(response_text)
+            pedidos = data.get('value', [])
+
+            # 4. Transformar los campos
+            pedidos_transformados = []
+            for p in pedidos:
+                pedido = {
+                    "NumeroPedido": p.get("DocNum"),
+                    "NumeroPedidoCliente": p.get("NumAtCard"),
+                    "Cliente": p.get("CardName"),
+                    "FechaContabilizacion": p.get("DocDate"),
+                    "FechaEntrega": p.get("DocDueDate"),
+                    "ValorPedido": p.get("DocTotal"),
+                    "EanProducto": p.get("CodeBars"),
+                    "DescripcionProducto": p.get("Dscription"),
+                    "Cantidad": p.get("Quantity"),
+                    "Almacen": p.get("WhsCode"),
+                    "EAN Entrega": p.get("U_EANS"),
+                    "EAN Dependencia": p.get("U_EANB"),
+                    "Fecha Mínima Entrega": p.get("DocDueDate"),
+                    "Fecha Máxima Entrega": p.get("DocDueDate"),
+                }
+                pedidos_transformados.append(pedido)
+
+            # 5. Ordenar por NumeroPedido (ejemplo)
+            pedidos_ordenados = sorted(pedidos_transformados, key=lambda x: x.get("NumeroPedido", 0))
+
+            return Response(pedidos_ordenados, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": "Excepción en ApiPedidos", "detalle": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
 
 def ejecutar_facturas(fecha):

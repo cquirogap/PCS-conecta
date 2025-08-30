@@ -46,6 +46,7 @@ urlpatterns.extend(
         url(r'^pruebasap/$', interlocutorc_views.prubasap2),
         url(r'^pruebacorreo/$', interlocutorc_views.enviar_correos),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
+        url(r'^api/pedidos/(?P<fecha>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.ApiPedidos.as_view(), name="api_pedidos"),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
         url(r'^configuracion/justificacion/$', configuracion_views.config_justificacion),
