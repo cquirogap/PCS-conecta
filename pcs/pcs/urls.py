@@ -219,6 +219,7 @@ urlpatterns.extend(
         url(r'^configuracion/historial_empresas/excel_general/$', configuracion_views.reporte_historial_empresa),
         url(r'^configuracion/generacion_facturas/excel_general/$', configuracion_views.reporte_generacion_facturas),
         url(r'^configuracion/servicio_crediya/excel_general/$', configuracion_views.reporte_servicio_crediya),
+        url(r'^configuracion/generarcion_informe/facturas/$', configuracion_views.reporte_facturas_activas),
         url(r'^configuracion/servicio_crediya/informe/excel_general/$', configuracion_views.reporte_servicio_crediya_informe),
         url(r'^configuracion/servicio_credilisto/informe/excel_general/$', configuracion_views.reporte_servicio_credilisto_informe),
         url(r'^configuracion/servicio_credilisto/excel_general/$', configuracion_views.reporte_servicio_credilisto),
