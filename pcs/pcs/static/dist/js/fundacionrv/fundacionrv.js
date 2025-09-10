@@ -2672,46 +2672,43 @@ $('#download-selected-pdfs').on('click', function () {
 
 
 
-    var busqueda_pedidos_otros_canales_empresarios_facturar = function () {
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+var busqueda_pedidos_otros_canales_empresarios_facturar = function () {
+    var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-    let fecha_inicio = $("#fecha_inicio_input").val() || "";
+    var fecha_inicio = $("#fecha_inicio_input").val() || "";
     fecha_inicio = fecha_inicio.replace(/\s+/g, '');
-    let fecha_fin = $("#fecha_fin_input").val() || "";
+    var fecha_fin = $("#fecha_fin_input").val() || "";
     fecha_fin = fecha_fin.replace(/\s+/g, '');
-    let empresa_input = $("#empresa_input").val() || "";
+    var empresa_input = $("#empresa_input").val() || "";
     empresa_input = empresa_input.replace(/\s+/g, '');
-    let estado = $("#estado_input").val() || "";
+    var estado = $("#estado_input").val() || "";
     estado = estado.replace(/\s+/g, '');
-    let pedido = $("#pedido").val() || "";
+    var pedido = $("#pedido").val() || "";
     pedido = pedido.replace(/\s+/g, '');
-    let referencia = $("#referencia").val() || "";
+    var referencia = $("#referencia").val() || "";
     referencia = referencia.replace(/\s+/g, '');
 
     $.ajax({
         type: "GET",
-        data: {
-            csrfmiddlewaretoken: csrfToken
-        },
-        url: '/configuracion/pedidos_otros_canales_empresarios/facturar/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia,
+        data: { csrfmiddlewaretoken: csrfToken },
+        url: '/configuracion/pedidos_otros_canales_empresarios/facturar/?fecha_inicio=' + fecha_inicio +
+             '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input +
+             '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia,
         dataType: 'json',
         success: function (data) {
-            const casos = data.datos;
-            let lineas = '';
-            const table_body = $("#tabla_infoc_medicamentos tbody")
+            var casos = data.datos;
+            var lineas = '';
+            var table_body = $("#tabla_infoc_medicamentos tbody");
             table_body.empty();
 
-            for (let i = 0; i < casos.length; i++) {
+            for (var i = 0; i < casos.length; i++) {
                 lineas += "<tr>" +
-                    "<td>Pedido #" + casos[i].num_pedido + "</td>" +
+                    "<td>" + casos[i].num_pedido + "</td>" +
                     "<td>" + casos[i].cliente + "</td>" +
                     "<td>" +
-                    "<form role='form' action='/configuracion/facturacion/otros_canales/' method='POST'>" +
-                    "<input type='hidden' name='csrfmiddlewaretoken' value='" + csrfToken + "'>" +  // 👈 Aquí está el token
-                    "<input type='hidden' name='num_pedido' value='" + casos[i].pk + "'>" +
-                    "<input type='number' class='form-control' min='0' max='"+ casos[i].cantidad +"' id='cantidad' name='cantidad' value='" + casos[i].cantidad + "'>" +
-                    "<button type='submit' class='btn btn-primary'>Enviar</button>" +
-                    "</form>" +
+                        "<input type='hidden' name='items[" + i + "][pk]' value='" + casos[i].pk + "'>" +
+                        "<input type='number' class='form-control' min='0' max='" + casos[i].cantidad +
+                        "' name='items[" + i + "][cantidad]' value='" + casos[i].cantidad + "'>" +
                     "</td>" +
                     "<td>" + casos[i].fecha + "</td>" +
                     "<td>" + casos[i].referencia + "</td>" +
@@ -2719,8 +2716,7 @@ $('#download-selected-pdfs').on('click', function () {
                     "<td>" + casos[i].codigo + "</td>" +
                     "<td>" + casos[i].empresa + "</td>" +
                     "<td>" + casos[i].observaciones + "</td>" +
-                    "<td><a class='btn btn-info' href='/configuracion/orden_pcs_otroscanales/detalle/" + casos[i].num_pedido + "'><i class='fa fa-mail-forward'></i></a></td>" +
-                    "</tr>";
+                "</tr>";
             }
 
             table_body.append(lineas);
@@ -2729,7 +2725,21 @@ $('#download-selected-pdfs').on('click', function () {
 }
 
 $("#busqueda_pedidos_otros_canales_empresarios_facturar").click(function (e) {
+    e.preventDefault();
     busqueda_pedidos_otros_canales_empresarios_facturar();
+});
+
+$("#form_facturacion").submit(function (e) {
+    var pedidos = {};
+    $("#tabla_infoc_medicamentos tbody tr").each(function () {
+        var pedido = $(this).find("td:first").text().trim();
+        pedidos[pedido] = true;
+    });
+
+    if (Object.keys(pedidos).length > 1) {
+        alert("Solo puedes facturar un pedido a la vez. Filtra por número de pedido antes de enviar.");
+        e.preventDefault();
+    }
 });
 
 

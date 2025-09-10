@@ -24,6 +24,7 @@
               <strong>NIT: </strong>{{ asignacion_titulos.empresa.nit }}<br>
               <strong>DIR.FACTURA: </strong>{{ asignacion_titulos.empresa.direccion }}<br>
               <strong>CIUDAD: </strong>{{ asignacion_titulos.empresa.municipios}}<br>
+              <strong>NUMERO PEDIDO: </strong>{{ asignacion_titulos.num_detalle.num_pedido}}<br>
 
           </address>
       </div>
@@ -53,6 +54,14 @@
                <tr>
                   <th>Cliente</th>
                   <td>{{ asignacion_titulos.num_detalle.num_pedido.empresa.nombre }}</td>
+               </tr>
+               <tr>
+                  <th>Fecha Minima</th>
+                  <td>{{ asignacion_titulos.num_detalle.num_pedido.fecha_minima }}</td>
+               </tr>
+               <tr>
+                  <th>Fecha Maxima</th>
+                  <td>{{ asignacion_titulos.num_detalle.num_pedido.fecha_maxima }}</td>
                </tr>
                <tr>
                   <th></th>
@@ -87,17 +96,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for articulo in asignacion %}
-                <tr>
-                    <td>{{ articulo.num_detalle.referencia }}</td>
-                    <td>{{ articulo.num_detalle.nombre  }} </td>
-                    <td><center>{{ articulo.cantidad }}</center>  </td>
-                    <td><center>{{ preciocompra }}</center></td>
-                    <td><center>{{ total }}</center></td>
-
-                </tr>
-                {% endfor %}
-                </tbody>
+{% for fila in filas %}
+<tr>
+    <td>{{ fila.referencia }}</td>
+    <td>{{ fila.nombre }}</td>
+    <td><center>{{ fila.cantidad }}</center></td>
+    <td><center>{{ fila.preciocompra }}</center></td>
+    <td><center>{{ fila.total_fila }}</center></td>
+</tr>
+{% endfor %}
+</tbody>
             </table>
         </div>
     </div>
@@ -117,25 +125,25 @@
    </div>
         <br><br>
    <div class="col-xs-3">
-      <div class="table-responsive">
-         <table class="table">
-            <tbody>
-               <tr>
-                  <th style="width:50%">SUBTOTAL:</th>
-                  <td>${{total}}</td>
-               </tr>
-               <tr>
-                  <th>IVA</th>
-                  <td>${{dato.impuestos}}</td>
-               </tr>
-               <tr>
-                  <th>TOTAL</th>
-                  <td>${{ total }}</td>
-               </tr>
-            </tbody>
-         </table>
-      </div>
-   </div>
+  <div class="table-responsive">
+     <table class="table">
+        <tbody>
+           <tr>
+              <th style="width:50%">SUBTOTAL:</th>
+              <td>${{ subtotal }}</td>
+           </tr>
+           <tr>
+              <th>IVA</th>
+              <td>${{ iva }}</td>
+           </tr>
+           <tr>
+              <th>TOTAL</th>
+              <td>${{ total }}</td>
+           </tr>
+        </tbody>
+     </table>
+  </div>
+</div>
 
 </div>
 </div>
