@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from interlocutorc.forms import *
 from interlocutorc.models import *
 from configuracion.models import *
+from configuracion.views import sap_request
 from django.core.mail import EmailMessage,EmailMultiAlternatives,send_mail
 from django.template.loader import render_to_string
 from django.contrib import messages
@@ -44,19 +45,10 @@ class CustomLoginView(LoginView):
 
 class MyListView(APIView):
     def get(self, request,start_date,end_date):
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-
-        response = requests.request("POST", url, data=payload, verify=False)
-        respuesta = ast.literal_eval(response.text)
         url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosIndicadorJSON')/List?FechaInicial='" + start_date + "'&FechaFinal='" + end_date + "'"
 
-        headers = {
-            'Prefer': 'odata.maxpagesize=9999',
-            'Cookie': 'B1SESSION=' + respuesta['SessionId']
-        }
-        response3 = requests.request("GET", url2, headers=headers, verify=False)
+        response3 = sap_request(url2)
         response3 = response3.text
         response3 = response3.replace('null', ' " " ')
         response3 = ast.literal_eval(response3)
@@ -125,8 +117,6 @@ class MyListView(APIView):
                      info in grupos_ordenados]
 
         serializer = MyDataSerializer(resultado, many=True)
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
         return Response(serializer.data)
 
 
@@ -284,18 +274,11 @@ def ejecutar_pedidos(fecha):
             tipo='crediya',
         )
 
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-        response = requests.post(url, data=payload, verify=False)
-        respuesta = ast.literal_eval(response.text)
+
 
         url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(fecha) + "'"
-        headers = {
-            'Prefer': 'odata.maxpagesize=999999',
-            'Cookie': 'B1SESSION=' + respuesta['SessionId']
-        }
 
-        response = requests.get(url2, headers=headers, verify=False)
+        response = sap_request(url2)
         response = response.text.replace('null', ' " " ')
         data = ast.literal_eval(response)
         pedidos = data['value']
@@ -360,7 +343,6 @@ def ejecutar_pedidos(fecha):
                             tipo='crediya',
                         )
         # Logout
-        requests.post("https://192.168.1.2:50000/b1s/v1/Logout", verify=False)
 
     except:
         ahora = datetime.now(pytz.timezone('America/Bogota'))
@@ -386,32 +368,15 @@ class ApiPedidos(APIView):
     def get(self, request, fecha):
         try:
             # 1. Login SAP Service Layer
-            url_login = "https://192.168.1.2:50000/b1s/v1/Login"
-            payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-            response = requests.post(url_login, data=payload, verify=False)
 
-            if response.status_code != 200:
-                return Response(
-                    {"error": "Error en login SAP", "detalle": response.text},
-                    status=status.HTTP_502_BAD_GATEWAY
-                )
-
-            respuesta = ast.literal_eval(response.text)
-            session_id = respuesta.get("SessionId")
-            if not session_id:
-                return Response({"error": "No se recibió SessionId de SAP"}, status=status.HTTP_502_BAD_GATEWAY)
 
             # 2. Consulta con fecha
             url_query = (
                 "https://192.168.1.2:50000/b1s/v1/SQLQueries('serviciospeventas')"
                 "/List?fecha='" + str(fecha) + "'"
             )
-            headers = {
-                'Prefer': 'odata.maxpagesize=999999',
-                'Cookie': 'B1SESSION=' + session_id
-            }
 
-            response = requests.get(url_query, headers=headers, verify=False)
+            response = sap_request(url_query)
             if response.status_code != 200:
                 return Response(
                     {"error": "Error al consultar pedidos", "detalle": response.text},
@@ -473,18 +438,10 @@ def ejecutar_facturas(fecha):
             tipo='credilisto',
         )
 
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-        response = requests.post(url, data=payload, verify=False)
-        respuesta = ast.literal_eval(response.text)
 
         url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis3')/List?fecha='" + fecha_futura_str + "'"
-        headers = {
-            'Prefer': 'odata.maxpagesize=999999',
-            'Cookie': 'B1SESSION=' + respuesta['SessionId']
-        }
 
-        response = requests.get(url2, headers=headers, verify=False)
+        response = sap_request(url2)
         response = response.text.replace('null', ' " " ')
         data = ast.literal_eval(response)
         facturas = data['value']
@@ -551,7 +508,6 @@ def ejecutar_facturas(fecha):
                             tipo='credilisto',
                         )
 
-        requests.post("https://192.168.1.2:50000/b1s/v1/Logout", verify=False)
 
     except:
         ahora = datetime.now(pytz.timezone('America/Bogota'))
@@ -585,20 +541,9 @@ def pruebacorreos():
             tipo='crediya',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
-
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-
-        response = requests.request("POST", url, data=payload, verify=False)
-
-        respuesta = ast.literal_eval(response.text)
         url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(hoy) + "'"
 
-        headers = {
-            'Prefer': 'odata.maxpagesize=999999',
-            'Cookie': 'B1SESSION=' + respuesta['SessionId']
-        }
-        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = sap_request(url2)
         response = response.text
         response = response.replace('null', ' " " ')
         response = ast.literal_eval(response)
@@ -695,8 +640,6 @@ def pruebacorreos():
                         pass
             else:
                 pass
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
@@ -733,20 +676,9 @@ def pruebacorreosfactura():
             tipo='credilisto',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
-
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-
-        response = requests.request("POST", url, data=payload, verify=False)
-
-        respuesta = ast.literal_eval(response.text)
         url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis3')/List?fecha='" + hoy_filtro +"'"
 
-        headers = {
-            'Prefer': 'odata.maxpagesize=999999',
-            'Cookie': 'B1SESSION=' + respuesta['SessionId']
-        }
-        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = sap_request(url2)
         response = response.text
         response = response.replace('null', ' " " ')
         response = ast.literal_eval(response)
@@ -860,8 +792,6 @@ def pruebacorreosfactura():
             tipo='credilisto',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
 
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
@@ -875,8 +805,6 @@ def pruebacorreosfactura():
                 pedido='No Corresponde',
             )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
 
 
 
@@ -1210,20 +1138,14 @@ def tarea_api():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-
-        response = requests.request("POST", url, data=payload, verify=False)
-
-        respuesta = ast.literal_eval(response.text)
         url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis')/List?FechaHoy='" + str(hoy) + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
             'Cookie': 'B1SESSION=' + respuesta['SessionId']
         }
-        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = sap_request(url2)
         response = response.text
         response = response.replace('null', ' " " ')
         response = ast.literal_eval(response)
@@ -1264,8 +1186,6 @@ def tarea_api():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
@@ -1278,8 +1198,6 @@ def tarea_api():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
 
 
 def facturas_api():
@@ -1295,20 +1213,10 @@ def facturas_api():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-
-        response = requests.request("POST", url, data=payload, verify=False)
-
-        respuesta = ast.literal_eval(response.text)
         url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis')/List"
 
-        headers = {
-            'Prefer': 'odata.maxpagesize=999999',
-            'Cookie': 'B1SESSION=' + respuesta['SessionId']
-        }
-        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = sap_request(url2)
         response = response.text
         response = response.replace('null', ' " " ')
         response = ast.literal_eval(response)
@@ -1349,8 +1257,6 @@ def facturas_api():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
     except:
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
@@ -1363,8 +1269,6 @@ def facturas_api():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
 
 def tokenisacion1(request):
 
@@ -1419,12 +1323,6 @@ def tokenisacion(request):
 
 
 def prueba():
-    url = "https://192.168.1.2:50000/b1s/v1/Login"
-
-    payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-
-    response = requests.request("POST", url, data=payload, verify=False)
-    respuesta = ast.literal_eval(response.text)
     empresas= Empresas.objects.all()
     lista_correos = []
     lista_correos_no_existentes = []
@@ -1433,11 +1331,7 @@ def prueba():
         try:
             url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
 
-            headers = {
-                'Prefer': 'odata.maxpagesize=999999',
-                'Cookie': 'B1SESSION=' + respuesta['SessionId']
-            }
-            response = requests.request("GET", url2, headers=headers, verify=False)
+            response = sap_request(url2)
             response = response.text
             response = response.replace('null', ' " " ')
             response = ast.literal_eval(response)
@@ -1446,11 +1340,7 @@ def prueba():
                 url5 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('validacionempresariossap')/List?NombreEmpresario='" + str(
                     empresa.nombre) + "'"
 
-                headers = {
-                    'Prefer': 'odata.maxpagesize=999999',
-                    'Cookie': 'B1SESSION=' + respuesta['SessionId']
-                }
-                response5 = requests.request("GET", url5, headers=headers, verify=False)
+                response5 = sap_request(url5)
                 response5 = response5.text
                 response5 = response5.replace('null', ' " " ')
                 response5 = ast.literal_eval(response5)
@@ -1514,8 +1404,6 @@ def prueba():
                              to=['analistati@pcsocial.org'])
         email.send()
 
-    url = "https://192.168.1.2:50000/b1s/v1/Logout"
-    responselogout = requests.request("POST", url, verify=False)
 
 
 
@@ -1524,6 +1412,29 @@ def pruebacorreo(request):
                          'Lamentablemente, su Servicio Financiero para el pedido : \n',
                          to=['juansebastianduartes@gmail.com'])
     email.send()
+
+
+def shhshshsh(request):
+    estado = 'bost_Open'
+    now = datetime.now(pytz.timezone('America/Bogota'))
+    hoy = now.date()
+    hora = now.time()
+    fecha_correos = hoy
+    errores = HistorialErrorTarea(
+        accion='Inicio de tarea',
+        fecha=hoy,
+        hora=hora,
+        empresa='No Corresponde',
+        pedido='No Corresponde',
+    )
+    errores.save()
+
+    url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
+           + str(fecha_correos) + "'"
+
+    response = sap_request(url2)
+    response = ast.literal_eval(response.text)
+    response = response['value']
 
 
 def tarea_correo_pedido(request):
@@ -1543,21 +1454,11 @@ def tarea_correo_pedido(request):
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
-
-        response = requests.request("POST", url, data=payload, verify=False)
-
-        respuesta = ast.literal_eval(response.text)
         url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
                + str(fecha_correos) + "'"
 
-        headers = {
-            'Prefer': 'odata.maxpagesize=999999',
-            'Cookie': 'B1SESSION=' + respuesta['SessionId']
-        }
-        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = sap_request(url2)
         response = ast.literal_eval(response.text)
         response = response['value']
         for datos in response:
@@ -1569,7 +1470,7 @@ def tarea_correo_pedido(request):
                         dependencias = 'LOGISTICA Y DESPACHOS'
                         url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
                                datos['CardCode'] + "'&dependencia='" + dependencias + "'"
-                        response2 = requests.request("GET", url3, headers=headers, verify=False)
+                        response2 = sap_request(url3)
                         response2 = ast.literal_eval(response2.text)
                         response2 = response2['value']
                         if response2==[]:
@@ -1669,8 +1570,6 @@ def tarea_correo_pedido(request):
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
     except:
         error = str(sys.exc_info()[1])
         now = datetime.now(pytz.timezone('America/Bogota'))
@@ -1684,13 +1583,8 @@ def tarea_correo_pedido(request):
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
 
     return HttpResponseRedirect('/configuracion/historial_email/')
-
-
-
 
 def tarea_correo_pedido_dos():
     try:
