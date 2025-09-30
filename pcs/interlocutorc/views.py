@@ -12,6 +12,7 @@ from interlocutorc.forms import *
 from interlocutorc.models import *
 from configuracion.models import *
 from configuracion.views import sap_request
+import configuracion.views as sap
 from django.core.mail import EmailMessage,EmailMultiAlternatives,send_mail
 from django.template.loader import render_to_string
 from django.contrib import messages
@@ -1414,27 +1415,7 @@ def pruebacorreo(request):
     email.send()
 
 
-def shhshshsh(request):
-    estado = 'bost_Open'
-    now = datetime.now(pytz.timezone('America/Bogota'))
-    hoy = now.date()
-    hora = now.time()
-    fecha_correos = hoy
-    errores = HistorialErrorTarea(
-        accion='Inicio de tarea',
-        fecha=hoy,
-        hora=hora,
-        empresa='No Corresponde',
-        pedido='No Corresponde',
-    )
-    errores.save()
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
-           + str(fecha_correos) + "'"
-
-    response = sap_request(url2)
-    response = ast.literal_eval(response.text)
-    response = response['value']
 
 
 def tarea_correo_pedido(request):
@@ -1587,7 +1568,11 @@ def tarea_correo_pedido(request):
     return HttpResponseRedirect('/configuracion/historial_email/')
 
 def tarea_correo_pedido_dos():
+
     try:
+        cookie = "B1SESSION=" + sap.SESSION
+        if sap.ROUTEID:  # por si tu SAP devuelve ROUTEID
+            cookie += "; ROUTEID=" + sap.ROUTEID
         estado = 'bost_Open'
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy=now.date()
@@ -1600,35 +1585,41 @@ def tarea_correo_pedido_dos():
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
 
-        payload = "{\"CompanyDB\":\"PCS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
+        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
+               + str(hoy) + "'"
 
-        response = requests.request("POST", url, data=payload, verify=False)
+        headers = {
+            'Prefer': 'odata.maxpagesize=999999',
+            'Cookie': cookie
+        }
+        response = requests.request("GET", url2, headers=headers, verify=False)
+        response = ast.literal_eval(response.text)
+        response = response['value']
 
-        respuesta = ast.literal_eval(response.text)
+
+
+        now = datetime.now(pytz.timezone('America/Bogota'))
+        hoy = now.date()
+        hora = now.time()
         errores = HistorialErrorTarea(
-            accion='Mensaje'+ str(respuesta),
+            accion='Fin de tarea',
             fecha=hoy,
             hora=hora,
             empresa='No Corresponde',
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
     except:
         error = str(sys.exc_info()[1])
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
         hora = now.time()
         errores = HistorialErrorTarea(
-            accion='Error de conexion prueba: ' + error,
+            accion='Error de conexion a: ' + error,
             fecha=hoy,
             hora=hora,
             empresa='No Corresponde',
             pedido='No Corresponde',
         )
         errores.save()
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
-        responselogout = requests.request("POST", url, verify=False)
