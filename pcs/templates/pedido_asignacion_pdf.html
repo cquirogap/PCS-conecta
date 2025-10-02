@@ -90,6 +90,7 @@
                     <tr>
                         <th>Numero de articulo</th>
                         <th>Nombre de articulo</th>
+                        <th></th>
                         <th>Cantidad</th>
                         <th>Precio por Unidad </th>
                         <th>Total</th>
@@ -99,7 +100,15 @@
 {% for fila in filas %}
 <tr>
     <td>{{ fila.referencia }}</td>
-    <td>{{ fila.nombre }}</td>
+    <td>
+    {{ fila.nombre }}<br>
+
+</td>
+    <td>{% if fila.imagen %}
+        <img src="{{ fila.imagen }}" width="30" height="30">
+    {% else %}
+        <em>Sin imagen</em>
+    {% endif %}</td>
     <td><center>{{ fila.cantidad }}</center></td>
     <td><center>{{ fila.preciocompra }}</center></td>
     <td><center>{{ fila.total_fila }}</center></td>

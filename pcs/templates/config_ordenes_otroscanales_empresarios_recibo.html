@@ -61,7 +61,8 @@
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
                                             <select class="form-control select2" style="width: 100%;" id="empresa_input" >
-                                                <option value="T" selected disabled></option>
+                                            <option value="" selected>-- Seleccione una empresa --</option>
+
                                                       {% for empresa in empresas %}
                                                       <option value="{{ empresa.id }}">
                                                           {{empresa.nombre}}
@@ -80,6 +81,11 @@
                                     <input type="text" class="form-control" id="referencia"
                                            name="referencia" placeholder="Referencia Producto" value="{{ referencia }}" >
                                 </div>
+                                <div class="col-md-6">
+                                        <label for="pedido">Pedido</label>
+                                        <input type="number" class="form-control" id="pedido"
+                                               name="pedido" placeholder="Numero de pedido" value="{{ pedido }}">
+                                    </div>
                                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
                                       <div class="col-md-12">
@@ -118,10 +124,12 @@
                                         <th>FECHAA</th>
                                         <th>REFERENCIA</th>
                                         <th>DESCRIPCION</th>
+                                        <th>IMAGEN</th>
                                         <TH>CODIGO EMPRESA</TH>
                                         <TH>EMPRESAA</TH>
-                                        <th>CANTREC</th>
+                                        <th>CANTPED</th>
                                         <th>CANTPEN</th>
+                                        <th>CANTREC</th>
                                         <th>NOVEDADES</th>
                                         <th>GUARDAR</th>
                                     </tr>

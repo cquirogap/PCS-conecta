@@ -2792,15 +2792,19 @@ var busqueda_pedidos_otros_canales_empresarios_recibo = function () {
                     "<td>" + casos[i].fecha + "</td>" +
                     "<td>" + casos[i].referencia + "</td>" +
                     "<td>" + casos[i].nombre + "</td>" +
+                    "<td><a href='"+casos[i].imagen+"' target=\"_blank\" class=\"btn btn-block btn-info\">\n" +
+                    "  Ver\n" +
+                    "</a></td>"+
                     "<td>" + casos[i].codigo + "</td>" +
                     "<td>" + casos[i].empresa + "</td>" +
+                    "<td>" + casos[i].cantidadped + "</td>" +
 
                     "<td>" +
                         "<input type='number' class='form-control' min='0' max='" + casos[i].cantidad + "' " +
                         "name='cantidad' value='" + casos[i].cantidad + "' form='" + formId + "'>" +
                     "</td>" +
 
-                    "<td>" + casos[i].cantidad + "</td>" +
+                    "<td>" + casos[i].cantidadrecibo + "</td>" +
 
                     "<td>" +
                         "<div class='form-check'>" +

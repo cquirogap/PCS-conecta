@@ -44,6 +44,7 @@ urlpatterns.extend(
         url(r'^prueba/$', interlocutorc_views.tarea_correo_pedido),
         url(r'^prueba_factura/$', interlocutorc_views.pruebacorreosfactura),
         url(r'^pruebasap/$', interlocutorc_views.prubasap2),
+        url(r'^pruebanueva/$', configuracion_views.tarea_correo_pedido_tres),
         url(r'^pruebacorreo/$', interlocutorc_views.enviar_correos),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         url(r'^api/pedidos/(?P<fecha>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.ApiPedidos.as_view(), name="api_pedidos"),
@@ -132,6 +133,7 @@ urlpatterns.extend(
         url(r'^configuracion/orden_pcs_otroscanales_cliente/detalle/(?P<id>[-\w]+)/$', configuracion_views.config_ordenes_otroscanales_pcs_detalle_cliente),
         url(r'^configuracion/orden_pcs_otroscanales_cliente/eliminar/(?P<id>[-\w]+)/$', configuracion_views.config_ordenes_otroscanales_pcs_eliminar_cliente),
         url(r'^configuracion/orden_pcs_otroscanales/detalles/$', configuracion_views.config_ordenes_otroscanales_pcs_detalles),
+        url(r'^configuracion/orden_pcs_otroscanales/detalles_todos/$', configuracion_views.config_ordenes_otroscanales_pcs_detalles_todos),
         url(r'^configuracion/orden_pcs_otroscanales/fecha_minima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_minima),
         url(r'^configuracion/orden_pcs_otroscanales/fecha_maxima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_maxima),
 

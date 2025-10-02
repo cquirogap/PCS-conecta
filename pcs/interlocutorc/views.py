@@ -1567,7 +1567,7 @@ def tarea_correo_pedido(request):
 
     return HttpResponseRedirect('/configuracion/historial_email/')
 
-def tarea_correo_pedido_dos():
+def tarea_correo_pedido_dos(request):
 
     try:
         cookie = "B1SESSION=" + sap.SESSION
