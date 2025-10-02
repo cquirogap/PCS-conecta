@@ -159,5 +159,5 @@ X_FRAME_OPTIONS = 'ALLOWALL'
 
 
 CRONJOBS = [
-    ('0 */1 * * *', 'interlocutorc.views.tarea_correo_pedido_dos'),
+    ('0 */1 * * *', 'configuracion.views.tarea_correo_pedido_tres'),
 ]
