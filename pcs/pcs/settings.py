@@ -149,8 +149,8 @@ LOGIN_URL = '/login/'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
-EMAIL_HOST_PASSWORD = 'aqyhafchutqwxjku'
+EMAIL_HOST_USER = 'juansebastianduartes@gmail.com'
+EMAIL_HOST_PASSWORD = 'bvyd giyr rona tnms'
 
 
 

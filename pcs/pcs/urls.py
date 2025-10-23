@@ -45,7 +45,7 @@ urlpatterns.extend(
         url(r'^prueba_factura/$', interlocutorc_views.pruebacorreosfactura),
         url(r'^pruebasap/$', interlocutorc_views.prubasap2),
         url(r'^pruebanueva/$', configuracion_views.tarea_correo_pedido_tres),
-        url(r'^pruebacorreo/$', interlocutorc_views.enviar_correos),
+        url(r'^pruebacorreo/$', interlocutorc_views.pruebacorreo),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         url(r'^api/pedidos/(?P<fecha>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.ApiPedidos.as_view(), name="api_pedidos"),
         #_______________________________________________ CONFIGURACION _____________________________________________
@@ -215,6 +215,9 @@ urlpatterns.extend(
         url(r'^configuracion/historial_detalle_pedidos/$', configuracion_views.config_historial_detalle_pedidos),
         url(r'^configuracion/servicio_crediya/$', configuracion_views.config_servicio_crediya),
         url(r'^configuracion/informe_recibo/$', configuracion_views.config_informe_recibo),
+        url(r'^configuracion/informe_pedido_otros_can/$', configuracion_views.config_informe_pedido_otros_can),
+        url(r'^configuracion/informe_pedido_otros_can_cliente/$', configuracion_views.config_informe_pedido_otros_can_cliente),
+        url(r'^configuracion/informe_cliente_fact/$', configuracion_views.config_informe_cliente_fact),
         url(r'^configuracion/servicio_crediya/informe/$', configuracion_views.config_servicio_crediya_informe),
         url(r'^configuracion/servicio_credilisto/informe/$', configuracion_views.config_servicio_credilisto_informe),
         url(r'^configuracion/servicio_credilisto/$', configuracion_views.config_servicio_credilisto),
