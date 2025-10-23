@@ -2751,6 +2751,16 @@ $("#form_facturacion").submit(function (e) {
 
 
 
+
+
+
+
+
+
+
+
+
+
 var busqueda_pedidos_otros_canales_empresarios_recibo = function () {
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
@@ -2785,27 +2795,36 @@ var busqueda_pedidos_otros_canales_empresarios_recibo = function () {
                 const formId = `form_${i}`;
 
                 lineas += "<tr>" +
+                    // Checkbox para seleccionar
+                    "<td><input type='checkbox' class='check-envio' data-id='" + casos[i].pk + "' data-empresa='" + casos[i].empresa + "'></td>" +
 
                     "<td>Pedido #" + casos[i].num_pedido + "</td>" +
                     "<td>" + casos[i].cliente + "</td>" +
-                    "<td>" + casos[i].cantidadped + "</td>" +
+
+                    // CANTPED (cantidad pedida)
+                    "<td>" + (casos[i].cantidad_pedida || casos[i].cantidadped || 0) + "</td>" +
+
                     "<td>" + casos[i].fecha + "</td>" +
                     "<td>" + casos[i].referencia + "</td>" +
                     "<td>" + casos[i].nombre + "</td>" +
-                    "<td><a href='"+casos[i].imagen+"' target=\"_blank\" class=\"btn btn-block btn-info\">\n" +
-                    "  Ver\n" +
-                    "</a></td>"+
+                    "<td><a href='" + casos[i].imagen + "' target='_blank' class='btn btn-block btn-info'>Ver</a></td>" +
                     "<td>" + casos[i].codigo + "</td>" +
                     "<td>" + casos[i].empresa + "</td>" +
-                    "<td>" + casos[i].cantidadped + "</td>" +
 
+                    // CANTPEN (cantidad pendiente)
+                    "<td>" + (casos[i].cantidad_pendiente || casos[i].cantpen || casos[i].cantidad || 0) + "</td>" +
+
+                    // Input de cantidad obligatoria
                     "<td>" +
-                        "<input type='number' class='form-control' min='0' max='" + casos[i].cantidad + "' " +
-                        "name='cantidad' value='" + casos[i].cantidad + "' form='" + formId + "'>" +
+                        "<input type='number' class='form-control cantidad-input' min='1' " +
+                        "max='" + (casos[i].cantidad_pendiente || casos[i].cantidad || 0) + "' " +
+                        "name='cantidad' value='" + (casos[i].cantidad_pendiente || casos[i].cantidad || 0) + "'>" +
                     "</td>" +
 
-                    "<td>" + casos[i].cantidadrecibo + "</td>" +
+                    // CANTREC (cantidad recibida)
+                    "<td>" + (casos[i].cantidad_recibida || casos[i].cantidadrecibo || 0) + "</td>" +
 
+                    // Novedades
                     "<td>" +
                         "<div class='form-check'>" +
                             "<input class='form-check-input toggle-novedad' type='checkbox' " +
@@ -2815,21 +2834,11 @@ var busqueda_pedidos_otros_canales_empresarios_recibo = function () {
                         "<div class='mt-2'>" +
                             "<textarea class='form-control d-none' style='display: none;' " +
                             "name='novedad' id='" + idUnico + "_textarea' rows='2' " +
-                            "placeholder='Escribe una novedad...' form='" + formId + "'></textarea>" +
+                            "placeholder='Escribe una novedad...'></textarea>" +
                         "</div>" +
                     "</td>" +
 
-                    "<td>" +
-                        "<form id='" + formId + "' action='/configuracion/recibo/otros_canales/' method='POST'>" +
-                            "<input type='hidden' name='csrfmiddlewaretoken' value='" + csrfToken + "'>" +
-                            "<input type='hidden' name='num_pedido' value='" + casos[i].pk + "'>" +
-                            "<button type='submit' class='btn btn-success'>" +
-                                "<i class='fa fa-check'></i>" +
-                            "</button>" +
-                        "</form>" +
-                    "</td>" +
-
-                    "</tr>";
+                "</tr>";
             }
 
             table_body.append(lineas);
@@ -2838,21 +2847,95 @@ var busqueda_pedidos_otros_canales_empresarios_recibo = function () {
             $(".toggle-novedad").change(function () {
                 const targetId = $(this).data("target");
                 const textarea = $("#" + targetId);
-
                 if (this.checked) {
                     textarea.removeClass("d-none").show();
                 } else {
                     textarea.addClass("d-none").hide();
-                    textarea.val("");  // Limpia si se desmarca
+                    textarea.val("");
                 }
             });
+
+            // Checkbox seleccionar todos
+            $("#select_all").off("change").on("change", function () {
+                $(".check-envio").prop("checked", this.checked);
+            });
+
+            // Botón para enviar seleccionados (solo se agrega una vez)
+            if ($("#enviar_seleccionados").length === 0) {
+                $("#tabla_infoc_medicamentos").after(
+                    "<div class='col-md-12 mt-3'>" +
+                        "<button id='enviar_seleccionados' class='btn btn-success btn-block btn-flat'>" +
+                            "<i class='fa fa-envelope'></i> Enviar seleccionados" +
+                        "</button>" +
+                    "</div>"
+                );
+            }
+
+            // Enviar seleccionados
+            $("#enviar_seleccionados").off("click").on("click", function () {
+                const seleccionados = [];
+
+                $(".check-envio:checked").each(function () {
+                    const fila = $(this).closest("tr");
+                    const cantidad = parseInt(fila.find("input[name='cantidad']").val(), 10);
+                    const novedad = fila.find("textarea[name='novedad']").val();
+
+                    if (!cantidad || cantidad <= 0) {
+                        alert("Debe ingresar una cantidad válida para todos los pedidos seleccionados.");
+                        throw new Error("Cantidad inválida");
+                    }
+
+                    seleccionados.push({
+                        id: $(this).data("id"),
+                        empresa: $(this).data("empresa"),
+                        cantidad: cantidad,
+                        novedad: novedad || ""
+                    });
+                });
+
+                if (seleccionados.length === 0) {
+                    alert("Debe seleccionar al menos un pedido.");
+                    return;
+                }
+
+                $.ajax({
+                    url: "/configuracion/recibo/otros_canales/",
+                    type: "POST",
+                    data: JSON.stringify({ pedidos: seleccionados }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    headers: { "X-CSRFToken": csrfToken },
+                    success: function (response) {
+                        alert("Pedidos enviados correctamente.");
+                        busqueda_pedidos_otros_canales_empresarios_recibo();
+                    },
+                    error: function (xhr) {
+                        alert("Error al enviar: " + xhr.responseText);
+                    }
+                });
+            });
+
+            console.log("Datos recibidos:", casos); // Debug opcional
         }
     });
-}
+};
 
 $("#busqueda_pedidos_otros_canales_empresarios_recibo").click(function (e) {
     busqueda_pedidos_otros_canales_empresarios_recibo();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

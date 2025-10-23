@@ -118,6 +118,7 @@
                               <table id="tabla_infoc_medicamentos" class="table table-hover">
                                 <thead>
                                     <tr>
+                                        <th><input type="checkbox" id="select_all"></th>
                                         <th>PEDIDO</th>
                                         <th>CLIENTE</th>
                                         <th>CANTPED</th>
@@ -131,7 +132,6 @@
                                         <th>CANTPEN</th>
                                         <th>CANTREC</th>
                                         <th>NOVEDADES</th>
-                                        <th>GUARDAR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -143,6 +143,11 @@
                                     </tr>
                                 </tfoot>
                               </table>
+                                <div class="col-md-12">
+    <button id="enviar_seleccionados" class="btn btn-success btn-block btn-flat">
+        <i class="fa fa-envelope"></i> Enviar seleccionados
+    </button>
+</div>
 
                             </div>
                             <!-- /.box-body -->
