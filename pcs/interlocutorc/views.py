@@ -1369,12 +1369,12 @@ def prueba():
                              'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
                              + empresas_str ,
                              to=['coordtecnologia@pcsocial.org'])
-        #email.send()
+        email.send()
         email = EmailMessage(' EMPRESAS SIN CORREO',
                              'las empresas que no tienen correos asignados al titulo LOGISTICA Y DESPACHOS son los siguientes: \n'
                              + empresas_str,
                              to=['analistati@pcsocial.org'])
-        #email.send()
+        email.send()
 
     if lista_correos_no_existentes==[]:
         pass
@@ -1384,12 +1384,12 @@ def prueba():
                              'las empresas que no se encuentran registradas en SAP son los siguientes: \n'
                              + empresas_str ,
                              to=['coordtecnologia@pcsocial.org'])
-        #email.send()
+        email.send()
         email = EmailMessage(' EMPRESAS NO REGISTRADAS',
                              'las empresas que no se encuentran registradas en SAP son los siguientes: \n'
                              + empresas_str,
                              to=['analistati@pcsocial.org'])
-        #email.send()
+        email.send()
     if lista_correos_simbolos_especiales==[]:
         pass
     else:
@@ -1398,12 +1398,12 @@ def prueba():
                              'Las empresas que hacen uso de simbolos especiales son las siguientes: \n'
                              + empresas_str ,
                              to=['coordtecnologia@pcsocial.org'])
-        #email.send()
+        email.send()
         email = EmailMessage(' EMPRESAS CON SIMBOLOS ESPECIALES',
                              'Las empresas que hacen uso de simbolos especiales son las siguientes: \n'
                              + empresas_str,
                              to=['analistati@pcsocial.org'])
-        #email.send()
+        email.send()
 
 
 
@@ -1411,8 +1411,8 @@ def prueba():
 def pruebacorreo(request):
     email = EmailMessage('SERVICIO FINANCIERO CREDIYA DENEGADO',
                          'Lamentablemente, su Servicio Financiero para el pedido : \n',
-                         to=['iaodooaprendizaje@gmail.com'])
-    #email.send()
+                         to=['juansebastianduartes@gmail.com'])
+    email.send()
 
 
 
@@ -1478,7 +1478,7 @@ def tarea_correo_pedido(request):
                                                              + 'http://160.153.178.159/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                                  datos['DocEntry']) + '/',
                                                              to=[correos])
-                                        #email.send()
+                                        email.send()
                                         enviados = HistorialEmailEnviados(
                                             fecha=hoy,
                                             hora=hora,

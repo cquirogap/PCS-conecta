@@ -144,14 +144,12 @@ MEDIA_URL = '/bodega/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'bodega')
 LOGIN_URL = '/login/'
 
-
 # Email parameters
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'juansebastianduartes@gmail.com'
-EMAIL_HOST_PASSWORD = 'bvyd giyr rona tnms'
-
+EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
+EMAIL_HOST_PASSWORD = 'jqqv zgjt jkpm ktau'
 
 
 X_FRAME_OPTIONS = 'ALLOWALL'
