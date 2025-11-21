@@ -9000,86 +9000,73 @@ def reporte_servicio_crediya(request):
         return response
 
 
-def reporte_facturas_activas(request):
 
+def reporte_facturas_activas(request):
     if request.method == 'GET':
         current_user = request.user
         nombre = current_user.username
         ahora = datetime.now(pytz.timezone('America/Bogota'))
-        hora = ahora.time()
         fecha_futura = ahora + timedelta(days=10)
         fecha_futura_str = fecha_futura.strftime('%Y-%m-%d')
-        subtitulo ="Facturas_Activas"
+        subtitulo = u"Facturas_Activas"
 
+        # Estilo para fecha en Excel
+        date_style = xlwt.XFStyle()
+        date_style.num_format_str = 'DD/MM/YYYY'
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasActivasV2')/List?fecha='" + fecha_futura_str + "'"
+        # Construir URL sin f-string
+        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasActivasV88')/List?fecha='" + fecha_futura_str + "'"
 
         response = sap_request(url2)
         response = response.text.replace('null', ' " " ')
         data = ast.literal_eval(response)
         facturas = data['value']
+
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename="FACTURAS_ACTIVAS.xls"'
 
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet(subtitulo)
 
-
-        # Sheet header, first row
+        # Encabezados
         row_num = 0
-
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
 
-        columns = ['Numero Factura Empresa',
-                   'Valor',
-                   'Pagado',
-                   'Saldo',
-                   'Fecha Vencimiento',
-                   'Nombre Empresario',
-                   ]
+        columns = ['Numero Factura Empresa', 'Valor', 'Pagado', 'Saldo', 'Fecha Vencimiento', 'Nombre Empresario']
 
         for col_num in range(len(columns)):
-            cwidth = ws.col(col_num).width
-            if (len(columns[col_num]) * 367) > cwidth:
-                ws.col(col_num).width = (len(columns) * 367)
+            ws.col(col_num).width = (len(columns[col_num]) * 367)
             ws.write(row_num, col_num, columns[col_num], font_style)
 
-        # Sheet body, remaining rows
+        # Cuerpo
         font_style = xlwt.XFStyle()
 
-        rows = []
-
         for d in facturas:
-            numero_fact_emp =str(d['NumAtCard']),
-            valor =str(d['DocTotal']),
-            pagado =str(d['PaidToDate']),
-            fecha_ven =str(d['DocDueDate']),
-            nombre_emp =str(d['CardName']),
-            if valor and pagado:
-                saldo_calculado = float(valor) - float(pagado)
-            else:
-                saldo_calculado = 1
+            numero_fact_emp = unicode(d['NumAtCard'])
+            valor = float(d['DocTotal'])
+            pagado = float(d['PaidToDate'])
+            fecha_ven_raw = str(d['DocDueDate'])
+            nombre_emp = unicode(d['CardName'])
 
-            saldo =str(saldo_calculado),
+            # Convertir fecha
+            fecha_ven = datetime.strptime(fecha_ven_raw, "%Y%m%d")
 
-            datos = [(
-                numero_fact_emp,
-                valor,
-                pagado,
-                saldo,
-                fecha_ven,
-                nombre_emp,
-            )]
-            rows.extend(datos)
+            # Calcular saldo
+            saldo_calculado = valor - pagado
 
-        for row in rows:
+            # Escribir fila
             row_num += 1
-            for col_num in range(len(row)):
-                ws.write(row_num, col_num, row[col_num], font_style)
+            ws.write(row_num, 0, numero_fact_emp)
+            ws.write(row_num, 1, valor)
+            ws.write(row_num, 2, pagado)
+            ws.write(row_num, 3, saldo_calculado)
+            ws.write(row_num, 4, fecha_ven, date_style)  # Formato fecha
+            ws.write(row_num, 5, nombre_emp)
 
         wb.save(response)
         return response
+
 
 
 
