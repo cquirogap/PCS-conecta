@@ -1,5 +1,6 @@
 bodega/
-
 pcs/bodega/*
 pcs/bodega/*
 !pcs/bodega/.gitkeep
+*.pyc
+pcs/db.sqlite3
