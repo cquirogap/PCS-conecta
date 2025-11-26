@@ -373,7 +373,7 @@ class ApiPedidos(APIView):
 
             # 2. Consulta con fecha
             url_query = (
-                "https://192.168.1.2:50000/b1s/v1/SQLQueries('serviciospeventas')"
+                "https://192.168.1.2:50000/b1s/v1/SQLQueries('servicioventasspev1')"
                 "/List?fecha='" + str(fecha) + "'"
             )
 
