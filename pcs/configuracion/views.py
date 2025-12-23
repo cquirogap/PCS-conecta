@@ -2157,28 +2157,77 @@ def config_ordenes_otroscanales_pcs_detalle(request, id):
         current_user = request.user
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
         pedido = PedidosOtrosCanales.objects.filter(num_pedido=id).first()
-        pedidodetalle = DetallesPedidosOtrosCanales.objects.filter(num_pedido=id)
+        pedidodetalle = DetallesPedidosOtrosCanales.objects.filter(num_pedido=id,multiple=False)
         dato_lista=[]
+        pedidodetalle_multiple = DetallesPedidosOtrosCanales.objects.filter(num_pedido=id,multiple=True)
+        dato_lista_multiple = []
+        pedidodetalle_plu = DetallesPedidosOtrosCanales_plus.objects.filter(num_pedido=id)
+        dato_lista_plu = []
+
+        for detalles_plu in pedidodetalle_plu:
+            articulo_lista_plu = []
+            asignaciones_plu = AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=detalles_plu.id)
+            articulos_plu = MaestroArticulo.objects.filter(u_plu=detalles_plu.u_plu)
+            for articulo_plu in articulos_plu:
+                articulo_lista_plu.append(articulo_plu.proveedorCodigo)
+            data_detalle_plu = {
+                'id': detalles_plu.id,
+                'u_plu': detalles_plu.u_plu,
+                'cantidad': detalles_plu.cantidad,
+                'observaciones': detalles_plu.observaciones,
+                'asignaciones': asignaciones_plu,
+                'articulos': articulo_lista_plu
+            }
+            dato_lista_plu.append(data_detalle_plu)
+
         for detalles in pedidodetalle:
-            variable= AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=detalles.id)
+            articulo_lista = []
+            asignaciones = AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=detalles.id)
+            #articulos = MaestroArticulo.objects.filter(u_plu=detalles.u_plu)
+            articulos = MaestroArticulo.objects.filter(itemCode=detalles.referencia)
+            for articulo in articulos:
+                articulo_lista.append(articulo.proveedorCodigo)
             data_detalle = {
                 'id': detalles.id,
+                'u_plu': detalles.u_plu,
                 'referencia': detalles.referencia,
                 'nombre': detalles.nombre,
                 'cantidad': detalles.cantidad,
                 'observaciones': detalles.observaciones,
-                'asignaciones': AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=detalles.id)
+                'asignaciones': asignaciones,
+                'articulos': articulo_lista
             }
             dato_lista.append(data_detalle)
-        empresas=Empresas.objects.filter(tipo='Empresario')
 
+        for detalles_multiple in pedidodetalle_multiple:
+            articulo_lista_multiple = []
+            asignaciones = AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=detalles_multiple.id)
+            #articulos = MaestroArticulo.objects.filter(u_plu=detalles.u_plu)
+            articulos = MaestroArticulo.objects.filter(itemCode=detalles_multiple.referencia)
+            for articulo in articulos:
+                articulo_lista_multiple.append(articulo.proveedorCodigo)
+            data_detalle_multiple = {
+                'id': detalles_multiple.id,
+                'u_plu': detalles_multiple.u_plu,
+                'referencia': detalles_multiple.referencia,
+                'nombre': detalles_multiple.nombre,
+                'cantidad': detalles_multiple.cantidad,
+                'observaciones': detalles_multiple.observaciones,
+                'asignaciones': asignaciones,
+                'articulos': articulo_lista_multiple
+            }
+            dato_lista_multiple.append(data_detalle_multiple)
+
+        empresas=Empresas.objects.filter(tipo='Empresario')
 
         if not current_user.is_staff:
             return HttpResponseRedirect('/login/')
 
         return render(request, "config_ordenes_otroscanales_pcs_detalle.html", {'user': current_user,
                                                         'pedido': pedido,
+                                                        'pedidodetalle_plu': dato_lista_plu,
                                                         'pedidodetalle': dato_lista,
+                                                        'pedidodetalle_multiple': dato_lista_multiple,
                                                         'asignacion_editar': asignacion_editar,
                                                         'empresas': empresas,
                                                         'permiso_usuario': usuario_datos,
@@ -2209,6 +2258,30 @@ def config_ordenes_otroscanales_pcs_eliminar(request, id):
     else:
         pass
 
+def config_ordenes_otroscanales_pcs_producto_eliminar(request, id):
+
+    if request.method == 'GET':
+        current_user = request.user
+        pedido_id = request.GET.get('pedido')
+
+        asignaciones=AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=int(id))
+        for asignacion in asignaciones:
+            asignacion.delete()
+
+        detalle=DetallesPedidosOtrosCanales.objects.get(pk=id)
+        detalle.delete()
+
+        messages.add_message(request, messages.WARNING,
+                             'Se ha borrado la linea de producto ' + str(id) + ' satisfactoriamente')
+
+
+        if not current_user.is_staff:
+            return HttpResponseRedirect('/login/')
+
+        return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/'+pedido_id)
+
+    else:
+        pass
 
 def config_ordenes_otroscanales_pcs_detalle_edi(request):
 
@@ -2395,6 +2468,7 @@ def config_ordenes_otroscanales_pcs_detalle_cliente(request, id):
             variable= AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=detalles.id)
             data_detalle = {
                 'id': detalles.id,
+                'u_plu': detalles.u_plu,
                 'referencia': detalles.referencia,
                 'cantidad': detalles.cantidad,
                 'nombre': detalles.nombre,
@@ -2455,6 +2529,23 @@ def config_ordenes_otroscanales_pcs_detalles(request):
         id = request.POST['id']
         pedido = request.POST['pedido']
         cantidad = request.POST['cantidad']
+
+        # detallepedido_id = DetallesPedidosOtrosCanales.objects.filter(id=id).first()
+        # empresario = Empresas.objects.filter(id=empresa).first()
+        # articulo = MaestroArticulo.objects.filter(u_plu=detallepedido_id.u_plu,
+        #                                           proveedorCodigo=empresario.codigo).first()
+        #
+        # detallepedidootros = DetallesPedidosOtrosCanales(
+        #     num_pedido_id=pedido,
+        #     cantidad=cantidad,
+        #     nombre=articulo.itemName,
+        #     referencia=articulo.itemCode,
+        #     u_plu=articulo.u_plu,
+        #     observaciones=detallepedido_id.observaciones,
+        #     empresa=empresario,
+        #     # articulo=articulo,
+        # )
+        # detallepedidootros.save()
 
         if int(cantidad) <= 0:
             if request.is_ajax():
@@ -2529,7 +2620,71 @@ def config_ordenes_otroscanales_pcs_detalles(request):
 
         return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + pedido + '/')
 
+def config_ordenes_otroscanales_pcs_plus_detalles(request):
+    if request.method == 'POST':
+        hoy = date.today()
+        current_user = request.user
+        empresa = request.POST['empresa']
+        id = request.POST['id']
+        pedido = request.POST['pedido']
+        cantidad = request.POST['cantidad_plu']
 
+        if int(cantidad) <= 0:
+            if request.is_ajax():
+                return JsonResponse({'success': False, 'message': 'No es posible asignar valores <= 0.'})
+            messages.error(request, 'No es posible asignar valores que sean iguales o inferiores a cero.')
+            return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + pedido + '/')
+
+        detalle_plu = DetallesPedidosOtrosCanales_plus.objects.filter(pk=id).first()
+        observacion = detalle_plu.observaciones
+        plu_pedido = detalle_plu.u_plu
+        plu_cantidad = detalle_plu.cantidad
+        empresario = Empresas.objects.filter(pk=int(empresa)).first()
+
+        articulo_plu = MaestroArticulo.objects.filter(u_plu=plu_pedido, proveedorCodigo=empresario.codigo).first()
+        detalle_all = DetallesPedidosOtrosCanales.objects.filter(num_pedido=int(pedido),u_plu=plu_pedido)
+        detalle_cantidad_total = 0
+        for d in detalle_all:
+            detalle_cantidad_total = d.cantidad
+
+        cantidad_total = int(cantidad) + detalle_cantidad_total
+
+        if plu_cantidad < cantidad_total:
+            if request.is_ajax():
+                return JsonResponse({'success': False, 'message': 'Cantidad máxima superada.'})
+            messages.error(request, 'No se puede asignar. La cantidad máxima de la articulo '+plu_pedido+' fue superada')
+            return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + pedido + '/')
+
+        detalle = detalle_all.filter(referencia=articulo_plu.itemCode)
+        if detalle:
+            if request.is_ajax():
+                return JsonResponse({'success': False, 'message': 'El producto: ' + articulo_plu.itemName +' - '+ plu_pedido + ' ya fue registrado'})
+            messages.error(request,
+                           'El producto: ' + articulo_plu.itemName +' - '+ plu_pedido + ' ya fue registrado')
+            return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + pedido + '/')
+
+        # Crear detalle completo
+        detallepedidootros = DetallesPedidosOtrosCanales(
+            num_pedido_id=int(pedido),
+            cantidad=cantidad,
+            nombre=articulo_plu.itemName,
+            referencia=articulo_plu.itemCode,
+            u_plu=articulo_plu.u_plu,
+            observaciones=observacion,
+            empresa=empresario,
+            multiple=True,
+        )
+        detallepedidootros.save()
+
+        asignacion = AsignacionPedidosOtrosCanales(
+            num_detalle=detallepedidootros,
+            cantidad=cantidad,
+            empresa=empresario,
+            fecha=hoy,
+        )
+        asignacion.save()
+
+        return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + pedido + '/')
 
 def config_ordenes_otroscanales_pcs_detalles_todos(request):
     if request.method == 'POST':
@@ -2589,7 +2744,48 @@ def config_ordenes_otroscanales_pcs_detalles_todos(request):
                              "Se asignaron todos los detalles del pedido a la empresa seleccionada")
         return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + str(pedido_id) + '/')
 
+def config_ordenes_otroscanales_pcs_estado(request):
+    if request.method == 'POST':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
+        estado = request.POST['estado']
+        pedido = request.POST['pedido']
+        id = request.POST['id']
+
+        if estado == 'asignado':
+            detalle = DetallesPedidosOtrosCanales.objects.filter(num_pedido=id)
+            for d in detalle:
+                asignacion_cantidad = 0
+                asignaciones = AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=d.id)
+                for asignacion in asignaciones:
+                    asignacion_cantidad += asignacion.cantidad
+                if not asignacion_cantidad == d.cantidad:
+                    messages.add_message(request, messages.ERROR,
+                                         "Al producto: "+d.nombre+' (REF: '+d.referencia+') no tiene todas las unidades asignadas.')
+                    return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + pedido + '/')
+
+            detalle_plus = DetallesPedidosOtrosCanales_plus.objects.filter(num_pedido=id)
+            for d_plus in detalle_plus:
+                detalle = DetallesPedidosOtrosCanales.objects.filter(num_pedido=id,u_plu=d_plus.u_plu)
+                asignacion_cantidad = 0
+                for d in detalle:
+                    asignaciones = AsignacionPedidosOtrosCanales.objects.filter(num_detalle_id=d.id)
+                    for asignacion in asignaciones:
+                        asignacion_cantidad += asignacion.cantidad
+                if not asignacion_cantidad == d_plus.cantidad:
+                    messages.add_message(request, messages.ERROR,
+                                         "los productos con U_PLU: " + d_plus.u_plu + ' no tiene todas las unidades asignadas.')
+                    return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + pedido + '/')
+
+            PedidosOtrosCanales.objects.filter(pk=id).update(estado=estado)
+            messages.add_message(request, messages.SUCCESS,
+                                 "el pedido: " + pedido + ' se ha asignado correctamente.')
+            return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/' + pedido + '/')
+
+        PedidosOtrosCanales.objects.filter(pk=id).update(estado=estado)
+
+        return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/'+pedido+'/')
 
 def config_ordenes_otroscanales_pcs_fecha_minima(request):
     if request.method == 'POST':
@@ -4823,12 +5019,14 @@ def informacion_pedidos_otros_canales_empresario_facturar(request, ):
 
         lista_infoc = AsignacionPedidosOtrosCanales.objects.all()
 
-        fecha_inicio = request.GET.get('fecha_inicio')
-        fecha_fin = request.GET.get('fecha_fin')
-        empresa_input = request.GET.get('empresa_input')
-        pedido = request.GET.get('pedido')
-        estado = request.GET.get('estado')
-        referencia = request.GET.get('referencia')
+        fecha_inicio = request.GET.get('fecha_inicio') or ''
+        fecha_fin = request.GET.get('fecha_fin') or ''
+        empresa_input = request.GET.get('empresa_input') or ''
+        pedido = request.GET.get('pedido') or ''
+        estado = request.GET.get('estado') or ''
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+
         if estado=='enproceso':
             estado='en proceso'
         if not fecha_inicio == '' and not fecha_fin == '':
@@ -4841,6 +5039,8 @@ def informacion_pedidos_otros_canales_empresario_facturar(request, ):
             lista_infoc= lista_infoc.filter(num_detalle__num_pedido__estado=estado)
         if not referencia == '':
             lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
         cuenta = lista_infoc.count()
         paginador = Paginator(lista_infoc, PAGINADOR)
         pagina = request.GET.get('page')
@@ -4873,6 +5073,7 @@ def informacion_pedidos_otros_canales_empresario_facturar(request, ):
                 'codigo': info.empresa.codigo,
                 'fecha': fecha,
                 'referencia': info.num_detalle.referencia,
+                'u_plu': info.num_detalle.u_plu,
                 'nombre': info.num_detalle.nombre,
                 'observaciones': info.num_detalle.observaciones,
                 'empresa':info.empresa.nombre,
@@ -4904,12 +5105,13 @@ def informacion_pedidos_otros_canales_empresario_recibo(request, ):
 
         lista_infoc = AsignacionPedidosOtrosCanales.objects.exclude(cantidad=F('cantidadrecibo'))
 
-        fecha_inicio = request.GET.get('fecha_inicio')
-        fecha_fin = request.GET.get('fecha_fin')
-        empresa_input = request.GET.get('empresa_input')
-        pedido = request.GET.get('pedido')
-        estado = request.GET.get('estado')
-        referencia = request.GET.get('referencia')
+        fecha_inicio = request.GET.get('fecha_inicio') or ''
+        fecha_fin = request.GET.get('fecha_fin') or ''
+        empresa_input = request.GET.get('empresa_input') or ''
+        pedido = request.GET.get('pedido') or ''
+        estado = request.GET.get('estado') or ''
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
         if estado=='enproceso':
             estado='en proceso'
         if not fecha_inicio == '' and not fecha_fin == '':
@@ -4922,6 +5124,8 @@ def informacion_pedidos_otros_canales_empresario_recibo(request, ):
             lista_infoc= lista_infoc.filter(num_detalle__num_pedido__estado=estado)
         if not referencia == '':
             lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
         cuenta = lista_infoc.count()
         paginador = Paginator(lista_infoc, PAGINADOR)
         pagina = request.GET.get('page')
@@ -4960,6 +5164,7 @@ def informacion_pedidos_otros_canales_empresario_recibo(request, ):
                 'pk': info.pk,
                 'codigo': info.empresa.codigo,
                 'fecha': fecha,
+                'u_plu': info.num_detalle.u_plu,
                 'referencia': info.num_detalle.referencia,
                 'nombre': info.num_detalle.nombre,
                 'observaciones': info.num_detalle.observaciones,
@@ -9521,7 +9726,7 @@ def config_estado_sistema(request):
 
 
 def config_excel_pedidos_externos(request):
-    # Render  administracion.html
+    # Render de la vista de configuración (GET)
     if request.method == 'GET':
         current_user = request.user
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
@@ -9534,27 +9739,37 @@ def config_excel_pedidos_externos(request):
             'permiso_usuario': usuario_datos,
         })
 
+    # Procesamiento del Excel (POST)
     elif request.method == 'POST':
         hoy = date.today()
         hora = datetime.now().time()
-        usuarios = User.objects.all()
         current_user = request.user
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+
+        # Validar archivo
+        if 'excel' not in request.FILES:
+            messages.add_message(request, messages.ERROR, 'Debe adjuntar un archivo de Excel.')
+            return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+
         excel_file = request.FILES['excel']
-        wb = openpyxl.load_workbook(excel_file)
+
+        try:
+            wb = openpyxl.load_workbook(excel_file)
+        except Exception:
+            messages.add_message(request, messages.ERROR, 'No se pudo leer el archivo de Excel.')
+            return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+
         sheet = wb.active
+
+        # Último registro para consecutivo
         ultimo_registro = PedidosOtrosCanales.objects.all().last()
+        consecutivo = 1 if ultimo_registro is None else (ultimo_registro.num_pedido + 1)
 
-
-
-        # Consecutivo del pedido
-        consecutivo = 1 if ultimo_registro is None else ultimo_registro.num_pedido + 1
-
-        # --- Ahora estos campos son opcionales ---
+        # Campos opcionales desde el Excel
         nro_pedido = sheet['B3'].value if sheet['B3'].value else None
         fecha_pediw = sheet['B4'].value if sheet['B4'].value else None
 
-        # Guardar pedido
+        # Guardar encabezado del pedido
         pedidootros = PedidosOtrosCanales(
             num_pedido=consecutivo,
             empresa=usuario_datos.empresa,
@@ -9566,49 +9781,249 @@ def config_excel_pedidos_externos(request):
         )
         pedidootros.save()
 
-        # Recorrer filas desde la 7
+        # Recorrer filas desde la 7 (A7, B7, C7, ...)
         for row in sheet.iter_rows(min_row=7, values_only=True):
-            referencia = row[0]
+            u_plu = row[0]
             necesidad = row[1]
             observacion = row[2]
 
-            if isinstance(necesidad, (int, float, long)):  # solo acepta números
-                if referencia is not None:
-                    url3 = (
-                        "https://192.168.1.2:50000/b1s/v1/SQLQueries('ProductosEDI5')/List?producto='"
-                        + str(referencia) + "'"
-                    )
+            # Validar cantidad numérica (Py2.7)
+            if isinstance(necesidad, (int, float, long)):
+                # Validar que haya PLU diligenciado
+                if u_plu is not None and (not isinstance(u_plu, basestring) or u_plu.strip() != u''):
+                    # Normalizar u_plu si es cadena
+                    if isinstance(u_plu, basestring):
+                        u_plu = u_plu.strip()
 
-                    response1 = sap_request(url3)
-                    response1 = response1.text.replace('null', ' " " ')
-                    response1 = ast.literal_eval(response1)
-                    response1 = response1['value']
+                    # Buscar en Portal por PLU
+                    articulos_plu_qs = MaestroArticulo.objects.filter(u_plu=u_plu)
 
-                    if response1 != []:
-                        response1 = response1[0]
-                        detallepedidootros = DetallesPedidosOtrosCanales(
-                            num_pedido_id=int(consecutivo),
-                            cantidad=necesidad,
-                            nombre=response1['ItemName'],
-                            referencia=response1['ItemCode'],
-                            observaciones=observacion,
+                    if not articulos_plu_qs.exists():
+                        # No está en Portal → consultar SAP
+                        url3 = (
+                            "https://192.168.1.2:50000/b1s/v1/SQLQueries('ProductosOtrosCanalesv1')/List?producto='"
+                            + unicode(u_plu) + "'"
                         )
+
+                        raw = sap_request(url3)
+                        # Parseo robusto del cuerpo (preferir JSON)
+                        try:
+                            data_sap = json.loads(raw.text)  # {'value': [...]}
+                        except ValueError:
+                            # Fallback si viene como texto tipo dict
+                            try:
+                                data_sap = ast.literal_eval(raw.text)
+                            except Exception:
+                                data_sap = {}
+
+                        response_list = data_sap.get('value') or []
+                        count = len(response_list)
+
+                        if count == 0:
+                            # No hay datos en SAP para ese PLU
+                            pedidootros.delete()
+                            messages.add_message(
+                                request, messages.ERROR,
+                                'No se encuentra el PLU ' + unicode(u_plu) + ' en el sistema SAP'
+                            )
+                            return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+
+                        elif count == 1:
+                            # Un único resultado
+                            item = response_list[0]
+
+                            # Ver si ya existe en Portal por itemCode
+                            articulo = MaestroArticulo.objects.filter(itemCode=item.get('ItemCode')).first()
+                            if not articulo:
+                                # Crear en Portal con datos de SAP
+                                maestroarticulo = MaestroArticulo(
+                                    itemCode=item.get('ItemCode'),
+                                    codeBars=item.get('CodeBars'),
+                                    itemName=item.get('ItemName'),
+                                    proveedorCodigo=item.get('ProveedorCodigo'),
+                                    proveedorNombre=item.get('ProveedorNombre'),
+                                    u_plu=item.get('U_PLU'),
+                                )
+                                maestroarticulo.save()
+                                articulo = maestroarticulo
+
+                            # Validar proveedor en Portal
+                            empresario = Empresas.objects.filter(codigo=item.get('ProveedorCodigo')).first()
+                            if not empresario:
+                                pedidootros.delete()
+                                messages.add_message(
+                                    request, messages.ERROR,
+                                    'En Portal Conecta no se encuentra registrado el proveedor: '+item.get('ProveedorNombre')+' - '+item.get('ProveedorCodigo')
+                                )
+                                return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+
+                            # Crear detalle completo
+                            detallepedidootros = DetallesPedidosOtrosCanales(
+                                num_pedido_id=int(consecutivo),
+                                cantidad=necesidad,
+                                nombre=articulo.itemName,
+                                referencia=articulo.itemCode,
+                                u_plu=articulo.u_plu,
+                                observaciones=observacion,
+                                empresa=empresario,
+                                #articulo=articulo,
+                            )
+                            detallepedidootros.save()
+
+                            asignacion = AsignacionPedidosOtrosCanales(
+                                num_detalle_id=detallepedidootros.id,
+                                cantidad=necesidad,
+                                empresa_id=detallepedidootros.empresa.id,
+                                fecha=hoy
+                            )
+                            asignacion.save()
+
+                        else:
+                            items = response_list
+                            for item in items:
+                                # Ver si ya existe en Portal por itemCode
+                                articulo = MaestroArticulo.objects.filter(itemCode=item.get('ItemCode'))
+                                if not articulo:
+                                    # Crear en Portal con datos de SAP
+                                    maestroarticulo = MaestroArticulo(
+                                        itemCode=item.get('ItemCode'),
+                                        codeBars=item.get('CodeBars'),
+                                        itemName=item.get('ItemName'),
+                                        proveedorCodigo=item.get('ProveedorCodigo'),
+                                        proveedorNombre=item.get('ProveedorNombre'),
+                                        u_plu=item.get('U_PLU'),
+                                    )
+                                    maestroarticulo.save()
+
+                                # Validar proveedor en Portal
+                                empresario = Empresas.objects.filter(codigo=item.get('ProveedorCodigo')).first()
+                                if not empresario:
+                                    pedidootros.delete()
+                                    messages.add_message(
+                                        request, messages.ERROR,
+                                        'En Portal Conecta no se encuentra registrado el proveedor: '+item.get('ProveedorNombre')+' - '+item.get('ProveedorCodigo')
+                                    )
+                                    return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+
+                                # detallepedidootros = DetallesPedidosOtrosCanales(
+                                #     num_pedido_id=int(consecutivo),
+                                #     cantidad=necesidad,
+                                #     nombre=item.get('ItemName'),
+                                #     referencia=item.get('ItemCode'),
+                                #     u_plu=item.get('U_PLU'),
+                                #     observaciones=observacion,
+                                #     empresa=empresario,
+                                #     # articulo=articulo,
+                                # )
+                                # detallepedidootros.save()
+
+                            detallepedidootros_plu = DetallesPedidosOtrosCanales_plus(
+                                num_pedido_id=int(consecutivo),
+                                cantidad=necesidad,
+                                u_plu=u_plu,
+                                observaciones=observacion,
+                            )
+                            detallepedidootros_plu.save()
+
+                            # # Más de un resultado → ambigüedad → guardar detalle parcial con PLU
+                            # detallepedidootros = DetallesPedidosOtrosCanales(
+                            #     num_pedido_id=int(consecutivo),
+                            #     cantidad=necesidad,
+                            #     u_plu=u_plu,
+                            #     observaciones=observacion,
+                            # )
+                            # detallepedidootros.save()
+
                     else:
-                        pedidootros.delete()
-                        messages.add_message(
-                            request, messages.ERROR,
-                            'No se encuentra la referencia ' + str(referencia) + ' en el sistema'
-                        )
-                        return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+                        # Ya existe al menos un artículo con ese PLU en Portal
+                        count_plu = articulos_plu_qs.count()
+
+                        if count_plu == 1:
+                            articulo = articulos_plu_qs.first()
+                            # Validar proveedor
+                            empresario = Empresas.objects.filter(codigo=articulo.proveedorCodigo).first()
+                            if not empresario:
+                                pedidootros.delete()
+                                messages.add_message(
+                                    request, messages.ERROR,
+                                    'No se encuentra registrado el proveedor del producto en Portal Conecta'
+                                )
+                                return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+
+                            # Crear detalle completo
+                            detallepedidootros = DetallesPedidosOtrosCanales(
+                                num_pedido_id=int(consecutivo),
+                                cantidad=necesidad,
+                                nombre=articulo.itemName,
+                                referencia=articulo.itemCode,
+                                u_plu=articulo.u_plu,
+                                observaciones=observacion,
+                                empresa=empresario,
+                                #articulo=articulo,
+                            )
+                            detallepedidootros.save()
+
+                            asignacion = AsignacionPedidosOtrosCanales(
+                                num_detalle_id=detallepedidootros.id,
+                                cantidad=necesidad,
+                                empresa_id=detallepedidootros.empresa.id,
+                                fecha=hoy
+                            )
+                            asignacion.save()
+
+                        else:
+                            for articulo_plu in articulos_plu_qs:
+                                # Validar proveedor
+                                empresario = Empresas.objects.filter(codigo=articulo_plu.proveedorCodigo).first()
+                                if not empresario:
+                                    pedidootros.delete()
+                                    messages.add_message(
+                                        request, messages.ERROR,
+                                        'No se encuentra registrado el proveedor del producto en Portal Conecta'
+                                    )
+                                    return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+
+                                # Crear detalle completo
+                                # detallepedidootros = DetallesPedidosOtrosCanales(
+                                #     num_pedido_id=int(consecutivo),
+                                #     cantidad=necesidad,
+                                #     nombre=articulo_plu.itemName,
+                                #     referencia=articulo_plu.itemCode,
+                                #     u_plu=articulo_plu.u_plu,
+                                #     observaciones=observacion,
+                                #     empresa=empresario,
+                                #     # articulo=articulo,
+                                # )
+                                # detallepedidootros.save()
+
+                            detallepedidootros_plu = DetallesPedidosOtrosCanales_plus(
+                                num_pedido_id=int(consecutivo),
+                                cantidad=necesidad,
+                                u_plu=u_plu,
+                                observaciones=observacion,
+                            )
+                            detallepedidootros_plu.save()
+
+                            # Hay múltiples artículos con el mismo PLU → ambigüedad
+                            # detallepedidootros = DetallesPedidosOtrosCanales(
+                            #     num_pedido_id=int(consecutivo),
+                            #     cantidad=necesidad,
+                            #     u_plu=u_plu,
+                            #     observaciones=observacion,
+                            # )
+                            # detallepedidootros.save()
+
                 else:
+                    # PLU vacío o None
                     pedidootros.delete()
                     messages.add_message(
                         request, messages.ERROR,
-                        'Hay un valor en el campo de referencia que se encuentra sin diligenciar'
+                        'Debe diligenciar el código PLU'
                     )
                     return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
 
             else:
+                # Cantidad no numérica
                 if necesidad is None:
                     pedidootros.delete()
                     messages.add_message(
@@ -9624,8 +10039,6 @@ def config_excel_pedidos_externos(request):
                     )
                     return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
 
-            detallepedidootros.save()
-
         # Enviar correo a usuarios con perfiles específicos
         usuarios_correo = Usuarios_datos.objects.filter(perfil_pcs_id__in=[8, 21, 23])
         for correos in usuarios_correo:
@@ -9635,10 +10048,10 @@ def config_excel_pedidos_externos(request):
                 str(usuario_datos.empresa.nombre),
                 to=[correos.usuario.email]
             )
-            email.send()
+            # email.send()
 
         messages.add_message(request, messages.INFO,
-                             'Se ha registrado el pedido satisfactoriamente')
+                             'Se ha registrado el pedido #'+str(consecutivo)+' exitosamente.')
 
         # Cerrar sesión en SAP
 

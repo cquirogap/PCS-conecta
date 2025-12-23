@@ -42,7 +42,8 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="page-header">
-               Detalle Pedido # {% if pedido.numero_pedido_cliente %} {{ pedido.numero_pedido_cliente }}{% else %}{{ pedido }}{% endif %}
+<!--               Detalle Pedido # {% if pedido.numero_pedido_cliente %} {{ pedido.numero_pedido_cliente }}{% else %}{{ pedido }}{% endif %}-->
+               Detalle Pedido # {{ pedido }}
             </h2>
         </div>
     </div>
@@ -54,8 +55,24 @@
         <div class="col-sm-4 invoice-col">
             Cliente :<br>
             <strong>{{pedido.empresa.nombre}}</strong><br><br>
-            Estado :<br>
-            <strong>{{pedido.estado}}</strong><br><br>
+            <form role="form" action="/configuracion/orden_pcs_otroscanales/estado/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="id"  value="{{ pedido.pk }}">
+                <input type="hidden" name="pedido" value="{{ pedido }}">
+                <label>Estado </label>
+                <div class="input-group ">
+                    <span class="input-group-addon"><i class="fa fa-check"></i></span>
+                    <select class="form-control select2" style="width: 100%;" name="estado" required>
+                            <option value="asignado" {% if pedido.estado == 'asignado' %}selected{% endif %}>Asignado</option>
+                            <option value="pendiente" {% if pedido.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                            <option value="en proceso" {% if pedido.estado == 'en proceso' %}selected{% endif %}>En proceso</option>
+                            <option value="completado" {% if pedido.estado == 'completado' %}selected{% endif %}>Completado</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-info btn-flat">Guardar</button>
+                    </span>
+                </div>
+            </form>
 
         </div>
         <div class="col-sm-4 invoice-col">
@@ -97,35 +114,85 @@
 
     <br><br>
 
-    <div class="row invoice-info">
-        <div class="col-sm-4 invoice-col">
-            <form role="form" action="/configuracion/orden_pcs_otroscanales/detalles_todos/" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {% if solicitud.id == asignacion_editar.num_detalle.pk %}
-                            <input type="hidden" value="{{ asignacion_editar.pk }}" name="id_asignacion" id="id_asignacion">
-                        {% endif %}
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-users"></i></span>
-                            <select class="form-control select2" style="width: 100%;" name="empresa" required>
-                                <option value="T"  selected disabled></option>
-                                {% for empresa in empresas %}
-                                    <option value="{{ empresa.id }}" {% if solicitud.id == asignacion_editar.num_detalle.pk %}
-                                            {% if asignacion_editar.empresa.id == empresa.id %}selected{% endif %}{% endif %}>
-                                        {{ empresa.nombre }}
-                                    </option>
-                                {% endfor %}
-                            </select>
+<!--    <div class="row invoice-info">-->
+<!--        <div class="col-sm-4 invoice-col">-->
+<!--            <form role="form" action="/configuracion/orden_pcs_otroscanales/detalles_todos/" method="POST" enctype="multipart/form-data">-->
+<!--                        {% csrf_token %}-->
+<!--                        {% if solicitud.id == asignacion_editar.num_detalle.pk %}-->
+<!--                            <input type="hidden" value="{{ asignacion_editar.pk }}" name="id_asignacion" id="id_asignacion">-->
+<!--                        {% endif %}-->
+<!--                        <div class="input-group">-->
+<!--                            <span class="input-group-addon"><i class="fa fa-users"></i></span>-->
+<!--                            <select class="form-control select2" style="width: 100%;" name="empresa" required>-->
+<!--                                <option value="T"  selected disabled></option>-->
+<!--                                {% for empresa in empresas %}-->
+<!--                                    <option value="{{ empresa.id }}" {% if solicitud.id == asignacion_editar.num_detalle.pk %}-->
+<!--                                            {% if asignacion_editar.empresa.id == empresa.id %}selected{% endif %}{% endif %}>-->
+<!--                                        {{ empresa.nombre }}-->
+<!--                                    </option>-->
+<!--                                {% endfor %}-->
+<!--                            </select>-->
 
-                        </div>
+<!--                        </div>-->
 
-                        <input type="hidden" name="pedido" value="{{ pedido }}">
-                        <br>
-                        <button type="submit" class="btn btn-block btn-primary btn-flat">ASIGNAR A TODO</button>
-                    </form>
-        </div>
-    </div>
-
-
+<!--                        <input type="hidden" name="pedido" value="{{ pedido }}">-->
+<!--                        <br>-->
+<!--                        <button type="submit" class="btn btn-block btn-primary btn-flat">ASIGNAR A TODO</button>-->
+<!--                    </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--   <hr/>-->
+<!--   <div class="row">-->
+<!--        <div class="col-xs-12 table-responsive">-->
+<!--            <table class="table table-striped">-->
+<!--                <thead>-->
+<!--                    <tr>-->
+<!--                        <th>U_PLU</th>-->
+<!--                        <th>Necesidad </th>-->
+<!--                        <th>Observacion </th>-->
+<!--                        <th>Asignar Empresario</th>-->
+<!--                    </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                {% for solicitud_plu in pedidodetalle_plu %}-->
+<!--                <tr>-->
+<!--                    <td>{{solicitud_plu.u_plu}}</td>-->
+<!--                    <td>{{solicitud_plu.cantidad }}-->
+<!--                    <td>{{solicitud_plu.observaciones}}</td>-->
+<!--                    <td>-->
+<!--                        <form role="form" action="/configuracion/orden_pcs_otroscanales_plus/detalles/" method="POST" enctype="multipart/form-data">-->
+<!--                        {% csrf_token %}-->
+<!--                        <div class="input-group">-->
+<!--                            <span class="input-group-addon"><i class="fa fa-users"></i></span>-->
+<!--                            <select class="form-control select2" style="width: 100%;" name="empresa" required>-->
+<!--                                {% for empresa in empresas %}-->
+<!--                                {% if empresa.codigo in solicitud_plu.articulos %}-->
+<!--                                    <option value="{{ empresa.id }}" {% if solicitud.id == asignacion_editar.num_detalle.pk %}-->
+<!--                                            {% if asignacion_editar.empresa.id == empresa.id %}selected{% endif %}{% endif %}>-->
+<!--                                        {{ empresa.nombre }}-->
+<!--                                    </option>-->
+<!--                                {% endif %}-->
+<!--                                {% endfor %}-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="input-group ">-->
+<!--                            <span class="input-group-addon"><i class="fa fa-navicon  "></i></span>-->
+<!--                            <input type="number" class="form-control" id="cantidad_plu"-->
+<!--                                   name="cantidad_plu" placeholder="Cantidad" required>-->
+<!--                        </div>-->
+<!--                        <br>-->
+<!--                        <input type="hidden" name="id" value="{{ solicitud_plu.id }}">-->
+<!--                        <input type="hidden" name="pedido" value="{{ pedido }}">-->
+<!--                        <button type="submit" class="btn btn-block btn-primary btn-flat">ASIGNAR</button>-->
+<!--                    </form>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                {% endfor %}-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--   <hr/>-->
     <br><br>
     <br>
     <div class="row">
@@ -134,42 +201,50 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
+                        <th>U_PLU</th>
                         <th>Referencia</th>
                         <th>Descripcion</th>
                         <th>Necesidad </th>
                         <th>Observacion </th>
-                        <th>Editar </th>
+                        <th>Editar</th>
                         <th>Asignar Empresario</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for solicitud in pedidodetalle %}
                 <tr>
+                    <td>
+<!--                        <a class="btn btn-social-icon btn-google"-->
+<!--                              href="/configuracion/orden_pcs_otroscanales/producto/eliminar/{{ solicitud.id }}/?pedido={{ pedido.pk }}">-->
+<!--                        <i class="fa fa-trash"></i>-->
+<!--                        </a>-->
+                    </td>
+                    <td>{{ solicitud.u_plu}}</td>
                     <td>{{ solicitud.referencia }}
                     {% for asignaciones in solicitud.asignaciones %}
                         <br>
                         <small>{{ asignaciones.empresa.nombre }}</small>
                         {% endfor %}
                     </td>
-                <td>{{ solicitud.nombre }}</td>
+                    <td>{{ solicitud.nombre }}</td>
                     <td>{{ solicitud.cantidad }}
                     {% for asignaciones in solicitud.asignaciones %}
                         <br>
                         <small>{{ asignaciones.cantidad }}
                         </small>
                         {% endfor %}</td>
-                    <td>{{ solicitud.observaciones }}
-                        </td>
-                <td>{% for asignaciones in solicitud.asignaciones %}
+                    <td>{{ solicitud.observaciones }}</td>
+                    <td>{% for asignaciones in solicitud.asignaciones %}
                         <br>
                         <a class="btn btn-social-icon btn-bitbucket"
                               href="/configuracion/orden_pcs_otroscanales/detalle/{{ pedido }}/?asignacion={{ asignaciones.pk }}">
                         <i class="fa fa-pencil"></i>
-                    </a>
-                    <a class="btn btn-social-icon btn-google"
-                              href="/configuracion/orden_pcs_otroscanales/eliminar/{{ pedido }}/?asignacion={{ asignaciones.pk }}">
-                        <i class="fa fa-trash"></i>
-                    </a>
+                        </a>
+                        <a class="btn btn-social-icon btn-google"
+                                  href="/configuracion/orden_pcs_otroscanales/eliminar/{{ pedido }}/?asignacion={{ asignaciones.pk }}">
+                            <i class="fa fa-trash"></i>
+                        </a>
                         </small>
                         {% endfor %}</td>
                     <td><form role="form" action="/configuracion/orden_pcs_otroscanales/detalles/" method="POST" enctype="multipart/form-data">
@@ -180,15 +255,15 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users"></i></span>
                             <select class="form-control select2" style="width: 100%;" name="empresa" required>
-                                <option value="T"  selected disabled></option>
                                 {% for empresa in empresas %}
+                                {% if empresa.codigo in solicitud.articulos %}
                                     <option value="{{ empresa.id }}" {% if solicitud.id == asignacion_editar.num_detalle.pk %}
                                             {% if asignacion_editar.empresa.id == empresa.id %}selected{% endif %}{% endif %}>
                                         {{ empresa.nombre }}
                                     </option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
-
                         </div>
                         <div class="input-group ">
                             <span class="input-group-addon"><i class="fa fa-navicon  "></i></span>
@@ -203,6 +278,114 @@
                     </form>
                     </td>
                 </tr>
+                {% endfor %}
+                {% for solicitud_plu in pedidodetalle_plu %}
+                <tr>
+                    <td></td>
+                    <td><strong>{{solicitud_plu.u_plu}}</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>{{solicitud_plu.cantidad }}</strong></td>
+                    <td>{{solicitud_plu.observaciones}}</td>
+                    <td></td>
+                    <td>
+                        <form role="form" action="/configuracion/orden_pcs_otroscanales_plus/detalles/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                            <select class="form-control select2" style="width: 100%;" name="empresa" required>
+                                <option value="T"  selected disabled></option>
+                                {% for empresa in empresas %}
+                                {% if empresa.codigo in solicitud_plu.articulos %}
+                                    <option value="{{ empresa.id }}" {% if solicitud.id == asignacion_editar.num_detalle.pk %}
+                                            {% if asignacion_editar.empresa.id == empresa.id %}selected{% endif %}{% endif %}>
+                                        {{ empresa.nombre }}
+                                    </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group ">
+                            <span class="input-group-addon"><i class="fa fa-navicon  "></i></span>
+                            <input type="number" class="form-control" id="cantidad_plu"
+                                   name="cantidad_plu" placeholder="Cantidad" required>
+                        </div>
+                        <br>
+                        <input type="hidden" name="id" value="{{ solicitud_plu.id }}">
+                        <input type="hidden" name="pedido" value="{{ pedido }}">
+                        <button type="submit" class="btn btn-block btn-primary btn-flat">ASIGNAR</button>
+                    </form>
+                    </td>
+                </tr>
+                {% for solicitud in pedidodetalle_multiple %}
+                {% if solicitud_plu.u_plu == solicitud.u_plu %}
+                <tr>
+                    <td>
+                        <a class="btn btn-social-icon btn-google"
+                              href="/configuracion/orden_pcs_otroscanales/producto/eliminar/{{ solicitud.id }}/?pedido={{ pedido.pk }}">
+                        <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                    <td>{{ solicitud.u_plu}}</td>
+                    <td>{{ solicitud.referencia }}
+                    {% for asignaciones in solicitud.asignaciones %}
+                        <br>
+                        <small>{{ asignaciones.empresa.nombre }}</small>
+                        {% endfor %}
+                    </td>
+                    <td>{{ solicitud.nombre }}</td>
+                    <td>{{ solicitud.cantidad }}
+                    {% for asignaciones in solicitud.asignaciones %}
+                        <br>
+                        <small>{{ asignaciones.cantidad }}
+                        </small>
+                        {% endfor %}</td>
+                    <td>{{ solicitud.observaciones }}</td>
+                    <td>{% for asignaciones in solicitud.asignaciones %}
+                        <br>
+                        <a class="btn btn-social-icon btn-bitbucket"
+                              href="/configuracion/orden_pcs_otroscanales/detalle/{{ pedido }}/?asignacion={{ asignaciones.pk }}">
+                        <i class="fa fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-social-icon btn-google"
+                                  href="/configuracion/orden_pcs_otroscanales/eliminar/{{ pedido }}/?asignacion={{ asignaciones.pk }}">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        </small>
+                        {% endfor %}</td>
+                    <td><form role="form" action="/configuracion/orden_pcs_otroscanales/detalles/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% if solicitud.id == asignacion_editar.num_detalle.pk %}
+                            <input type="hidden" value="{{ asignacion_editar.pk }}" name="id_asignacion" id="id_asignacion">
+                        {% endif %}
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                            <select class="form-control select2" style="width: 100%;" name="empresa" required>
+                                {% for empresa in empresas %}
+                                {% if empresa.codigo in solicitud.articulos %}
+                                    <option value="{{ empresa.id }}" {% if solicitud.id == asignacion_editar.num_detalle.pk %}
+                                            {% if asignacion_editar.empresa.id == empresa.id %}selected{% endif %}{% endif %}>
+                                        {{ empresa.nombre }}
+                                    </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group ">
+                            <span class="input-group-addon"><i class="fa fa-navicon  "></i></span>
+                            <input type="number" class="form-control" id="cantidad"
+                                   name="cantidad" placeholder="Cantidad"  {% if solicitud.id == asignacion_editar.num_detalle.pk %}
+                                   value="{{ asignacion_editar.cantidad }}"{% endif %} required>
+                        </div>
+                        <input type="hidden" name="id" value="{{ solicitud.id }}">
+                        <input type="hidden" name="pedido" value="{{ pedido }}">
+                        <br>
+                        <button type="submit" class="btn btn-block btn-primary btn-flat">ASIGNAR</button>
+                    </form>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
                 {% endfor %}
                 </tbody>
             </table>
@@ -230,13 +413,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Buscar la fila por el detalle_id
                     let fila = document.querySelector(`tr input[name="id"][value="${data.detalle_id}"]`)?.closest("tr");
                     if (fila) {
-                        let colReferencia = fila.cells[0];
-                        let colCantidad = fila.cells[2];
-                        let colAcciones = fila.cells[4];
+                        let colReferencia = fila.cells[2];
+                        let colCantidad = fila.cells[4];
+                        let colAcciones = fila.cells[6];
 
                         // Extraer el texto base (referencia y cantidad solicitada)
-                        let referenciaTexto = fila.cells[0].childNodes[0].nodeValue.trim();
-                        let cantidadSolicitada = fila.cells[2].childNodes[0].nodeValue.trim();
+                        let referenciaTexto = fila.cells[2].childNodes[0].nodeValue.trim();
+                        let cantidadSolicitada = fila.cells[4].childNodes[0].nodeValue.trim();
 
                         // Limpiar contenido de asignaciones
                         colReferencia.innerHTML = referenciaTexto;

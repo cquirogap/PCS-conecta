@@ -2693,13 +2693,15 @@ var busqueda_pedidos_otros_canales_empresarios_facturar = function () {
     pedido = pedido.replace(/\s+/g, '');
     var referencia = $("#referencia").val() || "";
     referencia = referencia.replace(/\s+/g, '');
+    var u_plu = $("#u_plu").val() || "";
+    u_plu = u_plu.replace(/\s+/g, '');
 
     $.ajax({
         type: "GET",
         data: { csrfmiddlewaretoken: csrfToken },
         url: '/configuracion/pedidos_otros_canales_empresarios/facturar/?fecha_inicio=' + fecha_inicio +
              '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input +
-             '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia,
+             '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia+'&u_plu=' + u_plu,
         dataType: 'json',
         success: function (data) {
             var casos = data.datos;
@@ -2717,6 +2719,7 @@ var busqueda_pedidos_otros_canales_empresarios_facturar = function () {
                         "' name='items[" + i + "][cantidad]' value='" + casos[i].cantidad + "'>" +
                     "</td>" +
                     "<td>" + casos[i].fecha + "</td>" +
+                    "<td>" + casos[i].u_plu + "</td>" +
                     "<td>" + casos[i].referencia + "</td>" +
                     "<td>" + casos[i].nombre + "</td>" +
                     "<td>" + casos[i].codigo + "</td>" +
@@ -2776,13 +2779,15 @@ var busqueda_pedidos_otros_canales_empresarios_recibo = function () {
     pedido = pedido.replace(/\s+/g, '');
     let referencia = $("#referencia").val() || "";
     referencia = referencia.replace(/\s+/g, '');
+    let u_plu = $("#u_plu").val() || "";
+    u_plu = u_plu.replace(/\s+/g, '');
 
     $.ajax({
         type: "GET",
         data: {
             csrfmiddlewaretoken: csrfToken
         },
-        url: '/configuracion/pedidos_otros_canales_empresarios/recibo/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia,
+        url: '/configuracion/pedidos_otros_canales_empresarios/recibo/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia +'&u_plu=' + u_plu,
         dataType: 'json',
         success: function (data) {
             const casos = data.datos;
@@ -2805,6 +2810,7 @@ var busqueda_pedidos_otros_canales_empresarios_recibo = function () {
                     "<td>" + (casos[i].cantidad_pedida || casos[i].cantidadped || 0) + "</td>" +
 
                     "<td>" + casos[i].fecha + "</td>" +
+                    "<td>" + casos[i].u_plu + "</td>" +
                     "<td>" + casos[i].referencia + "</td>" +
                     "<td>" + casos[i].nombre + "</td>" +
                     "<td><a href='" + casos[i].imagen + "' target='_blank' class='btn btn-block btn-info'>Ver</a></td>" +

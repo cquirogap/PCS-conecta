@@ -29,80 +29,77 @@
                             <div class="box-header">
                                 <!-- Busqueda-->
                                 <div class="row">
-                                   <div class="col-md-6">
+                                    <div class="col-md-6">
                                            <label>Fecha inicial</label>
                                           <div class="input-group ">
                                             <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
                                                 <input type="date" class="form-control" id="fecha_inicio_input">
                                           </div>
                                       </div>
-                                   <div class="col-md-6">
+                                    <div class="col-md-6">
                                        <label>Fecha final</label>
                                       <div class="input-group ">
                                         <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
                                             <input type="date" class="form-control" id="fecha_fin_input">
                                       </div>
                                   </div>
-                                   <div class="col-md-12">
-                                        <br>
-                                    </div>
-                                <div class="col-md-6">
-                                       <label>Estado</label>
-                                      <div class="input-group ">
-                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
-                                            <select class="form-control select2" style="width: 100%;" id="estado_input" >
-                                                      <option value="asignado" selected>asignado</option>
-                                                      <option value="pendiente" >pendiente</option>
-                                                  </select>
-                                      </div>
-                                  </div>
-                                <div class="col-md-6">
-                                       <label>Empresa</label>
-                                      <div class="input-group ">
-                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
-                                            <select class="form-control select2" style="width: 100%;" id="empresa_input" >
-                                            <option value="" selected>-- Seleccione una empresa --</option>
-
-                                                      {% for empresa in empresas %}
-                                                      <option value="{{ empresa.id }}">
-                                                          {{empresa.nombre}}
-                                                      </option>
-                                                      {% endfor %}
-                                                  </select>
-                                      </div>
-                                  </div>
-
-                                 <div class="col-md-12">
-                                           <br>
-                                      </div>
-
-                                <div class="col-md-6">
-                                    <label for="codigo">Referencia</label>
-                                    <input type="text" class="form-control" id="referencia"
-                                           name="referencia" placeholder="Referencia Producto" value="{{ referencia }}" >
-                                </div>
-                                <div class="col-md-6">
-                                        <label for="pedido">Pedido</label>
-                                        <input type="number" class="form-control" id="pedido"
-                                               name="pedido" placeholder="Numero de pedido" value="{{ pedido }}">
-                                    </div>
-                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-
-                                      <div class="col-md-12">
-                                           <br>
+                                    <div class="col-md-12"><br></div>
+                                    <div class="col-md-6">
+                                           <label>Estado</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                                <select class="form-control select2" style="width: 100%;" id="estado_input" >
+                                                          <option value="asignado" selected>asignado</option>
+                                                          <option value="pendiente" >pendiente</option>
+                                                      </select>
+                                          </div>
                                       </div>
                                     <div class="col-md-6">
+                                           <label>Empresa</label>
+                                          <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                                <select class="form-control select2" style="width: 100%;" id="empresa_input" >
+                                                <option value="" selected>-- Seleccione una empresa --</option>
+
+                                                          {% for empresa in empresas %}
+                                                          <option value="{{ empresa.id }}">
+                                                              {{empresa.nombre}}
+                                                          </option>
+                                                          {% endfor %}
+                                                      </select>
+                                          </div>
+                                      </div>
+                                    <div class="col-md-12"><br></div>
+                                    <div class="col-md-6">
+                                        <label>Referencia</label>
+                                        <input type="text" class="form-control" id="referencia"
+                                               name="referencia" placeholder="Referencia Producto" value="{{ referencia }}" >
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="pedido">Pedido</label>
+                                        <input type="number" class="form-control" id="pedido"
+                                                   name="pedido" placeholder="Numero de pedido" value="{{ pedido }}">
+                                    </div>
+                                    <div class="col-md-12"><br></div>
+                                    <div class="col-md-6">
+                                        <label>U_PLU</label>
+                                        <input type="text" class="form-control" id="u_plu"
+                                                   name="u_plu" placeholder="U_PLU Producto" value="{{ u_plu }}">
+                                    </div>
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                    <div class="col-md-12"><br></div>
+                                    <div class="col-md-6">
                                         <button id="busqueda_pedidos_otros_canales_empresarios_recibo" class="btn btn-primary btn-block btn-flat" >
+                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                <span class="glyphicon glyphicon-search"></span> Consultar
+                                            </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" id="buscar_pedidos_otros_canales_excel_button"  class="btn btn-success btn-block btn-flat" >
                                             <span class="glyphicon glyphicon-folder-open"></span>
-                                            <span class="glyphicon glyphicon-search"></span> Consultar
+                                            <span class="glyphicon glyphicon-search"></span>Excel
                                         </button>
                                     </div>
-                                <div class="col-md-6">
-                                    <button type="button" id="buscar_pedidos_otros_canales_excel_button"  class="btn btn-success btn-block btn-flat" >
-                                        <span class="glyphicon glyphicon-folder-open"></span>
-                                        <span class="glyphicon glyphicon-search"></span>Excel
-                                    </button>
-                                </div>
                                 </div>
                                 <!--/ Busqueda-->
                             </div>
@@ -123,6 +120,7 @@
                                         <th>CLIENTE</th>
                                         <th>CANTPED</th>
                                         <th>FECHAA</th>
+                                        <th>U_PLU</th>
                                         <th>REFERENCIA</th>
                                         <th>DESCRIPCION</th>
                                         <th>IMAGEN</th>

@@ -237,6 +237,17 @@ class Empresas(models.Model):
 class Consecutivo(models.Model):
     valor = models.IntegerField(default=1)
 
+class MaestroArticulo(models.Model):
+    itemCode = models.IntegerField(primary_key=True)
+    codeBars = models.CharField(max_length=80, null=True, blank=True)
+    itemName = models.CharField(max_length=255, null=True, blank=True)
+    proveedorCodigo = models.CharField(max_length=80,null=True,blank=True)
+    proveedorNombre = models.CharField(max_length=150, null=True, blank=True)
+    u_plu = models.CharField(max_length=80, null=True,blank=True)
+
+    def __unicode__(self):
+        nombre = self.itemName or u''
+        return u'{} - {}'.format(self.itemCode, nombre)
 
 class PedidosOtrosCanales(models.Model):
     num_pedido = models.IntegerField(default=None,primary_key=True)
@@ -259,10 +270,12 @@ class DetallesPedidosOtrosCanales(models.Model):
     nombre = models.CharField(max_length=100,default='')
     observaciones = models.CharField(max_length=80,null=True)
     empresa = models.ForeignKey(Empresas, default=None,null=True)
+    u_plu = models.CharField(max_length=100,default='')
+    multiple = models.BooleanField(default=False)
+    #articulo = models.ForeignKey(MaestroArticulo, default=None,null=True)
 
     def __unicode__(self):
         return str(self.nombre)
-
 
 class AsignacionPedidosOtrosCanales(models.Model):
     num_detalle = models.ForeignKey(DetallesPedidosOtrosCanales, default=1)
@@ -274,6 +287,15 @@ class AsignacionPedidosOtrosCanales(models.Model):
 
     def __unicode__(self):
         return str(self.nombre)
+
+class DetallesPedidosOtrosCanales_plus(models.Model):
+    num_pedido = models.ForeignKey(PedidosOtrosCanales, default=1)
+    u_plu = models.CharField(max_length=100,default='')
+    cantidad = models.IntegerField(default=1)
+    observaciones = models.CharField(max_length=80, null=True)
+
+    def __unicode__(self):
+        return str(self.u_plu)
 
 
 class ImagenesOtrosCanales(models.Model):

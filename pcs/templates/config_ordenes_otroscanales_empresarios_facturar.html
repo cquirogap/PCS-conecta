@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header">
       <h1>
-        <a href="/configuracion/orden_empresiario_otroscanales/">Consulta General</a>
+        <a href="/configuracion/orden_empresiario_otroscanales/">Referencias a Facturar</a>
         <small>Otros Canales</small>
       </h1>
       <ol class="breadcrumb">
@@ -69,13 +69,19 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="codigo">Referencia</label>
+                                        <label>Referencia</label>
                                         <input type="text" class="form-control" id="referencia"
                                                name="referencia" placeholder="Referencia Producto" value="{{ referencia }}">
                                     </div>
-                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                                     <div class="col-md-12"><br></div>
                                     <div class="col-md-6">
+                                        <label>U_PLU</label>
+                                        <input type="text" class="form-control" id="u_plu"
+                                               name="u_plu" placeholder="U_PLU Producto" value="{{ u_plu }}">
+                                    </div>
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                    <div class="col-md-6">
+                                        <label></label>
                                         <button id="busqueda_pedidos_otros_canales_empresarios_facturar" class="btn btn-primary btn-block btn-flat">
                                             <span class="glyphicon glyphicon-folder-open"></span>
                                             <span class="glyphicon glyphicon-search"></span> Consultar
@@ -100,6 +106,7 @@
                                                     <th>CLIENTE</th>
                                                     <th>CANTIDAD</th>
                                                     <th>FECHA</th>
+                                                    <th>U_PLU</th>
                                                     <th>REFERENCIA</th>
                                                     <th>DESCRIPCION</th>
                                                     <th>CODIGO EMPRESA</th>

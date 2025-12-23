@@ -75,6 +75,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>U_PLU</th>
                         <th>Referencia</th>
                         <th>Descripcion</th>
                         <th>Necesidad </th>
@@ -84,13 +85,14 @@
                 <tbody>
                 {% for solicitud in pedidodetalle %}
                 <tr>
+                    <td>{{ solicitud.u_plu }}</td>
                     <td>{{ solicitud.referencia }}
                     {% for asignaciones in solicitud.asignaciones %}
                         <br>
                         <small>{{ asignaciones.empresa.nombre }}</small>
                         {% endfor %}
                     </td>
-                <td>{{ solicitud.nombre }}</td>
+                    <td>{{ solicitud.nombre }}</td>
                     <td>{{ solicitud.cantidad }}
                     {% for asignaciones in solicitud.asignaciones %}
                         <br>
