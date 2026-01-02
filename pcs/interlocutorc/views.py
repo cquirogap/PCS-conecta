@@ -35,11 +35,11 @@ from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 # ************* IP PRODUCCION ******************
-IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
+#IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
 
 
 # ************* IP CALIDAD ******************
-# IP_SAP = 'https://172.16.100.2:50000/b1s/v1/'
+IP_SAP = 'https://172.16.100.2:50000/b1s/v1/'
 
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.

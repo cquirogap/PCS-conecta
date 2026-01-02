@@ -56,11 +56,11 @@ except ImportError:
 PAGINADOR = 9999999999999999999999999999999
 
 # ************* IP PRODUCCION ******************
-IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
+#IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
 
 
 # ************* IP CALIDAD ******************
-# IP_SAP = 'https://172.16.100.2:50000/b1s/v1/'
+IP_SAP = 'https://172.16.100.2:50000/b1s/v1/'
 
 
 def link_callback(uri, rel):
