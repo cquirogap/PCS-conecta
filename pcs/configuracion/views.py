@@ -57,10 +57,11 @@ PAGINADOR = 9999999999999999999999999999999
 
 # ************* IP PRODUCCION ******************
 #IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
-
+#IP_SERVIDOR = 'https://192.155.95.186'
 
 # ************* IP CALIDAD ******************
 IP_SAP = 'https://172.16.100.20:50000/b1s/v1/'
+IP_SERVIDOR = 'https://160.153.178.159'
 
 
 def link_callback(uri, rel):
@@ -82,9 +83,6 @@ def link_callback(uri, rel):
 
     # Si no es ni media ni static, lo devolvemos tal cual
     return uri
-
-
-
 
 # Configuración SAP
 SAP_URL = IP_SAP
@@ -116,7 +114,6 @@ def sap_login():
     SESSION = respuesta["SessionId"]
     ROUTEID = response.cookies.get("ROUTEID")
     return respuesta
-
 
 def sap_request(url, metodo="GET", data=None):
     """Hace una request al Service Layer con manejo automático de login/401."""
@@ -151,8 +148,6 @@ def sap_request(url, metodo="GET", data=None):
 
     return response
 
-
-
 #Justificacion
 def config_justificacion(request):
     # Render  administracion.html
@@ -176,7 +171,6 @@ def config_justificacion(request):
     else:
         pass
 
-
 def config_perfiles_pcs(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -198,7 +192,6 @@ def config_perfiles_pcs(request):
                                                            })
     else:
         pass
-
 
 def config_perfiles_registrar(request):
     # Render  administracion.html
@@ -433,7 +426,6 @@ def config_perfiles_editar(request,id):
                                                                          'perfiles': perfiles,
                                                                         'permiso_usuario': usuario_datos,})
 
-
 def config_perfiles_borrar(request, id):
     if request.method == 'GET':
 
@@ -455,7 +447,6 @@ def config_perfiles_borrar(request, id):
                                  'Se ha borrado el perfil ' + str(id) + ' satisfactoriamente')
 
             return HttpResponseRedirect('/configuracion/perfiles_pcs/')
-
 
 def config_justificacion_registrar(request):
     # Render  administracion.html
@@ -1277,7 +1268,6 @@ def config_areas_atencion_registrar(request):
 
         return HttpResponseRedirect('/configuracion/areas_atencion/')
 
-
 def config_areas_atencion_editar(request, id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -1313,7 +1303,6 @@ def config_areas_atencion_editar(request, id):
                              'Se ha editado el grupo de atencion ' + nombre + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/areas_atencion/')
-
 
 def config_areas_atencion_editar_integrantes(request, id):
     # Render  administracion.html
@@ -1354,7 +1343,6 @@ def config_areas_atencion_editar_integrantes(request, id):
                              'Se ha agregado al usuario' + persona.usuario.username + ' al grupo satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/areas_atencion/')
-
 
 def config_areas_atencion_borrar(request, id):
     if request.method == 'GET':
@@ -1430,8 +1418,6 @@ def config_peticiones_registrar(request):
 
         return HttpResponseRedirect('/configuracion/peticion/')
 
-
-
 def config_peticiones_editar(request, id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -1473,7 +1459,6 @@ def config_peticiones_editar(request, id):
 
         return HttpResponseRedirect('/configuracion/peticion/')
 
-
 def config_peticiones_borrar(request, id):
     if request.method == 'GET':
         current_user = request.user
@@ -1504,7 +1489,6 @@ def config_personas_atencion(request):
                                                           })
     else:
         pass
-
 
 def config_personas_aten_registrar(request):
     # Render  administracion.html
@@ -1541,7 +1525,6 @@ def config_personas_aten_registrar(request):
                              'Se ha registrado la peticion ' + nombre + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/personas_aten/')
-
 
 def config_personas_aten_editar(request, id):
     # Render  administracion.html
@@ -1587,7 +1570,6 @@ def config_personas_aten_editar(request, id):
 
         return HttpResponseRedirect('/configuracion/personas_aten/')
 
-
 def config_personas_aten_borrar(request, id):
     if request.method == 'GET':
         current_user = request.user
@@ -1600,7 +1582,6 @@ def config_personas_aten_borrar(request, id):
                              'Se ha borrado el integrante ' + str(id) + ' satisfactoriamente')
 
         return HttpResponseRedirect('/configuracion/personas_aten/')
-
 
 def config_solicitudes(request):
     # Render  administracion.html
@@ -1645,7 +1626,6 @@ def config_solicitudes(request):
     else:
         pass
 
-
 def config_respuesta_factura_pedido(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -1678,7 +1658,7 @@ def config_respuesta_factura_pedido(request):
                 RespuestaPedido.objects.filter(id=int(pedido)).update(respuesta=respuesta, estado='respondido',
                                                                    doc_respuesta=uploaded_file_url)
                 email = EmailMessage('RESPUESTA PETICION ' + str(info_pedido.num_pedido),
-                                     str(respuesta) + ', Documento adjunto: http://160.153.178.159' + str(
+                                     str(respuesta) + ', Documento adjunto: ' + IP_SERVIDOR + str(
                                          uploaded_file_url),
                                      to=[info_pedido.email])
                 email.send()
@@ -1695,7 +1675,6 @@ def config_respuesta_factura_pedido(request):
         messages.add_message(request, messages.INFO,
                              'Se han subido las facturas satisfactoriamente.')
         return HttpResponseRedirect('/configuracion/respuesta_factura/')
-
 
 def config_ordenes_otroscanales(request):
     # Render  administracion.html
@@ -1776,7 +1755,6 @@ def config_ordenes_otroscanales(request):
                              'Se ha registrado el pedido satisfactoriamente')
         return HttpResponseRedirect('/configuracion/orden_cliente_otroscanales/')
 
-
 def obtener_imagen_producto(request):
     numero_producto = request.GET.get('numero')
     try:
@@ -1810,7 +1788,6 @@ def config_ordenes_otroscanales_pcs(request):
     else:
         pass
 
-
 def config_ordenes_otroscanales_pcs_cliente(request):
 
     if request.method == 'GET':
@@ -1833,7 +1810,6 @@ def config_ordenes_otroscanales_pcs_cliente(request):
     else:
         pass
 
-
 def config_ordenes_otroscanales_empresario(request):
 
     if request.method == 'GET':
@@ -1855,10 +1831,6 @@ def config_ordenes_otroscanales_empresario(request):
     else:
         pass
 
-
-
-
-
 def generar_pdf_bytes(contexto, template_name='pedido_asignacion_pdf.html'):
     """
     Renderiza un template como PDF y devuelve el contenido en bytes.
@@ -1876,7 +1848,6 @@ def generar_pdf_bytes(contexto, template_name='pedido_asignacion_pdf.html'):
     if pdf.err:
         return None
     return result.getvalue()
-
 
 def descargar_pedidos_zip(request):
     if request.method == 'POST':
@@ -1961,12 +1932,6 @@ def descargar_pedidos_zip(request):
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-
-
-
-
-
-
 def config_ordenes_otroscanales_empresario_facturacion(request):
 
     if request.method == 'GET':
@@ -1988,9 +1953,6 @@ def config_ordenes_otroscanales_empresario_facturacion(request):
     else:
         pass
 
-
-
-
 def config_ordenes_otroscanales_empresario_recibo(request):
 
     if request.method == 'GET':
@@ -2011,8 +1973,6 @@ def config_ordenes_otroscanales_empresario_recibo(request):
                                                         })
     else:
         pass
-
-
 
 def config_imagen_otroscanales_empresario(request):
     # Render  administracion.html
@@ -2053,10 +2013,6 @@ def config_imagen_otroscanales_empresario_borrar(request, id):
                                      'Se ha borradola imagen ' + str(id) + ' satisfactoriamente')
 
             return HttpResponseRedirect('/configuracion/imagen_empresiario_otroscanales/')
-
-
-
-
 
 def config_imagen_otroscanales_empresario_registrar(request):
     # Render  administracion.html
@@ -2121,9 +2077,6 @@ def config_imagen_otroscanales_empresario_registrar(request):
 
         return HttpResponseRedirect('/configuracion/imagen_empresiario_otroscanales/')
 
-
-
-
 def config_imagen_otroscanales_empresario_registrar_masivo(request):
     # Render  administracion.html
     carpeta = os.path.join(settings.MEDIA_ROOT, 'imagenes')
@@ -2152,9 +2105,6 @@ def config_imagen_otroscanales_empresario_registrar_masivo(request):
             )
 
     return HttpResponseRedirect('/configuracion/imagen_empresiario_otroscanales/' )
-
-
-
 
 def config_ordenes_otroscanales_pcs_detalle(request, id):
 
@@ -2241,7 +2191,6 @@ def config_ordenes_otroscanales_pcs_detalle(request, id):
                                                         })
     else:
         pass
-
 
 def config_ordenes_otroscanales_pcs_eliminar(request, id):
 
@@ -2385,9 +2334,6 @@ def config_ordenes_otroscanales_pcs_detalle_edi(request):
     else:
         pass
 
-
-
-
 def config_ordenes_aviso_despacho_detalle_edi(request):
 
     if request.method == 'GET':
@@ -2459,10 +2405,6 @@ def config_ordenes_aviso_despacho_detalle_edi(request):
     else:
         pass
 
-
-
-
-
 def config_ordenes_otroscanales_pcs_detalle_cliente(request, id):
 
     if request.method == 'GET':
@@ -2498,9 +2440,6 @@ def config_ordenes_otroscanales_pcs_detalle_cliente(request, id):
     else:
         pass
 
-
-
-
 def config_ordenes_otroscanales_pcs_eliminar_cliente(request, id):
 
     if request.method == 'GET':
@@ -2526,7 +2465,6 @@ def config_ordenes_otroscanales_pcs_eliminar_cliente(request, id):
 
     else:
         pass
-
 
 def config_ordenes_otroscanales_pcs_detalles(request):
     if request.method == 'POST':
@@ -2823,8 +2761,6 @@ def config_ordenes_otroscanales_pcs_fecha_maxima(request):
                                  'La fecha maxima debe ser mayor a la fecha minima' )
         return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/'+pedido+'/')
 
-
-
 def config_documentos_creditos(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -2907,9 +2843,6 @@ def config_documentos_creditos(request):
                                  'Se ha rechazado los documentos  satisfactoriamente.')
         return HttpResponseRedirect('/configuracion/documentos_creditos/')
 
-
-
-
 def config_historial_documentos_creditos(request,id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -2925,11 +2858,6 @@ def config_historial_documentos_creditos(request,id):
                                                           'documentos': documentos,
                                                         'permiso_usuario': usuario_datos,
                                                         })
-
-
-
-
-
 
 def config_servicio_crediya_registro(request):
     # Render  administracion.html
@@ -3053,7 +2981,6 @@ def config_servicio_crediya_preaprobado(request):
     else:
         return HttpResponseRedirect('/configuracion/servicio_crediya_registro/')
 
-
 def config_registro_documentos_creditos(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -3147,7 +3074,6 @@ def config_registro_documentos_creditos(request):
 
         return HttpResponseRedirect('/configuracion/documentos_creditos/')
 
-
 def config_editar_documentos_creditos(request,id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -3239,7 +3165,6 @@ def config_editar_documentos_creditos(request,id):
 
         return HttpResponseRedirect('/configuracion/documentos_creditos/')
 
-
 def config_servicio_crediya_preaprobados(request):
     # Render  administracion.html
     if request.method == 'POST':
@@ -3309,9 +3234,6 @@ def config_servicio_crediya_preaprobados(request):
             preaprobado.save()
 
         return HttpResponseRedirect('/configuracion/servicio_crediya_registro/')
-
-
-
 
 def config_crediya_consulta_generales(request):
 
@@ -3536,7 +3458,7 @@ def config_crediya_consulta_generales(request):
                 email = EmailMessage('SERVICIO FINANCIERO CREDIYA APROBADO',
                                      'Tu Servicio Financiero para el pedido : \n'
                                      + str(consulta.NumeroOrdenCompra)+"\nha sido aprobado. Podrás consultarlo en el siguiente sitio web:"
-                                                    "http://160.153.178.159/configuracion/servicio_crediya_historial/",
+                                                    + IP_SERVIDOR+ "/configuracion/servicio_crediya_historial/",
                                      to=[consulta.Correo])
                 email.send()
 
@@ -3560,7 +3482,6 @@ def config_crediya_consulta_generales(request):
 
         
         return HttpResponseRedirect('/configuracion/servicio_crediya_consulta/')
-
 
 def config_credilisto_consulta_generales(request):
 
@@ -4004,7 +3925,7 @@ def config_credilisto_consulta_generales(request):
                                      'Tu Servicio Financiero para la factura : \n'
                                      + str(
                                          consulta.NumeroFactura) + "\nha sido aprobado. Podrás consultarlo en el siguiente sitio web:"
-                                                                   "http://160.153.178.159/configuracion/servicio_credilisto_historial/",
+                                                                   + IP_SERVIDOR +"/configuracion/servicio_credilisto_historial/",
                                      to=[consulta.Correo])
                 email.send()
 
@@ -4028,8 +3949,6 @@ def config_credilisto_consulta_generales(request):
 
         return HttpResponseRedirect('/configuracion/servicio_credilisto_consulta/')
 
-
-
 def config_crediya_consulta_historial(request):
 
     if request.method == 'GET':
@@ -4046,9 +3965,6 @@ def config_crediya_consulta_historial(request):
     else:
         pass
 
-
-
-
 def config_credilisto_consulta_historial(request):
 
     if request.method == 'GET':
@@ -4064,9 +3980,6 @@ def config_credilisto_consulta_historial(request):
                                                         })
     else:
         pass
-
-
-
 
 def informacion_complementaria_consulta_crediya(request, ):
     if request.method == 'GET':
@@ -4137,8 +4050,6 @@ def informacion_complementaria_consulta_crediya(request, ):
         }
 
         return JsonResponse(response_dict)
-
-
 
 def informacion_complementaria_consulta_cruces_credilisto(request, ):
     if request.method == 'GET' and request.is_ajax():
@@ -4230,9 +4141,6 @@ def informacion_complementaria_consulta_cruces_credilisto(request, ):
     else:
         return JsonResponse({'error': 'Bad request'}, status=400)
 
-
-
-
 def informacion_complementaria_consulta_credilisto(request, ):
     if request.method == 'GET':
 
@@ -4303,8 +4211,6 @@ def informacion_complementaria_consulta_credilisto(request, ):
 
         return JsonResponse(response_dict)
 
-
-
 def informacion_complementaria_historial_crediya(request, ):
     if request.method == 'GET':
         current_user = request.user
@@ -4372,8 +4278,6 @@ def informacion_complementaria_historial_crediya(request, ):
         }
 
         return JsonResponse(response_dict)
-
-
 
 def informacion_complementaria_historial_credilisto(request, ):
     if request.method == 'GET':
@@ -4444,10 +4348,6 @@ def informacion_complementaria_historial_credilisto(request, ):
         }
 
         return JsonResponse(response_dict)
-
-
-
-
 
 def config_servicio_crediya_lista(request):
     # Render  administracion.html
@@ -6037,7 +5937,7 @@ def config_respuesta_pedido(request):
                 email = EmailMessage('SOLICITUD DE PRORROGA PARA EL PEDIDO'+str(numero_pedido) ,
                                      'la empresa '+ usuario_datos.empresa.nombre + ' solicita la prórroga '+
                                     ' para el pedido '+str(numero_pedido) +' Información : '+ adicionales + ' Para ver más ingrese en '+
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     IP_SERVIDOR +'/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6104,7 +6004,7 @@ def config_respuesta_seg_pedido(request):
                 email = EmailMessage('SOLICITUD DE FACTURA PARA EL PEDIDO '+str(numero_pedido)+texto_adicional ,
                                      'La empresa '+ str(empresa) + ' solicito la factura '
                                     + ' para el pedido '+str(numero_pedido) +'\nInformación  : '+ adicionales + '\nCliente: '+str(cliente) +'\nPara ver más ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     IP_SERVIDOR +'/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6165,7 +6065,7 @@ def config_respuesta_ter_pedido(request):
                 email = EmailMessage('SOLICITUD DE NO DESPACHO PARA EL PEDIDO'+str(numero_pedido) ,
                                      'La empresa '+ usuario_datos.empresa.nombre + ' solicita no despachar  '
                                     + '  el pedido '+str(numero_pedido) +' Información : '+ adicionales + ' Para ver más ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6227,7 +6127,7 @@ def config_respuesta_quin_pedido(request):
                 email = EmailMessage('SOLICITUD DE SUSPENCION DE PRODUCTO PARA EL PEDIDO'+str(numero_pedido) ,
                                      'La empresa '+ usuario_datos.empresa.nombre + ' solicita la suspencion del producto para  '
                                     + '  el pedido '+str(numero_pedido) +' Informacion : '+ adicionales + ' Para ver mas ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     + IP_SERVIDOR +'/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6386,7 +6286,7 @@ def config_respuesta_sept_pedido(request):
                 email = EmailMessage('SOLICITUD DE DESPACHO PARA EL PEDIDO '+str(numero_pedido)+texto_adicional ,
                                      'La empresa '+ usuario_datos.empresa.nombre + ' solicito el despacho '
                                     + ' para el pedido '+str(numero_pedido) +' Información  : '+ adicionales + ' Para ver más ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6668,7 +6568,7 @@ def config_respuesta_peticion(request):
 
             RespuestaPedido.objects.filter(id=problema).update(respuesta=respuesta,estado='respondido',doc_respuesta=uploaded_file_url)
             email = EmailMessage('RESPUESTA PETICION ' + str(datospersona.num_pedido),
-                                 str(respuesta)+', Documento adjunto: http://160.153.178.159'+str(uploaded_file_url),
+                                 str(respuesta)+', Documento adjunto: '+ IP_SERVIDOR +str(uploaded_file_url),
                                  to=[datospersona.email])
             email.send()
             log = LogRespuestaPedido(
@@ -10682,7 +10582,7 @@ def config_enviar_correos_no_enviados(request):
                         try:
                             email = EmailMessage(str(variable[0])+' TIENES UN NUEVO PEDIDO ' + str(variable[1]),
                                                      'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                     + 'http://160.153.178.159/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                     + IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                          variable[2]) + '/',
                                                      to=[correos])
                             email.send()
@@ -15921,7 +15821,7 @@ def pedido_detalle_bodega(request, form_id):
                                      'La bodega 19 solicito la factura '
                                      + ' para la orden de venta ' + str(
                                          pedido_num) +   '\nPara ver más ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/bodegas/problema/' +
+                                     IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/bodegas/problema/' +
                                      form_id + '/',
                                      to=[correos.email])
                 email.send()

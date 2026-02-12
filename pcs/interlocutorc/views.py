@@ -36,10 +36,11 @@ from rest_framework.authentication import TokenAuthentication
 # Create your views here.
 # ************* IP PRODUCCION ******************
 #IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
-
+#IP_SERVIDOR = 'https://192.155.95.186'
 
 # ************* IP CALIDAD ******************
 IP_SAP = 'https://172.16.100.2:50000/b1s/v1/'
+IP_SERVIDOR = 'https://160.153.178.159'
 
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
@@ -1482,7 +1483,7 @@ def tarea_correo_pedido(request):
                                     try:
                                         email = EmailMessage(str(datos['CardName'])+' TIENES UN NUEVO PEDIDO '+str(datos['DocNum']),
                                                              'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                             + 'http://160.153.178.159/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                             + IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                                  datos['DocEntry']) + '/',
                                                              to=[correos])
                                         email.send()
