@@ -34,6 +34,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
+# ************* IP PRODUCCION ******************
+IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
+IP_SERVIDOR = 'https://160.153.178.159'
+
+# ************* IP CALIDAD ******************
+#IP_SAP = 'https://172.16.100.2:50000/b1s/v1/'
+#IP_SERVIDOR = 'https://192.155.95.186'
+
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
 
@@ -47,7 +55,7 @@ class CustomLoginView(LoginView):
 class MyListView(APIView):
     def get(self, request,start_date,end_date):
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosIndicadorJSON')/List?FechaInicial='" + start_date + "'&FechaFinal='" + end_date + "'"
+        url2 = IP_SAP + "SQLQueries('ConsultaPedidosIndicadorJSON')/List?FechaInicial='" + start_date + "'&FechaFinal='" + end_date + "'"
 
         response3 = sap_request(url2)
         response3 = response3.text
@@ -277,7 +285,7 @@ def ejecutar_pedidos(fecha):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(fecha) + "'"
+        url2 = IP_SAP + "SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(fecha) + "'"
 
         response = sap_request(url2)
         response = response.text.replace('null', ' " " ')
@@ -373,7 +381,7 @@ class ApiPedidos(APIView):
 
             # 2. Consulta con fecha
             url_query = (
-                "https://192.168.1.2:50000/b1s/v1/SQLQueries('servicioventasspev1')"
+                IP_SAP + "SQLQueries('servicioventasspev1')"
                 "/List?fecha='" + str(fecha) + "'"
             )
 
@@ -440,7 +448,7 @@ def ejecutar_facturas(fecha):
         )
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis3')/List?fecha='" + fecha_futura_str + "'"
+        url2 = IP_SAP + "SQLQueries('ConsultasFacturasApis3')/List?fecha='" + fecha_futura_str + "'"
 
         response = sap_request(url2)
         response = response.text.replace('null', ' " " ')
@@ -542,7 +550,7 @@ def pruebacorreos():
             tipo='crediya',
         )
         errores.save()
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(hoy) + "'"
+        url2 = IP_SAP + "SQLQueries('ConsultaPedidosApis1')/List?FechaHoy='" + str(hoy) + "'"
 
         response = sap_request(url2)
         response = response.text
@@ -677,7 +685,7 @@ def pruebacorreosfactura():
             tipo='credilisto',
         )
         errores.save()
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis3')/List?fecha='" + hoy_filtro +"'"
+        url2 = IP_SAP + "SQLQueries('ConsultasFacturasApis3')/List?fecha='" + hoy_filtro +"'"
 
         response = sap_request(url2)
         response = response.text
@@ -811,7 +819,7 @@ def pruebacorreosfactura():
 
 def pruebasap(request):
     # URL para autenticarse y obtener el SessionId
-    url = "https://192.168.1.2:50000/b1s/v1/Login"
+    url = IP_SAP + "Login"
 
     payload = "{\"CompanyDB\":\"PCS19012024\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
@@ -819,7 +827,7 @@ def pruebasap(request):
 
     respuesta = ast.literal_eval(response.text)
 
-    url = "https://192.168.1.2:50000/b1s/v1/VendorPayments"
+    url = IP_SAP + "VendorPayments"
 
     payload = json.dumps({
         "DocNum": 41058,
@@ -945,7 +953,7 @@ def pruebasap(request):
 
 
 def prubasap2(request):
-    url = "https://192.168.1.2:50000/b1s/v1/Login"
+    url = IP_SAP + "Login"
 
     payload = "{\"CompanyDB\":\"PRUEBALOC04042025\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
@@ -953,7 +961,7 @@ def prubasap2(request):
 
     respuesta = ast.literal_eval(response.text)
     # URL del endpoint de VendorPayments
-    url_pagos_efectuados = "https://192.168.1.2:50000/b1s/v1/VendorPayments"
+    url_pagos_efectuados = IP_SAP + "VendorPayments"
 
     # Datos del nuevo pago efectuado que quieres enviar
     nuevo_pago_efectuado = {
@@ -1140,7 +1148,7 @@ def tarea_api():
         )
         errores.save()
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosApis')/List?FechaHoy='" + str(hoy) + "'"
+        url2 = IP_SAP + "SQLQueries('ConsultaPedidosApis')/List?FechaHoy='" + str(hoy) + "'"
 
         headers = {
             'Prefer': 'odata.maxpagesize=999999',
@@ -1215,7 +1223,7 @@ def facturas_api():
         )
         errores.save()
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasApis')/List"
+        url2 = IP_SAP + "SQLQueries('ConsultasFacturasApis')/List"
 
         response = sap_request(url2)
         response = response.text
@@ -1295,14 +1303,14 @@ def tokenisacion1(request):
 
 
 def tokenisacion(request):
-    url = "https://192.168.1.2:50000/b1s/v1/Login"
+    url = IP_SAP + "Login"
 
     payload = "{\"CompanyDB\":\"PRUEBAS\",\"UserName\":\"manager1\",\"Password\":\"HYC909\"}"
 
     response = requests.request("POST", url, data=payload, verify=False)
     respuesta = ast.literal_eval(response.text)
     sessionId = respuesta['SessionId']
-    url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners('P005375')"
+    url2 = IP_SAP + "BusinessPartners('P005375')"
     payload_actualizacion = json.dumps({
     "CardName": "ASOCIACION CANASTO DE LA ABUNDANCIA MONIYA KIRIGAI"
     })
@@ -1330,7 +1338,7 @@ def prueba():
     lista_correos_simbolos_especiales = []
     for empresa in empresas:
         try:
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
+            url2 = IP_SAP + "SQLQueries('TareaEmpresarioSinEmails')/List?NombreEmpresario='" + str(empresa.nombre) + "'"
 
             response = sap_request(url2)
             response = response.text
@@ -1338,7 +1346,7 @@ def prueba():
             response = ast.literal_eval(response)
             response = response['value']
             if response==[]:
-                url5 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('validacionempresariossap')/List?NombreEmpresario='" + str(
+                url5 = IP_SAP + "SQLQueries('validacionempresariossap')/List?NombreEmpresario='" + str(
                     empresa.nombre) + "'"
 
                 response5 = sap_request(url5)
@@ -1436,7 +1444,7 @@ def tarea_correo_pedido(request):
         )
         errores.save()
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
+        url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
                + str(fecha_correos) + "'"
 
         response = sap_request(url2)
@@ -1449,7 +1457,7 @@ def tarea_correo_pedido(request):
                 else:
                     try:
                         dependencias = 'LOGISTICA Y DESPACHOS'
-                        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
+                        url3 = IP_SAP + "SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
                                datos['CardCode'] + "'&dependencia='" + dependencias + "'"
                         response2 = sap_request(url3)
                         response2 = ast.literal_eval(response2.text)
@@ -1475,7 +1483,7 @@ def tarea_correo_pedido(request):
                                     try:
                                         email = EmailMessage(str(datos['CardName'])+' TIENES UN NUEVO PEDIDO '+str(datos['DocNum']),
                                                              'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                             + 'http://160.153.178.159/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                             + IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                                  datos['DocEntry']) + '/',
                                                              to=[correos])
                                         email.send()
@@ -1586,7 +1594,7 @@ def tarea_correo_pedido_dos(request):
         )
         errores.save()
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
+        url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
                + str(hoy) + "'"
 
         headers = {

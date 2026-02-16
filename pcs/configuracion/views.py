@@ -55,6 +55,14 @@ except ImportError:
 
 PAGINADOR = 9999999999999999999999999999999
 
+# ************* IP PRODUCCION ******************
+IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
+IP_SERVIDOR = 'https://160.153.178.159'
+
+# ************* IP CALIDAD ******************
+#IP_SAP = 'https://172.16.100.20:50000/b1s/v1/'
+#IP_SERVIDOR = 'https://192.155.95.186'
+
 
 def link_callback(uri, rel):
     """
@@ -76,11 +84,8 @@ def link_callback(uri, rel):
     # Si no es ni media ni static, lo devolvemos tal cual
     return uri
 
-
-
-
 # Configuración SAP
-SAP_URL = "https://192.168.1.2:50000/b1s/v1/"
+SAP_URL = IP_SAP
 SAP_CRED = {
     "CompanyDB": "PCS",
     "UserName": "manager1",
@@ -96,7 +101,7 @@ def sap_login():
     """Hace login en SAP y guarda la sesión global."""
     global SESSION, ROUTEID
 
-    url = SAP_URL + "Login"
+    url = IP_SAP + "Login"
     payload = json.dumps(SAP_CRED)  # dict → JSON
     headers = {"Content-Type": "application/json"}
 
@@ -109,7 +114,6 @@ def sap_login():
     SESSION = respuesta["SessionId"]
     ROUTEID = response.cookies.get("ROUTEID")
     return respuesta
-
 
 def sap_request(url, metodo="GET", data=None):
     """Hace una request al Service Layer con manejo automático de login/401."""
@@ -144,8 +148,6 @@ def sap_request(url, metodo="GET", data=None):
 
     return response
 
-
-
 #Justificacion
 def config_justificacion(request):
     # Render  administracion.html
@@ -169,7 +171,6 @@ def config_justificacion(request):
     else:
         pass
 
-
 def config_perfiles_pcs(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -191,7 +192,6 @@ def config_perfiles_pcs(request):
                                                            })
     else:
         pass
-
 
 def config_perfiles_registrar(request):
     # Render  administracion.html
@@ -426,7 +426,6 @@ def config_perfiles_editar(request,id):
                                                                          'perfiles': perfiles,
                                                                         'permiso_usuario': usuario_datos,})
 
-
 def config_perfiles_borrar(request, id):
     if request.method == 'GET':
 
@@ -448,7 +447,6 @@ def config_perfiles_borrar(request, id):
                                  'Se ha borrado el perfil ' + str(id) + ' satisfactoriamente')
 
             return HttpResponseRedirect('/configuracion/perfiles_pcs/')
-
 
 def config_justificacion_registrar(request):
     # Render  administracion.html
@@ -1270,7 +1268,6 @@ def config_areas_atencion_registrar(request):
 
         return HttpResponseRedirect('/configuracion/areas_atencion/')
 
-
 def config_areas_atencion_editar(request, id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -1306,7 +1303,6 @@ def config_areas_atencion_editar(request, id):
                              'Se ha editado el grupo de atencion ' + nombre + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/areas_atencion/')
-
 
 def config_areas_atencion_editar_integrantes(request, id):
     # Render  administracion.html
@@ -1347,7 +1343,6 @@ def config_areas_atencion_editar_integrantes(request, id):
                              'Se ha agregado al usuario' + persona.usuario.username + ' al grupo satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/areas_atencion/')
-
 
 def config_areas_atencion_borrar(request, id):
     if request.method == 'GET':
@@ -1423,8 +1418,6 @@ def config_peticiones_registrar(request):
 
         return HttpResponseRedirect('/configuracion/peticion/')
 
-
-
 def config_peticiones_editar(request, id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -1466,7 +1459,6 @@ def config_peticiones_editar(request, id):
 
         return HttpResponseRedirect('/configuracion/peticion/')
 
-
 def config_peticiones_borrar(request, id):
     if request.method == 'GET':
         current_user = request.user
@@ -1497,7 +1489,6 @@ def config_personas_atencion(request):
                                                           })
     else:
         pass
-
 
 def config_personas_aten_registrar(request):
     # Render  administracion.html
@@ -1534,7 +1525,6 @@ def config_personas_aten_registrar(request):
                              'Se ha registrado la peticion ' + nombre + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/personas_aten/')
-
 
 def config_personas_aten_editar(request, id):
     # Render  administracion.html
@@ -1580,7 +1570,6 @@ def config_personas_aten_editar(request, id):
 
         return HttpResponseRedirect('/configuracion/personas_aten/')
 
-
 def config_personas_aten_borrar(request, id):
     if request.method == 'GET':
         current_user = request.user
@@ -1593,7 +1582,6 @@ def config_personas_aten_borrar(request, id):
                              'Se ha borrado el integrante ' + str(id) + ' satisfactoriamente')
 
         return HttpResponseRedirect('/configuracion/personas_aten/')
-
 
 def config_solicitudes(request):
     # Render  administracion.html
@@ -1638,7 +1626,6 @@ def config_solicitudes(request):
     else:
         pass
 
-
 def config_respuesta_factura_pedido(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -1671,7 +1658,7 @@ def config_respuesta_factura_pedido(request):
                 RespuestaPedido.objects.filter(id=int(pedido)).update(respuesta=respuesta, estado='respondido',
                                                                    doc_respuesta=uploaded_file_url)
                 email = EmailMessage('RESPUESTA PETICION ' + str(info_pedido.num_pedido),
-                                     str(respuesta) + ', Documento adjunto: http://160.153.178.159' + str(
+                                     str(respuesta) + ', Documento adjunto: ' + IP_SERVIDOR + str(
                                          uploaded_file_url),
                                      to=[info_pedido.email])
                 email.send()
@@ -1689,7 +1676,6 @@ def config_respuesta_factura_pedido(request):
                              'Se han subido las facturas satisfactoriamente.')
         return HttpResponseRedirect('/configuracion/respuesta_factura/')
 
-
 def config_ordenes_otroscanales(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -1699,7 +1685,7 @@ def config_ordenes_otroscanales(request):
         empresa = User.objects.filter(username=nombre).first()
         empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
         empresa = empresa.empresa.codigo
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ProductosOtrosPedido9')/List?cliente='" + empresa +"'"
+        url2 = IP_SAP + "SQLQueries('ProductosOtrosPedido9')/List?cliente='" + empresa +"'"
 
         response = sap_request(url2)
         response = response.text
@@ -1769,7 +1755,6 @@ def config_ordenes_otroscanales(request):
                              'Se ha registrado el pedido satisfactoriamente')
         return HttpResponseRedirect('/configuracion/orden_cliente_otroscanales/')
 
-
 def obtener_imagen_producto(request):
     numero_producto = request.GET.get('numero')
     try:
@@ -1803,7 +1788,6 @@ def config_ordenes_otroscanales_pcs(request):
     else:
         pass
 
-
 def config_ordenes_otroscanales_pcs_cliente(request):
 
     if request.method == 'GET':
@@ -1826,7 +1810,6 @@ def config_ordenes_otroscanales_pcs_cliente(request):
     else:
         pass
 
-
 def config_ordenes_otroscanales_empresario(request):
 
     if request.method == 'GET':
@@ -1848,10 +1831,6 @@ def config_ordenes_otroscanales_empresario(request):
     else:
         pass
 
-
-
-
-
 def generar_pdf_bytes(contexto, template_name='pedido_asignacion_pdf.html'):
     """
     Renderiza un template como PDF y devuelve el contenido en bytes.
@@ -1869,7 +1848,6 @@ def generar_pdf_bytes(contexto, template_name='pedido_asignacion_pdf.html'):
     if pdf.err:
         return None
     return result.getvalue()
-
 
 def descargar_pedidos_zip(request):
     if request.method == 'POST':
@@ -1954,12 +1932,6 @@ def descargar_pedidos_zip(request):
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-
-
-
-
-
-
 def config_ordenes_otroscanales_empresario_facturacion(request):
 
     if request.method == 'GET':
@@ -1981,9 +1953,6 @@ def config_ordenes_otroscanales_empresario_facturacion(request):
     else:
         pass
 
-
-
-
 def config_ordenes_otroscanales_empresario_recibo(request):
 
     if request.method == 'GET':
@@ -2004,8 +1973,6 @@ def config_ordenes_otroscanales_empresario_recibo(request):
                                                         })
     else:
         pass
-
-
 
 def config_imagen_otroscanales_empresario(request):
     # Render  administracion.html
@@ -2047,10 +2014,6 @@ def config_imagen_otroscanales_empresario_borrar(request, id):
 
             return HttpResponseRedirect('/configuracion/imagen_empresiario_otroscanales/')
 
-
-
-
-
 def config_imagen_otroscanales_empresario_registrar(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -2088,7 +2051,7 @@ def config_imagen_otroscanales_empresario_registrar(request):
         else:
             uploaded_file_url = None
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasdescripcionporref')/List?referencia='" + str(
+        url3 = IP_SAP + "SQLQueries('Consultasdescripcionporref')/List?referencia='" + str(
             referencia) + "'"
 
         response1 = sap_request(url3)
@@ -2113,9 +2076,6 @@ def config_imagen_otroscanales_empresario_registrar(request):
 
 
         return HttpResponseRedirect('/configuracion/imagen_empresiario_otroscanales/')
-
-
-
 
 def config_imagen_otroscanales_empresario_registrar_masivo(request):
     # Render  administracion.html
@@ -2145,9 +2105,6 @@ def config_imagen_otroscanales_empresario_registrar_masivo(request):
             )
 
     return HttpResponseRedirect('/configuracion/imagen_empresiario_otroscanales/' )
-
-
-
 
 def config_ordenes_otroscanales_pcs_detalle(request, id):
 
@@ -2235,7 +2192,6 @@ def config_ordenes_otroscanales_pcs_detalle(request, id):
     else:
         pass
 
-
 def config_ordenes_otroscanales_pcs_eliminar(request, id):
 
     if request.method == 'GET':
@@ -2307,7 +2263,7 @@ def config_ordenes_otroscanales_pcs_detalle_edi(request):
         asignaciones=AsignacionPedidosOtrosCanales.objects.filter(num_detalle__num_pedido_id=pedido_pk)
         detallesasignaciones=DetallesPedidosOtrosCanales.objects.filter(num_pedido_id=pedido_pk)
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultaediempresariosdia')/List?Cliente='" + str(
+        url3 = IP_SAP + "SQLQueries('consultaediempresariosdia')/List?Cliente='" + str(
             empresa.nombre) + "'"
 
         response1 = sap_request(url3)
@@ -2332,7 +2288,7 @@ def config_ordenes_otroscanales_pcs_detalle_edi(request):
         contador=0
         for detalleasignacion in detallesasignaciones:
             contador=contador+1
-            url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ProductosEDI3')/List?producto='" + str(
+            url3 = IP_SAP + "SQLQueries('ProductosEDI3')/List?producto='" + str(
                 detalleasignacion.referencia) + "'"
             response1 = sap_request(url3)
             response1 = response1.text
@@ -2350,7 +2306,7 @@ def config_ordenes_otroscanales_pcs_detalle_edi(request):
             asignacionesdetalle = AsignacionPedidosOtrosCanales.objects.filter(num_detalle=detalleasignacion.pk)
             for asignaciondetalle in asignacionesdetalle:
                 nombre_emp=asignaciondetalle.empresa.nombre
-                url4 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultaediempresariootros1')/List?cliente='" + str(
+                url4 = IP_SAP + "SQLQueries('consultaediempresariootros1')/List?cliente='" + str(
                     empresa.nombre) + "'&Empresario='" + str(nombre_emp) + "'"
 
                 response1 = sap_request(url4)
@@ -2378,9 +2334,6 @@ def config_ordenes_otroscanales_pcs_detalle_edi(request):
     else:
         pass
 
-
-
-
 def config_ordenes_aviso_despacho_detalle_edi(request):
 
     if request.method == 'GET':
@@ -2391,12 +2344,12 @@ def config_ordenes_aviso_despacho_detalle_edi(request):
         fecha_actual=fechas[0:4] + fechas[5:7] + fechas[8:10]
         hora = timezone.now()
         hora = hora.strftime('%H%M')
-        url = "https://192.168.1.2:50000/b1s/v1/Login"
+        url = IP_SAP + "Login"
         consecutivo_edi=Consecutivo.objects.all().first()
         consuc_edi="000"+str(consecutivo_edi.valor)
 
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultaavisodespacho6')/List?pedido='" + str(
+        url3 = IP_SAP + "SQLQueries('consultaavisodespacho6')/List?pedido='" + str(
             pedido_pk) + "'"
 
         response1 = sap_request(url3)
@@ -2419,7 +2372,7 @@ def config_ordenes_aviso_despacho_detalle_edi(request):
                         "RFF+VA:"+datos['LicTradNum'][:-2]+"\nNAD+SU+7701081000011::9\nRFF+VA:890985438\nNAD+CA+7701081000011::9\n" \
                         "TDT+20++30+31++++:::123456\nEQD+BX\nCPS+1\nPAC+"+dato_cambiante_cantidad_cajas+"++BX\nCPS+2+1\nPAC+"+dato_cambiante_cantidad_cajas+"++BX"
         contador=0
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultaavisodespachodetalle1')/List?pedido='" + str(
+        url3 = IP_SAP + "SQLQueries('consultaavisodespachodetalle1')/List?pedido='" + str(
             pedido_pk) + "'"
 
         response1 = sap_request(url3)
@@ -2451,10 +2404,6 @@ def config_ordenes_aviso_despacho_detalle_edi(request):
         return response
     else:
         pass
-
-
-
-
 
 def config_ordenes_otroscanales_pcs_detalle_cliente(request, id):
 
@@ -2491,9 +2440,6 @@ def config_ordenes_otroscanales_pcs_detalle_cliente(request, id):
     else:
         pass
 
-
-
-
 def config_ordenes_otroscanales_pcs_eliminar_cliente(request, id):
 
     if request.method == 'GET':
@@ -2519,7 +2465,6 @@ def config_ordenes_otroscanales_pcs_eliminar_cliente(request, id):
 
     else:
         pass
-
 
 def config_ordenes_otroscanales_pcs_detalles(request):
     if request.method == 'POST':
@@ -2816,8 +2761,6 @@ def config_ordenes_otroscanales_pcs_fecha_maxima(request):
                                  'La fecha maxima debe ser mayor a la fecha minima' )
         return HttpResponseRedirect('/configuracion/orden_pcs_otroscanales/detalle/'+pedido+'/')
 
-
-
 def config_documentos_creditos(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -2900,9 +2843,6 @@ def config_documentos_creditos(request):
                                  'Se ha rechazado los documentos  satisfactoriamente.')
         return HttpResponseRedirect('/configuracion/documentos_creditos/')
 
-
-
-
 def config_historial_documentos_creditos(request,id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -2918,11 +2858,6 @@ def config_historial_documentos_creditos(request,id):
                                                           'documentos': documentos,
                                                         'permiso_usuario': usuario_datos,
                                                         })
-
-
-
-
-
 
 def config_servicio_crediya_registro(request):
     # Render  administracion.html
@@ -2943,7 +2878,7 @@ def config_servicio_crediya_registro(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('PedidosHabiles5')/List?fecha='" + hoy +  "'&empresa='" + str(
+        url2 = IP_SAP + "SQLQueries('PedidosHabiles5')/List?fecha='" + hoy +  "'&empresa='" + str(
                 empresa)+"'"
 
         response = sap_request(url2)
@@ -2951,7 +2886,7 @@ def config_servicio_crediya_registro(request):
         response = response['value']
         pedidos=[]
         for pedido in response:
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('PedidosHabilesEntry')/List?DocEntry='" + str(pedido['DocEntry']) + "'"
+            url2 = IP_SAP + "SQLQueries('PedidosHabilesEntry')/List?DocEntry='" + str(pedido['DocEntry']) + "'"
 
             responseentry = sap_request(url2)
             responseentry = ast.literal_eval(responseentry.text)
@@ -3046,7 +2981,6 @@ def config_servicio_crediya_preaprobado(request):
     else:
         return HttpResponseRedirect('/configuracion/servicio_crediya_registro/')
 
-
 def config_registro_documentos_creditos(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -3140,7 +3074,6 @@ def config_registro_documentos_creditos(request):
 
         return HttpResponseRedirect('/configuracion/documentos_creditos/')
 
-
 def config_editar_documentos_creditos(request,id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -3232,7 +3165,6 @@ def config_editar_documentos_creditos(request,id):
 
         return HttpResponseRedirect('/configuracion/documentos_creditos/')
 
-
 def config_servicio_crediya_preaprobados(request):
     # Render  administracion.html
     if request.method == 'POST':
@@ -3303,9 +3235,6 @@ def config_servicio_crediya_preaprobados(request):
 
         return HttpResponseRedirect('/configuracion/servicio_crediya_registro/')
 
-
-
-
 def config_crediya_consulta_generales(request):
 
     if request.method == 'GET':
@@ -3353,7 +3282,7 @@ def config_crediya_consulta_generales(request):
                 intereses=float(interes_sin_comas)
 
                 # URL del endpoint de VendorPayments
-                url_pagos_efectuados = "https://192.168.1.2:50000/b1s/v1/VendorPayments"
+                url_pagos_efectuados = IP_SAP + "VendorPayments"
 
                 # Datos del nuevo pago efectuado que quieres enviar
                 nuevo_pago_efectuado = {
@@ -3529,7 +3458,7 @@ def config_crediya_consulta_generales(request):
                 email = EmailMessage('SERVICIO FINANCIERO CREDIYA APROBADO',
                                      'Tu Servicio Financiero para el pedido : \n'
                                      + str(consulta.NumeroOrdenCompra)+"\nha sido aprobado. Podrás consultarlo en el siguiente sitio web:"
-                                                    "http://160.153.178.159/configuracion/servicio_crediya_historial/",
+                                                    + IP_SERVIDOR+ "/configuracion/servicio_crediya_historial/",
                                      to=[consulta.Correo])
                 email.send()
 
@@ -3553,7 +3482,6 @@ def config_crediya_consulta_generales(request):
 
         
         return HttpResponseRedirect('/configuracion/servicio_crediya_consulta/')
-
 
 def config_credilisto_consulta_generales(request):
 
@@ -3620,7 +3548,7 @@ def config_credilisto_consulta_generales(request):
                 if ROUTEID:  # por si tu SAP devuelve ROUTEID
                     cookie += "; ROUTEID=" + ROUTEID
                 # URL del endpoint de VendorPayments
-                url_pagos_efectuados = "https://192.168.1.2:50000/b1s/v1/VendorPayments"
+                url_pagos_efectuados = IP_SAP + "VendorPayments"
                 if estado != 'con pedidos':
                     # Datos del nuevo pago efectuado que quieres enviar
                     nuevo_pago_efectuado = {
@@ -3997,7 +3925,7 @@ def config_credilisto_consulta_generales(request):
                                      'Tu Servicio Financiero para la factura : \n'
                                      + str(
                                          consulta.NumeroFactura) + "\nha sido aprobado. Podrás consultarlo en el siguiente sitio web:"
-                                                                   "http://160.153.178.159/configuracion/servicio_credilisto_historial/",
+                                                                   + IP_SERVIDOR +"/configuracion/servicio_credilisto_historial/",
                                      to=[consulta.Correo])
                 email.send()
 
@@ -4021,8 +3949,6 @@ def config_credilisto_consulta_generales(request):
 
         return HttpResponseRedirect('/configuracion/servicio_credilisto_consulta/')
 
-
-
 def config_crediya_consulta_historial(request):
 
     if request.method == 'GET':
@@ -4039,9 +3965,6 @@ def config_crediya_consulta_historial(request):
     else:
         pass
 
-
-
-
 def config_credilisto_consulta_historial(request):
 
     if request.method == 'GET':
@@ -4057,9 +3980,6 @@ def config_credilisto_consulta_historial(request):
                                                         })
     else:
         pass
-
-
-
 
 def informacion_complementaria_consulta_crediya(request, ):
     if request.method == 'GET':
@@ -4131,8 +4051,6 @@ def informacion_complementaria_consulta_crediya(request, ):
 
         return JsonResponse(response_dict)
 
-
-
 def informacion_complementaria_consulta_cruces_credilisto(request, ):
     if request.method == 'GET' and request.is_ajax():
         estado='sin pedidos'
@@ -4141,7 +4059,7 @@ def informacion_complementaria_consulta_cruces_credilisto(request, ):
         nombre_empresa= informacion_factura.Empresa.codigo
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultanotascredito3')/List?ShortName='" + nombre_empresa + "'"
+        url2 = IP_SAP + "SQLQueries('consultanotascredito3')/List?ShortName='" + nombre_empresa + "'"
 
         response = sap_request(url2)
         response = response.text
@@ -4163,7 +4081,7 @@ def informacion_complementaria_consulta_cruces_credilisto(request, ):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultaanticipos5')/List?ShortName='" + nombre_empresa + "'"
+        url2 = IP_SAP + "SQLQueries('consultaanticipos5')/List?ShortName='" + nombre_empresa + "'"
 
         response = sap_request(url2)
         response = response.text
@@ -4187,7 +4105,7 @@ def informacion_complementaria_consulta_cruces_credilisto(request, ):
         resultado = "Este es el resultado para el pedido "
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultarPedidosCruce')/List?Fatura='" + factura +  "'"
+        url2 = IP_SAP + "SQLQueries('ConsultarPedidosCruce')/List?Fatura='" + factura +  "'"
 
         response = sap_request(url2)
 
@@ -4200,7 +4118,7 @@ def informacion_complementaria_consulta_cruces_credilisto(request, ):
 
 
 
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPagoEfectuadosc1')/List?pedido='ANTICIPO OC " + str(pedido) + "'"
+            url2 = IP_SAP + "SQLQueries('ConsultaPagoEfectuadosc1')/List?pedido='ANTICIPO OC " + str(pedido) + "'"
 
             response = sap_request(url2)
             response = ast.literal_eval(response.text)
@@ -4222,9 +4140,6 @@ def informacion_complementaria_consulta_cruces_credilisto(request, ):
         return JsonResponse({'resultado': response,'estado':estado,'pedido':pedido, 'valor':valor,'consulta_pendientes':infos_dict})
     else:
         return JsonResponse({'error': 'Bad request'}, status=400)
-
-
-
 
 def informacion_complementaria_consulta_credilisto(request, ):
     if request.method == 'GET':
@@ -4296,8 +4211,6 @@ def informacion_complementaria_consulta_credilisto(request, ):
 
         return JsonResponse(response_dict)
 
-
-
 def informacion_complementaria_historial_crediya(request, ):
     if request.method == 'GET':
         current_user = request.user
@@ -4365,8 +4278,6 @@ def informacion_complementaria_historial_crediya(request, ):
         }
 
         return JsonResponse(response_dict)
-
-
 
 def informacion_complementaria_historial_credilisto(request, ):
     if request.method == 'GET':
@@ -4437,10 +4348,6 @@ def informacion_complementaria_historial_credilisto(request, ):
         }
 
         return JsonResponse(response_dict)
-
-
-
-
 
 def config_servicio_crediya_lista(request):
     # Render  administracion.html
@@ -4521,7 +4428,7 @@ def config_servicio_credilisto_registro(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('FacturasHabiles3')/List?fecha='" + hoy +  "'&empresa='" + str(
+        url2 = IP_SAP + "SQLQueries('FacturasHabiles3')/List?fecha='" + hoy +  "'&empresa='" + str(
                 empresa)+"'"
 
         response = sap_request(url2)
@@ -4650,7 +4557,7 @@ def config_servicio_registro_empresas_aut(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('EmpresariosListaConsultas')/List?empresario= '" + codigo + "'"
+        url2 = IP_SAP + "SQLQueries('EmpresariosListaConsultas')/List?empresario= '" + codigo + "'"
 
         response = sap_request(url2)
         response = response.text
@@ -6030,7 +5937,7 @@ def config_respuesta_pedido(request):
                 email = EmailMessage('SOLICITUD DE PRORROGA PARA EL PEDIDO'+str(numero_pedido) ,
                                      'la empresa '+ usuario_datos.empresa.nombre + ' solicita la prórroga '+
                                     ' para el pedido '+str(numero_pedido) +' Información : '+ adicionales + ' Para ver más ingrese en '+
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     IP_SERVIDOR +'/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6097,7 +6004,7 @@ def config_respuesta_seg_pedido(request):
                 email = EmailMessage('SOLICITUD DE FACTURA PARA EL PEDIDO '+str(numero_pedido)+texto_adicional ,
                                      'La empresa '+ str(empresa) + ' solicito la factura '
                                     + ' para el pedido '+str(numero_pedido) +'\nInformación  : '+ adicionales + '\nCliente: '+str(cliente) +'\nPara ver más ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     IP_SERVIDOR +'/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6158,7 +6065,7 @@ def config_respuesta_ter_pedido(request):
                 email = EmailMessage('SOLICITUD DE NO DESPACHO PARA EL PEDIDO'+str(numero_pedido) ,
                                      'La empresa '+ usuario_datos.empresa.nombre + ' solicita no despachar  '
                                     + '  el pedido '+str(numero_pedido) +' Información : '+ adicionales + ' Para ver más ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6220,7 +6127,7 @@ def config_respuesta_quin_pedido(request):
                 email = EmailMessage('SOLICITUD DE SUSPENCION DE PRODUCTO PARA EL PEDIDO'+str(numero_pedido) ,
                                      'La empresa '+ usuario_datos.empresa.nombre + ' solicita la suspencion del producto para  '
                                     + '  el pedido '+str(numero_pedido) +' Informacion : '+ adicionales + ' Para ver mas ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     + IP_SERVIDOR +'/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6379,7 +6286,7 @@ def config_respuesta_sept_pedido(request):
                 email = EmailMessage('SOLICITUD DE DESPACHO PARA EL PEDIDO '+str(numero_pedido)+texto_adicional ,
                                      'La empresa '+ usuario_datos.empresa.nombre + ' solicito el despacho '
                                     + ' para el pedido '+str(numero_pedido) +' Información  : '+ adicionales + ' Para ver más ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/problema/' +
+                                     IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/problema/' +
                                     entry_pedido + '/',
                                      to=[correos.email])
                 email.send()
@@ -6661,7 +6568,7 @@ def config_respuesta_peticion(request):
 
             RespuestaPedido.objects.filter(id=problema).update(respuesta=respuesta,estado='respondido',doc_respuesta=uploaded_file_url)
             email = EmailMessage('RESPUESTA PETICION ' + str(datospersona.num_pedido),
-                                 str(respuesta)+', Documento adjunto: http://160.153.178.159'+str(uploaded_file_url),
+                                 str(respuesta)+', Documento adjunto: '+ IP_SERVIDOR +str(uploaded_file_url),
                                  to=[datospersona.email])
             email.send()
             log = LogRespuestaPedido(
@@ -8428,7 +8335,7 @@ def config_informe_recibo(request):
             rows = []
 
             for d in historial:
-                url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadatospreciosfacturas1')/List?codigo='" + str(
+                url3 = IP_SAP + "SQLQueries('consultadatospreciosfacturas1')/List?codigo='" + str(
                     d.num_detalle.referencia) + "'"
 
                 response1 = sap_request(url3)
@@ -8709,7 +8616,7 @@ def config_informe_cliente_fact(request):
             hoy = date.today().strftime("%Y-%m-%d")
             dolar = 4065.22
 
-            url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('obtenertrm')/List?hoy='" + str(
+            url3 = IP_SAP + "SQLQueries('obtenertrm')/List?hoy='" + str(
                 hoy) + "'"
 
             response1 = sap_request(url3)
@@ -8770,7 +8677,7 @@ def config_informe_cliente_fact(request):
 
             for d in historial:
 
-                url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadatospreciosfacturas1')/List?codigo='" + str(
+                url3 = IP_SAP + "SQLQueries('consultadatospreciosfacturas1')/List?codigo='" + str(
                     d.num_detalle.referencia) + "'"
 
                 response1 = sap_request(url3)
@@ -8976,7 +8883,7 @@ def reporte_generacion_facturas(request):
 
 
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('obtenertrm')/List?hoy='" + str(
+        url3 = IP_SAP + "SQLQueries('obtenertrm')/List?hoy='" + str(
             hoy) + "'"
 
         response1 = sap_request(url3)
@@ -9063,7 +8970,7 @@ def reporte_generacion_facturas(request):
         rows = []
 
         for d in historial:
-            url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadatospreciosfacturas1')/List?codigo='" + str(
+            url3 = IP_SAP + "SQLQueries('consultadatospreciosfacturas1')/List?codigo='" + str(
                 d.num_detalle.referencia) + "'"
 
             response1 = sap_request(url3)
@@ -9220,7 +9127,7 @@ def reporte_facturas_activas(request):
         date_style.num_format_str = 'DD/MM/YYYY'
 
         # Construir URL sin f-string
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFacturasActivasV88')/List?fecha='" + fecha_futura_str + "'"
+        url2 = IP_SAP + "SQLQueries('ConsultasFacturasActivasV88')/List?fecha='" + fecha_futura_str + "'"
 
         response = sap_request(url2)
         response = response.text.replace('null', ' " " ')
@@ -9801,7 +9708,7 @@ def config_excel_pedidos_externos(request):
                     if not articulos_plu_qs.exists():
                         # No está en Portal → consultar SAP
                         url3 = (
-                            "https://192.168.1.2:50000/b1s/v1/SQLQueries('ProductosOtrosCanalesv1')/List?producto='"
+                            IP_SAP + "SQLQueries('ProductosOtrosCanalesv1')/List?producto='"
                             + unicode(u_plu) + "'"
                         )
 
@@ -10107,7 +10014,7 @@ def config_excel_pedidos_externos_distribuido(request):
                 if isinstance(necesidad, (int,long, float)):
 
                     if ean != None:
-                        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPorEanOtrosC')/List?Ean='" + str(
+                        url3 = IP_SAP + "SQLQueries('ConsultaPorEanOtrosC')/List?Ean='" + str(
                             ean) + "'"
 
                         response1 = sap_request(url3)
@@ -10154,7 +10061,7 @@ def config_excel_pedidos_externos_distribuido(request):
                 detalle_pedido=detallepedidootros.pk
 
             if isinstance(unidades, (int, long, float)):
-                url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaEmpresarioPoreEan')/List?localizacion='" + str(
+                url3 = IP_SAP + "SQLQueries('ConsultaEmpresarioPoreEan')/List?localizacion='" + str(
                     localizacion) + "'&codigo='"+str(usuario_datos.empresa.codigo)+"'"
 
                 response1 = sap_request(url3)
@@ -10437,7 +10344,7 @@ def config_consulta_empresario_tipo_codigos(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardCode,CardName&$filter=CardType eq '" + tipo_empresa + "'"
+        url2 = IP_SAP + "BusinessPartners?$select=CardCode,CardName&$filter=CardType eq '" + tipo_empresa + "'"
 
         response = sap_request(url2)
         response = response.text
@@ -10482,7 +10389,7 @@ def config_consulta_empresario_tipo_codigos(request):
             'total_items': cuenta,
             'datos': matrices_dict
         }
-        url = "https://192.168.1.2:50000/b1s/v1/Logout"
+        url = IP_SAP + "Logout"
         responselogout = requests.request("POST", url, verify=False)
         return JsonResponse(response_dict)
 
@@ -10603,7 +10510,7 @@ def config_historial_correos_no_enviados(request):
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
         hora = now.time()
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocNum,CardName,DocDate,DocEntry,CardCode&$filter=DocDate le '" + fecha_fin + "' and DocDate ge '" + fecha_inicio +"'"
+        url2 = IP_SAP + "PurchaseOrders?$select=DocNum,CardName,DocDate,DocEntry,CardCode&$filter=DocDate le '" + fecha_fin + "' and DocDate ge '" + fecha_inicio +"'"
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
         response = response['value']
@@ -10649,7 +10556,7 @@ def config_enviar_correos_no_enviados(request):
             variable = str(variable).split(",")
 
             dependencias = 'LOGISTICA Y DESPACHOS'
-            url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
+            url3 = IP_SAP + "SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
                        variable[3] + "'&dependencia='" + dependencias + "'"
             response2 = sap_request(url3)
             response2 = ast.literal_eval(response2.text)
@@ -10675,7 +10582,7 @@ def config_enviar_correos_no_enviados(request):
                         try:
                             email = EmailMessage(str(variable[0])+' TIENES UN NUEVO PEDIDO ' + str(variable[1]),
                                                      'Ha recibido un pedido nuevo.Para conocer el detalle del pedido ingresa al siguiente link '
-                                                     + 'http://160.153.178.159/configuracion/solicitud_pedido_orden/detalle/' + str(
+                                                     + IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/detalle/' + str(
                                                          variable[2]) + '/',
                                                      to=[correos])
                             email.send()
@@ -10739,7 +10646,7 @@ def config_historial_correos_no_registrados(request):
         now = datetime.now(pytz.timezone('America/Bogota'))
         hoy = now.date()
         hora = now.time()
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocNum,CardName,DocDate&$filter=DocDate le '" + fecha_fin + "' and DocDate ge '" + fecha_inicio +"'"
+        url2 = IP_SAP + "PurchaseOrders?$select=DocNum,CardName,DocDate&$filter=DocDate le '" + fecha_fin + "' and DocDate ge '" + fecha_inicio +"'"
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
         response = response['value']
@@ -10787,7 +10694,7 @@ def indienvio_mail (request):
         fecha_inicio = request.GET.get('fecha_inicio')
         fecha_fin = request.GET.get('fecha_fin')
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders/$count?$filter=DocDate le '" + fecha_fin + "' and DocDate ge '" + fecha_inicio +"'"
+        url2 = IP_SAP + "PurchaseOrders/$count?$filter=DocDate le '" + fecha_fin + "' and DocDate ge '" + fecha_inicio +"'"
 
         response = sap_request(url2)
         total = ast.literal_eval(response.text)
@@ -11408,7 +11315,7 @@ def config_usuarios_registrar_externos(request):
         codigo = request.GET.get("codigo")
         codigoregistro = request.GET.get("codigoregistro")
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType&$filter=CardCode eq '" + codigo + "'"
+        url2 = IP_SAP + "BusinessPartners?$select=CardCode,CardName,CardType&$filter=CardCode eq '" + codigo + "'"
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -11520,7 +11427,7 @@ def config_usuarios_registrar_externos(request):
             codigoderegistro = CodigosRegistros.objects.filter(codigo=codigoregistro).first()
 
 
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('EmpresariosListaConsulta')/List?empresario= '" + id + "'"
+            url2 = IP_SAP + "SQLQueries('EmpresariosListaConsulta')/List?empresario= '" + id + "'"
 
             response = sap_request(url2)
             response = response.text
@@ -12174,14 +12081,14 @@ def config_usuarios_registrar_externos_comp(request):
 
     # Continuar con la lógica de autenticación
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardCode&$filter=CardCode eq '{}'".format(codigo)
+    url2 = IP_SAP + "BusinessPartners?$select=CardCode&$filter=CardCode eq '{}'".format(codigo)
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
     response = response['value']
 
     if not response:
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('validacionEDIS')/List?EAN= '{}'".format(codigo)
+        url2 = IP_SAP + "SQLQueries('validacionEDIS')/List?EAN= '{}'".format(codigo)
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
         response = response['value']
@@ -13841,13 +13748,13 @@ def config_solicitud_pedido(request):
 
 
         if estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/Orders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Orders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/Orders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Orders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/Orders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Orders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
 
         response = sap_request(url2)
@@ -13880,8 +13787,8 @@ def vista_formula(request, form_id):
     usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/Orders?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/Orders?$select=DocumentLines&$filter=DocNum eq " + form_id
+    url2 = IP_SAP + "Orders?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
+    url3 = IP_SAP + "Orders?$select=DocumentLines&$filter=DocNum eq " + form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -13967,13 +13874,13 @@ def config_solicitud_entrega(request):
 
 
         if estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/DeliveryNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "DeliveryNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/DeliveryNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "DeliveryNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/DeliveryNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "DeliveryNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
 
         response = sap_request(url2)
@@ -14006,8 +13913,8 @@ def entrega_detalle(request, form_id):
     usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/DeliveryNotes?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/DeliveryNotes?$select=DocumentLines&$filter=DocNum eq " + form_id
+    url2 = IP_SAP + "DeliveryNotes?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
+    url3 = IP_SAP + "DeliveryNotes?$select=DocumentLines&$filter=DocNum eq " + form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -14092,13 +13999,13 @@ def config_solicitud_devolucion(request):
 
 
         if estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/Returns?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Returns?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/Returns?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Returns?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/Returns?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Returns?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
 
         response = sap_request(url2)
@@ -14131,8 +14038,8 @@ def devolucion_detalle(request, form_id):
     usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/Returns?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/Returns?$select=DocumentLines&$filter=DocNum eq " + form_id
+    url2 = IP_SAP + "Returns?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
+    url3 = IP_SAP + "Returns?$select=DocumentLines&$filter=DocNum eq " + form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -14217,13 +14124,13 @@ def config_solicitud_notas_debito(request):
 
 
         if estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'and DocumentSubType eq 'bod_DebitMemo'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'and DocumentSubType eq 'bod_DebitMemo'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'and DocumentSubType eq 'bod_DebitMemo'&$skip="+pagina
 
         response = sap_request(url2)
@@ -14257,8 +14164,8 @@ def solicitud_notas_debito_detalle(request, form_id):
     usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id + "and DocumentSubType eq 'bod_DebitMemo'"
-    url3 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocumentLines&$filter=DocNum eq " + form_id + "and DocumentSubType eq 'bod_DebitMemo'"
+    url2 = IP_SAP + "Invoices?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id + "and DocumentSubType eq 'bod_DebitMemo'"
+    url3 = IP_SAP + "Invoices?$select=DocumentLines&$filter=DocNum eq " + form_id + "and DocumentSubType eq 'bod_DebitMemo'"
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -14291,7 +14198,7 @@ def solicitud_notas_debito_detalle(request, form_id):
             'articulos': articulos
         }
         dato_lista.append(data_prueba)
-    url = "https://192.168.1.2:50000/b1s/v1/Logout"
+    url = IP_SAP + "Logout"
     responselogout = requests.request("POST", url, verify=False)
     return render(request, "notas_debito_detalle.html", {"form_id": form_id,
                                                        'user': current_user,
@@ -14346,13 +14253,13 @@ def config_solicitud_notas_credito(request):
 
 
         if estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/CreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "CreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/CreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "CreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/CreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "CreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
 
         response = sap_request(url2)
@@ -14387,8 +14294,8 @@ def solicitud_notas_credito_detalle(request, form_id):
 
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/CreditNotes?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/CreditNotes?$select=DocumentLines&$filter=DocNum eq " + form_id
+    url2 = IP_SAP + "CreditNotes?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
+    url3 = IP_SAP + "CreditNotes?$select=DocumentLines&$filter=DocNum eq " + form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -14474,13 +14381,13 @@ def config_solicitud_factura_deudores(request):
 
 
         if estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'and DocumentSubType eq 'bod_None'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'and DocumentSubType eq 'bod_None'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "Invoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'and DocumentSubType eq 'bod_None'&$skip="+pagina
 
         response = sap_request(url2)
@@ -14514,8 +14421,8 @@ def factura_deudores_detalle(request, form_id):
     usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/Invoices?$select=DocumentLines&$filter=DocNum eq " + form_id
+    url2 = IP_SAP + "Invoices?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
+    url3 = IP_SAP + "Invoices?$select=DocumentLines&$filter=DocNum eq " + form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -14561,8 +14468,8 @@ def factura_deudores_proveedor(request, form_id):
     datos_proveedor = Empresas.objects.filter(id=usuario_datos.empresa_id).first()
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseInvoices?$select=DocNum,DocTotal,VatSum,WTApplied,TotalDiscount,BaseAmount,NumAtCard,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/PurchaseInvoices?$select=DocumentLines&$filter=DocNum eq " + form_id
+    url2 = IP_SAP + "PurchaseInvoices?$select=DocNum,DocTotal,VatSum,WTApplied,TotalDiscount,BaseAmount,NumAtCard,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
+    url3 = IP_SAP + "PurchaseInvoices?$select=DocumentLines&$filter=DocNum eq " + form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -14623,7 +14530,7 @@ def config_solicitud_pedido_orden(request):
         if not usuario_actual.is_staff:
             return HttpResponseRedirect('/login/')
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+        url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                + empresa + "'and DocumentStatus eq '" + estado + "'&$skip=" + pagina
 
         response = sap_request(url2)
@@ -14704,19 +14611,19 @@ def config_solicitud_pedido_orden(request):
             secundario='primario'
 
         if pedido!="":
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocNum eq " + pedido + "&$skip=" + pagina
         elif secundario=='primario':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'&$skip=" + pagina
         elif estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
 
         response = sap_request(url2)
@@ -14792,7 +14699,7 @@ def config_solicitud_pedido_orden_bodegas(request):
         if not usuario_actual.is_staff:
             return HttpResponseRedirect('/login/')
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidos1')/List?estado='" \
+        url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos1')/List?estado='" \
                + estado + "'&bodega=" + bodega+ "&$skip=" + pagina
 
         response = sap_request(url2)
@@ -14877,13 +14784,13 @@ def config_solicitud_pedido_orden_bodegas(request):
 
 
         if pedido!="":
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidos2s')/List?estado='" \
+            url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos2s')/List?estado='" \
                    + estado + "'&num_pedido='" + pedido + "'&$skip=" + pagina
         elif cliente!="":
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidos4')/List?estado='" \
+            url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos4')/List?estado='" \
                    + estado + "'&bodega=" + bodega+ "&cliente='" + cliente+ "'&fecha_minima='" + fecha_inicio+ "'&fecha_maxima='" + fecha_fin + "'&$skip=" + pagina
         else:
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidos5')/List?estado='" \
+            url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos5')/List?estado='" \
                    + estado + "'&bodega=" + bodega  + "&fecha_minima='" + fecha_inicio + "'&fecha_maxima='" + fecha_fin + "'&$skip=" + pagina
 
         response = sap_request(url2)
@@ -14962,7 +14869,7 @@ def config_solicitud_pedido_orden_bodega(request):
         if not usuario_actual.is_staff:
             return HttpResponseRedirect('/login/')
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidosven1')/List?estado='" \
+        url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidosven1')/List?estado='" \
                + estado + "'&bodega=" + bodega+ "&$skip=" + pagina
         response = sap_request(url2)
         response = response.text
@@ -15050,15 +14957,15 @@ def config_solicitud_pedido_orden_bodega(request):
 
 
         if pedido!="":
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidos2a')/List?estado='" \
+            url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos2a')/List?estado='" \
                    + estado + "'&num_pedido='" + pedido + "'&$skip=" + pagina
         elif pedido_cliente!="":
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidosclientes')/List?num_pedido='" + pedido_cliente + "'&$skip=" + pagina
+            url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidosclientes')/List?num_pedido='" + pedido_cliente + "'&$skip=" + pagina
         elif cliente!="":
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidos4a')/List?estado='" \
+            url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos4a')/List?estado='" \
                    + estado + "'&bodega=" + bodega+ "&cliente='" + cliente+ "'&fecha_minima='" + fecha_inicio+ "'&fecha_maxima='" + fecha_fin + "'&$skip=" + pagina
         else:
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Consultasbodegaspedidos5a')/List?estado='" \
+            url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos5a')/List?estado='" \
                    + estado + "'&bodega=" + bodega  + "&fecha_minima='" + fecha_inicio + "'&fecha_maxima='" + fecha_fin + "'&$skip=" + pagina
 
         response = sap_request(url2)
@@ -15131,13 +15038,13 @@ def reporte_pedido(request):
         estado = request.GET.get('estado')
 
         if estado == '':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseOrders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocDate lt '" + fecha_fin + "' and DocDate gt '" + fecha_inicio + "'"
         elif estado == 'tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseOrders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '" + fecha_fin + "' and DocDate gt '" + fecha_inicio + "'"
         elif estado == 'bost_Open' or estado == 'bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseOrders?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '" + fecha_fin + "' and DocDate gt '" + fecha_inicio + "'"
 
         response = sap_request(url2)
@@ -15396,7 +15303,7 @@ def pedido_detalle(request, form_id):
     datos_proveedor= Empresas.objects.filter(id=usuario_datos.empresa_id).first()
 
     try:
-        url6 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=OpeningRemarks&$filter=DocEntry eq " + form_id
+        url6 = IP_SAP + "PurchaseOrders?$select=OpeningRemarks&$filter=DocEntry eq " + form_id
 
         response6 = sap_request(url6)
         response6 = ast.literal_eval(response6.text)
@@ -15407,7 +15314,7 @@ def pedido_detalle(request, form_id):
 
     except:
         try:
-            url6 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultadetalleAlmacenes')/List?pedido=" + form_id
+            url6 = IP_SAP + "SQLQueries('ConsultadetalleAlmacenes')/List?pedido=" + form_id
 
             response6 = sap_request(url6)
             response6 = response6.text
@@ -15457,8 +15364,8 @@ def pedido_detalle(request, form_id):
         except:
             comentarios_iniciales = 'No'
     try:
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocNum,Address,VatSum,DocTotal,DocDate,DocDueDate,TaxDate,CardName,DocumentStatus,Cancelled&$filter=DocEntry eq " + form_id
-        url3 = "https://192.168.1.2:50000/b1s/v1/sml.svc/DETALLE_PEDIDO?$filter=DocEntry eq " + form_id
+        url2 = IP_SAP + "PurchaseOrders?$select=DocNum,Address,VatSum,DocTotal,DocDate,DocDueDate,TaxDate,CardName,DocumentStatus,Cancelled&$filter=DocEntry eq " + form_id
+        url3 = IP_SAP + "sml.svc/DETALLE_PEDIDO?$filter=DocEntry eq " + form_id
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -15479,7 +15386,7 @@ def pedido_detalle(request, form_id):
                 division_cajas=0
             cantidad_cajas=cantidad_cajas+division_cajas
             try:
-                url4 = "https://192.168.1.2:50000/b1s/v1/sml.svc/DET_DIR_PEDIDOS?$filter=U_ItemCode eq '"+ d['ItemCode']+"' and DocEntry eq '"+form_id+"'"
+                url4 = IP_SAP + "sml.svc/DET_DIR_PEDIDOS?$filter=U_ItemCode eq '"+ d['ItemCode']+"' and DocEntry eq '"+form_id+"'"
                 response4 = sap_request(url4)
                 response4 = ast.literal_eval(response4.text)
                 response4 = response4['value']
@@ -15590,8 +15497,8 @@ def pedido_detalle(request, form_id):
                                                        'comentarios_iniciales': comentarios_iniciales,
                                                           })
     except:
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocNum,Address,VatSum,DocTotal,DocDate,DocDueDate,TaxDate,CardName,DocumentStatus,Cancelled&$filter=DocEntry eq " + form_id
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadetallepedidosvaci2')/List?pedido=" + form_id
+        url2 = IP_SAP + "PurchaseOrders?$select=DocNum,Address,VatSum,DocTotal,DocDate,DocDueDate,TaxDate,CardName,DocumentStatus,Cancelled&$filter=DocEntry eq " + form_id
+        url3 = IP_SAP + "SQLQueries('consultadetallepedidosvaci2')/List?pedido=" + form_id
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -15612,7 +15519,7 @@ def pedido_detalle(request, form_id):
                 division_cajas=0
             cantidad_cajas = cantidad_cajas + division_cajas
             try:
-                url4 = "https://192.168.1.2:50000/b1s/v1/sml.svc/DET_DIR_PEDIDOS?$filter=U_ItemCode eq '"+ d['ItemCode']+"' and DocEntry eq '"+form_id+"'"
+                url4 = IP_SAP + "sml.svc/DET_DIR_PEDIDOS?$filter=U_ItemCode eq '"+ d['ItemCode']+"' and DocEntry eq '"+form_id+"'"
                 response4 = sap_request(url4)
                 response4 = ast.literal_eval(response4.text)
                 response4 = response4['value']
@@ -15719,7 +15626,7 @@ def pedido_asignacion_pdf(request, form_id):
     asignacion=AsignacionPedidosOtrosCanales.objects.filter(pk=form_id)
     asignacion_titulos=AsignacionPedidosOtrosCanales.objects.filter(pk=form_id).first()
 
-    url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadatospreciosfacturas1')/List?codigo='" + str(
+    url3 = IP_SAP + "SQLQueries('consultadatospreciosfacturas1')/List?codigo='" + str(
         asignacion_titulos.num_detalle.referencia) + "'"
 
     response1 = sap_request(url3)
@@ -15770,7 +15677,7 @@ def pedido_detalle_bodega(request, form_id):
         datos_proveedor= Empresas.objects.filter(id=usuario_datos.empresa_id).first()
 
 
-        url6 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultapedidosordendeventa')/List?pedido=" + form_id
+        url6 = IP_SAP + "SQLQueries('consultapedidosordendeventa')/List?pedido=" + form_id
 
         response6 = sap_request(url6)
         response6 = response6.text
@@ -15778,7 +15685,7 @@ def pedido_detalle_bodega(request, form_id):
         response6 = ast.literal_eval(response6)
         response6 = response6['value']
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadetalleordenesdeventas2')/List?pedido=" + form_id
+        url3 = IP_SAP + "SQLQueries('consultadetalleordenesdeventas2')/List?pedido=" + form_id
 
         response2 = sap_request(url3)
         response2 = response2.text
@@ -15788,7 +15695,7 @@ def pedido_detalle_bodega(request, form_id):
         articulos=[]
         for d in response2:
 
-            url4 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadetalleordenesdeventas1')/List?pedido=" + form_id+"&CodigoProd='"+d['ItemCode']+"'"
+            url4 = IP_SAP + "SQLQueries('consultadetalleordenesdeventas1')/List?pedido=" + form_id+"&CodigoProd='"+d['ItemCode']+"'"
 
             response3 = sap_request(url4)
             response3 = response3.text
@@ -15914,7 +15821,7 @@ def pedido_detalle_bodega(request, form_id):
                                      'La bodega 19 solicito la factura '
                                      + ' para la orden de venta ' + str(
                                          pedido_num) +   '\nPara ver más ingrese en ' +
-                                     'http://160.153.178.159/configuracion/solicitud_pedido_orden/bodegas/problema/' +
+                                     IP_SERVIDOR + '/configuracion/solicitud_pedido_orden/bodegas/problema/' +
                                      form_id + '/',
                                      to=[correos.email])
                 email.send()
@@ -15936,7 +15843,7 @@ def pedido_problema_detalle_bodegas(request, form_id):
 
 
 
-        url6 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadefacturasabiertas')/List"
+        url6 = IP_SAP + "SQLQueries('consultadefacturasabiertas')/List"
 
         response6 = sap_request(url6)
         response6 = response6.text
@@ -15982,7 +15889,7 @@ def pedido_problema_detalle_bodegas(request, form_id):
         datospersona = RespuestaPedido.objects.filter(id=problema).first()
 
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultaavisodespachobodegas')/List?pedido='" + str(
+        url3 = IP_SAP + "SQLQueries('consultaavisodespachobodegas')/List?pedido='" + str(
             pedido_pk) + "'"
 
         response1 = sap_request(url3)
@@ -16188,8 +16095,8 @@ def reporte_pedido_detalle(request):
         solicitud = request.GET.get('solicitud')
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName,DocTotal&$filter=DocNum eq " + solicitud
-        url3 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$select=DocumentLines&$filter=DocNum eq " + solicitud
+        url2 = IP_SAP + "PurchaseOrders?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName,DocTotal&$filter=DocNum eq " + solicitud
+        url3 = IP_SAP + "PurchaseOrders?$select=DocumentLines&$filter=DocNum eq " + solicitud
 
         response3 = sap_request(url2)
         response3 = ast.literal_eval(response3.text)
@@ -16334,7 +16241,7 @@ def config_solicitud_catalogo_productos(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasInventarios')/List?Empresa='" + empresa +"'&NombreProducto='%"+codigo_prod+"%'"
+        url2 = IP_SAP + "SQLQueries('ConsultasInventarios')/List?Empresa='" + empresa +"'&NombreProducto='%"+codigo_prod+"%'"
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -16361,8 +16268,8 @@ def catalogo_productos_detalle(request, form_id):
     usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/Items?$select=ItemCode,ItemName,CreateDate,Mainsupplier,SalesUnit,SalesItemsPerUnit,QuantityOnStock&$filter=ItemCode eq '" + form_id + " ' "
-    url3 = "https://192.168.1.2:50000/b1s/v1/Items?$select=ItemWarehouseInfoCollection&$filter=ItemCode eq '" + form_id + " ' "
+    url2 = IP_SAP + "Items?$select=ItemCode,ItemName,CreateDate,Mainsupplier,SalesUnit,SalesItemsPerUnit,QuantityOnStock&$filter=ItemCode eq '" + form_id + " ' "
+    url3 = IP_SAP + "Items?$select=ItemWarehouseInfoCollection&$filter=ItemCode eq '" + form_id + " ' "
 
 
     response = sap_request(url2)
@@ -16378,7 +16285,7 @@ def catalogo_productos_detalle(request, form_id):
         if d['InStock']==0.0:
             pass
         else:
-            url4 = "https://192.168.1.2:50000/b1s/v1/Warehouses?$select=WarehouseName&$filter=WarehouseCode eq '" + d['WarehouseCode'] + " ' "
+            url4 = IP_SAP + "Warehouses?$select=WarehouseName&$filter=WarehouseCode eq '" + d['WarehouseCode'] + " ' "
             response3 = sap_request(url4)
             response3 = ast.literal_eval(response3.text)
             response3 = response3['value']
@@ -16459,13 +16366,13 @@ def config_solicitud_debito_proveedores(request):
 
 
         if estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseInvoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseInvoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseInvoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseInvoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseInvoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseInvoices?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
 
         response = sap_request(url2)
@@ -16499,8 +16406,8 @@ def debito_proveedores_detalle(request, form_id):
     current_user = request.user
     usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseInvoices?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/PurchaseInvoices?$select=DocumentLines&$filter=DocNum eq " + form_id
+    url2 = IP_SAP + "PurchaseInvoices?$select=DocNum,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
+    url3 = IP_SAP + "PurchaseInvoices?$select=DocumentLines&$filter=DocNum eq " + form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -16586,16 +16493,16 @@ def config_solicitud_credito_proveedores(request):
 
 
         if nota!="":
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseCreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseCreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocNum eq " + nota +  "&$skip=" + pagina
         elif estado== None:
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseCreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseCreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                 + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='tYES':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseCreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseCreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
         elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseCreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+            url2 = IP_SAP + "PurchaseCreditNotes?$select=DocNum,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                    + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
 
         response = sap_request(url2)
@@ -16631,8 +16538,8 @@ def credito_proveedores_detalle(request, form_id):
     datos_proveedor = Empresas.objects.filter(id=usuario_datos.empresa_id).first()
 
     try:
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseCreditNotes?$select=DocNum,DocTotal,Comments,WTApplied,VatSum,TotalDiscount,NumAtCard,Address,DocDate,DocDueDate,TaxDate,CardName,OpeningRemarks&$filter=DocNum eq " + form_id
-        url3 = "https://192.168.1.2:50000/b1s/v1/PurchaseCreditNotes?$select=DocumentLines&$filter=DocNum eq " + form_id
+        url2 = IP_SAP + "PurchaseCreditNotes?$select=DocNum,DocTotal,Comments,WTApplied,VatSum,TotalDiscount,NumAtCard,Address,DocDate,DocDueDate,TaxDate,CardName,OpeningRemarks&$filter=DocNum eq " + form_id
+        url3 = IP_SAP + "PurchaseCreditNotes?$select=DocumentLines&$filter=DocNum eq " + form_id
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -16675,8 +16582,8 @@ def credito_proveedores_detalle(request, form_id):
             }
             dato_lista.append(data_prueba)
     except:
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseCreditNotes?$select=DocNum,WTApplied,DocTotal,VatSum,TotalDiscount,Comments,NumAtCard,Address,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
-        url3 = "https://192.168.1.2:50000/b1s/v1/PurchaseCreditNotes?$select=DocumentLines&$filter=DocNum eq " + form_id
+        url2 = IP_SAP + "PurchaseCreditNotes?$select=DocNum,WTApplied,DocTotal,VatSum,TotalDiscount,Comments,NumAtCard,Address,DocDate,DocDueDate,TaxDate,CardName&$filter=DocNum eq " + form_id
+        url3 = IP_SAP + "PurchaseCreditNotes?$select=DocumentLines&$filter=DocNum eq " + form_id
 
         response = sap_request(url2)
         response = response.text
@@ -16767,11 +16674,11 @@ def config_solicitud_aviso_recibo(request):
 
 
         if orden_compra != '':
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasAvisoRecibosorden3')/List?Ordenventa='" + orden_compra +"'&Empresa='"+ str(empresa) +"'&$skip="+pagina
+            url2 = IP_SAP + "SQLQueries('ConsultasAvisoRecibosorden3')/List?Ordenventa='" + orden_compra +"'&Empresa='"+ str(empresa) +"'&$skip="+pagina
         elif factura != '':
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasAvisoRecibosfacturas1')/List?Factura='" + factura +"'&Empresa='"+ str(empresa) + "'&$skip=" + pagina
+            url2 = IP_SAP + "SQLQueries('ConsultasAvisoRecibosfacturas1')/List?Factura='" + factura +"'&Empresa='"+ str(empresa) + "'&$skip=" + pagina
         else:
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasAvisoRecibosnor1')/List?FechaInicial='"+ fecha_inicio +"'&FechaFinal='"+ fecha_fin +"'&Empresa='"+ str(empresa) +"'&$skip=" + pagina
+            url2 = IP_SAP + "SQLQueries('ConsultasAvisoRecibosnor1')/List?FechaInicial='"+ fecha_inicio +"'&FechaFinal='"+ fecha_fin +"'&Empresa='"+ str(empresa) +"'&$skip=" + pagina
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -16834,11 +16741,11 @@ def reporte_aviso_recibo(request):
 
 
         if orden_compra != '':
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasAvisoRecibosorden3')/List?Ordenventa='" + orden_compra + "'&Empresa='"+ str(empresa) +"'"
+            url2 = IP_SAP + "SQLQueries('ConsultasAvisoRecibosorden3')/List?Ordenventa='" + orden_compra + "'&Empresa='"+ str(empresa) +"'"
         elif factura != '':
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasAvisoRecibosfacturas1')/List?Factura='" + factura + "'&Empresa='"+ str(empresa) +"'"
+            url2 = IP_SAP + "SQLQueries('ConsultasAvisoRecibosfacturas1')/List?Factura='" + factura + "'&Empresa='"+ str(empresa) +"'"
         else:
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasAvisoRecibosnor1')/List?FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'&Empresa='"+ str(empresa) +"'"
+            url2 = IP_SAP + "SQLQueries('ConsultasAvisoRecibosnor1')/List?FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'&Empresa='"+ str(empresa) +"'"
 
         response2 = sap_request(url2)
         response2 = ast.literal_eval(response2.text)
@@ -16953,8 +16860,8 @@ def config_solicitud_inventarios(request):
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
         empresa = usuario_datos.empresa.nombre
         current_user = request.user
-        url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardName&$filter=CardCode eq '" + cliente + "'"
-        url6 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFechaInventarios')/List?NombreProveedor='" + str(
+        url2 = IP_SAP + "BusinessPartners?$select=CardName&$filter=CardCode eq '" + cliente + "'"
+        url6 = IP_SAP + "SQLQueries('ConsultasFechaInventarios')/List?NombreProveedor='" + str(
             empresa) + "'&FechaInicial='"+ semana + "'&FechaFinal='"+ ahora +"'&ClienteBuscado='"+ cliente +"'"
 
         response = sap_request(url2)
@@ -17017,8 +16924,8 @@ def config_solicitud_inventarios(request):
             pass
 
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardName&$filter=CardCode eq '" + cliente + "'"
-        url6 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFechaInventarios')/List?NombreProveedor='" + str(
+        url3 = IP_SAP + "BusinessPartners?$select=CardName&$filter=CardCode eq '" + cliente + "'"
+        url6 = IP_SAP + "SQLQueries('ConsultasFechaInventarios')/List?NombreProveedor='" + str(
             empresa) + "'&FechaInicial='" + semana + "'&FechaFinal='" + ahora +"'&ClienteBuscado='"+ cliente +"'"
 
         response1 = sap_request(url3)
@@ -17036,7 +16943,7 @@ def config_solicitud_inventarios(request):
                 'dia': str(dias['U_TaxDate'])[6:8],
             }
             dato_fechas.append(hora_prueba)
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaInventariosDescripcionas')/List?ClienteBusqueda='"+cliente+"'&FechaActual='"+hoy+"'&NombreProveedor='"+empresa+"'&$skip="+pagina
+        url2 = IP_SAP + "SQLQueries('ConsultaInventariosDescripcionas')/List?ClienteBusqueda='"+cliente+"'&FechaActual='"+hoy+"'&NombreProveedor='"+empresa+"'&$skip="+pagina
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -17072,7 +16979,7 @@ def config_solicitud_inventarios_cliente(request):
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
         empresa = usuario_datos.empresa.nombre
         current_user = request.user
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasClientesVentas')/List?NombreProveedor='" + str(
+        url2 = IP_SAP + "SQLQueries('ConsultasClientesVentas')/List?NombreProveedor='" + str(
             empresa) + "'"
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -17123,9 +17030,9 @@ def config_solicitud_inventarios_cliente(request):
             pass
 
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasClientesVentas')/List?NombreProveedor='" + str(
+        url3 = IP_SAP + "SQLQueries('ConsultasClientesVentas')/List?NombreProveedor='" + str(
             empresa) + "'"
-        url6 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultasFechaInventario')/List?NombreProveedor='" + str(
+        url6 = IP_SAP + "SQLQueries('ConsultasFechaInventario')/List?NombreProveedor='" + str(
             empresa) + "'&FechaInicial='" + semana + "'&FechaFinal='" + ahora + "'"
 
         response1 = sap_request(url3)
@@ -17149,7 +17056,7 @@ def config_solicitud_inventarios_cliente(request):
                 'nombre': datos['Cliente'],
             }
             dato_listas.append(data_prueba)
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaInventariosDescripcionas')/List?ClienteBusqueda='"+cliente+"'&FechaActual='"+hoy+"'&NombreProveedor='"+empresa+"'&$skip="+pagina
+        url2 = IP_SAP + "SQLQueries('ConsultaInventariosDescripcionas')/List?ClienteBusqueda='"+cliente+"'&FechaActual='"+hoy+"'&NombreProveedor='"+empresa+"'&$skip="+pagina
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -17189,7 +17096,7 @@ def config_solicitud_inventarios_detalle(request):
         fecha = request.GET.get("fecha")
         cliente = request.GET.get("cliente")
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaInventariosIndicDetalle')/List?ClienteBusqueda='" + cliente + "'&FechaActual='" + fecha + "'&NombreProveedor='" + empresa + "'&EanCode='"+ ean + "'"
+        url2 = IP_SAP + "SQLQueries('ConsultaInventariosIndicDetalle')/List?ClienteBusqueda='" + cliente + "'&FechaActual='" + fecha + "'&NombreProveedor='" + empresa + "'&EanCode='"+ ean + "'"
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -17245,7 +17152,7 @@ def reporte_inventario(request):
 
             # Construir URL de consulta
             query_url = (
-                "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaInventariosIndicadores1')/List"
+                IP_SAP + "SQLQueries('ConsultaInventariosIndicadores1')/List"
                 "?ClienteBusqueda='" + cliente + "'&FechaActual='" + hoy + "'&NombreProveedor='" + empresa + "'"
             )
 
@@ -17324,7 +17231,7 @@ def config_solicitud_ventas(request):
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
         empresa=usuario_datos.empresa.nombre
         current_user = request.user
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadetallepedidos14')/List?ProveedorC='"+str(empresa)+"'"
+        url2 = IP_SAP + "SQLQueries('consultadetallepedidos14')/List?ProveedorC='"+str(empresa)+"'"
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
         response = response['value']
@@ -17383,7 +17290,7 @@ def config_solicitud_ventas(request):
             pass
 
 
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultadetallepedidos14')/List?ProveedorC='"+str(empresa)+"'"
+        url3 = IP_SAP + "SQLQueries('consultadetallepedidos14')/List?ProveedorC='"+str(empresa)+"'"
 
         response1 = sap_request(url3)
         response1 = response1.text
@@ -17397,7 +17304,7 @@ def config_solicitud_ventas(request):
                 'nombre': datos['Cliente'],
             }
             dato_listas.append(data_prueba)
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaVentaIndicadoresa')/List?Cliente='"+cliente+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&ProveedorC='"+empresa+"'&$skip="+pagina
+        url2 = IP_SAP + "SQLQueries('ConsultaVentaIndicadoresa')/List?Cliente='"+cliente+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&ProveedorC='"+empresa+"'&$skip="+pagina
 
         response = sap_request(url2)
         response = response.text
@@ -17467,7 +17374,7 @@ def reporte_ventas(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaVentaIndicadoresa')/List?Cliente='"+cliente+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&ProveedorC='"+empresa+"'"
+        url2 = IP_SAP + "SQLQueries('ConsultaVentaIndicadoresa')/List?Cliente='"+cliente+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&ProveedorC='"+empresa+"'"
 
         response2 = sap_request(url2)
         response2 = response2.text
@@ -17574,7 +17481,7 @@ def config_solicitud_pagos_recibidos(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/IncomingPayments?$select=DocNum,DocDate,DueDate,TransferSum&$filter=CardName eq '" \
+        url2 = IP_SAP + "IncomingPayments?$select=DocNum,DocDate,DueDate,TransferSum&$filter=CardName eq '" \
                + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'"
 
         response = sap_request(url2)
@@ -17603,8 +17510,8 @@ def pagos_recibidos_detalles(request, form_id):
     usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/IncomingPayments?$select=DocNum,DocDate,DueDate,CardCode,CardName,Address&$filter=DocNum eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/VendorPayments?$select=PaymentInvoices&$filter=DocNum eq " + form_id
+    url2 = IP_SAP + "IncomingPayments?$select=DocNum,DocDate,DueDate,CardCode,CardName,Address&$filter=DocNum eq " + form_id
+    url3 = IP_SAP + "VendorPayments?$select=PaymentInvoices&$filter=DocNum eq " + form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -17668,7 +17575,7 @@ def config_solicitud_comprobante_egreso(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/VendorPayments?$select=DocNum,DocEntry,DocDate,DueDate,TransferSum&$filter=CardCode eq '" \
+        url2 = IP_SAP + "VendorPayments?$select=DocNum,DocEntry,DocDate,DueDate,TransferSum&$filter=CardCode eq '" \
                + codigo_sistema + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'"
 
         response = sap_request(url2)
@@ -17705,8 +17612,8 @@ def comprobante_egreso_detalles(request, form_id):
 
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/VendorPayments?$select=DocNum,DocDate,DueDate,CardCode,CardName,Address&$filter=DocEntry eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresos7')/List?NumeroDoc="+form_id
+    url2 = IP_SAP + "VendorPayments?$select=DocNum,DocDate,DueDate,CardCode,CardName,Address&$filter=DocEntry eq " + form_id
+    url3 = IP_SAP + "SQLQueries('ComprobanteEgresos7')/List?NumeroDoc="+form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -17722,7 +17629,7 @@ def comprobante_egreso_detalles(request, form_id):
         suma_total= suma_total+int(d['SumApplied'])
         if d['InvType']=='19':
             bloque_dato = d['BaseRef']
-            url4 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresosdato')/List?NumeroDoc="+bloque_dato
+            url4 = IP_SAP + "SQLQueries('ComprobanteEgresosdato')/List?NumeroDoc="+bloque_dato
             response5 = sap_request(url4)
             response5 = json.loads(response5.text)
             nota = response5['value']
@@ -17733,7 +17640,7 @@ def comprobante_egreso_detalles(request, form_id):
         else:
             factura=d['Ref2']
             if factura=='':
-                url4 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('consultatransaccion')/List?datotrans=" + str(DatoTrans)
+                url4 = IP_SAP + "SQLQueries('consultatransaccion')/List?datotrans=" + str(DatoTrans)
                 response5 = sap_request(url4)
                 response5 = json.loads(response5.text)
                 factura = response5['value']
@@ -17756,12 +17663,12 @@ def comprobante_egreso_detalles(request, form_id):
         articulos.append(data_articulos)
     try:
 	if response2 ==[]:
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaTransPagos')/List?numerodoc="+form_id
+            url2 = IP_SAP + "SQLQueries('ConsultaTransPagos')/List?numerodoc="+form_id
 
             response10 = sap_request(url2)
             response10 = ast.literal_eval(response10.text)
             trans_id = response10['value'][0]['TransId']
-        url4 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresosContabilidad')/List?numero_pago=" + str(trans_id)
+        url4 = IP_SAP + "SQLQueries('ComprobanteEgresosContabilidad')/List?numero_pago=" + str(trans_id)
         response3 = sap_request(url4)
         response3 = ast.literal_eval(response3.text)
         response3 = response3['value']
@@ -17826,8 +17733,8 @@ def comprobante_egreso_print(request, form_id):
     comprobante_print='si'
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/VendorPayments?$select=DocNum,DocDate,DueDate,CardCode,CardName,Address&$filter=DocEntry eq " + form_id
-    url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresos6')/List?NumeroDoc="+form_id
+    url2 = IP_SAP + "VendorPayments?$select=DocNum,DocDate,DueDate,CardCode,CardName,Address&$filter=DocEntry eq " + form_id
+    url3 = IP_SAP + "SQLQueries('ComprobanteEgresos6')/List?NumeroDoc="+form_id
 
     response = sap_request(url2)
     response = ast.literal_eval(response.text)
@@ -17842,7 +17749,7 @@ def comprobante_egreso_print(request, form_id):
         suma_total = suma_total + int(d['SumApplied'])
         if d['InvType']=='19':
             bloque_dato = d['BaseRef']
-            url4 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresosdato')/List?NumeroDoc="+bloque_dato
+            url4 = IP_SAP + "SQLQueries('ComprobanteEgresosdato')/List?NumeroDoc="+bloque_dato
             response5 = sap_request(url4)
             response5 = json.loads(response5.text)
             nota = response5['value']
@@ -17867,12 +17774,12 @@ def comprobante_egreso_print(request, form_id):
 
     try:
 	if response2 ==[]:
-            url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaTransPagos')/List?numerodoc="+form_id
+            url2 = IP_SAP + "SQLQueries('ConsultaTransPagos')/List?numerodoc="+form_id
 
             response10 = sap_request(url2)
             response10 = ast.literal_eval(response10.text)
             trans_id = response10['value'][0]['TransId']
-        url4 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresosContabilidad')/List?numero_pago=" + str(
+        url4 = IP_SAP + "SQLQueries('ComprobanteEgresosContabilidad')/List?numero_pago=" + str(
             trans_id)
         response3 = sap_request(url4)
         response3 = ast.literal_eval(response3.text)
@@ -17947,7 +17854,7 @@ def config_solicitud_comprobante_egreso_pcs(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/VendorPayments?$select=DocNum,DocDate,DueDate,TransferSum&$filter=DocDate lt '" + fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'"
+        url2 = IP_SAP + "VendorPayments?$select=DocNum,DocDate,DueDate,TransferSum&$filter=DocDate lt '" + fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'"
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -17992,7 +17899,7 @@ def config_solicitud_estado_cuenta(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardCode,FederalTaxID,CardName,CurrentAccountBalance&$filter=CardCode  eq '" \
+        url2 = IP_SAP + "BusinessPartners?$select=CardCode,FederalTaxID,CardName,CurrentAccountBalance&$filter=CardCode  eq '" \
                + codigo_prod + "'"
 
         response = sap_request(url2)
@@ -18025,7 +17932,7 @@ def config_solicitud_estado_cuenta_grupos(request, form_id):
 
 
 
-    url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardCode,FederalTaxID,CardName,CurrentAccountBalance&$filter=FederalTaxID  eq '" \
+    url2 = IP_SAP + "BusinessPartners?$select=CardCode,FederalTaxID,CardName,CurrentAccountBalance&$filter=FederalTaxID  eq '" \
                + form_id + "' and CurrentAccountBalance ne 0"
 
     response = sap_request(url2)
@@ -18052,7 +17959,7 @@ def estado_cuenta_detalle(request, form_id):
 
 
         try:
-            url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardName,CardType,CardCode,EmailAddress,Phone1,FederalTaxID&$filter=CardCode eq '" + form_id + "'"
+            url2 = IP_SAP + "BusinessPartners?$select=CardName,CardType,CardCode,EmailAddress,Phone1,FederalTaxID&$filter=CardCode eq '" + form_id + "'"
             response = sap_request(url2)
             response = ast.literal_eval(response.text)
             response = response['value']
@@ -18069,7 +17976,7 @@ def estado_cuenta_detalle(request, form_id):
                 }
             dato_lista.append(data_prueba)
         except:
-            url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardName,CardType,CardCode,FederalTaxID&$filter=CardCode eq '" + form_id + "'"
+            url2 = IP_SAP + "BusinessPartners?$select=CardName,CardType,CardCode,FederalTaxID&$filter=CardCode eq '" + form_id + "'"
             response = sap_request(url2)
             response = ast.literal_eval(response.text)
             response = response['value']
@@ -18115,7 +18022,7 @@ def estado_cuenta_detalle(request, form_id):
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
 
         try:
-            url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardName,CardType,CardCode,EmailAddress,Phone1,FederalTaxID&$filter=CardCode eq '" + form_id+"'"
+            url2 = IP_SAP + "BusinessPartners?$select=CardName,CardType,CardCode,EmailAddress,Phone1,FederalTaxID&$filter=CardCode eq '" + form_id+"'"
             response = sap_request(url2)
             response = ast.literal_eval(response.text)
             response = response['value']
@@ -18132,7 +18039,7 @@ def estado_cuenta_detalle(request, form_id):
                 }
             dato_lista.append(data_prueba)
         except:
-            url2 = "https://192.168.1.2:50000/b1s/v1/BusinessPartners?$select=CardName,CardType,CardCode,FederalTaxID&$filter=CardCode eq '" + form_id + "'"
+            url2 = IP_SAP + "BusinessPartners?$select=CardName,CardType,CardCode,FederalTaxID&$filter=CardCode eq '" + form_id + "'"
             response = sap_request(url2)
             response = ast.literal_eval(response.text)
             response = response['value']
@@ -18149,9 +18056,9 @@ def estado_cuenta_detalle(request, form_id):
                 }
             dato_lista.append(data_prueba)
         if check=='no':
-            url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Pruebas6')/List?ShortName='"+form_id+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&$skip="+pagina
+            url3 = IP_SAP + "SQLQueries('Pruebas6')/List?ShortName='"+form_id+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&$skip="+pagina
         elif check=='si':
-            url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('EstadosCuentasnoreconc3')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'&$skip=" + pagina
+            url3 = IP_SAP + "SQLQueries('EstadosCuentasnoreconc3')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'&$skip=" + pagina
         response2 = sap_request(url3)
         response2 = json.loads(response2.text)
         response2 = response2['value']
@@ -18162,7 +18069,7 @@ def estado_cuenta_detalle(request, form_id):
             else:
                 try:
                     bloque_dato=str(int(estado['PayBlckRef']))
-                    url4 = "https://192.168.1.2:50000/b1s/v1/PaymentBlocks?$select=PaymentBlockCode&$filter=AbsEntry eq " + bloque_dato
+                    url4 = IP_SAP + "PaymentBlocks?$select=PaymentBlockCode&$filter=AbsEntry eq " + bloque_dato
                     response5 = sap_request(url4)
                     response5 = ast.literal_eval(response5.text)
                     causal_bloc = response5['value']
@@ -18215,9 +18122,9 @@ def reporte_estado_cuenta(request):
         form_id = request.GET.get('form_id')
 
         if check == 'no':
-            url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('Pruebas6')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
+            url3 = IP_SAP + "SQLQueries('Pruebas6')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
         elif check == 'si':
-            url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('EstadosCuentasnoreconc3')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
+            url3 = IP_SAP + "SQLQueries('EstadosCuentasnoreconc3')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
         headers = {
             'Prefer': 'odata.maxpagesize=9999',
             'Cookie': 'B1SESSION=' + respuesta['SessionId']
@@ -18267,7 +18174,7 @@ def reporte_estado_cuenta(request):
             else:
                 try:
                     bloque_dato=str(int(d['PayBlckRef']))
-                    url4 = "https://192.168.1.2:50000/b1s/v1/PaymentBlocks?$select=PaymentBlockCode&$filter=AbsEntry eq " + bloque_dato
+                    url4 = IP_SAP + "PaymentBlocks?$select=PaymentBlockCode&$filter=AbsEntry eq " + bloque_dato
                     response5 = sap_request(url4)
                     response5 = ast.literal_eval(response5.text)
                     causal_bloc = response5['value']
@@ -18328,7 +18235,7 @@ def reporte_pedidos_csv(request):
         fecha_fin = request.POST['fecha_fin']
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ConsultaPedidosIndicadorJSON')/List?FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
+        url2 = IP_SAP + "SQLQueries('ConsultaPedidosIndicadorJSON')/List?FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
 
         response3 = sap_request(url2)
         response3=response3.text
@@ -18417,8 +18324,8 @@ def reporte_comprobante_detalle(request):
 
 
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/VendorPayments?$select=DocNum,DocDate,DueDate,CardCode,CardName,Address&$filter=DocEntry eq " + form_id
-        url3 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresos6')/List?NumeroDoc=" + form_id
+        url2 = IP_SAP + "VendorPayments?$select=DocNum,DocDate,DueDate,CardCode,CardName,Address&$filter=DocEntry eq " + form_id
+        url3 = IP_SAP + "SQLQueries('ComprobanteEgresos6')/List?NumeroDoc=" + form_id
 
         response3 = sap_request(url2)
         response3 = ast.literal_eval(response3.text)
@@ -18507,7 +18414,7 @@ def reporte_comprobante_detalle(request):
             suma_total = suma_total + int(d['SumApplied'])
             if d['InvType'] == '19':
                 bloque_dato = d['BaseRef']
-                url4 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresosdato')/List?NumeroDoc=" + bloque_dato
+                url4 = IP_SAP + "SQLQueries('ComprobanteEgresosdato')/List?NumeroDoc=" + bloque_dato
                 response5 = sap_request(url4)
                 response5 = json.loads(response5.text)
                 nota = response5['value']
@@ -18546,7 +18453,7 @@ def reporte_comprobante_detalle(request):
             total = format(int(suma_total), '0,.0f'),
             ws.write(filas_resultante + 2, 6, str(total[0]), font_style)
 
-        url6 = "https://192.168.1.2:50000/b1s/v1/SQLQueries('ComprobanteEgresosContabilidad')/List?numero_pago=" + str(
+        url6 = IP_SAP + "SQLQueries('ComprobanteEgresosContabilidad')/List?numero_pago=" + str(
             trans_id)
         response7 = sap_request(url6)
         response7 = ast.literal_eval(response7.text)
@@ -18627,7 +18534,7 @@ def tarea_correo_pedido_tres():
         )
         errores.save()
 
-        url2 = "https://192.168.1.2:50000/b1s/v1/PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
+        url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,CardCode,CardName&$filter=DocDate eq '" \
                + str(hoy) + "'"
 
         headers = {
