@@ -40,7 +40,7 @@ from rest_framework.authentication import TokenAuthentication
 
 # ************* IP CALIDAD ******************
 IP_SAP = 'https://172.16.100.2:50000/b1s/v1/'
-IP_SERVIDOR = 'https://192.155.95.186'
+IP_SERVIDOR = 'http://192.155.95.186'
 
 # This view method handles the request for the root URL /
 # See urls.py for the mapping.
