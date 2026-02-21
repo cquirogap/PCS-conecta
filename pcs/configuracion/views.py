@@ -56,11 +56,11 @@ except ImportError:
 PAGINADOR = 9999999999999999999999999999999
 
 # ************* IP PRODUCCION ******************
-IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
+IP_SAP = 'https://172.16.100.20:50000/b1s/v1/'
 IP_SERVIDOR = 'http://160.153.178.159'
 
 # ************* IP CALIDAD ******************
-#IP_SAP = 'https://172.16.100.20:50000/b1s/v1/'
+#IP_SAP = 'https://192.168.1.2:50000/b1s/v1/'
 #IP_SERVIDOR = 'https://192.155.95.186'
 
 
