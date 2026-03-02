@@ -8309,6 +8309,7 @@ def config_informe_recibo(request):
             columns = ['Nombre artesano',
                        'Código artesano',
                        'Código  artículo',
+                       'U_plu',
                        'Descripción artículo',
                        'Número pedido',
                        'Fecha pedido',
@@ -8356,6 +8357,7 @@ def config_informe_recibo(request):
                 nombre_artesano=d.empresa.nombre
                 codigo_artesano=d.empresa.codigo
                 codigo_articulo=str(d.num_detalle.referencia)
+                u_plu =str(d.num_detalle.u_plu)
                 descripcion_articulo=d.num_detalle.nombre
                 numero_pedido = str(d.pk),
                 fecha_pedido = (d.fecha).strftime('%Y-%m-%d'),
@@ -8372,6 +8374,7 @@ def config_informe_recibo(request):
                     nombre_artesano,
                     codigo_artesano,
                     codigo_articulo,
+                    u_plu,
                     descripcion_articulo,
                     numero_pedido,
                     fecha_pedido,
@@ -8955,7 +8958,7 @@ def reporte_generacion_facturas(request):
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
 
-        columns = ['Nro pedido cliente', 'Nro pedido SAP', 'Cliente', 'Codigo cliente', 'Número de Artículo',
+        columns = ['Nro pedido cliente', 'Nro pedido SAP', 'Cliente', 'Codigo cliente', 'Número de Artículo','U_plu',
                    'Descripción', 'Cantidad Pedido', 'Cantidad Facturar', 'Cantidad Pendiente', 'Costo', 'Venta',
                    'Base Unitaria Precio USD', 'Total Costo', 'Total Venta', 'Total Venta USD',
                    'Código Partida Arancelaria', 'Margen']
@@ -9003,8 +9006,9 @@ def reporte_generacion_facturas(request):
             codigo_cliente = d.empresa.codigo
             numero_articulo = d.num_detalle.referencia
             descripcion = d.num_detalle.nombre
+            u_plu = d.num_detalle.u_plu
 
-            datos = [(nro_pedido_cliente, nro_pedido, cliente, codigo_cliente, numero_articulo, descripcion,
+            datos = [(nro_pedido_cliente, nro_pedido, cliente, codigo_cliente, numero_articulo, u_plu,descripcion,
                       cantidad_pedido, cantidad_facturar, cantidad_pendiente, preciocompra, precioventa,
                       base_unitaria, total_costo, total_venta, total_venta_usd, codigo_arancelaria, resultado)]
             rows.extend(datos)
@@ -15154,6 +15158,7 @@ def reporte_otroscanales(request):
                    'CLIENTE',
                    'CANTIDADA',
                    'REFERENCIA',
+                   'U_PLU',
                    'DESCRIPCION',
                    'EMPRESAA',
                    'OBSERVACIONES',
@@ -15174,6 +15179,7 @@ def reporte_otroscanales(request):
             num_pedido= str(d.num_detalle.num_pedido.num_pedido),
             cantidad= str(d.cantidad),
             referencia= str(d.num_detalle.referencia),
+            u_plu = str(d.num_detalle.u_plu),
             nombre= str(d.num_detalle.nombre),
             observaciones= str(d.num_detalle.observaciones),
             empresa=str(d.empresa.nombre),
@@ -15183,6 +15189,7 @@ def reporte_otroscanales(request):
                 str(cliente),
                 cantidad,
                 referencia,
+                u_plu,
                 nombre,
                 empresa,
                 observaciones,
