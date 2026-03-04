@@ -8442,6 +8442,7 @@ def config_informe_pedido_otros_can(request):
                        'PEDIDO CLIENTE',
                        'CLIENTE',
                        'CANTIDADA',
+                       'U_PLU',
                        'REFERENCIA SAP',
                        'REFERENCIA CLIENTE',
                        'DESCRIPCION',
@@ -8466,6 +8467,7 @@ def config_informe_pedido_otros_can(request):
                 pedido_cliente=d.num_detalle.num_pedido.numero_pedido_cliente
                 cliente=d.num_detalle.num_pedido.empresa.nombre
                 cantidad=d.cantidad
+                u_plu = d.num_detalle.u_plu
                 referencia_sap=d.num_detalle.referencia
                 descripcion=d.num_detalle.nombre
                 referencia_cliente=''
@@ -8479,10 +8481,10 @@ def config_informe_pedido_otros_can(request):
                     pedido_cliente,
                     cliente,
                     cantidad,
+                    u_plu,
                     referencia_sap,
                     referencia_cliente,
                     descripcion,
-
                     empresaa,
                     observaciones,
                 )]
@@ -8650,6 +8652,7 @@ def config_informe_cliente_fact(request):
             columns = ['Empresario',
                        'Item',
                        'Número de Artículo',
+                       'U_plu',
                        'Descripción Español',
                        'Descripción inglés',
                        'Cantidad a facturar',
@@ -8716,6 +8719,7 @@ def config_informe_cliente_fact(request):
                 item=''
                 numero_articulo=d.num_detalle.referencia
                 descripcion_esp=d.num_detalle.nombre
+                u_plu = d.num_detalle.u_plu,
                 descripcion_ing=''
                 cantidad_fact=d.cantidadfacturada
                 costo=preciocompra
@@ -8730,6 +8734,7 @@ def config_informe_cliente_fact(request):
                     empresaa,
                     numero_articulo,
                     item,
+                    u_plu,
                     descripcion_esp,
                     descripcion_ing,
                     cantidad_fact,
