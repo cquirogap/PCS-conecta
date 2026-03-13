@@ -17588,7 +17588,7 @@ def config_solicitud_comprobante_egreso(request):
 
 
         url2 = IP_SAP + "VendorPayments?$select=DocNum,DocEntry,DocDate,DueDate,TransferSum&$filter=CardCode eq '" \
-               + codigo_sistema + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'"
+               + codigo_sistema + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'" + "and Cancelled eq 'tNO'"
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
