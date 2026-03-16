@@ -18139,7 +18139,6 @@ def reporte_estado_cuenta(request):
             url3 = IP_SAP + "SQLQueries('EstadosCuentasnoreconc3')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
         headers = {
             'Prefer': 'odata.maxpagesize=9999',
-            'Cookie': 'B1SESSION=' + respuesta['SessionId']
         }
         response2 = sap_request(url3)
         response2 = json.loads(response2.text)
