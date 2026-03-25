@@ -15257,6 +15257,8 @@ def reporte_otroscanales_cliente(request):
                    'FECHA',
                    'HORA',
                    'ESTADO',
+                   'FECHA DE ENTREGA',
+                   'EMPRESARIO ASIGNADO'
                    ]
 
         for col_num in range(len(columns)):
@@ -15271,17 +15273,28 @@ def reporte_otroscanales_cliente(request):
         rows = []
 
         for d in lista_infoc:
+            detalle_pedidos = DetallesPedidosOtrosCanales.objects.filter(num_pedido=d.num_pedido).values("empresa").annotate(total=Count("id"))
+            empresario_asignado = ''
+            for dpedido in detalle_pedidos:
+                empresa_asignada_id = dpedido.get('empresa')
+                empresa_asignado_name = Empresas.objects.filter(id=empresa_asignada_id).first() if empresa_asignada_id else False
+                if len(detalle_pedidos)>1:
+                    empresario_asignado += empresa_asignado_name.nombre + ', ' if empresa_asignado_name else ''
+                else:
+                    empresario_asignado += empresa_asignado_name.nombre  if empresa_asignado_name else ' '
+
             num_pedido= str(d.num_pedido),
             fecha= str(d.fecha),
             hora= str(d.hora),
             estado= str(d.estado),
+            fecha_entrega = str(d.fecha_entrega)
             datos = [(
                 num_pedido,
                 fecha,
                 hora,
                 estado,
-
-
+                fecha_entrega,
+                empresario_asignado
 
             )]
             rows.extend(datos)
