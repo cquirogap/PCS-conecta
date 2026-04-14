@@ -18081,7 +18081,8 @@ def estado_cuenta_detalle(request, form_id):
                 }
             dato_lista.append(data_prueba)
         if check=='no':
-            url3 = IP_SAP + "SQLQueries('Pruebas6')/List?ShortName='"+form_id+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&$skip="+pagina
+            #url3 = IP_SAP + "SQLQueries('Pruebas6')/List?ShortName='"+form_id+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&$skip="+pagina
+            url3 = IP_SAP + "SQLQueries('estado_cuenta_pago_4')/List?ShortName='"+form_id+"'&FechaInicial='"+fecha_inicio+"'&FechaFinal='"+fecha_fin+"'&$skip="+pagina
         elif check=='si':
             url3 = IP_SAP + "SQLQueries('EstadosCuentasnoreconc3')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'&$skip=" + pagina
         response2 = sap_request(url3)
@@ -18147,7 +18148,8 @@ def reporte_estado_cuenta(request):
         form_id = request.GET.get('form_id')
 
         if check == 'no':
-            url3 = IP_SAP + "SQLQueries('Pruebas6')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
+            #url3 = IP_SAP + "SQLQueries('Pruebas6')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
+            url3 = IP_SAP + "SQLQueries('estado_cuenta_pago_4')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
         elif check == 'si':
             url3 = IP_SAP + "SQLQueries('EstadosCuentasnoreconc3')/List?ShortName='" + form_id + "'&FechaInicial='" + fecha_inicio + "'&FechaFinal='" + fecha_fin + "'"
         headers = {
