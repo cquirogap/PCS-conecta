@@ -3799,7 +3799,7 @@ def config_credilisto_consulta_generales(request):
                 for dato in pendientes_seleccionados:
 
                     variable = dato
-                    variable = str(variable).split(",")
+                    variable = unicode(variable).split(",")
                     cruces=cruces +';'+  str(variable[3])
                     valor_negativo_sub = int(variable[2]) * -1
                     if variable[0] == 'Nota':
