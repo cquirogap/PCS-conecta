@@ -148,10 +148,10 @@ LOGIN_URL = '/login/'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-#EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
-#EMAIL_HOST_PASSWORD = 'jqqv zgjt jkpm ktau'
-EMAIL_HOST_USER = 'conectaportalweb2@gmail.com'
-EMAIL_HOST_PASSWORD = 'wgne noum hjso piwz'
+EMAIL_HOST_USER = 'conectaportalweb@gmail.com'
+EMAIL_HOST_PASSWORD = 'jqqv zgjt jkpm ktau'
+#EMAIL_HOST_USER = 'conectaportalweb2@gmail.com'
+#EMAIL_HOST_PASSWORD = 'wgne noum hjso piwz'
 
 X_FRAME_OPTIONS = 'ALLOWALL'
 
