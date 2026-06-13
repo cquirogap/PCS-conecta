@@ -1,11 +1,43 @@
 {% extends 'admin_base.html' %}
 {% load static %}
 {% block content %}
-<section class="content-header">
+<section class="content-header" style="margin-bottom: 10px;">
     <h1>
-        <a href="/configuracion/orden_empresiario_otroscanales/">Asignaciones Pedidos</a>
+        <a href="/configuracion/orden_empresiario_otroscanales/">Historial de Recepción</a>
         <small>Otros Canales</small>
     </h1>
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}
+    <br>
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+    </div>
+    {% endif %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+    </div>
+    {% endif %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+    </div>
+    {% endif %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Otros Canales</a></li>
         <li><a href="#">Consulta</a></li>
@@ -14,6 +46,10 @@
 <section>
     <div class="col-md-12">
         <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li><a href="/configuracion/orden_empresiario_otroscanales_recibo/" >Recepción Productos</a></li>
+                <li class="active"><a href="#">Historial Recepción</a></li>
+            </ul>
             {% csrf_token %}
             <div class="tab-content">
                 <!-- dcasos_estado -->
@@ -43,19 +79,11 @@
                                             <br>
                                         </div>
                                         <div class="col-md-6">
-                                            <label>Estado</label>
-                                            <div class="input-group ">
-                                                <span class="input-group-addon"><i
-                                                        class="fa fa-check-square "></i></span>
-                                                <select class="form-control select2" style="width: 100%;"
-                                                        id="estado_input">
-                                                    <option value="T" selected disabled></option>
-                                                    <option value="asignado">asignado</option>
-                                                    <option value="en proceso">en proceso</option>
-                                                </select>
-                                            </div>
+                                            <label>Referencia</label>
+                                            <input type="text" class="form-control" id="referencia"
+                                                   name="referencia" placeholder="Referencia Producto"
+                                                   value="{{ referencia }}">
                                         </div>
-
                                         <div class="col-md-6">
                                             <label for="pedido">Pedido</label>
                                             <input type="number" class="form-control" id="pedido"
@@ -81,28 +109,21 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="codigo">Codigo Empresario</label>
-                                            <input type="text" class="form-control" id="codigo"
-                                                   name="pedido" placeholder="Codigo de Empresario"
-                                                   value="{{ codigo }}">
+                                            <label>U_PLU</label>
+                                            <input type="text" class="form-control" id="u_plu"
+                                                   name="u_plu" placeholder="U_PLU Producto" value="{{ u_plu }}">
                                         </div>
                                         <div class="col-md-12">
                                             <br>
                                         </div>
                                         <div class="col-md-6">
-                                            <button id="busqueda_pedidos_otros_canales_empresarios"
+                                            <button id="busqueda_historial_recepcion"
                                                     class="btn btn-primary btn-block btn-flat">
                                                 <span class="glyphicon glyphicon-folder-open"></span>
                                                 <span class="glyphicon glyphicon-search"></span> Consultar
                                             </button>
                                         </div>
-                                        <div class="col-md-6">
-                                            <button type="button" id="buscar_pedidos_otros_canales_excel_button"
-                                                    class="btn btn-success btn-block btn-flat">
-                                                <span class="glyphicon glyphicon-folder-open"></span>
-                                                <span class="glyphicon glyphicon-search"></span>Excel
-                                            </button>
-                                        </div>
+
                                     </div>
                                     <!--/ Busqueda-->
                                 </div>
@@ -118,16 +139,20 @@
                                         <table id="tabla_infoc_medicamentos" class="table table-hover">
                                             <thead>
                                             <tr>
-                                                <th></th>
+                                                <th>FECHA</th>
                                                 <th>PEDIDO</th>
                                                 <th>CLIENTE</th>
-                                                <th>CANTIDAD</th>
-                                                <th>FECHA</th>
+                                                <th>PED</th>
+                                                <th>REC</th>
+                                                <th>REC ANT</th>
+                                                <th>REC TOT</th>
+                                                <th>FACT</th>
+                                                <th>U_PLU</th>
                                                 <th>REFERENCIA</th>
                                                 <th>DESCRIPCION</th>
-                                                <TH>CODIGO EMPRESA</TH>
-                                                <TH>EMPRESA</TH>
-                                                <th>OBSERVACIONES</th>
+                                                <th>CODIGO EMPRESA</th>
+                                                <th>EMPRESA</th>
+                                                <th>NOVEDADES</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -139,8 +164,7 @@
                                             </tr>
                                             </tfoot>
                                         </table>
-                                        <button id="download-selected-pdfs" class="btn btn-success">Descargar PDFs ZIP
-                                        </button>
+
 
                                     </div>
                                     <!-- /.box-body -->
@@ -148,10 +172,7 @@
                                 <!-- /.box -->
                             </div>
                         </div>
-                        <button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right"
-                                style="margin-right: 5px;">
-                            <i class="fa fa-download"></i> Generate PDF
-                        </button>
+
                         <!-- Tabla existentes -->
 
                     </div>

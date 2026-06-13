@@ -45,6 +45,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 from django.shortcuts import get_object_or_404
+from django.db.models import F
 
 try:
     from cStringIO import StringIO as BytesIO  # más rápido si disponible
@@ -485,8 +486,6 @@ def config_justificacion_registrar(request):
                              'Se ha registrado la justificacion ' + (descripcion).encode('utf-8').strip() + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/justificacion/')
-
-
 def config_justificacion_editar(request,id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -524,8 +523,6 @@ def config_justificacion_editar(request,id):
                                  'utf-8').strip() + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/justificacion/')
-
-
 def config_justificacion_borrar(request, id):
     if request.method == 'GET':
 
@@ -563,7 +560,6 @@ def config_continentes(request):
                                                            })
     else:
         pass
-
 def config_continentes_registrar(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -613,7 +609,6 @@ def config_continentes_registrar(request):
                              'Se ha registrado el Continente ' + (descripcion).encode('utf-8').strip() + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/continentes/')
-
 def config_continentes_editar(request,id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -653,7 +648,6 @@ def config_continentes_editar(request,id):
                                  'utf-8').strip() + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/continentes/')
-
 def config_continentes_borrar(request, id):
 
         if request.method == 'GET':
@@ -681,8 +675,6 @@ def config_continentes_borrar(request, id):
 
                 return HttpResponseRedirect('/configuracion/continentes/')
 
-
-
 # Paises
 def config_paises(request):
     # Render  administracion.html
@@ -706,7 +698,6 @@ def config_paises(request):
                                                       })
     else:
         pass
-
 def config_paises_registrar(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -752,7 +743,6 @@ def config_paises_registrar(request):
                              'Se ha registrado el Pais ' + (descripcion).encode('utf-8').strip() + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/paises/')
-
 def config_paises_editar(request,id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -795,7 +785,6 @@ def config_paises_editar(request,id):
                                  'utf-8').strip() + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/paises/')
-
 def config_paises_borrar(request, id):
 
         if request.method == 'GET':
@@ -1169,7 +1158,7 @@ def config_municipios_borrar(request, id):
         municipio = Municipios.objects.get(pk=id)
         usuario_actual = request.user
 
-        
+
 
         municipio.delete()
         messages.add_message(request, messages.WARNING,
@@ -2443,7 +2432,6 @@ def config_ordenes_otroscanales_pcs_detalle_cliente(request, id):
 def config_ordenes_otroscanales_pcs_eliminar_cliente(request, id):
 
     if request.method == 'GET':
-
         identificacion_asignacion = request.GET.get('asignacion')
         asignacion_editar = PedidosOtrosCanales.objects.get(num_pedido=id)
         i=asignacion_editar.estado
@@ -3480,7 +3468,7 @@ def config_crediya_consulta_generales(request):
             messages.add_message(request, messages.ERROR,
                                  'Se ha rechazado el credito  ' + numeropedido + ' satisfactoriamente.')
 
-        
+
         return HttpResponseRedirect('/configuracion/servicio_crediya_consulta/')
 
 def config_credilisto_consulta_generales(request):
@@ -3797,8 +3785,8 @@ def config_credilisto_consulta_generales(request):
                 pendientes_seleccionados = request.POST.getlist('pendientes_seleccionados[]')
                 cruces=''
                 for dato in pendientes_seleccionados:
-
                     variable = dato
+                    #variable = str(variable).split(",")
                     variable = unicode(variable).split(",")
                     cruces=cruces +';'+  str(variable[3])
                     valor_negativo_sub = int(variable[2]) * -1
@@ -4948,6 +4936,8 @@ def informacion_pedidos_otros_canales_empresario_facturar(request, ):
             lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
         if not u_plu == '':
             lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+
+        lista_infoc = lista_infoc.exclude(cantidad=F('cantidadfacturada'))
         cuenta = lista_infoc.count()
         paginador = Paginator(lista_infoc, PAGINADOR)
         pagina = request.GET.get('page')
@@ -4970,12 +4960,15 @@ def informacion_pedidos_otros_canales_empresario_facturar(request, ):
             fecha=info.fecha
             if fecha == None:
                 fecha =''
-            cantidad_real=info.cantidad-info.cantidadfacturada
+            cantidad_real=info.cantidad
+            cantidad_pendientes_facturar = info.cantidadrecibo - info.cantidadfacturada
             info_dict = {
 
                 'num_pedido': info.num_detalle.num_pedido.num_pedido,
-                'cantidad': cantidad_real,
+                'cantidadpedido': cantidad_real,
                 'cantidadfactura': info.cantidadfacturada,
+                'cantidadrecibida': info.cantidadrecibo,
+                'cantidadpendientefacturar':cantidad_pendientes_facturar,
                 'pk': info.pk,
                 'codigo': info.empresa.codigo,
                 'fecha': fecha,
@@ -5068,6 +5061,7 @@ def informacion_pedidos_otros_canales_empresario_recibo(request, ):
                 'imagen': imagenes,
                 'cantidadped': info.cantidad,
                 'cantidadrecibo': info.cantidadrecibo,
+                'cantidadfacturada':info.cantidadfacturada,
                 'pk': info.pk,
                 'codigo': info.empresa.codigo,
                 'fecha': fecha,
@@ -5088,10 +5082,6 @@ def informacion_pedidos_otros_canales_empresario_recibo(request, ):
         }
 
         return JsonResponse(response_dict)
-
-
-
-
 
 def admin_graficas_powerbi(request):
     # Render  administracion.html
@@ -5124,7 +5114,6 @@ def admin_graficas_powerbi(request):
 
         return HttpResponseRedirect('/configuracion/definiciones/graficas/')
 
-
 def facturacion_otros_canales(request):
     if request.method == 'GET':
         current_user = request.user
@@ -5141,46 +5130,70 @@ def facturacion_otros_canales(request):
         })
 
     elif request.method == 'POST':
-        items = request.POST.dict()
-        indices = sorted(set([k.split('[')[1].split(']')[0] for k in items.keys() if k.startswith('items[')]))
+        try:
+            try:
+                data = json.loads(request.body)
+            except ValueError:
+                return HttpResponse(json.dumps({'ok': False, 'error': 'JSON inválido'}), content_type='application/json', status=400)
 
-        pedido_unico = None
+            resultado_log = []
+            indices = data.get('seleccionados', [])
+            pedido_unico = None
+            resultado = all(item['cantidad'] <= item['max_facturar'] for item in indices)
+            if not resultado:
+                resultado_log.append({'status': 'Cantidad Inválida'})
+                return HttpResponse(json.dumps({'ok': False, 'error': resultado_log}), status=400,
+                                    content_type='application/json')
 
-        for i in indices:
-            pk = items.get('items[%s][pk]' % i)
-            cantidad = int(items.get('items[%s][cantidad]' % i, 0))
+            for i in indices:
+                pk = i.get('pk')
+                cantidad = i.get('cantidad')
+                fecha_facturar = i.get('fecha_facturar')
+                id_asignacion = 0
 
-            asignacion = AsignacionPedidosOtrosCanales.objects.filter(pk=pk).first()
-            if asignacion:
-                if pedido_unico is None:
-                    pedido_unico = asignacion.num_detalle.num_pedido_id
-                elif pedido_unico != asignacion.num_detalle.num_pedido_id:
-                    # Protección backend si alguien manipula HTML
-                    return HttpResponseRedirect('/configuracion/orden_empresiario_otroscanales_facturar/')
+                asignacion = AsignacionPedidosOtrosCanales.objects.filter(pk=pk).first()
+                if asignacion:
+                    if pedido_unico is None:
+                        pedido_unico = asignacion.num_detalle.num_pedido_id
+                    elif pedido_unico != asignacion.num_detalle.num_pedido_id:
+                        # Protección backend si alguien manipula HTML
+                        return HttpResponseRedirect('/configuracion/orden_empresiario_otroscanales_facturar/')
 
-                asignacion.cantidadfacturada += cantidad
-                asignacion.save()
+                    asignacion.cantidadfacturada += cantidad
+                    asignacion.save()
+                    try:
+                        historial_facturacion = HistorialFacturacion(
+                            asignacion_id=asignacion.pk,
+                            cantidad_facturada=cantidad,
+                            fecha=fecha_facturar,
+                            cantidad_recibidas = asignacion.cantidadrecibo,
+                            cantidad_pendiente_facturar = (asignacion.cantidadfacturada - asignacion.cantidad)*-1,
+                        )
+                        historial_facturacion.save()
+                    except Exception as e:
+                        resultado_log.append({'id': pedido_id, 'status': 'Error crear Historial', 'error': str(e)})
 
-                pedido_id = asignacion.num_detalle.num_pedido_id
-                detalles = DetallesPedidosOtrosCanales.objects.filter(num_pedido_id=pedido_id)
+                    pedido_id = asignacion.num_detalle.num_pedido_id
+                    detalles = DetallesPedidosOtrosCanales.objects.filter(num_pedido_id=pedido_id)
 
-                completado = True
-                for detalle in detalles:
-                    total_facturado = AsignacionPedidosOtrosCanales.objects.filter(
-                        num_detalle=detalle
-                    ).aggregate(total=models.Sum('cantidadfacturada'))['total'] or 0
+                    completado = True
+                    for detalle in detalles:
+                        total_facturado = AsignacionPedidosOtrosCanales.objects.filter(
+                            num_detalle=detalle
+                        ).aggregate(total=models.Sum('cantidadfacturada'))['total'] or 0
 
-                    if total_facturado < detalle.cantidad:
-                        completado = False
-                        break
+                        if total_facturado < detalle.cantidad:
+                            completado = False
+                            break
 
-                estado = 'completado' if completado else 'pendiente'
-                PedidosOtrosCanales.objects.filter(pk=pedido_id).update(estado=estado)
+                    estado = 'completado' if completado else 'pendiente'
+                    PedidosOtrosCanales.objects.filter(pk=pedido_id).update(estado=estado)
+                    a=3
+            return HttpResponse(json.dumps({'ok': True}), content_type='application/json')
 
-        return HttpResponseRedirect('/configuracion/orden_empresiario_otroscanales_facturar/')
-
-
-
+        except Exception as e:
+            # Error inesperado
+            return HttpResponse(json.dumps({'ok': False, 'error': str(e)}), content_type='application/json', status=500)
 
 def recibo_otros_canales(request):
     if request.method != 'POST':
@@ -5209,12 +5222,22 @@ def recibo_otros_canales(request):
             destinatarios = set()  # emails de usuarios asociados a la empresa (evita duplicados)
             empresa_obj = None
 
+            resultado = all(item['cantidad'] <= item['max_recibir'] for item in lista)
+            if not resultado:
+                resultado_log.append({'status': 'Cantidad Inválida'})
+                return HttpResponse(json.dumps({'ok': False, 'error': resultado_log}),status=400, content_type='application/json')
+
+
             for p in lista:
                 pedido_id = p.get('id')
                 try:
                     cantidad = int(p.get('cantidad', 0))
+                    fecha_recibir = p.get('fecha_recibir')
+                    novedad =p.get('novedad')
                 except (TypeError, ValueError):
                     cantidad = 0
+                    fecha_recibir = False
+                    novedad = ''
                 novedad = (p.get('novedad', '') or '').strip()
 
                 if not pedido_id or cantidad <= 0:
@@ -5231,13 +5254,24 @@ def recibo_otros_canales(request):
                 if not empresa_obj:
                     empresa_obj = asignacion.empresa  # es un FK a Empresas
 
-                # Actualizar registro tal como antes (sumando cantidad recibida)
+                # Crear registro de historial de recepción
                 try:
+                    historial_recepcion = HistorialRecepcion(
+                        asignacion_id = asignacion.pk,
+                        cantidad_recibida = cantidad,
+                        fecha = fecha_recibir if fecha_recibir else date.today(),
+                        cantidad_recibida_acumulada = asignacion.cantidadrecibo,
+                        cantidad_facturada_acumulada = asignacion.cantidadfacturada,
+                        descripcion = novedad
+                    )
+                    historial_recepcion.save()
+
                     asignacion.cantidadrecibo = (asignacion.cantidadrecibo or 0) + cantidad
                     asignacion.save()
+
                 except Exception as e:
-                    resultado_log.append({'id': pedido_id, 'status': 'error_guardado', 'error': str(e)})
-                    # seguir con el resto sin detener todo
+                    resultado_log.append({'id': pedido_id, 'status': 'Error al crear el historial. Se ha presentado un inconveniente al intentar generar el historial en el sistema. Le recomendamos intentar nuevamente. En caso de que el problema persista, por favor comuníquese con el área de soporte técnico para su debida revisión', 'error': str(e)})
+
 
                 # Datos para el cuerpo del correo
                 detalles = getattr(asignacion, 'num_detalle', None)
@@ -5323,9 +5357,6 @@ def recibo_otros_canales(request):
         # Error inesperado
         return HttpResponse(json.dumps({'ok': False, 'error': str(e)}), content_type='application/json', status=500)
 
-
-
-
 def detalle_grafica(request, grafica_id):
 
     try:
@@ -5371,8 +5402,6 @@ def detalle_grafica(request, grafica_id):
         return JsonResponse({'status': '200', 'mensaje': 'El pais : ' + str(pais) +
                                                          ' has sido  borrado exitosamente'})
 
-
-
 def config_graficas_borrar(request, grafica_id):
     if request.method == 'GET':
 
@@ -5386,9 +5415,6 @@ def config_graficas_borrar(request, grafica_id):
                                  'Se ha borrado la grafica ' + str(grafica_id) + ' satisfactoriamente')
 
         return HttpResponseRedirect('/configuracion/definiciones/graficas/')
-
-
-
 
 def admin_graficas_actuales_pcs_powerbi(request):
     # Render  administracion.html
@@ -5404,8 +5430,6 @@ def admin_graficas_actuales_pcs_powerbi(request):
                                                           'permiso_usuario': usuario_datos})
     else:
         pass
-
-
 
 def admin_graficas_empresario_cliente_powerbi(request):
     # Render  administracion.html
@@ -5443,8 +5467,6 @@ def admin_graficas_empresario_cliente_powerbi(request):
                                                           'permiso_usuario': usuario_datos})
     else:
         pass
-
-
 
 @xframe_options_exempt
 def admin_graficas_actuales_empresarios_powerbi(request):
@@ -5484,8 +5506,6 @@ def admin_graficas_actuales_empresarios_powerbi(request):
     else:
         pass
 
-
-
 def admin_graficas_comerciales_powerbi(request,grafica_id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -5523,7 +5543,6 @@ def admin_graficas_comerciales_powerbi(request,grafica_id):
                                                           'permiso_usuario': usuario_datos})
     else:
         pass
-
 
 def admin_graficas_exportaciones_powerbi(request,grafica_id):
     # Render  administracion.html
@@ -5563,8 +5582,6 @@ def admin_graficas_exportaciones_powerbi(request,grafica_id):
     else:
         pass
 
-
-
 def admin_graficas_desarrollo_empresarial_powerbi(request,grafica_id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -5602,7 +5619,6 @@ def admin_graficas_desarrollo_empresarial_powerbi(request,grafica_id):
                                                           'permiso_usuario': usuario_datos})
     else:
         pass
-
 
 def admin_graficas_administrativo_financiero_powerbi(request,grafica_id):
     # Render  administracion.html
@@ -5642,7 +5658,6 @@ def admin_graficas_administrativo_financiero_powerbi(request,grafica_id):
     else:
         pass
 
-
 def admin_graficas_mercadeo_innovacion_powerbi(request,grafica_id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -5681,8 +5696,6 @@ def admin_graficas_mercadeo_innovacion_powerbi(request,grafica_id):
     else:
         pass
 
-
-
 def admin_graficas_operaciones_logistica_powerbi(request,grafica_id):
     # Render  administracion.html
     if request.method == 'GET':
@@ -5720,10 +5733,6 @@ def admin_graficas_operaciones_logistica_powerbi(request,grafica_id):
                                                           'permiso_usuario': usuario_datos})
     else:
         pass
-
-
-
-
 
 def admin_graficas_adicional_powerbi(request,grafica_id):
     # Render  administracion.html
@@ -5841,8 +5850,6 @@ def admin_graficas_formacion_empresario_powerbi(request):
     else:
         pass
 
-
-
 def admin_graficas_formacion_cliente_powerbi(request):
     # Render  administracion.html
     if request.method == 'GET':
@@ -5881,9 +5888,6 @@ def admin_graficas_formacion_cliente_powerbi(request):
                                                           'permiso_usuario': usuario_datos})
     else:
         pass
-
-
-
 
 def config_respuesta_pedido(request):
     # Render  administracion.html
@@ -5966,7 +5970,6 @@ def config_respuesta_pedido(request):
     else:
         pass
 
-
 def config_respuesta_seg_pedido(request):
     # Render  administracion.html
     if request.method == 'POST':
@@ -6033,7 +6036,6 @@ def config_respuesta_seg_pedido(request):
     else:
         pass
 
-
 def config_respuesta_ter_pedido(request):
     # Render  administracion.html
     if request.method == 'POST':
@@ -6094,8 +6096,6 @@ def config_respuesta_ter_pedido(request):
     else:
         pass
 
-
-
 def config_respuesta_quin_pedido(request):
     # Render  administracion.html
     if request.method == 'POST':
@@ -6155,7 +6155,6 @@ def config_respuesta_quin_pedido(request):
         return HttpResponseRedirect('/configuracion/solicitud_pedido_orden/detalle/'+ entry_pedido +'/')
     else:
         pass
-
 
 def config_respuesta_sex_pedido(request):
     # Render  administracion.html
@@ -6250,7 +6249,6 @@ def config_respuesta_sex_pedido(request):
     else:
         pass
 
-
 def config_respuesta_sept_pedido(request):
     # Render  administracion.html
     if request.method == 'POST':
@@ -6311,11 +6309,10 @@ def config_respuesta_sept_pedido(request):
                     accion='fallo al enviar la respuesta al pedido'
                 )
                 log.save()
-                
+
         return HttpResponseRedirect('/configuracion/solicitud_pedido_orden/detalle/'+ entry_pedido +'/')
     else:
         pass
-
 
 def config_respuesta_oct_pedido(request):
     # Render  administracion.html
@@ -6420,7 +6417,6 @@ def config_respuesta_oct_pedido(request):
         return HttpResponseRedirect('/configuracion/solicitud_pedido_orden/detalle/' + entry_pedido + '/')
     else:
         pass
-
 
 def config_respuesta_cuar_pedido(request):
     # Render  administracion.html
@@ -8931,7 +8927,7 @@ def reporte_generacion_facturas(request):
         enunciado_style = xlwt.XFStyle()
         enunciado_font = xlwt.Font()
         enunciado_font.bold = True
-        enunciado_style.font = enunciado_font
+        #enunciado_style.font = enunciado_font
 
         enunciados = [
             ("ORDEN DE VENTA", ''),
@@ -9003,7 +8999,7 @@ def reporte_generacion_facturas(request):
             total_costo = cantidad_facturar * preciocompra
             total_venta = cantidad_facturar * precioventa
             total_venta_usd = base_unitaria * cantidad_facturar
-            resultado = 1.0 - (preciocompra / precioventa)
+            resultado = 1.0 - (preciocompra / precioventa) if precioventa != 0 else 1
 
             nro_pedido_cliente = d.num_detalle.num_pedido.numero_pedido_cliente
             nro_pedido = d.num_detalle.num_pedido.num_pedido
@@ -10612,13 +10608,14 @@ def config_enviar_correos_no_enviados(request):
                                 tipo='enviado',
                                 email=correos
                             )
-                            enviados.save() 
+                            enviados.save()
                             registros_enviados = HistorialErrorTarea.objects.filter(pedido=variable[1])
                             registros_enviados.delete()
-                        except:
+                        except Exception as e:
                             now = datetime.now(pytz.timezone('America/Bogota'))
                             hoy = now.date()
                             hora = now.time()
+                            a = e
                             errores = HistorialErrorTarea(
                                 accion='Fallo al enviar al correo' + str(correos),
                                 fecha=hoy,
@@ -10699,7 +10696,7 @@ def config_indicadores_envio_emails(request):
 
 def indienvio_mail (request):
     if request.method == 'GET':
-        
+
         fecha_inicio = request.GET.get('fecha_inicio')
         fecha_fin = request.GET.get('fecha_fin')
 
@@ -10707,6 +10704,7 @@ def indienvio_mail (request):
 
         response = sap_request(url2)
         total = ast.literal_eval(response.text)
+        n_casos_pendientes = HistorialEmailEnviados.objects.filter(fecha__range=(fecha_inicio, fecha_fin),tipo='enviado').values('pedido').annotate(total=Count('pedido')).count()
         n_casos_pendientes = HistorialEmailEnviados.objects.filter(fecha__range=(fecha_inicio, fecha_fin),tipo='enviado').values('pedido').annotate(total=Count('pedido')).count()
         n_casos_no_pertenece = HistorialEmailEnviados.objects.filter(fecha__range=(fecha_inicio, fecha_fin),tipo='noregistrado').values('pedido').annotate(total=Count('pedido')).count()
         n_casos_finalizado = total-n_casos_pendientes-n_casos_no_pertenece
@@ -11230,7 +11228,7 @@ def config_usuarios_registrar(request):
                            'email': correo,
                            'usuario_actual': usuario_actual,
                            })
-        
+
         if clave == clave2:
             clavef = clave
         else:
@@ -15257,7 +15255,7 @@ def reporte_otroscanales_cliente(request):
                    'FECHA',
                    'HORA',
                    'ESTADO',
-                   'FECHA DE ENTREGA',
+                   'FECHA DE ENTREGA'
                    'EMPRESARIO ASIGNADO'
                    ]
 
@@ -15276,8 +15274,9 @@ def reporte_otroscanales_cliente(request):
             detalle_pedidos = DetallesPedidosOtrosCanales.objects.filter(num_pedido=d.num_pedido).values("empresa").annotate(total=Count("id"))
             empresario_asignado = ''
             for dpedido in detalle_pedidos:
+
                 empresa_asignada_id = dpedido.get('empresa')
-                empresa_asignado_name = Empresas.objects.filter(id=empresa_asignada_id).first() if empresa_asignada_id else False
+                empresa_asignado_name = Empresas.objects.filter(pk=empresa_asignada_id).first() if empresa_asignada_id else False
                 if len(detalle_pedidos)>1:
                     empresario_asignado += empresa_asignado_name.nombre + ', ' if empresa_asignado_name else ''
                 else:
@@ -16055,7 +16054,7 @@ def pedido_problema_detalle(request, form_id):
             problemas = RespuestaPedido.objects.filter(entry_pedido=form_id,peticion__area_id=persona.area_id)
             listaprueba=list(chain(listaprueba,problemas))
         problemas=listaprueba
-        
+
     dato_lista = []
     for datos in problemas:
         if datos.peticion.descripcion=='No despachare pedido' or datos.peticion.descripcion=='Suspender producto':
@@ -16077,7 +16076,7 @@ def pedido_problema_detalle(request, form_id):
             'doc_respuesta': datos.doc_respuesta,
         }
         dato_lista.append(data_prueba)
-    
+
     return render(request, "pedido_problemas_detalle.html", {"form_id": form_id,
                                                    "problemas": dato_lista,
                                                     'permiso_usuario': usuario_datos,
@@ -18535,10 +18534,6 @@ def reporte_comprobante_detalle(request):
         wb.save(response)
         return response
 
-
-
-
-
 def tarea_correo_pedido_tres():
 
     try:
@@ -18597,3 +18592,930 @@ def tarea_correo_pedido_tres():
             pedido='No Corresponde',
         )
         errores.save()
+
+# Historial de Recepción
+def config_historial_recepcion(request):
+
+    if request.method == 'GET':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        usuarios = Usuarios_datos.objects.filter(empresa__tipo='OtrosPedidos')
+        empresas=Empresas.objects.filter(tipo='Empresario')
+
+
+        if not current_user.is_staff:
+            return HttpResponseRedirect('/login/')
+
+        return render(request, "config_historial_recepcion.html", {'user': current_user,
+                                                        'usuarios': usuarios,
+                                                        'permiso_usuario': usuario_datos,
+                                                        'empresas': empresas,
+                                                        })
+    else:
+        pass
+def config_historial_recepcion_solicitud(request, ):
+    if request.method == 'GET':
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa=empresa.empresa.id
+
+        #lista_infoc = AsignacionPedidosOtrosCanales.objects.all()
+        lista_infoc = HistorialRecepcion.objects.all()
+
+        fecha_inicio = request.GET.get('fecha_inicio')
+        fecha_fin = request.GET.get('fecha_fin')
+        empresa_input = request.GET.get('empresa_input')
+        pedido = request.GET.get('pedido')
+        estado = request.GET.get('estado')
+        codigo = request.GET.get('codigo')
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+
+        if estado=='enproceso':
+            estado='en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(asignacion__empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc= lista_infoc.filter(asignacion__num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc= lista_infoc.filter(asignacion__num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__u_plu=u_plu)
+
+        if not codigo == '':
+            lista_infoc = lista_infoc.filter(asignacion__empresa__codigo=codigo)
+
+        lista_infoc = lista_infoc.order_by('-fecha','-pk')
+        cuenta = lista_infoc.count()
+        paginador = Paginator(lista_infoc, PAGINADOR)
+        pagina = request.GET.get('page')
+
+        try:
+            infos = paginador.page(pagina)
+        except PageNotAnInteger:
+            # si la pagina no es un entero
+            infos = paginador.page(1)
+            pagina = 1
+        except EmptyPage:
+            # si la pagina excede la cantidad total
+            infos = paginador.page(paginador.num_pages)
+            pagina = paginador.num_pages
+
+        # crear objeto json por  cada pareja
+        infos_dict = []
+
+        for info in infos:
+            fecha=info.fecha
+            if fecha == None:
+                fecha =''
+
+            info_dict = {
+                'identificador': info.pk,
+                'num_pedido': info.asignacion.num_detalle.num_pedido.num_pedido,
+                'cantidadpedido': info.asignacion.cantidad,
+                'cantidadrecibida': info.cantidad_recibida,
+                'cantidadrecibidaant': info.cantidad_recibida_acumulada,
+                'cantidadtotales': (info.cantidad_recibida + info.cantidad_recibida_acumulada),
+                'cantidadfacturadas': info.cantidad_facturada_acumulada,
+                'codigo': info.asignacion.empresa.codigo,
+                'fecha': fecha,
+                'referencia': info.asignacion.num_detalle.referencia,
+                'u_plu': info.asignacion.num_detalle.u_plu,
+                'nombre': info.asignacion.num_detalle.nombre,
+                'observaciones': info.descripcion,
+                'empresa':info.asignacion.empresa.nombre,
+                'cliente':info.asignacion.num_detalle.num_pedido.empresa.nombre
+
+            }
+            infos_dict.append(info_dict)
+        # ejemplo  usando  list comprehensions
+        response_dict = {
+            'pagina': pagina,
+            'total_items': cuenta,
+            'datos': infos_dict
+        }
+
+        return JsonResponse(response_dict)
+def config_historial_recepcion_borrar(request, id):
+    try:
+        if request.method == 'GET':
+
+            historial_recepcion = HistorialRecepcion.objects.get(pk=id)
+            asignacion = historial_recepcion.asignacion if historial_recepcion else False
+            cantidadrecibido = asignacion.cantidadrecibo - historial_recepcion.cantidad_recibida
+
+            if cantidadrecibido >= asignacion.cantidadfacturada :
+                asignacion.cantidadrecibo = cantidadrecibido
+                asignacion.save()
+                historial_recepcion.delete()
+
+                messages.add_message(request, messages.SUCCESS,
+                                     'Se ha borrado el historial de recepción satisfactoriamente')
+
+                return HttpResponseRedirect('/configuracion/historial_recepcion/')
+
+            else:
+
+                messages.add_message(request, messages.WARNING,
+                                     'La eliminación del registro. No puede ser completada debido a que ya ha sido incluido en un proceso de facturación.')
+                return HttpResponseRedirect('/configuracion/historial_recepcion/')
+
+
+    except :
+        messages.add_message(request, messages.WARNING,
+                             'Ups, ocurrió un problema y no fue posible eliminar el registro.' )
+
+        return HttpResponseRedirect('/configuracion/historial_recepcion/')
+
+# Historial de Facturación
+def config_historial_facturacion(request):
+
+    if request.method == 'GET':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        usuarios = Usuarios_datos.objects.filter(empresa__tipo='OtrosPedidos')
+        empresas=Empresas.objects.filter(tipo='Empresario')
+
+
+        if not current_user.is_staff:
+            return HttpResponseRedirect('/login/')
+
+        return render(request, "config_historial_facturacion.html", {'user': current_user,
+                                                        'usuarios': usuarios,
+                                                        'permiso_usuario': usuario_datos,
+                                                        'empresas': empresas,
+                                                        })
+    else:
+        pass
+def config_historial_facturacion_solicitud(request, ):
+    if request.method == 'GET':
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa=empresa.empresa.id
+
+        lista_infoc = HistorialFacturacion.objects.all()
+
+        fecha_inicio = request.GET.get('fecha_inicio')
+        fecha_fin = request.GET.get('fecha_fin')
+        empresa_input = request.GET.get('empresa_input')
+        pedido = request.GET.get('pedido')
+        estado = request.GET.get('estado')
+        codigo = request.GET.get('codigo')
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+
+        if estado=='enproceso':
+            estado='en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(asignacion__empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc= lista_infoc.filter(asignacion__num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc= lista_infoc.filter(asignacion__num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__u_plu=u_plu)
+        
+        if not codigo == '':
+            lista_infoc = lista_infoc.filter(asignacion__empresa__codigo=codigo)
+
+        lista_infoc = lista_infoc.order_by('-fecha', '-pk')
+        cuenta = lista_infoc.count()
+        paginador = Paginator(lista_infoc, PAGINADOR)
+        pagina = request.GET.get('page')
+
+        try:
+            infos = paginador.page(pagina)
+        except PageNotAnInteger:
+            # si la pagina no es un entero
+            infos = paginador.page(1)
+            pagina = 1
+        except EmptyPage:
+            # si la pagina excede la cantidad total
+            infos = paginador.page(paginador.num_pages)
+            pagina = paginador.num_pages
+
+        # crear objeto json por  cada pareja
+        infos_dict = []
+
+        for info in infos:
+            fecha=info.fecha
+            if fecha == None:
+                fecha =''
+
+            info_dict = {
+                'identificador': info.pk,
+                'num_pedido': info.asignacion.num_detalle.num_pedido.num_pedido,
+                'cantidadpedido': info.asignacion.cantidad,
+                'cantidadfacturada': info.cantidad_facturada,
+                'cantidadfacturadaant': info.cantidad_pendiente_facturar,
+                'cantidadfacturadatotal': info.asignacion.cantidad - info.cantidad_pendiente_facturar,
+                'cantidadrecibida': info.cantidad_recibidas,
+                'codigo': info.asignacion.empresa.codigo,
+                'fecha': fecha,
+                'referencia': info.asignacion.num_detalle.referencia,
+                'u_plu': info.asignacion.num_detalle.u_plu,
+                'nombre': info.asignacion.num_detalle.nombre,
+                'empresa':info.asignacion.empresa.nombre,
+                'cliente':info.asignacion.num_detalle.num_pedido.empresa.nombre
+
+            }
+            infos_dict.append(info_dict)
+        # ejemplo  usando  list comprehensions
+        response_dict = {
+            'pagina': pagina,
+            'total_items': cuenta,
+            'datos': infos_dict
+        }
+
+        return JsonResponse(response_dict)
+def config_historial_facturacion_borrar(request, id):
+    try:
+        if request.method == 'GET':
+
+            historial_facturacion = HistorialFacturacion.objects.get(pk=id)
+            asignacion = historial_facturacion.asignacion if historial_facturacion else False
+            cantidadfacturada = asignacion.cantidadfacturada - historial_facturacion.cantidad_facturada
+
+            asignacion.cantidadfacturada = cantidadfacturada
+            asignacion.save()
+            historial_facturacion.delete()
+
+            messages.add_message(request, messages.SUCCESS, 'Se ha borrado el historial de facturación satisfactoriamente')
+            return HttpResponseRedirect('/configuracion/historial_facturacion/')
+
+
+
+
+    except :
+        messages.add_message(request, messages.WARNING,
+                             'Ups, ocurrió un problema y no fue posible eliminar el registro.' )
+
+        return HttpResponseRedirect('/configuracion/historial_facturacion/')
+
+#Colsulta o Seguimiento de Recepcion
+def config_consulta_recepcion(request):
+
+    if request.method == 'GET':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        usuarios = Usuarios_datos.objects.filter(empresa__tipo='OtrosPedidos')
+        empresas=Empresas.objects.filter(tipo='Empresario')
+
+
+
+        if not current_user.is_staff:
+            return HttpResponseRedirect('/login/')
+
+        return render(request, "config_consulta_recepcion.html", {'user': current_user,
+                                                        'usuarios': usuarios,
+                                                        'permiso_usuario': usuario_datos,
+                                                        'empresas': empresas,
+                                                        })
+    else:
+        pass
+def informacion_pedidos_otros_canales_consulta_recepcion(request, ):
+    if request.method == 'GET':
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa=empresa.empresa.id
+
+        lista_infoc = AsignacionPedidosOtrosCanales.objects.all()
+
+        fecha_inicio = request.GET.get('fecha_inicio') or ''
+        fecha_fin = request.GET.get('fecha_fin') or ''
+        empresa_input = request.GET.get('empresa_input') or ''
+        pedido = request.GET.get('pedido') or ''
+        estado = request.GET.get('estado') or ''
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+
+        if estado=='enproceso':
+            estado='en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+
+        cuenta = lista_infoc.count()
+        paginador = Paginator(lista_infoc, PAGINADOR)
+        pagina = request.GET.get('page')
+
+        try:
+            infos = paginador.page(pagina)
+        except PageNotAnInteger:
+            # si la pagina no es un entero
+            infos = paginador.page(1)
+            pagina = 1
+        except EmptyPage:
+            # si la pagina excede la cantidad total
+            infos = paginador.page(paginador.num_pages)
+            pagina = paginador.num_pages
+
+        # crear objeto json por  cada pareja
+        infos_dict = []
+
+        for info in infos:
+            try:
+                imagenes= ImagenesOtrosCanales.objects.filter(referencia=info.num_detalle.referencia).first()
+                imagenes= imagenes.imagen
+            except:
+                imagenes=''
+
+            fecha=info.fecha
+            if fecha == None:
+                fecha =''
+            cantidad_real=info.cantidad-info.cantidadrecibo
+            info_dict = {
+
+                'num_pedido': info.num_detalle.num_pedido.num_pedido,
+                'cantidad': cantidad_real,
+                'cantidadped': info.cantidad,
+                'cantidadrecibo': info.cantidadrecibo,
+                'cantidadfacturada':info.cantidadfacturada,
+                'pk': info.pk,
+                'codigo': info.empresa.codigo,
+                'fecha': fecha,
+                'u_plu': info.num_detalle.u_plu,
+                'referencia': info.num_detalle.referencia,
+                'nombre': info.num_detalle.nombre,
+                'observaciones': info.num_detalle.observaciones,
+                'empresa':info.empresa.nombre,
+                'cliente':info.num_detalle.num_pedido.empresa.nombre
+
+            }
+            infos_dict.append(info_dict)
+        # ejemplo  usando  list comprehensions
+        response_dict = {
+            'pagina': pagina,
+            'total_items': cuenta,
+            'datos': infos_dict
+        }
+
+        return JsonResponse(response_dict)
+def consulta_recepcion_detalle(request, asignacion_id):
+
+
+    asignacion_pedido = AsignacionPedidosOtrosCanales.objects.get(pk=asignacion_id)
+    historial_recepcion = HistorialRecepcion.objects.filter(asignacion=asignacion_id)
+    historial_recepcion = historial_recepcion.order_by('-fecha', '-pk')
+
+    current_user = request.user
+    usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+    usuarios = Usuarios_datos.objects.filter(empresa__tipo='OtrosPedidos')
+
+
+
+    num_pedido = asignacion_pedido.num_detalle.num_pedido.num_pedido,
+    return render(request, "consulta_recepcion_detalle.html", {
+        'usuarios': usuarios,
+        'permiso_usuario': usuario_datos,
+        "asignacion_id": asignacion_id,
+        'asignacion_pedido': asignacion_pedido,
+        'lista_historial_recepcion': historial_recepcion,
+    })
+def reporte_consulta_recepcion(request):
+
+    if request.method == 'GET':
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa = empresa.empresa.id
+
+        lista_infoc = AsignacionPedidosOtrosCanales.objects.all()
+
+        fecha_inicio = request.GET.get('fecha_inicio')
+        fecha_fin = request.GET.get('fecha_fin')
+        empresa_input = request.GET.get('empresa_input')
+        pedido = request.GET.get('pedido')
+        estado = request.GET.get('estado')
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+
+        if estado=='enproceso':
+            estado='en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+
+
+        subtitulo ="Lista_Asignacion_Otros_Canales"
+
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="LISTA_RECEPCION_OTROS_CANALES.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet(subtitulo)
+
+
+        # Sheet header, first row
+        row_num = 0
+
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_style.num_format_str = 'dd/mm/yyyy'
+
+        # Fondo azul
+        pattern = xlwt.Pattern()
+        pattern.pattern = xlwt.Pattern.SOLID_PATTERN
+        pattern.pattern_fore_colour = 44  # xlwt.Style.colour_map['blue']
+        font_style.pattern = pattern
+
+        # Alineación centrada
+        alignment = xlwt.Alignment()
+        alignment.horz = xlwt.Alignment.HORZ_CENTER
+        alignment.vert = xlwt.Alignment.VERT_CENTER
+        font_style.alignment = alignment
+
+        # Bordes
+        borders = xlwt.Borders()
+        borders.left = xlwt.Borders.THIN
+        borders.right = xlwt.Borders.THIN
+        borders.top = xlwt.Borders.THIN
+        borders.bottom = xlwt.Borders.THIN
+        font_style.borders = borders
+
+        # ======================
+        # ESTILO FILA GRIS
+        # ======================
+        gris_style = xlwt.XFStyle()
+
+        pattern_gris = xlwt.Pattern()
+        pattern_gris.pattern = xlwt.Pattern.SOLID_PATTERN
+        pattern_gris.pattern_fore_colour = xlwt.Style.colour_map['gray25']
+        gris_style.pattern = pattern_gris
+
+        # Bordes
+        borders = xlwt.Borders()
+        borders.left = xlwt.Borders.THIN
+        borders.right = xlwt.Borders.THIN
+        borders.top = xlwt.Borders.THIN
+        borders.bottom = xlwt.Borders.THIN
+        gris_style.borders = borders
+
+        # ======================
+        # ESTILO FILA BLANCA
+        # ======================
+        blanco_style = xlwt.XFStyle()
+
+        pattern_blanco = xlwt.Pattern()
+        pattern_blanco.pattern = xlwt.Pattern.SOLID_PATTERN
+        pattern_blanco.pattern_fore_colour = xlwt.Style.colour_map['white']
+        blanco_style.pattern = pattern_blanco
+
+        blanco_style.borders = borders
+        #blanco_style.num_format_str = 'dd/mm/yyyy'
+
+        columns = [
+            'Cliente',
+            'Nombre Artesano',
+            'Código Artesano',
+            'Referencia',
+            'U_plu',
+            'Descripción Artículo',
+            'Número Asignación',
+            'Pedido',
+            'Fecha Pedido',
+            'Cantidad Pedidas',
+            'Cantidad Pendientes',
+            'Cantidad Recibida',
+            'Fecha Recibida',
+
+        ]
+
+        for col_num in range(len(columns)):
+            cwidth = ws.col(col_num).width
+            if (len(columns[col_num]) * 367) > cwidth:
+                ws.col(col_num).width = (len(columns) * 367)
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+
+
+        rows = []
+
+        if lista_infoc:
+            for d in lista_infoc:
+                num_pedido= str(d.num_detalle.num_pedido.num_pedido),
+                cliente = d.num_detalle.num_pedido.empresa.nombre
+                cantidad_pendiente = d.cantidad - d.cantidadrecibo
+                nombre_artesano = d.empresa.nombre
+                codigo_artesano = d.empresa.codigo
+                codigo_articulo = str(d.num_detalle.referencia)
+                u_plu = str(d.num_detalle.u_plu)
+                descripcion_articulo = d.num_detalle.nombre
+                numero_pedido = str(d.pk),
+                fecha_pedido = d.fecha.strftime('%Y-%m-%d') if d.fecha else '',
+                numero_u_pedidas = str(d.cantidad)
+                numero_u_pendientes = str(cantidad_pendiente)
+                numero_u_entregadas = str(d.cantidadrecibo)
+                datos = [(
+                    cliente,
+                    nombre_artesano,
+                    codigo_artesano,
+                    codigo_articulo,
+                    u_plu,
+                    descripcion_articulo,
+                    numero_pedido,
+                    num_pedido,
+                    fecha_pedido,
+                    numero_u_pedidas,
+                    numero_u_pendientes,
+                    numero_u_entregadas,
+                    '',
+
+                )]
+                rows.extend(datos)
+                historial_recepcion = HistorialRecepcion.objects.filter(asignacion=d.pk)
+                if historial_recepcion:
+                    for historial in historial_recepcion:
+                        cantidad_recibida = historial.cantidad_recibida
+                        fecha_recibida = historial.fecha.date().strftime('%d-%m-%Y') if historial.fecha else ''
+                        datos = [(
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            cantidad_recibida,
+                            fecha_recibida
+                        )]
+                        rows.extend(datos)
+
+            for row in rows:
+                row_num += 1
+                for col_num in range(len(row)):
+                    if row[1]:
+                        ws.write(row_num, col_num, row[col_num], gris_style)
+                    else:
+                        ws.write(row_num, col_num, row[col_num], blanco_style)
+
+
+        wb.save(response)
+        return response
+
+def config_consulta_facturacion(request):
+    if request.method == 'GET':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        usuarios = Usuarios_datos.objects.filter(empresa__tipo='OtrosPedidos')
+        empresas=Empresas.objects.filter(tipo='Empresario')
+
+
+
+        if not current_user.is_staff:
+            return HttpResponseRedirect('/login/')
+
+        return render(request, "config_consulta_facturacion.html", {'user': current_user,
+                                                        'usuarios': usuarios,
+                                                        'permiso_usuario': usuario_datos,
+                                                        'empresas': empresas,
+                                                        })
+    else:
+        pass
+def informacion_pedidos_otros_canales_consulta_facturacion(request, ):
+    if request.method == 'GET':
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa=empresa.empresa.id
+
+        lista_infoc = AsignacionPedidosOtrosCanales.objects.all()
+
+        fecha_inicio = request.GET.get('fecha_inicio') or ''
+        fecha_fin = request.GET.get('fecha_fin') or ''
+        empresa_input = request.GET.get('empresa_input') or ''
+        pedido = request.GET.get('pedido') or ''
+        estado = request.GET.get('estado') or ''
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+
+        if estado=='enproceso':
+            estado='en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+
+        cuenta = lista_infoc.count()
+        paginador = Paginator(lista_infoc, PAGINADOR)
+        pagina = request.GET.get('page')
+
+        try:
+            infos = paginador.page(pagina)
+        except PageNotAnInteger:
+            # si la pagina no es un entero
+            infos = paginador.page(1)
+            pagina = 1
+        except EmptyPage:
+            # si la pagina excede la cantidad total
+            infos = paginador.page(paginador.num_pages)
+            pagina = paginador.num_pages
+
+        # crear objeto json por  cada pareja
+        infos_dict = []
+
+        for info in infos:
+            try:
+                imagenes= ImagenesOtrosCanales.objects.filter(referencia=info.num_detalle.referencia).first()
+                imagenes= imagenes.imagen
+            except:
+                imagenes=''
+
+            fecha=info.fecha
+            if fecha == None:
+                fecha =''
+            cantidad_real=info.cantidad-info.cantidadrecibo
+            info_dict = {
+
+                'num_pedido': info.num_detalle.num_pedido.num_pedido,
+                'cantidad': cantidad_real,
+                'cantidadped': info.cantidad,
+                'cantidadrecibo': info.cantidadrecibo,
+                'cantidadfacturada':info.cantidadfacturada,
+                'pk': info.pk,
+                'codigo': info.empresa.codigo,
+                'fecha': fecha,
+                'u_plu': info.num_detalle.u_plu,
+                'referencia': info.num_detalle.referencia,
+                'nombre': info.num_detalle.nombre,
+                'observaciones': info.num_detalle.observaciones,
+                'empresa':info.empresa.nombre,
+                'cliente':info.num_detalle.num_pedido.empresa.nombre
+
+            }
+            infos_dict.append(info_dict)
+        # ejemplo  usando  list comprehensions
+        response_dict = {
+            'pagina': pagina,
+            'total_items': cuenta,
+            'datos': infos_dict
+        }
+
+        return JsonResponse(response_dict)
+def consulta_facturacion_detalle(request, asignacion_id):
+
+
+    asignacion_pedido = AsignacionPedidosOtrosCanales.objects.get(pk=asignacion_id)
+    historial_facturacion = HistorialFacturacion.objects.filter(asignacion=asignacion_id)
+    historial_facturacion = historial_facturacion.order_by('-fecha', '-pk')
+
+    current_user = request.user
+    usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+    usuarios = Usuarios_datos.objects.filter(empresa__tipo='OtrosPedidos')
+
+    num_pedido = asignacion_pedido.num_detalle.num_pedido.num_pedido,
+    return render(request, "consulta_facturacion_detalle.html", {
+        'usuarios': usuarios,
+        'permiso_usuario': usuario_datos,
+        "asignacion_id": asignacion_id,
+        'asignacion_pedido': asignacion_pedido,
+        'lista_historial_facturacion':historial_facturacion
+    })
+def reporte_consulta_facturacion(request):
+
+    if request.method == 'GET':
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa = empresa.empresa.id
+
+        lista_infoc = AsignacionPedidosOtrosCanales.objects.all()
+
+        fecha_inicio = request.GET.get('fecha_inicio')
+        fecha_fin = request.GET.get('fecha_fin')
+        empresa_input = request.GET.get('empresa_input')
+        pedido = request.GET.get('pedido')
+        estado = request.GET.get('estado')
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+
+
+        if estado=='enproceso':
+            estado='en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+
+
+
+        subtitulo ="Lista_Asignacion_Otros_Canales"
+
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="LISTA_FACTURACION_OTROS_CANALES.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet(subtitulo)
+
+
+        # Sheet header, first row
+        row_num = 0
+
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_style.num_format_str = 'dd/mm/yyyy'
+
+        # Fondo azul
+        pattern = xlwt.Pattern()
+        pattern.pattern = xlwt.Pattern.SOLID_PATTERN
+        pattern.pattern_fore_colour = 44  # xlwt.Style.colour_map['blue']
+        font_style.pattern = pattern
+
+        # Alineación centrada
+        alignment = xlwt.Alignment()
+        alignment.horz = xlwt.Alignment.HORZ_CENTER
+        alignment.vert = xlwt.Alignment.VERT_CENTER
+        font_style.alignment = alignment
+
+        # Bordes
+        borders = xlwt.Borders()
+        borders.left = xlwt.Borders.THIN
+        borders.right = xlwt.Borders.THIN
+        borders.top = xlwt.Borders.THIN
+        borders.bottom = xlwt.Borders.THIN
+        font_style.borders = borders
+
+        # ======================
+        # ESTILO FILA GRIS
+        # ======================
+        gris_style = xlwt.XFStyle()
+
+        pattern_gris = xlwt.Pattern()
+        pattern_gris.pattern = xlwt.Pattern.SOLID_PATTERN
+        pattern_gris.pattern_fore_colour = xlwt.Style.colour_map['gray25']
+        gris_style.pattern = pattern_gris
+
+        # Bordes
+        borders = xlwt.Borders()
+        borders.left = xlwt.Borders.THIN
+        borders.right = xlwt.Borders.THIN
+        borders.top = xlwt.Borders.THIN
+        borders.bottom = xlwt.Borders.THIN
+        gris_style.borders = borders
+
+        # ======================
+        # ESTILO FILA BLANCA
+        # ======================
+        blanco_style = xlwt.XFStyle()
+
+        pattern_blanco = xlwt.Pattern()
+        pattern_blanco.pattern = xlwt.Pattern.SOLID_PATTERN
+        pattern_blanco.pattern_fore_colour = xlwt.Style.colour_map['white']
+        blanco_style.pattern = pattern_blanco
+
+        blanco_style.borders = borders
+        #blanco_style.num_format_str = 'dd/mm/yyyy'
+
+        columns = [
+            'Cliente',
+            'Nombre Artesano',
+            'Código Artesano',
+            'Referencia',
+            'U_plu',
+            'Descripción Artículo',
+            'Número Asignación',
+            'Pedido',
+            'Fecha Pedido',
+            'Cantidad Pedidas',
+            'Cantidad Pendientes',
+            'Cantidad Facturada',
+            'Fecha Facturada',
+
+        ]
+
+        for col_num in range(len(columns)):
+            cwidth = ws.col(col_num).width
+            if (len(columns[col_num]) * 367) > cwidth:
+                ws.col(col_num).width = (len(columns) * 367)
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+
+
+        rows = []
+        if lista_infoc:
+            for d in lista_infoc:
+                num_pedido= str(d.num_detalle.num_pedido.num_pedido),
+                cliente = d.num_detalle.num_pedido.empresa.nombre
+                cantidad_pendiente = d.cantidad - d.cantidadfacturada
+                nombre_artesano = d.empresa.nombre
+                codigo_artesano = d.empresa.codigo
+                codigo_articulo = str(d.num_detalle.referencia)
+                u_plu = str(d.num_detalle.u_plu)
+                descripcion_articulo = d.num_detalle.nombre
+                numero_pedido = str(d.pk),
+                fecha_pedido = d.fecha.strftime('%Y-%m-%d') if d.fecha else '',
+                numero_u_pedidas = str(d.cantidad)
+                numero_u_pendientes = str(cantidad_pendiente)
+                numero_u_facturadas = str(d.cantidadfacturada)
+                datos = [(
+                    cliente,
+                    nombre_artesano,
+                    codigo_artesano,
+                    codigo_articulo,
+                    u_plu,
+                    descripcion_articulo,
+                    numero_pedido,
+                    num_pedido,
+                    fecha_pedido,
+                    numero_u_pedidas,
+                    numero_u_pendientes,
+                    numero_u_facturadas,
+                    '',
+
+                )]
+                rows.extend(datos)
+                historial_facturacion = HistorialFacturacion.objects.filter(asignacion=d.pk)
+                if historial_facturacion:
+                    for historial in historial_facturacion:
+                        cantidad_facturada = historial.cantidad_facturada
+
+                        fecha_Facturado = historial.fecha.date().strftime('%d-%m-%Y') if historial.fecha else ''
+                        datos = [(
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            cantidad_facturada,
+                            fecha_Facturado
+                        )]
+                        rows.extend(datos)
+
+            for row in rows:
+                row_num += 1
+                for col_num in range(len(row)):
+                    if row[1]:
+                        ws.write(row_num, col_num, row[col_num], gris_style)
+                    else:
+                        ws.write(row_num, col_num, row[col_num], blanco_style)
+
+
+        wb.save(response)
+        return response

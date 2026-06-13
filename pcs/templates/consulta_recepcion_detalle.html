@@ -1,0 +1,94 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+<section class="content-header" xmlns="http://www.w3.org/1999/html">
+    <h1><a href="/configuracion/consulta_recepcion/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    <br>
+</section>
+
+<section>
+    <div id="printableArea">
+        <section class="invoice">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">
+                        PCS
+                        <small class="pull-right">Número Asignación {{ asignacion_id }}</small>
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="col-sm-6 invoice-col">
+                        <address>
+                            <strong>Cliente: </strong>{{ asignacion_pedido.num_detalle.num_pedido.empresa.nombre }}<br>
+                            <strong>Empresa: </strong>{{ asignacion_pedido.empresa.nombre }}<br>
+                            <strong>Código Empresa: </strong>{{ asignacion_pedido.empresa.codigo }}<br>
+                            <strong>Pedido: </strong>{{ asignacion_pedido.num_detalle.num_pedido.num_pedido }}<br>
+                            <strong>U_PLU: </strong>{{ asignacion_pedido.num_detalle.u_plu }}<br>
+                            <strong>Referencia: </strong>{{ asignacion_pedido.num_detalle.referencia }}<br>
+                            <strong>Descripción: </strong>{{ asignacion_pedido.num_detalle.nombre }}<br>
+
+                        </address>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <address>
+                        <strong>Total Pedido: </strong>{{ asignacion_pedido.cantidad }}<br>
+                        <strong>Total Recibido: </strong>{{ asignacion_pedido.cantidadrecibo }}<br>
+                        <strong>Total Facturado: </strong>{{ asignacion_pedido.cantidadfacturada }}<br>
+                    </address>
+                </div>
+            </div>
+            <h2 style="text-align: center; color: #0d6aad;"> Historial de Recepción</h2><br><br>
+            <div class="row historial-recepcion">
+                <div class="col-xs-12 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Pedido</th>
+                            <th>Recibido</th>
+                            <th>Recibido Anterior</th>
+                            <th>Recibido Total</th>
+                            <th>Facturado</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for historial in lista_historial_recepcion %}
+                        <tr>
+                            <td>
+                                {{ historial.fecha|date:"d/m/Y"}}
+                            </td>
+                            <td>
+                                {{ asignacion_pedido.num_detalle.nombre }}
+                            </td>
+                            <td>
+                                {{ asignacion_pedido.cantidad }}
+                            </td>
+                            <td>
+                                {{ historial.cantidad_recibida }}
+                            </td>
+                            <td>
+                                {{ historial.cantidad_recibida_acumulada }}
+                            </td>
+                            <td>
+                                {{ historial.cantidad_recibida|add:historial.cantidad_recibida_acumulada }}
+                            </td>
+                            <td>
+                                {{ historial.cantidad_facturada_acumulada }}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</section>
+{% endblock %}

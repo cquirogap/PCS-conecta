@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from openpyxl.descriptors import Default
+
 
 # Create your models here.
 
@@ -459,3 +461,19 @@ class NivelEstantes(models.Model):
     salon=models.ForeignKey(Salones, default=1)
     estante=models.ForeignKey(Estantes, default=1)
     nivel = models.CharField(max_length=50)
+
+class HistorialRecepcion(models.Model):
+    asignacion = models.ForeignKey(AsignacionPedidosOtrosCanales)
+    cantidad_recibida = models.IntegerField(default=1)
+    fecha = models.DateTimeField(null=True)
+    cantidad_recibida_acumulada = models.IntegerField(default=1) #historial total de las cantidades totales recibidas
+    cantidad_facturada_acumulada = models.IntegerField(default=1)# historial total de las cantidades facturadas
+    descripcion = models.CharField(max_length=30, default='')
+
+class HistorialFacturacion(models.Model):
+    asignacion = models.ForeignKey(AsignacionPedidosOtrosCanales)
+    cantidad_facturada = models.IntegerField(default=1)
+    fecha = models.DateTimeField(null=True)
+    cantidad_pendiente_facturar = models.IntegerField(default=1) # El campo guarda la cantidad facturacion por facturar (recibidas-facturado)
+    cantidad_recibidas = models.IntegerField(default=1) # El campo guarda la cantidad recibidas
+    descripcion = models.CharField(max_length=30, default='')

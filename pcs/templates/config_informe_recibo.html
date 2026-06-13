@@ -1,7 +1,7 @@
 {% extends 'admin_base.html' %}
 {% load static %}
 {% block content %}
-    <section class="content-header">
+    <section class="content-header" style="margin-bottom: 10px;">
       <h1>
         <a href="#">Informe Recibo</a>
         <small>Otros Canales</small>
@@ -51,8 +51,9 @@
           <div class="nav-tabs-custom">
               <!-- pestañas de el formulario-->
             <ul class="nav nav-tabs">
-              <li ><a href="/configuracion/orden_empresiario_otroscanales_recibo/" >Recepcion Productos</a></li>
-              <li class="active"><a href="" data-toggle="tab">Informe Recibo</a></li>
+                <li><a href="/configuracion/consulta_recepcion/">Consulta Recepción Productos</a></li>
+                <li><a href="/configuracion/config_consulta_facturacion/">Consulta Facturación Productos</a></li>
+                <li class="active"><a href="#" data-toggle="tab">Informe Recibo</a></li>
             </ul>
             {% csrf_token %}
             <div class="tab-content">

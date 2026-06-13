@@ -36,8 +36,6 @@ urlpatterns = [
 ]
 urlpatterns.extend(
     [
-
-
         # Administracion
         url(r'^administracion/$', interlocutorc_views.panel_administracion, name="admin-panel"),
         url(r'^ayuda/$', interlocutorc_views.panel_ayuda, name="admin-panel"),
@@ -140,6 +138,27 @@ urlpatterns.extend(
         url(r'^configuracion/orden_pcs_otroscanales/fecha_minima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_minima),
         url(r'^configuracion/orden_pcs_otroscanales/fecha_maxima/$', configuracion_views.config_ordenes_otroscanales_pcs_fecha_maxima),
 
+        # Historial de Recepcion
+        url(r'^configuracion/historial_recepcion/$', configuracion_views.config_historial_recepcion),
+        url(r'^configuracion/historial_recepcion/informacion/$',configuracion_views.config_historial_recepcion_solicitud),
+        url(r'^configuracion/historial_recepcion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_historial_recepcion_borrar),
+
+        # Historial de Facturacion
+        url(r'^configuracion/historial_facturacion/$', configuracion_views.config_historial_facturacion),
+        url(r'^configuracion/historial_facturacion/informacion/$',configuracion_views.config_historial_facturacion_solicitud),
+        url(r'^configuracion/historial_facturacion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_historial_facturacion_borrar),
+
+        # Consulta de la Recepcion
+        url(r'^configuracion/consulta_recepcion/$', configuracion_views.config_consulta_recepcion),
+        url(r'^configuracion/consulta_recepcion/informacion/$', configuracion_views.informacion_pedidos_otros_canales_consulta_recepcion),
+        url(r'^configuracion/consulta_historial_recepcion/detalle/(?P<asignacion_id>\d+)/$', configuracion_views.consulta_recepcion_detalle),
+        url(r'^configuracion/consulta_recepcion/excel_general/$', configuracion_views.reporte_consulta_recepcion),
+
+        # Consulta de la Facturacion
+        url(r'^configuracion/config_consulta_facturacion/$', configuracion_views.config_consulta_facturacion),
+        url(r'^configuracion/consulta_facturacion/informacion/$',configuracion_views.informacion_pedidos_otros_canales_consulta_facturacion),
+        url(r'^configuracion/consulta_historial_facturacion/detalle/(?P<asignacion_id>\d+)/$',configuracion_views.consulta_facturacion_detalle),
+        url(r'^configuracion/consulta_facturacion/excel_general/$', configuracion_views.reporte_consulta_facturacion),
 
         #Registrar crediya y Credilisto
         url(r'^configuracion/documentos_creditos/$', configuracion_views.config_documentos_creditos),
@@ -322,8 +341,6 @@ urlpatterns.extend(
         url(r'^registrar/olvidar_contrasena/$', configuracion_views.config_usuarios_olvidar_contrasena),
         url(r'^configuracion/usuarios/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_borrar),
         url(r'^configuracion/usuarios/editar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_editar),
-
-
         # Dependencias
         url(r'^configuracion/dependencias/$', configuracion_views.config_dependencias),
         url(r'^configuracion/dependencias/registrar/$', configuracion_views.config_dependencias_registrar),
@@ -331,10 +348,6 @@ urlpatterns.extend(
         url(r'^configuracion/dependencias/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_dependencias_borrar),
 
         #_______________________________________________ ADMINISTRACION _____________________________________________
-
-
-
-
         # Sub Series
         url(r'^configuracion/subseries/$', configuracion_views.config_subseries),
         url(r'^configuracion/subseries/registrar/$', configuracion_views.config_subseries_registrar),
@@ -348,13 +361,10 @@ urlpatterns.extend(
         url(r'^configuracion/trd/sin_asignar/$', configuracion_views.config_trd_sin_asignar),
         url(r'^configuracion/trd/registrar/$', configuracion_views.config_trd_registrar),
         url(r'^configuracion/trd/informe/$', configuracion_views.config_trd_informa),
-
-
         #Ubicacion
         url(r'^configuracion/ubicacion/$', configuracion_views.config_ubicacion),
         url(r'^configuracion/ubicacion/registrar/$', configuracion_views.config_ubicacion_registrar),
         url(r'^configuracion/ubicacion/editar/(?P<id>[-\w]+)/$', configuracion_views.config_ubicacion_editar),
-
         #Piso
         url(r'^configuracion/piso/$', configuracion_views.config_piso),
         url(r'^configuracion/piso/registrar/$', configuracion_views.config_piso_registrar),
@@ -371,28 +381,17 @@ urlpatterns.extend(
         #----------------------------------------VENTAS----------------------------------------------------------------------
         url(r'^configuracion/solicitud_pedido/$', configuracion_views.config_solicitud_pedido),
         url(r'^configuracion/solicitud_pedido/detalle/(?P<form_id>\d+)/$', configuracion_views.vista_formula),
-
-
         url(r'^configuracion/solicitud_entrega/$', configuracion_views.config_solicitud_entrega),
         url(r'^configuracion/solicitud_entrega/detalle/(?P<form_id>\d+)/$', configuracion_views.entrega_detalle),
-
-
         url(r'^configuracion/solicitud_devolucion/$', configuracion_views.config_solicitud_devolucion),
         url(r'^configuracion/solicitud_devolucion/detalle/(?P<form_id>\d+)/$', configuracion_views.devolucion_detalle),
-
         url(r'^configuracion/solicitud_notas_debito/$', configuracion_views.config_solicitud_notas_debito),
         url(r'^configuracion/solicitud_notas_debito/detalle/(?P<form_id>\d+)/$', configuracion_views.solicitud_notas_debito_detalle),
-
-
         url(r'^configuracion/solicitud_notas_credito/$', configuracion_views.config_solicitud_notas_credito),
         url(r'^configuracion/solicitud_notas_credito/detalle/(?P<form_id>\d+)/$', configuracion_views.solicitud_notas_credito_detalle),
-
-
         url(r'^configuracion/solicitud_factura_deudores/$', configuracion_views.config_solicitud_factura_deudores),
         url(r'^configuracion/solicitud_factura_deudores/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_detalle),
-
         url(r'^configuracion/tarea/$', interlocutorc_views.tarea_api),
-
         url(r'^configuracion/solicitud_factura_proveedor/detalle/(?P<form_id>\d+)/$', configuracion_views.factura_deudores_proveedor),
         #---------------------------------------COMPRAS-------------------------------------------------------------------
         url(r'^configuracion/solicitud_pedido_orden/$', configuracion_views.config_solicitud_pedido_orden),
@@ -411,34 +410,26 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_pedido_cliente_otroscanales/excel_general/$', configuracion_views.reporte_otroscanales_cliente),
         url(r'^configuracion/solicitud_pedido_orden/excel_csv/$', configuracion_views.reporte_pedidos_csv),
         url(r'^configuracion/solicitud_pedido_orden/certificados_retencion/$', configuracion_views.reporte_certificados_retencion),
-
         url(r'^configuracion/solicitud_comprobante_egreso/excel/$', configuracion_views.reporte_comprobante_detalle),
-
         url(r'^configuracion/solicitud_catalogo_productos/$', configuracion_views.config_solicitud_catalogo_productos),
         url(r'^configuracion/solicitud_catalogo_productos/detalle/(?P<form_id>\d+)/$', configuracion_views.catalogo_productos_detalle),
-
         url(r'^configuracion/solicitud_debito_proveedores/$', configuracion_views.config_solicitud_debito_proveedores),
         url(r'^configuracion/solicitud_debito_proveedores/detalle/(?P<form_id>\d+)/$', configuracion_views.debito_proveedores_detalle),
-
-
         url(r'^configuracion/solicitud_credito_proveedores/$', configuracion_views.config_solicitud_credito_proveedores),
         url(r'^configuracion/solicitud_credito_proveedores/detalle/(?P<form_id>\d+)/$', configuracion_views.credito_proveedores_detalle),
 
         #---------------------------------------TABLAS NO SAP---------------------------------------------------------------
         url(r'^configuracion/solicitud_aviso_recibo/$', configuracion_views.config_solicitud_aviso_recibo),
         url(r'^configuracion/solicitud_aviso_recibo/excel_general/$', configuracion_views.reporte_aviso_recibo),
-
         url(r'^configuracion/solicitud_inventarios/$', configuracion_views.config_solicitud_inventarios),
         url(r'^configuracion/solicitud_inventarios/cliente/$', configuracion_views.config_solicitud_inventarios_cliente),
         url(r'^configuracion/solicitud_inventarios/excel_general/$', configuracion_views.reporte_inventario),
         url(r'^configuracion/solicitud_inventarios/detalle/$', configuracion_views.config_solicitud_inventarios_detalle),
-
         url(r'^configuracion/solicitud_ventas/$', configuracion_views.config_solicitud_ventas),
         url(r'^configuracion/solicitud_ventas/excel_general/$', configuracion_views.reporte_ventas),
         #---------------------------------------FINANZAS-------------------------------------------------------------------
         url(r'^configuracion/solicitud_pagos_recibidos/$', configuracion_views.config_solicitud_pagos_recibidos),
         url(r'^configuracion/solicitud_pagos_recibidos/detalle/(?P<form_id>\d+)/$', configuracion_views.pagos_recibidos_detalles),
-
         url(r'^configuracion/solicitud_estado_cuenta/$', configuracion_views.config_solicitud_estado_cuenta),
         url(r'^configuracion/solicitud_estado_cuenta/grupos/(?P<form_id>[\w\-]+)/$', configuracion_views.config_solicitud_estado_cuenta_grupos),
         url(r'^configuracion/solicitud_estado_cuenta/excel_general/$', configuracion_views.reporte_estado_cuenta),
@@ -446,16 +437,12 @@ urlpatterns.extend(
         url(r'^configuracion/solicitud_comprobante_egreso/$', configuracion_views.config_solicitud_comprobante_egreso),
         url(r'^configuracion/solicitud_comprobante_egreso/detalle/(?P<form_id>\d+)/$', configuracion_views.comprobante_egreso_detalles),
         url(r'^configuracion/solicitud_comprobante_egreso/print/(?P<form_id>\d+)/$', configuracion_views.comprobante_egreso_print),
-
         url(r'^configuracion/solicitud_comprobante_egreso_pcs/$', configuracion_views.config_solicitud_comprobante_egreso_pcs),
         #_______________________________________________ EXTERNO ____________________________________________________________
-
         # Login Referencia a  the 'django.contrib.auth.views.login' view to the /login/ URL.
         url(r'^login/$', interlocutorc_views.CustomLoginView.as_view(), name='login'),
-
         # Login Redirect
         url(r'^login-redirect/', interlocutorc_views.definir_login, name="login-redirect"),
-
         # Cerrar sesion Referencia  a 'django.contrib.auth.views.logout' view to the /logout/ URL.
         url(r'^logout/$', auth_views.logout,{"next_page": reverse_lazy('login')}, name="logout"),
 

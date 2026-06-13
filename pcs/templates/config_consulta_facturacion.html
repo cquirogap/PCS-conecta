@@ -3,7 +3,7 @@
 {% block content %}
     <section class="content-header" style="margin-bottom: 10px;">
       <h1>
-        <a href="/configuracion/orden_empresiario_otroscanales/">Referencias a Facturar</a>
+        <a href="/configuracion/orden_empresiario_otroscanales/">Consulta Facturación Productos</a>
         <small>Otros Canales</small>
       </h1>
       <ol class="breadcrumb">
@@ -15,8 +15,9 @@
     <div class="col-md-12">
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#">Referencias a Facturar</a></li>
-            <li><a href="/configuracion/historial_facturacion/">Historial Facturación</a></li>
+            <li><a href="/configuracion/consulta_recepcion/">Consulta Recepción Productos</a></li>
+            <li class="active"><a href="#" data-toggle="tab">Consulta Facturación Productos</a></li>
+            <li><a href="/configuracion/informe_recibo/">Informe Recibo</a></li>
         </ul>
         {% csrf_token %}
         <div class="tab-content">
@@ -84,13 +85,21 @@
                                                name="u_plu" placeholder="U_PLU Producto" value="{{ u_plu }}">
                                     </div>
                                     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                    <div class="col-md-12"><br></div>
                                     <div class="col-md-6">
-                                        <label></label>
-                                        <button id="busqueda_pedidos_otros_canales_empresarios_facturar" class="btn btn-primary btn-block btn-flat">
+
+                                        <button id="busqueda_pedidos_otros_canales_consulta_facturacion" class="btn btn-primary btn-block btn-flat">
                                             <span class="glyphicon glyphicon-folder-open"></span>
                                             <span class="glyphicon glyphicon-search"></span> Consultar
                                         </button>
                                     </div>
+                                    <div class="col-md-6">
+                                            <button type="button" id="consulta_facturacion_excel"
+                                                    class="btn btn-success btn-block btn-flat">
+                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                <span class="glyphicon glyphicon-search"></span>Excel
+                                            </button>
+                                        </div>
                                 </div>
                                 <!--/ Busqueda-->
                             </div>
@@ -106,15 +115,13 @@
                                         <table id="tabla_infoc_medicamentos" class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th><input type="checkbox" id="select_all_factura"></th>
                                                     <th>PEDIDO</th>
                                                     <th>CLIENTE</th>
-                                                    <th>FECHA F</th>
-                                                    <th>CANTIDAD</th>
                                                     <th>CANT. P</th>
                                                     <th>CANT. R</th>
                                                     <th>CANT. F</th>
                                                     <th>FECHA</th>
+                                                    <th>HISTORIAL</th>
                                                     <th>U_PLU</th>
                                                     <th>REFERENCIA</th>
                                                     <th>DESCRIPCION</th>
@@ -128,9 +135,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <button type="button" id="enviar_referencia_facturar" class="btn btn-primary btn-block">Enviar </button>
-                                </div>
+
                             </form>
                             <!-- /.box-body -->
                         </div>

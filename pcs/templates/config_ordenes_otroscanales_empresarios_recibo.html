@@ -1,171 +1,183 @@
 {% extends 'admin_base.html' %}
 {% load static %}
 {% block content %}
-    <section class="content-header">
-      <h1>
-        <a href="/configuracion/orden_empresiario_otroscanales/">Consulta General Recibo</a>
+<section class="content-header" style="margin-bottom: 10px;">
+    <h1>
+        <a href="/configuracion/orden_empresiario_otroscanales/">Recepción Productos</a>
         <small>Otros Canales</small>
-      </h1>
-      <ol class="breadcrumb">
+    </h1>
+    <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Otros Canales</a></li>
         <li><a href="#">Consulta</a></li>
-      </ol>
-    </section>
-    <section>
+    </ol>
+</section>
+<section>
     <div class="col-md-12">
-          <div class="nav-tabs-custom">
-          <ul class="nav nav-tabs">
-              <li class="active"><a href="#" data-toggle="tab">Recepcion Productos</a></li>
-              <li><a href="/configuracion/informe_recibo/" >Informe Recibo</a></li>
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="/configuracion/orden_empresiario_otroscanales_recibo/" data-toggle="tab">Recepción Productos</a></li>
+                <li><a href="/configuracion/historial_recepcion/">Historial Recepción</a></li>
             </ul>
-              {% csrf_token %}
+            {% csrf_token %}
             <div class="tab-content">
                 <!-- dcasos_estado -->
                 <div class="active tab-pane" id="casos_medicamentos">
-                <!-- Tabla casos existentes -->
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <!-- Busqueda-->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                           <label>Fecha inicial</label>
-                                          <div class="input-group ">
-                                            <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                    <!-- Tabla casos existentes -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <!-- Busqueda-->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Fecha inicial</label>
+                                            <div class="input-group ">
+                                                <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
                                                 <input type="date" class="form-control" id="fecha_inicio_input">
-                                          </div>
-                                      </div>
-                                    <div class="col-md-6">
-                                       <label>Fecha final</label>
-                                      <div class="input-group ">
-                                        <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                                            <input type="date" class="form-control" id="fecha_fin_input">
-                                      </div>
-                                  </div>
-                                    <div class="col-md-12"><br></div>
-                                    <div class="col-md-6">
-                                           <label>Estado</label>
-                                          <div class="input-group ">
-                                            <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
-                                                <select class="form-control select2" style="width: 100%;" id="estado_input" >
-                                                          <option value="asignado" selected>asignado</option>
-                                                          <option value="pendiente" >pendiente</option>
-                                                      </select>
-                                          </div>
-                                      </div>
-                                    <div class="col-md-6">
-                                           <label>Empresa</label>
-                                          <div class="input-group ">
-                                            <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
-                                                <select class="form-control select2" style="width: 100%;" id="empresa_input" >
-                                                <option value="" selected>-- Seleccione una empresa --</option>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Fecha final</label>
+                                            <div class="input-group ">
+                                                <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                                <input type="date" class="form-control" id="fecha_fin_input">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12"><br></div>
+                                        <div class="col-md-6">
+                                            <label>Estado</label>
+                                            <div class="input-group ">
+                                                <span class="input-group-addon"><i
+                                                        class="fa fa-check-square "></i></span>
+                                                <select class="form-control select2" style="width: 100%;"
+                                                        id="estado_input">
+                                                    <option value="asignado" selected>asignado</option>
+                                                    <option value="pendiente">pendiente</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Empresa</label>
+                                            <div class="input-group ">
+                                                <span class="input-group-addon"><i
+                                                        class="fa fa-check-square "></i></span>
+                                                <select class="form-control select2" style="width: 100%;"
+                                                        id="empresa_input">
+                                                    <option value="" selected>-- Seleccione una empresa --</option>
 
-                                                          {% for empresa in empresas %}
-                                                          <option value="{{ empresa.id }}">
-                                                              {{empresa.nombre}}
-                                                          </option>
-                                                          {% endfor %}
-                                                      </select>
-                                          </div>
-                                      </div>
-                                    <div class="col-md-12"><br></div>
-                                    <div class="col-md-6">
-                                        <label>Referencia</label>
-                                        <input type="text" class="form-control" id="referencia"
-                                               name="referencia" placeholder="Referencia Producto" value="{{ referencia }}" >
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="pedido">Pedido</label>
-                                        <input type="number" class="form-control" id="pedido"
+                                                    {% for empresa in empresas %}
+                                                    <option value="{{ empresa.id }}">
+                                                        {{empresa.nombre}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12"><br></div>
+                                        <div class="col-md-6">
+                                            <label>Referencia</label>
+                                            <input type="text" class="form-control" id="referencia"
+                                                   name="referencia" placeholder="Referencia Producto"
+                                                   value="{{ referencia }}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="pedido">Pedido</label>
+                                            <input type="number" class="form-control" id="pedido"
                                                    name="pedido" placeholder="Numero de pedido" value="{{ pedido }}">
-                                    </div>
-                                    <div class="col-md-12"><br></div>
-                                    <div class="col-md-6">
-                                        <label>U_PLU</label>
-                                        <input type="text" class="form-control" id="u_plu"
+                                        </div>
+                                        <div class="col-md-12"><br></div>
+                                        <div class="col-md-6">
+                                            <label>U_PLU</label>
+                                            <input type="text" class="form-control" id="u_plu"
                                                    name="u_plu" placeholder="U_PLU Producto" value="{{ u_plu }}">
-                                    </div>
-                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                                    <div class="col-md-12"><br></div>
-                                    <div class="col-md-6">
-                                        <button id="busqueda_pedidos_otros_canales_empresarios_recibo" class="btn btn-primary btn-block btn-flat" >
+                                        </div>
+                                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                        <div class="col-md-12"><br></div>
+                                        <div class="col-md-6">
+                                            <button id="busqueda_pedidos_otros_canales_empresarios_recibo"
+                                                    class="btn btn-primary btn-block btn-flat">
                                                 <span class="glyphicon glyphicon-folder-open"></span>
                                                 <span class="glyphicon glyphicon-search"></span> Consultar
                                             </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="button" id="buscar_pedidos_otros_canales_excel_button"
+                                                    class="btn btn-success btn-block btn-flat">
+                                                <span class="glyphicon glyphicon-folder-open"></span>
+                                                <span class="glyphicon glyphicon-search"></span>Excel
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <button type="button" id="buscar_pedidos_otros_canales_excel_button"  class="btn btn-success btn-block btn-flat" >
-                                            <span class="glyphicon glyphicon-folder-open"></span>
-                                            <span class="glyphicon glyphicon-search"></span>Excel
-                                        </button>
+                                    <!--/ Busqueda-->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="page-header">
+                                        </h4>
                                     </div>
                                 </div>
-                                <!--/ Busqueda-->
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h4 class="page-header">
-                                    </h4>
+                                <div id="printableArea">
+                                    <!-- /.box-header -->
+                                    <div class="box-body table-responsive no-padding">
+                                        <table id="tabla_infoc_medicamentos" class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th><input type="checkbox" id="select_all"></th>
+                                                <th>PEDIDO</th>
+                                                <th>CLIENTE</th>
+                                                <th>CANTPED</th>
+                                                <th>FECHAA</th>
+                                                <th>U_PLU</th>
+                                                <th>REFERENCIA</th>
+                                                <th>DESCRIPCION</th>
+                                                <th>IMAGEN</th>
+                                                <th>CODIGO EMPRESA</th>
+                                                <th>EMPRESAA</th>
+                                                <th>FECHAR</th>
+                                                <th>CANTIDAD</th>
+                                                <th>CANTPEN</th>
+                                                <th>CANTREC</th>
+                                                <th>CANTFAC</th>
+                                                <th>NOVEDADES</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- Espacio para los datos que cargan -->
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                        <div class="col-md-12">
+                                            <button id="enviar_seleccionados"
+                                                    class="btn btn-success btn-block btn-flat">
+                                                <i class="fa fa-envelope"></i> Enviar seleccionados
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.box-body -->
                                 </div>
+                                <!-- /.box -->
                             </div>
-                            <div id="printableArea">
-                            <!-- /.box-header -->
-                            <div class="box-body table-responsive no-padding">
-                              <table id="tabla_infoc_medicamentos" class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th><input type="checkbox" id="select_all"></th>
-                                        <th>PEDIDO</th>
-                                        <th>CLIENTE</th>
-                                        <th>CANTPED</th>
-                                        <th>FECHAA</th>
-                                        <th>U_PLU</th>
-                                        <th>REFERENCIA</th>
-                                        <th>DESCRIPCION</th>
-                                        <th>IMAGEN</th>
-                                        <TH>CODIGO EMPRESA</TH>
-                                        <TH>EMPRESAA</TH>
-                                        <th>CANTPED</th>
-                                        <th>CANTPEN</th>
-                                        <th>CANTREC</th>
-                                        <th>NOVEDADES</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <!-- Espacio para los datos que cargan -->
-                                </tbody>
-                                <tfoot>
-                                    <tr>
 
-                                    </tr>
-                                </tfoot>
-                              </table>
-                                <div class="col-md-12">
-    <button id="enviar_seleccionados" class="btn btn-success btn-block btn-flat">
-        <i class="fa fa-envelope"></i> Enviar seleccionados
-    </button>
-</div>
+                        </div>
+                        <button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right"
+                                style="margin-right: 5px;">
+                            <i class="fa fa-download"></i> Generate PDF
+                        </button>
+                        <!-- Tabla existentes -->
 
-                            </div>
-                            <!-- /.box-body -->
-                      </div>
-                        <!-- /.box -->
                     </div>
-
-                </div><button type="button" onclick="printDiv('printableArea')" class="btn btn-primary pull-right" style="margin-right: 5px;">
-        <i class="fa fa-download"></i> Generate PDF
-    </button>
-                <!-- Tabla existentes -->
-
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
             </div>
-                <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-          <!-- /.nav-tabs-custom -->
-    </div>
+            <!-- /.nav-tabs-custom -->
+        </div>
         <!-- /.col -->
-    </section>
+</section>
 
 {% endblock %}
