@@ -14522,116 +14522,24 @@ def factura_deudores_proveedor(request, form_id):
                                                              'permiso_usuario': usuario_datos,
                                                           })
 
+
 def config_solicitud_pedido_orden(request):
     formulas = []
     if request.method == 'GET':
         current_user = request.user
-        nombre=current_user.username
+        nombre = current_user.username
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
         empresa = User.objects.filter(username=nombre).first()
         empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
         empresa = empresa.empresa.nombre
-        pagina=str(0)
-        estado='bost_Open'
-	usuario_actual = request.user
+        pagina = str(0)
+        estado = 'bost_Open'
+        usuario_actual = request.user
         if not usuario_actual.is_staff:
             return HttpResponseRedirect('/login/')
 
         url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
                + empresa + "'and DocumentStatus eq '" + estado + "'&$skip=" + pagina
-
-        response = sap_request(url2)
-        response = ast.literal_eval(response.text)
-        response = response['value']
-        condicion_facturar_sin_novedades = Q(peticion__descripcion='Facturar pedido sin novedades')
-        condicion_facturar_con_novedades = Q(peticion__descripcion='Facturar pedido con novedades')
-        condiciones = condicion_facturar_sin_novedades | condicion_facturar_con_novedades
-        dato_lista = []
-        for datos in response:
-            facturas_respondidas=RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],estado='respondido').filter(condiciones)
-            facturas_respondidas = facturas_respondidas.exists()
-            facturas_no_respondidas=RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],estado='pendiente').filter(condiciones)
-            facturas_no_respondidas = facturas_no_respondidas.exists()
-            if facturas_respondidas==True:
-                facturas_respondidas=RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],estado='respondido').filter(condiciones).first()
-                documento_facturas_respondidas=facturas_respondidas.doc_respuesta
-            else:
-                documento_facturas_respondidas=None
-            if facturas_no_respondidas==True:
-                facturas_no_respondidas='True'
-            else:
-                facturas_no_respondidas=None
-
-            fecha_contabilizacion = datetime.strptime(datos['DocDate'], '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%d')
-            fecha_entrega = datetime.strptime(datos['DocDueDate'], '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%d')
-            data_prueba = {
-                'dato_interno': datos['DocEntry'],
-                'n_pedido': datos['DocNum'],
-                'fecha_contabilizacion': fecha_contabilizacion,
-                'fecha_entrega': fecha_entrega,
-                'total': format(datos['DocTotal'], '0,.0f'),
-                'documento_facturas_respondidas':documento_facturas_respondidas,
-                'facturas_no_respondidas':facturas_no_respondidas,
-            }
-            dato_lista.append(data_prueba)
-        return render(request, "config_solicitud_pedido_orden.html", {'user': current_user,
-                                                        'lista_prueba': dato_lista,
-                                                        'lista_formulas': formulas,
-                                                        'estado':estado,
-                                                        'permiso_usuario': usuario_datos,
-                                                        'pagina': pagina,
-                                                        'pagina_fin': str(int(pagina)+20),
-                                                        })
-    elif request.method == 'POST':
-        current_user = request.user
-        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
-        nombre = current_user.username
-        empresa=User.objects.filter(username=nombre).first()
-        empresa=Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
-        empresa=empresa.empresa.nombre
-        fecha_inicio = request.POST['fecha_inicio']
-        fecha_fin = request.POST['fecha_fin']
-        pagina = request.POST['pagina']
-        pedido = request.POST.get('pedido', '')
-
-        try:
-            paginador = request.POST['paginador']
-            if paginador=='atras':
-                pagina=str(int(pagina)-20)
-                if int(pagina)<0:
-                    pagina=str(0)
-            elif paginador=='adelante':
-                pagina=str(int(pagina)+20)
-            elif paginador=='primera':
-                pagina=str(0)
-        except:
-            pass
-        try :
-            estado = request.POST['estado']
-            if estado=='None':
-                estado = None
-        except:
-            estado = None
-        try:
-            secundario=request.POST['secundarios']
-        except:
-            secundario='primario'
-
-        if pedido!="":
-            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
-                   + empresa + "'and DocNum eq " + pedido + "&$skip=" + pagina
-        elif secundario=='primario':
-            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
-                   + empresa + "'and DocumentStatus eq '" + estado + "'&$skip=" + pagina
-        elif estado== None:
-            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
-                + empresa + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
-        elif estado=='tYES':
-            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
-                   + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
-        elif estado=='bost_Open' or estado=='bost_Close':
-            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
-                   + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '"+ fecha_fin + "' and DocDate gt '"+ fecha_inicio +"'&$skip="+pagina
 
         response = sap_request(url2)
         response = ast.literal_eval(response.text)
@@ -14647,15 +14555,17 @@ def config_solicitud_pedido_orden(request):
             facturas_no_respondidas = RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],
                                                                      estado='pendiente').filter(condiciones)
             facturas_no_respondidas = facturas_no_respondidas.exists()
-            if facturas_respondidas==True:
-                facturas_respondidas=RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],estado='respondido').filter(condiciones).first()
-                documento_facturas_respondidas=facturas_respondidas.doc_respuesta
+            if facturas_respondidas == True:
+                facturas_respondidas = RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],
+                                                                      estado='respondido').filter(condiciones).first()
+                documento_facturas_respondidas = facturas_respondidas.doc_respuesta
             else:
-                documento_facturas_respondidas=None
-            if facturas_no_respondidas==True:
-                facturas_no_respondidas='True'
+                documento_facturas_respondidas = None
+            if facturas_no_respondidas == True:
+                facturas_no_respondidas = 'True'
             else:
-                facturas_no_respondidas=None
+                facturas_no_respondidas = None
+
             fecha_contabilizacion = datetime.strptime(datos['DocDate'], '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%d')
             fecha_entrega = datetime.strptime(datos['DocDueDate'], '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%d')
             data_prueba = {
@@ -14663,22 +14573,117 @@ def config_solicitud_pedido_orden(request):
                 'n_pedido': datos['DocNum'],
                 'fecha_contabilizacion': fecha_contabilizacion,
                 'fecha_entrega': fecha_entrega,
-                'total': format(datos['DocTotal'], '0,.0f') ,
+                'total': format(datos['DocTotal'], '0,.0f'),
                 'documento_facturas_respondidas': documento_facturas_respondidas,
                 'facturas_no_respondidas': facturas_no_respondidas,
             }
             dato_lista.append(data_prueba)
         return render(request, "config_solicitud_pedido_orden.html", {'user': current_user,
-                                                                'lista_formulas': formulas,
-                                                                'lista_prueba': dato_lista,
-                                                                'fecha_inicio':fecha_inicio,
-                                                                'fecha_fin':fecha_fin,
-                                                                'estado':estado,
-                                                                'pedido':pedido,
-                                                                'permiso_usuario': usuario_datos,
-                                                                'pagina': pagina,
-                                                                'pagina_fin': str(int(pagina)+20),
-                                                                })
+                                                                      'lista_prueba': dato_lista,
+                                                                      'lista_formulas': formulas,
+                                                                      'estado': estado,
+                                                                      'permiso_usuario': usuario_datos,
+                                                                      'pagina': pagina,
+                                                                      'pagina_fin': str(int(pagina) + 20),
+                                                                      })
+    elif request.method == 'POST':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        nombre = current_user.username
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa = empresa.empresa.nombre
+        fecha_inicio = request.POST['fecha_inicio']
+        fecha_fin = request.POST['fecha_fin']
+        pagina = request.POST['pagina']
+        pedido = request.POST.get('pedido', '')
+
+        try:
+            paginador = request.POST['paginador']
+            if paginador == 'atras':
+                pagina = str(int(pagina) - 20)
+                if int(pagina) < 0:
+                    pagina = str(0)
+            elif paginador == 'adelante':
+                pagina = str(int(pagina) + 20)
+            elif paginador == 'primera':
+                pagina = str(0)
+        except:
+            pass
+        try:
+            estado = request.POST['estado']
+            if estado == 'None':
+                estado = None
+        except:
+            estado = None
+        try:
+            secundario = request.POST['secundarios']
+        except:
+            secundario = 'primario'
+
+        if pedido != "":
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+                   + empresa + "'and DocNum eq " + pedido + "&$skip=" + pagina
+        elif secundario == 'primario':
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+                   + empresa + "'and DocumentStatus eq '" + estado + "'&$skip=" + pagina
+        elif estado == None:
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+                   + empresa + "'and DocDate lt '" + fecha_fin + "' and DocDate gt '" + fecha_inicio + "'&$skip=" + pagina
+        elif estado == 'tYES':
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+                   + empresa + "'and Cancelled eq '" + estado + "'and DocDate lt '" + fecha_fin + "' and DocDate gt '" + fecha_inicio + "'&$skip=" + pagina
+        elif estado == 'bost_Open' or estado == 'bost_Close':
+            url2 = IP_SAP + "PurchaseOrders?$orderby=DocDate desc&$select=DocNum,DocEntry,DocDate,DocDueDate,DocTotal&$filter=CardName eq '" \
+                   + empresa + "'and DocumentStatus eq '" + estado + "'and DocDate lt '" + fecha_fin + "' and DocDate gt '" + fecha_inicio + "'&$skip=" + pagina
+
+        response = sap_request(url2)
+        response = ast.literal_eval(response.text)
+        response = response['value']
+        condicion_facturar_sin_novedades = Q(peticion__descripcion='Facturar pedido sin novedades')
+        condicion_facturar_con_novedades = Q(peticion__descripcion='Facturar pedido con novedades')
+        condiciones = condicion_facturar_sin_novedades | condicion_facturar_con_novedades
+        dato_lista = []
+        for datos in response:
+            facturas_respondidas = RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],
+                                                                  estado='respondido').filter(condiciones)
+            facturas_respondidas = facturas_respondidas.exists()
+            facturas_no_respondidas = RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],
+                                                                     estado='pendiente').filter(condiciones)
+            facturas_no_respondidas = facturas_no_respondidas.exists()
+            if facturas_respondidas == True:
+                facturas_respondidas = RespuestaPedido.objects.filter(num_pedido=datos['DocNum'],
+                                                                      estado='respondido').filter(condiciones).first()
+                documento_facturas_respondidas = facturas_respondidas.doc_respuesta
+            else:
+                documento_facturas_respondidas = None
+            if facturas_no_respondidas == True:
+                facturas_no_respondidas = 'True'
+            else:
+                facturas_no_respondidas = None
+            fecha_contabilizacion = datetime.strptime(datos['DocDate'], '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%d')
+            fecha_entrega = datetime.strptime(datos['DocDueDate'], '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%d')
+            data_prueba = {
+                'dato_interno': datos['DocEntry'],
+                'n_pedido': datos['DocNum'],
+                'fecha_contabilizacion': fecha_contabilizacion,
+                'fecha_entrega': fecha_entrega,
+                'total': format(datos['DocTotal'], '0,.0f'),
+                'documento_facturas_respondidas': documento_facturas_respondidas,
+                'facturas_no_respondidas': facturas_no_respondidas,
+            }
+            dato_lista.append(data_prueba)
+        return render(request, "config_solicitud_pedido_orden.html", {'user': current_user,
+                                                                      'lista_formulas': formulas,
+                                                                      'lista_prueba': dato_lista,
+                                                                      'fecha_inicio': fecha_inicio,
+                                                                      'fecha_fin': fecha_fin,
+                                                                      'estado': estado,
+                                                                      'pedido': pedido,
+                                                                      'permiso_usuario': usuario_datos,
+                                                                      'pagina': pagina,
+                                                                      'pagina_fin': str(int(pagina) + 20),
+                                                                      })
 
 
 
@@ -15383,6 +15388,15 @@ def pedido_detalle(request, form_id):
                             else:
                                 break
                     comentarios_iniciales = 'Por favor entregar mercancía en <b style="color: #0b93ff"><strong> bodega SPE Medellin, CLL 10 # 56-06 a más tardar el día ' +str(fecha_ped_ven)+ ' antes de las 2pm </strong></b>Solicitar cita para entrega en Cedi SPE a los números 3104737173, 604 4448481 ext.201-202, 604 4440050 ext.201, ingresospromotora@spe.com.co Empresario si usted entrega directamente a la cadena haga caso omiso de esta información.'
+
+                elif d['WhsCode'] == '28':
+                    fecha_ped_exp = datetime.strptime(d['DocDate'], '%Y%m%d')
+                    fecha_ped_ven = datetime.strptime(d['DocDueDate'], '%Y%m%d')
+                    fecha_ped_exp = fecha_ped_exp.date()
+                    fecha_ped_ven = fecha_ped_ven.date()
+
+                    comentarios_iniciales = 'Entregar en cedi <b style="color: #0b93ff"> Avenida 68 # 9 – 77 </b>  entrada frente a colchones el dorado <strong> (preguntar en portería como llegar a Promotora de Comercio Social)</strong>.<strong> Fecha de entrega en bodega del ' +str(fecha_ped_exp)+ ' al ' +str(fecha_ped_ven) + ' </strong>  Para entregar es necesario agendar la cita a través del <strong>WhatsApp 3203599358 y correo </strong> <b style="color: #0b93ff"><strong>analistalogisticobog@pcsocial.org</strong></b>, las personas que realizan la entrega deben llevar <strong>ARL vigente y botas de seguridad</strong>, la entrega deben hacerla con <strong> remisión y/o orden de compra </strong> para poder hacer recibo.'
+
                 else:
                     comentarios_iniciales = 'No'
         except:
