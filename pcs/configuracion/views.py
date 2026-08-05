@@ -46,6 +46,7 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 from django.shortcuts import get_object_or_404
 from django.db.models import F
+from django.test import RequestFactory
 
 try:
     from cStringIO import StringIO as BytesIO  # más rápido si disponible
@@ -2347,6 +2348,10 @@ def config_ordenes_aviso_despacho_detalle_edi(request):
         response1 = ast.literal_eval(response1)
         response1 = response1['value']
         dato_cambiante_cantidad_cajas="esteesundatocambiantedecajas"
+        GLNCliente = ''
+        NumeroOrden = ''
+        NumeroFactura = ''
+        edi_data = ''
         for datos in response1:
             fecha_minima = datos['DocDate']
             fechas_maxima = datos['DocDueDate']
@@ -2384,7 +2389,9 @@ def config_ordenes_aviso_despacho_detalle_edi(request):
         edi_finales="\nUNT+"+str(edi_count)+"+1\nUNZ+1+PCS"+str(consuc_edi)
         edi_data = edi_data + edi_finales
 
-        name_file=str(GLNCliente)+'_'+str(NumeroOrden)+'_'+str(NumeroFactura)
+
+        name_file=str(GLNCliente)+'_'+str(NumeroOrden)+'_'+str(NumeroFactura) + ' prueba'
+
         # Crear la respuesta HTTP con el contenido del archivo EDI
         response = HttpResponse(edi_data, content_type='application/edi')
         response['Content-Disposition'] = 'attachment; filename="'+name_file+'".edi'
@@ -14707,7 +14714,7 @@ def config_solicitud_pedido_orden_bodegas(request):
             bodega='19'
         else:
             bodega='22'
-	usuario_actual = request.user
+	    usuario_actual = request.user
         if not usuario_actual.is_staff:
             return HttpResponseRedirect('/login/')
 
@@ -14738,6 +14745,7 @@ def config_solicitud_pedido_orden_bodegas(request):
             else:
                 facturas_no_respondidas=None
 
+
             fecha_contabilizacion = datetime.strptime(datos['DocDate'], '%Y%m%d').strftime('%Y-%m-%d')
             fecha_entrega = datetime.strptime(datos['DocDueDate'], '%Y%m%d').strftime('%Y-%m-%d')
             data_prueba = {
@@ -14752,6 +14760,9 @@ def config_solicitud_pedido_orden_bodegas(request):
                 'facturas_no_respondidas':facturas_no_respondidas,
             }
             dato_lista.append(data_prueba)
+
+
+
         return render(request, "config_solicitud_pedido_orden_bodega.html", {'user': current_user,
                                                         'lista_prueba': dato_lista,
                                                         'lista_formulas': formulas,
@@ -14870,7 +14881,6 @@ def config_solicitud_pedido_orden_bodega(request):
         empresa = User.objects.filter(username=nombre).first()
         empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
         empresa = empresa.empresa.nombre
-        empresas_clientes=Empresas.objects.filter(tipo='Cadena')
         pagina=str(0)
         estado='O'
         if usuario_datos.atencion == 5:
@@ -14880,6 +14890,7 @@ def config_solicitud_pedido_orden_bodega(request):
 	usuario_actual = request.user
         if not usuario_actual.is_staff:
             return HttpResponseRedirect('/login/')
+
 
         url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidosven1')/List?estado='" \
                + estado + "'&bodega=" + bodega+ "&$skip=" + pagina
@@ -14909,6 +14920,40 @@ def config_solicitud_pedido_orden_bodega(request):
             else:
                 facturas_no_respondidas=None
 
+            #Validad si existe la empresa
+            codigo_empr = datos['CardCode']
+            factory = RequestFactory()
+            if not Empresas.objects.filter(codigo=codigo_empr).exists():
+                url_empresarios_lista_consultas = IP_SAP + "SQLQueries('EmpresariosListaConsultas')/List?empresario= '" + codigo_empr + "'"
+
+                response_empresarios_lista_consultas = sap_request(url_empresarios_lista_consultas)
+                response_empresarios_lista_consultas = response_empresarios_lista_consultas.text
+                response_empresarios_lista_consultas = response_empresarios_lista_consultas.replace('null', ' " " ')
+                response_empresarios_lista_consultas = ast.literal_eval(response_empresarios_lista_consultas)
+                response_empresarios_lista_consultas = response_empresarios_lista_consultas['value']
+                if response_empresarios_lista_consultas:
+                    for datos_empresarios in response_empresarios_lista_consultas:
+                        tipo = datos_empresarios['CardType']
+                        if tipo == 'S':
+                            tipo = 'Empresario'
+                        else:
+                            tipo = 'Cadena'
+
+                        empresasr = Empresas(
+                            nombre=datos_empresarios['CardName'],
+                            nit=datos_empresarios['LicTradNum'],
+                            telefono=datos_empresarios['Phone1'],
+                            movil=datos_empresarios['Phone1'],
+                            responsable=datos_empresarios['CardName'],
+                            tipo=tipo,
+                            email=datos_empresarios['E_Mail'],
+                            edi=datos_empresarios['U_EAN'],
+                            codigo=datos_empresarios['CardCode'],
+
+                        )
+
+                        empresasr.save()
+
             fecha_contabilizacion = datetime.strptime(datos['DocDate'], '%Y%m%d').strftime('%Y-%m-%d')
             fecha_entrega = datetime.strptime(datos['DocDueDate'], '%Y%m%d').strftime('%Y-%m-%d')
             data_prueba = {
@@ -14924,6 +14969,9 @@ def config_solicitud_pedido_orden_bodega(request):
                 'facturas_no_respondidas':facturas_no_respondidas,
             }
             dato_lista.append(data_prueba)
+
+        pagina_fin = str(int(pagina)+20)
+        empresas_clientes = Empresas.objects.filter(tipo='Cadena')
         return render(request, "config_solicitud_pedido_orden_bodega.html", {'user': current_user,
                                                         'lista_prueba': dato_lista,
                                                         'lista_formulas': formulas,
@@ -14931,7 +14979,7 @@ def config_solicitud_pedido_orden_bodega(request):
                                                         'permiso_usuario': usuario_datos,
                                                         'pagina': pagina,
                                                         'empresas_clientes': empresas_clientes,
-                                                        'pagina_fin': str(int(pagina)+20),
+                                                        'pagina_fin': pagina_fin
                                                         })
     elif request.method == 'POST':
         current_user = request.user
@@ -14944,9 +14992,9 @@ def config_solicitud_pedido_orden_bodega(request):
         fecha_inicio = request.POST['fecha_inicio']
         fecha_fin = request.POST['fecha_fin']
         pagina = request.POST['pagina']
+        estado = request.POST.get('estado', '')
         pedido = request.POST.get('pedido', '')
         cliente = request.POST.get('cliente', '')
-        estado = request.POST.get('estado', '')
         pedido_cliente = request.POST.get('pedido_cliente', '')
         if usuario_datos.atencion == 5:
             bodega='19'
@@ -14971,8 +15019,10 @@ def config_solicitud_pedido_orden_bodega(request):
         if pedido!="":
             url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos2a')/List?estado='" \
                    + estado + "'&num_pedido='" + pedido + "'&$skip=" + pagina
+
         elif pedido_cliente!="":
             url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidosclientes')/List?num_pedido='" + pedido_cliente + "'&$skip=" + pagina
+
         elif cliente!="":
             url2 = IP_SAP + "SQLQueries('Consultasbodegaspedidos4a')/List?estado='" \
                    + estado + "'&bodega=" + bodega+ "&cliente='" + cliente+ "'&fecha_minima='" + fecha_inicio+ "'&fecha_maxima='" + fecha_fin + "'&$skip=" + pagina
@@ -15740,6 +15790,9 @@ def pedido_detalle_bodega(request, form_id):
             response3 = response3.replace('null', ' " " ')
             response3 = ast.literal_eval(response3)
             response3 = response3['value']
+            peso = d['U_HBT1_PESO_ARTVTA'] if d['U_HBT1_PESO_ARTVTA'] != ' ' else 0
+            volumen = d['U_HBT1_VOL_ART'] if d['U_HBT1_VOL_ART'] != ' ' else 0
+
             direcciones=[]
             for n in response3:
                 empaques_detalles=int(n['CantDestino']) / int(d['SalPackUn'])
@@ -15748,11 +15801,18 @@ def pedido_detalle_bodega(request, form_id):
                     'dependencia': n['U_EAN'],
                     'direccion': n['DirDestino'],
                     'empaques': empaques_detalles,
+                    'peso': peso,
+                    'peso_total': peso * empaques_detalles,
+                    'volumen_total': (volumen * int(d['SalPackUn'])) / 1000000
+
+
                 }
                 direcciones.append(data_direcciones)
 
             empaques_despachados = int(d['Quantity']) / int(d['SalPackUn'])
 
+            volumen_total = (volumen*int(d['SalPackUn']))/1000000 # un metro cubico es igual a 1000000 un mililitro es por esa razon que se encuentra quemado
+            peso_total = peso * empaques_despachados
             data_articulos = {
                 'ean': d['CodeBars'],
                 'descripc': d['Dscription'],
@@ -15763,6 +15823,11 @@ def pedido_detalle_bodega(request, form_id):
                 'total_neto': d['LineTotal'],
                 'emp_desp': empaques_despachados,
                 'direcciones': direcciones,
+                'volumen':volumen,
+                'vol_tot':volumen_total,
+                'peso':peso,
+                'peso_tot':peso_total
+                
             }
             articulos.append(data_articulos)
 
@@ -15795,7 +15860,10 @@ def pedido_detalle_bodega(request, form_id):
         e_despachados = request.POST.getlist('e_despachados[]')
         dependencia = request.POST.getlist('dependencia[]')
         direccion = request.POST.getlist('direccion[]')
+        peso_total = request.POST.getlist('total_peso[]')
+        volumen_total = request.POST.getlist('total_volumen[]')
         check = request.POST.getlist('check[]')
+
 
         lista_tamano = len(ean)
         tipo_empaque = request.POST['tipo_empaque']
@@ -15827,6 +15895,8 @@ def pedido_detalle_bodega(request, form_id):
                         plu=plu[i],
                         tota_bruto=tota_bruto[i],
                         total_neto=total_neto[i],
+                        peso_total = peso_total[i],
+                        volumen_total =volumen_total[i],
                         orden_id=orden_venta.pk,
                     )
                     pedidonovedad.save()
@@ -15836,7 +15906,6 @@ def pedido_detalle_bodega(request, form_id):
             for i in range(lista_tamano):
                 if ean[i] in check:
                     pedidonovedad = DetalleOrdenVenta(
-
                         ean=ean[i],
                         descripcion=descripcion[i],
                         u_pedidas=u_pedidas[i],
@@ -15846,6 +15915,8 @@ def pedido_detalle_bodega(request, form_id):
                         plu=plu[i],
                         tota_bruto=tota_bruto[i],
                         total_neto=total_neto[i],
+                        peso_total=peso_total[i],
+                        volumen_total=volumen_total[i],
                         orden_id=orden_venta.pk,
                     )
                     pedidonovedad.save()
@@ -15875,9 +15946,13 @@ def pedido_problema_detalle_bodegas(request, form_id):
         if not usuario_actual.is_staff:
             return HttpResponseRedirect('/login/')
         current_user = request.user
+        #usuario_datos = Usuarios_datos.objects.filter(usuario_id=600).first()
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
         orden_venta= OrdenVenta.objects.filter(entry=form_id)
         titulos= OrdenVenta.objects.filter(entry=form_id).first()
+        for venta in orden_venta.values():
+            a = 3
+            b = venta['doc_edi']
 
 
 
@@ -15945,27 +16020,19 @@ def pedido_problema_detalle_bodegas(request, form_id):
             GLNCliente = datos['U_EAN']
             NumeroOrden = datos['NumAtCard']
             if validador:
-                edi_data = "UNB+UNOA:2+7701081000011+" + datos['U_EAN'] + "+" + fecha + ":" + hora + '+PCS' + str(
-                    consuc_edi) + "+PASSWORD+DESADV" \
-                                  "\nUNH+1+DESADV:D:96A:UN:EAN005\nBGM+YB1+" + str(consuc_edi) + "+9\nDTM+137:" \
+                edi_data = "UNB+UNOA:2+7701081000011+" + datos['U_EAN'] + "+" + fecha + ":" + hora + '+PCS' + str(consuc_edi) + "+PASSWORD+DESADV" \
+                            "\nUNH+1+DESADV:D:96A:UN:EAN005\nBGM+YB1+" + str(consuc_edi) + "+9\nDTM+137:" \
                            + fecha_minima + "0000:203\nDTM+11:" + fecha_actual + "0000:203\nDTM+17:" + fechas_maxima + "0000:203\n" \
-                                                                                                                       "RFF+ON:" + \
-                           datos['NumAtCard'] + "\nRFF+IV:" + str(factura) + "\nNAD+DP+" + datos[
-                               'EanTienda'] + "::9\nRFF+VA:" + datos['LicTradNum'][:-2] + "\nNAD+BY+" + datos[
-                               'U_EAN'] + "::9\n" \
-                                          "RFF+VA:" + datos['LicTradNum'][
-                                                      :-2] + "\nNAD+SU+7701081000011::9\nRFF+VA:890985438\nNAD+CA+7701081000011::9\n"
+                           "RFF+ON:" + \
+                           datos['NumAtCard'] + "\nRFF+IV:" + str(factura) + "\nNAD+DP+" + datos['EanTienda'] + "::9\nRFF+VA:" + datos['LicTradNum'][:-2] + "\nNAD+BY+" + datos['U_EAN'] + "::9\n" \
+                                "RFF+VA:" + datos['LicTradNum'][:-2] + "\nNAD+SU+7701081000011::9\nRFF+VA:890985438\nNAD+CA+7701081000011::9\n" + "CPS+2+1\nPAC+" + dato_cambiante_cantidad_cajas + "++BX"
             else:
-                edi_data = "UNB+UNOA:2+7701081000011+" + datos['U_EAN'] + "+" + fecha + ":" + hora + '+PCS' + str(
-                    consuc_edi) + "+PASSWORD+DESADV" \
-                                  "\nUNH+1+DESADV:D:96A:UN:EAN005\nBGM+351+" + str(consuc_edi) + "+9\nDTM+137:" \
+                edi_data = "UNB+UNOA:2+7701081000011+" + datos['U_EAN'] + "+" + fecha + ":" + hora + '+PCS' + str(consuc_edi) + "+PASSWORD+DESADV" \
+                            "\nUNH+1+DESADV:D:96A:UN:EAN005\nBGM+351+" + str(consuc_edi) + "+9\nDTM+137:" \
                            + fecha_minima + "0000:203\nDTM+11:" + fecha_actual + "0000:203\nDTM+17:" + fechas_maxima + "0000:203\n" \
-                                                                                                                       "RFF+ON:" + \
-                           datos['NumAtCard'] + "\nRFF+IV:" + str(factura) + "\nNAD+DP+" + datos[
-                               'EanTienda'] + "::9\nRFF+VA:" + datos['LicTradNum'][:-2] + "\nNAD+BY+" + datos[
-                               'U_EAN'] + "::9\n" \
-                                          "RFF+VA:" + datos['LicTradNum'][
-                                                      :-2] + "\nNAD+SU+7701081000011::9\nRFF+VA:890985438\nNAD+CA+7701081000011::9\n" \
+                           "RFF+ON:" + \
+                           datos['NumAtCard'] + "\nRFF+IV:" + str(factura) + "\nNAD+DP+" + datos['EanTienda'] + "::9\nRFF+VA:" + datos['LicTradNum'][:-2] + "\nNAD+BY+" + datos['U_EAN'] + "::9\n" \
+                                "RFF+VA:" + datos['LicTradNum'][:-2] + "\nNAD+SU+7701081000011::9\nRFF+VA:890985438\nNAD+CA+7701081000011::9\n" \
                                                              "TDT+20++30+31++++:::123456\nEQD+BX\nCPS+1\nPAC+" + dato_cambiante_cantidad_cajas + "++BX\nCPS+2+1\nPAC+" + dato_cambiante_cantidad_cajas + "++BX"
         contador = 0
 
@@ -15984,14 +16051,12 @@ def pedido_problema_detalle_bodegas(request, form_id):
 
                 cantidad_embalada = cantidad_embalada + int(detallepedido.empaques_despachado)
 
-                edi_complement = "\nLOC+7+"+detallepedido.dependencia+"::9\nQTY+12:"+str(detallepedido.unidades_despachar)+":NAR"
+                edi_complement = "\nLOC+7+"+detallepedido.dependencia+"::9\nQTY+12:"+str(detallepedido.unidades_despachar)+":NAR" + "\nMEA+PD+AAA+KGM:"  + str(detallepedido.peso_total) + "\nMEA+PD+ABJ+MTQ:" + str(detallepedido.volumen_total)
                 edi_data = edi_data + edi_complement
             else:
                 cantidad_embalada = cantidad_embalada + int(detallepedido.empaques_despachado)
                 contador = contador + 1
-                edi_complement = "\nLIN+" + str(contador) + "++" + detallepedido.ean + ":EN" \
-                                                                                               "\nQTY+12:" + str(
-                    detallepedido.unidades_despachar) + ":NAR"
+                edi_complement = "\nLIN+" + str(contador) + "++" + detallepedido.ean + ":EN" + "\nQTY+12:" + str(detallepedido.unidades_despachar) + ":NAR" + "\nMEA+PD+AAA+KGM:"  + str(detallepedido.peso_total) + "\nMEA+PD+ABJ+MTQ:" + str(detallepedido.volumen_total)
                 edi_data = edi_data + edi_complement
 
         edi_final = "\nCNT+2:2"
@@ -16023,8 +16088,7 @@ def pedido_problema_detalle_bodegas(request, form_id):
         OrdenVenta.objects.filter(id=problema).update(factura=factura, estado='respondido',
                                                                doc_respuesta=ruta_documento, doc_edi=uploaded_file_url)
 
-        messages.add_message(request, messages.INFO,
-                             'Se ha realizado el documento edi para el pedido ' + str(pedido_pk) + ' satisfactoriamente.')
+        messages.add_message(request, messages.INFO, 'Se ha realizado el documento edi para el pedido ' + str(pedido_pk) + ' satisfactoriamente.')
 
 
         return HttpResponseRedirect('/configuracion/solicitud_pedido_orden/bodegas/problema/' + form_id + '/')

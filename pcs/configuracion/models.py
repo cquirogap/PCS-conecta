@@ -180,6 +180,9 @@ class DetalleOrdenVenta(models.Model):
     unidades_despachar = models.CharField(max_length=50)
     empaques_despachado = models.CharField(max_length=50)
     orden = models.ForeignKey(OrdenVenta, default=1)
+    peso_total = models.DecimalField(max_digits=10, decimal_places=3, verbose_name="Peso (kg)", null=True, default=0)
+    volumen_total = models.DecimalField(max_digits=10,decimal_places=3, verbose_name="Volumen (m³)", null=True,default=0)
+
 
     def __unicode__(self):
         return str(self.descripcion)
@@ -424,11 +427,6 @@ class Subseries(models.Model):
 
     def __unicode__(self):
         return str(self.descripcion)
-
-
-
-
-
 
 
 

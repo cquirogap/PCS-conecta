@@ -133,8 +133,7 @@
                     </a></td>
 
                     <td>
-                    {% if  permiso_usuario.atencion != 5  %}
-                    {% if  permiso_usuario.atencion != 6  %}
+
                         {% if problema.estado == 'respondido' %}
                         <a class="btn btn-danger "
                                            href="{{ problema.doc_respuesta }}">
@@ -144,7 +143,7 @@
                             <a class="btn btn-success  "
                                            href="{{ problema.doc_edi }}">
                                         <i class="fa fa-download"></i>
-                                        <br>Despacho
+                                        <br>Despacho1
                                     </a>
                         {% else %}
                         <a class="btn btn-info " data-toggle="modal" data-dismiss="modal" data-target="#RespuestaModal{{ problema.id }}"
@@ -153,8 +152,7 @@
                                 <br> Responder
                             </a>
                         {% endif %}
-                        {% endif %}
-                        {% endif %}
+
                     </td>
 
                 </tr>

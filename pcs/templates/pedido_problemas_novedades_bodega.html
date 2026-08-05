@@ -68,8 +68,10 @@
                         <th>Descripcion Producto</th>
                         <th>Unidades Pedidas</th>
                         <th>Cantidad.Uni.Emp.</th>
-                        <th>Unidades pedidas a despachar</th>
-                        <th>Empaques Despachados</th>
+                        <th>U.Desp</th>
+                        <th>Nro.Emp</th>
+                        <th>Vol.Total</th>
+                        <th>Pes.Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,6 +87,8 @@
                     <td>{{ novedad.cant_un_ped }}</td>
                     <td>{{ novedad.unidades_despachar }}</td>
                     <td>{{ novedad.empaques_despachado }}</td>
+                    <td>{{ novedad.volumen_total }}</td>
+                    <td>{{ novedad.peso_total }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>

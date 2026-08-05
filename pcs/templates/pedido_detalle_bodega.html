@@ -360,7 +360,7 @@
                         </div>
                     </div>
 
-    <h1> <a href="/configuracion/solicitud_pedido_orden/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
+    <h1> <a href="/configuracion/solicitud_pedido_orden/bodegas/"><i class="fa fa-mail-forward"></i>Volver</a></h1>
     <br>
     {% if peticion_activa != 'no' %}
     <div class="alert alert-success alert-dismissible">
@@ -420,7 +420,7 @@
         </div>
     </div>
     <div class="row">
-   <div class="col-xs-8">
+   <div class="col-xs-7">
       <p class="lead">SEÑOR(ES):</p>
       <div class="col-sm-6 invoice-col">
 
@@ -442,7 +442,7 @@
 
    </div>
 
-   <div class="col-xs-4">
+   <div class="col-xs-5">
       <div class="table-responsive">
          <table class="table">
             <tbody>
@@ -454,10 +454,13 @@
                   <th>Fecha Vencimiento</th>
                   <td>{{dato.DocDueDate}}</td>
                </tr>
+
                <tr>
+                  <th>Nombre Cliente</th>
+                  <td>{{ dato.CardName }}</td>
                </tr>
                <tr>
-                  <th></th>
+                   <th>Sitio de Entrega</th>
                   <td>{{cliente.cliente}}</td>
                </tr>
             </tbody>
@@ -479,13 +482,18 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+
                         <th>EAN Producto</th>
                         <th>Descripcion Producto</th>
-                        <th>Unidades Pedidas</th>
-                        <th>Cantidad.Uni.Emp. </th>
-                        <th>Unidades pedidas a despachar</th>
-                        <th>Empaques Despachados</th>
-                        <th>Empaques </th>
+                        <th>U.Ped</th>
+                        <th>UxEmp</th>
+                        <th>U.Desp</th>
+                        <th>Nro.Emp</th>
+                        <th>Vol</th>
+                        <th>Vol.Tot</th>
+                        <th>Peso</th>
+                        <th>P.Tot</th>
+                        <th>Empaques <input type="checkbox" id="select_all"></th>
                     </tr>
                 </thead>
 
@@ -501,36 +509,60 @@
                         <input type="hidden" name="dependencia[]" value="{{ detalle.dependencia }}">
                         <input type="hidden" name="direccion[]" value="{{ detalle.direccion }}">
                         <input type="hidden" name="plu[]" value="{{ articulo.plu }}">
-                    <input type="hidden" name="tota_bruto[]" value="{{ articulo.tota_bruto }}">
-                    <input type="hidden" name="total_neto[]" value="{{ articulo.total_neto }}">
+                        <input type="hidden" name="tota_bruto[]" value="{{ articulo.tota_bruto }}">
+                        <input type="hidden" name="total_neto[]" value="{{ articulo.total_neto }}">
+                        <input type="hidden" name="total_volumen[]" value="{{ articulo.vol_tot }}">
                     {% endfor %}
-                <tr>
-                    <td>{{ articulo.ean }}<br>{% for detalle in articulo.direcciones %}
-                    <small>{{ detalle.dependencia }}</small><br>{% endfor %}</td>
-                    <td>{{ articulo.descripc }}<br>{% for detalle in articulo.direcciones %}
-                    <small>{{ detalle.direccion }}</small><br>{% endfor %}</td>
-                    <td>{{ articulo.unidades }}<br>{% for detalle in articulo.direcciones %}
-                    <small>{{ detalle.cantidad }}</small><br>{% endfor %}</td>
-                    <td>{{ articulo.canti_empa }}<br>{% for detalle in articulo.direcciones %}
-                    <small>{{ articulo.canti_empa }}</small><br>{% endfor %}</td>
-                    <td>{{ articulo.unidades }}<br>{% for detalle in articulo.direcciones %}
-                    <small><input
-                    type="text"
-                    name="u_pedidas_desp[]"
-                    class="u_pedidas_desp"
-                    data-c-uni-emp="{{ articulo.canti_empa }}"
-                    data-e-despachados-id="e_despachados_{{ forloop.counter }}"
-                    value="{{ detalle.cantidad }}"></small><br>{% endfor %}</td>
-                    <td>{{ articulo.emp_desp }}<br>{% for detalle in articulo.direcciones %}
-                    <small><input
-                    type="text"
-                    name="e_despachados[]"
-                    id="e_despachados_{{ forloop.counter }}"
-                    value="{{ detalle.empaques }}"
-                    readonly></small><br>{% endfor %}</td>
-                    <td><br>{% for detalle in articulo.direcciones %}
-                    <small><input type="checkbox" name="check[]" value="{{ detalle.dependencia }}"></small><br>{% endfor %}</td>
-                </tr>
+                    <tr>
+                        <td>{{ articulo.ean }}<br>{% for detalle in articulo.direcciones %}<small>{{ detalle.dependencia }}</small><br>{% endfor %}</td>
+                        <td>{{ articulo.descripc }}<br>{% for detalle in articulo.direcciones %}<small>{{ detalle.direccion }}</small><br>{% endfor %}</td>
+                        <td>{{ articulo.unidades }}<br>{% for detalle in articulo.direcciones %}<small>{{ detalle.cantidad }}</small><br>{% endfor %}</td>
+                        <td>{{ articulo.canti_empa }}<br>{% for detalle in articulo.direcciones %}<small>{{ articulo.canti_empa }}</small><br>{% endfor %}</td>
+                        <td>{{ articulo.unidades }}<br>{% for detalle in articulo.direcciones %}
+                            <small><input
+                                    type="number"
+                                    name="u_pedidas_desp[]"
+                                    class="u_pedidas_desp"
+                                    data-c-uni-emp="{{ articulo.canti_empa }}"
+                                    data-e-despachados-id="e_despachados_{{ forloop.counter }}"
+
+                                    value="{{ detalle.cantidad }}">
+                            </small><br>{% endfor %}
+                        </td>
+                        <td>{{ articulo.emp_desp }}<br>{% for detalle in articulo.direcciones %}
+                            <small><input
+                                    type="number"
+                                    name="e_despachados[]"
+                                    id="e_despachados_{{ forloop.counter }}"
+                                    value="{{ detalle.empaques }}"
+                                    readonly>
+                            </small><br>{% endfor %}
+                        </td>
+                        <td class="volumen">{{ articulo.volumen }} <br>{% for detalle in articulo.direcciones %}<small>{{ articulo.volumen }}</small><br>{% endfor %}</td>
+                        <td>{{ articulo.vol_tot }} <br>{% for detalle in articulo.direcciones %}
+                            <small><input
+                                    type="number"
+                                    name="total_volumen[]"
+                                    value="{{ detalle.volumen_total }}"
+                                    readonly>
+                            </small><br>{% endfor %}
+                        </td>
+                        <td class="peso">{{ articulo.peso }} <br>{% for detalle in articulo.direcciones %}<small>{{ articulo.peso }}</small><br>{% endfor %}</td>
+                        <td>{{ articulo.peso_tot }} <br/>{% for detalle in articulo.direcciones %}
+                            <small><input
+                                    type="number"
+                                    name="total_peso[]"
+                                    id="total_peso_{{ forloop.counter }}"
+                                    value="{{ detalle.peso_total }}"
+                                    readonly>
+                            </small><br>{% endfor %}
+
+                        </td>
+
+
+                        <td><br>{% for detalle in articulo.direcciones %}
+                        <small><input type="checkbox" name="check[]" value="{{ detalle.dependencia }}"></small><br>{% endfor %}</td>
+                    </tr>
                 {% endfor %}
                 {% else %}
                 {% for articulo in lista_detalle %}
@@ -547,22 +579,38 @@
                     <td>{{ articulo.unidades }}</td>
                     <td>{{ articulo.canti_empa }}</td>
                     <td>
-                <input
-                    type="text"
-                    name="u_pedidas_desp[]"
-                    class="u_pedidas_desp"
-                    data-c-uni-emp="{{ articulo.canti_empa }}"
-                    data-e-despachados-id="e_despachados_{{ forloop.counter }}"
-                    value="{{ articulo.unidades }}">
-            </td>
+                        <input
+                            type="number"
+                            name="u_pedidas_desp[]"
+                            class="u_pedidas_desp"
+                            data-c-uni-emp="{{ articulo.canti_empa }}"
+                            data-e-despachados-id="e_despachados_{{ forloop.counter }}"
+                            value="{{ articulo.unidades }}">
+                    </td>
                     <td>
-                <input
-                    type="text"
-                    name="e_despachados[]"
-                    id="e_despachados_{{ forloop.counter }}"
-                    value="{{ articulo.emp_desp }}"
-                    readonly>
-            </td>
+                        <input
+                            type="number"
+                            name="e_despachados[]"
+                            id="e_despachados_{{ forloop.counter }}"
+                            value="{{ articulo.emp_desp }}"
+                            readonly>
+                    </td>
+                    <td class="volumen">{{ articulo.volumen }}</td>
+                    <td>
+                        <input
+                            type="number"
+                            name="total_volumen[]"
+                            value="{{ articulo.vol_tot }}"
+                            readonly>
+                    </td>
+                    <td class="peso">{{ articulo.peso }}</td>
+                    <td>
+                        <input
+                            type="number"
+                            name="total_peso[]"
+                            value="{{ articulo.peso_tot }}"
+                            readonly>
+                    </td>
                     <td><input type="checkbox" name="check[]" value="{{ articulo.ean }}"></td>
 
                 </tr>
@@ -571,33 +619,57 @@
                 </tbody>
             </table>
         <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Selecciona todos los campos de entrada `u_pedidas_desp`
-        const uPedidasInputs = document.querySelectorAll('.u_pedidas_desp');
+            document.addEventListener('DOMContentLoaded', function () {
+                const uPedidasInputs = document.querySelectorAll('.u_pedidas_desp');
+                const eDespachadosInputs = document.querySelectorAll('input[name="e_despachados[]"]');
+                // Volumen
+                const totalVolumenInputs = document.querySelectorAll('input[name="total_volumen[]"]');
+                // Peso
+                const pesos = document.querySelectorAll('td[name="peso"]');
+                const eTotalPesoInputs = document.querySelectorAll('input[name="total_peso[]"]');
 
-        // Añade un evento de escucha a cada campo
-        uPedidasInputs.forEach(input => {
-            input.addEventListener('input', function () {
-                // Obtén el valor del campo actual
-                const uPedidasValue = parseFloat(this.value) || 0;
+                uPedidasInputs.forEach((input, index) => {
+                   input.addEventListener('input', function () {
+                       console.log('Input modificado:', index);
+                       const uPedidasValue = parseFloat(this.value) || 0;
+                       const cUniEmp = parseFloat(this.dataset.cUniEmp) || 1;
+                       const eDespachadosValue = (uPedidasValue / cUniEmp).toFixed(2);
+                       const fila = this.closest('tr');
+                       // Volumen
+                       const volumen = parseFloat(fila.querySelector('.volumen').textContent.trim()) || 0;
+                       const volumenTotalValue = ((eDespachadosValue * volumen)/ 1000000).toFixed(2);
 
-                // Obtén el valor del atributo data-c-uni-emp (cantidad por empaque)
-                const cUniEmp = parseFloat(this.dataset.cUniEmp) || 1;
+                       // Peso
+                       const peso = parseFloat(fila.querySelector('.peso').textContent.trim()) || 0;
+                       const pesoTotalValue = (eDespachadosValue * peso).toFixed(2);
 
-                // Calcula el nuevo valor de e_despachados
-                const eDespachadosValue = (uPedidasValue / cUniEmp).toFixed(2);
 
-                // Encuentra el campo correspondiente de e_despachados usando el id
-                const eDespachadosInput = document.getElementById(this.dataset.eDespachadosId);
+                       console.log('Actualizando posición:',index);
+                       if (eDespachadosInputs[index]) {
+                           eDespachadosInputs[index].value = eDespachadosValue;
+                       }
 
-                // Actualiza el campo e_despachados
-                if (eDespachadosInput) {
-                    eDespachadosInput.value = eDespachadosValue;
-                }
+                       // Actualizar Volumen
+                       if (totalVolumenInputs[index]){
+                           totalVolumenInputs[index].value = volumenTotalValue;
+                       }
+
+                       // Actualizar Peso
+                       console.log('Total Peso:',pesoTotalValue);
+                       if (eTotalPesoInputs[index]){
+                           eTotalPesoInputs[index].value = pesoTotalValue;
+                       }
+
+                   });
+                });
             });
-        });
-    });
-</script>
+            document.getElementById('select_all').addEventListener('click', function() {
+                let checkboxes = document.querySelectorAll('input[name="check[]"]');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = document.getElementById('select_all').checked;
+                });
+            });
+        </script>
         </div>
     </div>
         <div class="col-xs-6"></div>
