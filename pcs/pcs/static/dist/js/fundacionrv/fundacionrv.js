@@ -2398,11 +2398,12 @@ $(function () {
         estado = estado.replace(/\s+/g, '');
         pedido = $("#pedido").val() || "";
         pedido = pedido.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
 
         $.ajax({
             type: "GET",
             data: {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
-            url: '/configuracion/pedidos_otros_canales/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa=' + empresa + '&pedido=' + pedido + '&estado=' + estado,
+            url: '/configuracion/pedidos_otros_canales/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa=' + empresa + '&pedido=' + pedido + '&estado=' + estado + '&pedido_cliente=' + pedido_cliente,
             dataType: 'json',
             success: function (data) {
                 // Cargar en tabla
@@ -2438,7 +2439,7 @@ $(function () {
                     lineas += "</tr>";
                 }
 
-// Añadir al DOM
+                // Añadir al DOM
                 table_body.append(lineas);
             }
         });
@@ -2573,11 +2574,12 @@ $(function () {
         pedido = pedido.replace(/\s+/g, '');
         codigo = $("#codigo").val() || "";
         codigo = codigo.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
 
         $.ajax({
             type: "GET",
             data: {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
-            url: '/configuracion/pedidos_otros_canales_empresarios/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&codigo=' + codigo,
+            url: '/configuracion/pedidos_otros_canales_empresarios/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&codigo=' + codigo + '&pedido_cliente=' + pedido_cliente,
             dataType: 'json',
             success: function (data) {
                 // Cargar en tabla
@@ -2676,14 +2678,15 @@ $(function () {
         referencia = referencia.replace(/\s+/g, '');
         var u_plu = $("#u_plu").val() || "";
         u_plu = u_plu.replace(/\s+/g, '');
-        const fechaHoy = new Date().toISOString().split("T")[0];
+        const fechaHoy = new Date().toISOString().split("T")[0]
+        var pedido_cliente = $("#pedido_cliente").val() || "";
 
         $.ajax({
             type: "GET",
             data: {csrfmiddlewaretoken: csrfToken},
             url: '/configuracion/pedidos_otros_canales_empresarios/facturar/?fecha_inicio=' + fecha_inicio +
                 '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input +
-                '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu,
+                '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente,
             dataType: 'json',
             success: function (data) {
                 var casos = data.datos;
@@ -2828,13 +2831,14 @@ $(function () {
         referencia = referencia.replace(/\s+/g, '');
         let u_plu = $("#u_plu").val() || "";
         u_plu = u_plu.replace(/\s+/g, '');
+        let pedido_cliente = $("#pedido_cliente").val() || "";
 
         $.ajax({
             type: "GET",
             data: {
                 csrfmiddlewaretoken: csrfToken
             },
-            url: '/configuracion/pedidos_otros_canales_empresarios/recibo/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu,
+            url: '/configuracion/pedidos_otros_canales_empresarios/recibo/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente,
             dataType: 'json',
             success: function (data) {
                 const casos = data.datos;
@@ -3026,8 +3030,8 @@ $(function () {
         estado = estado.replace(/\s+/g, '');
         pedido = $("#pedido").val() || "";
         pedido = pedido.replace(/\s+/g, '');
-
-        window.location.href = '/configuracion/solicitud_pedido_asignaciones_otroscanales/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado
+        pedido_cliente = $("#pedido_cliente").val() || "";
+        window.location.href = '/configuracion/solicitud_pedido_asignaciones_otroscanales/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&pedido_cliente=' + pedido_cliente
 
     }
 
@@ -4517,11 +4521,12 @@ $(function () {
         referencia = referencia.replace(/\s+/g, '');
         u_plu = $("#u_plu").val() || "";
         u_plu = u_plu.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
 
         $.ajax({
             type: "GET",
             data: {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
-            url: '/configuracion/historial_recepcion/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&codigo=' + codigo + '&referencia=' + referencia + '&u_plu=' + u_plu,
+            url: '/configuracion/historial_recepcion/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&codigo=' + codigo + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente,
             dataType: 'json',
             success: function (data) {
                 // Cargar en tabla
@@ -4595,13 +4600,14 @@ $(function () {
         referencia = referencia.replace(/\s+/g, '');
         let u_plu = $("#u_plu").val() || "";
         u_plu = u_plu.replace(/\s+/g, '');
+        let pedido_cliente = $("#pedido_cliente").val() || "";
 
         $.ajax({
             type: "GET",
             data: {
                 csrfmiddlewaretoken: csrfToken
             },
-            url: '/configuracion/consulta_facturacion/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu,
+            url: '/configuracion/consulta_facturacion/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente,
             dataType: 'json',
             success: function (data) {
                 const casos = data.datos;
@@ -4664,9 +4670,10 @@ $(function () {
         referencia = referencia.replace(/\s+/g, '');
         u_plu = $("#u_plu").val() || "";
         u_plu = u_plu.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
 
 
-        window.location.href = '/configuracion/consulta_recepcion/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu
+        window.location.href = '/configuracion/consulta_recepcion/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente
 
     }
 
@@ -4696,11 +4703,12 @@ $(function () {
         referencia = referencia.replace(/\s+/g, '');
         u_plu = $("#u_plu").val() || "";
         u_plu = u_plu.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
 
         $.ajax({
             type: "GET",
             data: {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
-            url: '/configuracion/historial_facturacion/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&codigo=' + codigo + '&referencia=' + referencia + '&u_plu=' + u_plu,
+            url: '/configuracion/historial_facturacion/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&codigo=' + codigo + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente,
             dataType: 'json',
             success: function (data) {
                 // Cargar en tabla
@@ -4769,14 +4777,17 @@ $(function () {
         referencia = referencia.replace(/\s+/g, '');
         var u_plu = $("#u_plu").val() || "";
         u_plu = u_plu.replace(/\s+/g, '');
+        var pedido_cliente = $("#pedido_cliente").val() || "";
+
+
         const fechaHoy = new Date().toISOString().split("T")[0];
 
         $.ajax({
             type: "GET",
             data: {csrfmiddlewaretoken: csrfToken},
             url: '/configuracion/pedidos_otros_canales_empresarios/facturar/?fecha_inicio=' + fecha_inicio +
-                '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input +
-                '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu,
+                '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido +
+                '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente,
             dataType: 'json',
             success: function (data) {
                 var casos = data.datos;
@@ -4827,9 +4838,10 @@ $(function () {
         referencia = referencia.replace(/\s+/g, '');
         u_plu = $("#u_plu").val() || "";
         u_plu = u_plu.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
 
 
-        window.location.href = '/configuracion/consulta_facturacion/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu
+        window.location.href = '/configuracion/consulta_facturacion/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente
 
     }
 

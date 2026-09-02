@@ -4709,6 +4709,8 @@ def informacion_pedidos_otros_canales_solicitud(request, ):
         empresa = request.GET.get('empresa')
         pedido = request.GET.get('pedido')
         estado = request.GET.get('estado')
+        pedido_cliente = request.GET.get('pedido_cliente')
+
         if estado=='enproceso':
             estado='en proceso'
         if not fecha_inicio == '' and not fecha_fin == '':
@@ -4723,6 +4725,8 @@ def informacion_pedidos_otros_canales_solicitud(request, ):
         if not pedido == '':
             lista_infoc = lista_infoc.filter(num_pedido=int(pedido))
 
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(numero_pedido_cliente=pedido_cliente)
 
         cuenta = lista_infoc.count()
         paginador = Paginator(lista_infoc, PAGINADOR)
@@ -4852,6 +4856,8 @@ def informacion_pedidos_otros_canales_empresario_solicitud(request, ):
         pedido = request.GET.get('pedido')
         estado = request.GET.get('estado')
         codigo = request.GET.get('codigo')
+        pedido_cliente = request.GET.get('pedido_cliente')
+
         if estado=='enproceso':
             estado='en proceso'
         if not fecha_inicio == '' and not fecha_fin == '':
@@ -4864,6 +4870,9 @@ def informacion_pedidos_otros_canales_empresario_solicitud(request, ):
             lista_infoc= lista_infoc.filter(num_detalle__num_pedido__estado=estado)
         if not codigo == '':
             lista_infoc = lista_infoc.filter(empresa__codigo=codigo)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
+
         cuenta = lista_infoc.count()
         paginador = Paginator(lista_infoc, PAGINADOR)
         pagina = request.GET.get('page')
@@ -4928,6 +4937,7 @@ def informacion_pedidos_otros_canales_empresario_facturar(request, ):
         estado = request.GET.get('estado') or ''
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
 
         if estado=='enproceso':
             estado='en proceso'
@@ -4943,6 +4953,8 @@ def informacion_pedidos_otros_canales_empresario_facturar(request, ):
             lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
         if not u_plu == '':
             lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__numero_pedido_cliente = pedido_cliente)
 
         lista_infoc = lista_infoc.exclude(cantidad=F('cantidadfacturada'))
         cuenta = lista_infoc.count()
@@ -5019,6 +5031,9 @@ def informacion_pedidos_otros_canales_empresario_recibo(request, ):
         estado = request.GET.get('estado') or ''
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
+
+
         if estado=='enproceso':
             estado='en proceso'
         if not fecha_inicio == '' and not fecha_fin == '':
@@ -5033,6 +5048,9 @@ def informacion_pedidos_otros_canales_empresario_recibo(request, ):
             lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
         if not u_plu == '':
             lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
+
         cuenta = lista_infoc.count()
         paginador = Paginator(lista_infoc, PAGINADOR)
         pagina = request.GET.get('page')
@@ -8352,9 +8370,9 @@ def config_informe_recibo(request):
 
                 for cuenta in response1:
                     codigo_arancelaria = cuenta['U_HBT1_ARANCEL']
-                    if cuenta['PriceList'] == 2:
+                    if cuenta['PriceList'] == 11: 
                         precioventa = cuenta['Price']
-                    if cuenta['PriceList'] == 11:
+                    if cuenta['PriceList'] == 2: 
                         preciocompra = cuenta['Price']
                 cantidad_pendiente=d.cantidad-d.cantidadrecibo
                 nombre_artesano=d.empresa.nombre
@@ -15186,6 +15204,8 @@ def reporte_otroscanales(request):
         empresa_input = request.GET.get('empresa_input')
         pedido = request.GET.get('pedido')
         estado = request.GET.get('estado')
+        pedido_cliente = request.GET.get('pedido_cliente')
+
         if estado == 'enproceso':
             estado = 'en proceso'
         if not fecha_inicio == '' and not fecha_fin == '':
@@ -15196,6 +15216,8 @@ def reporte_otroscanales(request):
             lista_infoc = lista_infoc.filter(num_detalle__num_pedido__num_pedido=pedido)
         if not estado == '':
             lista_infoc = lista_infoc.filter(num_detalle__num_pedido__estado=estado)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
 
         subtitulo ="Lista_Asignacion_Otros_Canales"
 
@@ -18711,6 +18733,8 @@ def config_historial_recepcion_solicitud(request, ):
         codigo = request.GET.get('codigo')
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
+        
 
         if estado=='enproceso':
             estado='en proceso'
@@ -18726,9 +18750,10 @@ def config_historial_recepcion_solicitud(request, ):
             lista_infoc = lista_infoc.filter(asignacion__num_detalle__referencia=referencia)
         if not u_plu == '':
             lista_infoc = lista_infoc.filter(asignacion__num_detalle__u_plu=u_plu)
-
         if not codigo == '':
             lista_infoc = lista_infoc.filter(asignacion__empresa__codigo=codigo)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
 
         lista_infoc = lista_infoc.order_by('-fecha','-pk')
         cuenta = lista_infoc.count()
@@ -18851,6 +18876,7 @@ def config_historial_facturacion_solicitud(request, ):
         codigo = request.GET.get('codigo')
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
 
         if estado=='enproceso':
             estado='en proceso'
@@ -18866,9 +18892,10 @@ def config_historial_facturacion_solicitud(request, ):
             lista_infoc = lista_infoc.filter(asignacion__num_detalle__referencia=referencia)
         if not u_plu == '':
             lista_infoc = lista_infoc.filter(asignacion__num_detalle__u_plu=u_plu)
-        
         if not codigo == '':
             lista_infoc = lista_infoc.filter(asignacion__empresa__codigo=codigo)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
 
         lista_infoc = lista_infoc.order_by('-fecha', '-pk')
         cuenta = lista_infoc.count()
@@ -19095,6 +19122,7 @@ def reporte_consulta_recepcion(request):
         estado = request.GET.get('estado')
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
 
         if estado=='enproceso':
             estado='en proceso'
@@ -19110,7 +19138,8 @@ def reporte_consulta_recepcion(request):
             lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
         if not u_plu == '':
             lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
-
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
 
         subtitulo ="Lista_Asignacion_Otros_Canales"
 
@@ -19218,9 +19247,9 @@ def reporte_consulta_recepcion(request):
                 descripcion_articulo = d.num_detalle.nombre
                 numero_pedido = str(d.pk),
                 fecha_pedido = d.fecha.strftime('%Y-%m-%d') if d.fecha else '',
-                numero_u_pedidas = str(d.cantidad)
-                numero_u_pendientes = str(cantidad_pendiente)
-                numero_u_entregadas = str(d.cantidadrecibo)
+                numero_u_pedidas = int(d.cantidad)
+                numero_u_pendientes = int(cantidad_pendiente)
+                numero_u_entregadas = int(d.cantidadrecibo)
                 datos = [(
                     cliente,
                     nombre_artesano,
@@ -19241,7 +19270,7 @@ def reporte_consulta_recepcion(request):
                 historial_recepcion = HistorialRecepcion.objects.filter(asignacion=d.pk)
                 if historial_recepcion:
                     for historial in historial_recepcion:
-                        cantidad_recibida = historial.cantidad_recibida
+                        cantidad_recibida = int(historial.cantidad_recibida)
                         fecha_recibida = historial.fecha.date().strftime('%d-%m-%Y') if historial.fecha else ''
                         datos = [(
                             '',
@@ -19309,6 +19338,7 @@ def informacion_pedidos_otros_canales_consulta_facturacion(request, ):
         estado = request.GET.get('estado') or ''
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
 
         if estado=='enproceso':
             estado='en proceso'
@@ -19324,6 +19354,9 @@ def informacion_pedidos_otros_canales_consulta_facturacion(request, ):
             lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
         if not u_plu == '':
             lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
+
 
         cuenta = lista_infoc.count()
         paginador = Paginator(lista_infoc, PAGINADOR)
@@ -19419,6 +19452,7 @@ def reporte_consulta_facturacion(request):
         estado = request.GET.get('estado')
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
 
 
         if estado=='enproceso':
@@ -19435,7 +19469,8 @@ def reporte_consulta_facturacion(request):
             lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
         if not u_plu == '':
             lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
-
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
 
 
         subtitulo ="Lista_Asignacion_Otros_Canales"
@@ -19543,9 +19578,9 @@ def reporte_consulta_facturacion(request):
                 descripcion_articulo = d.num_detalle.nombre
                 numero_pedido = str(d.pk),
                 fecha_pedido = d.fecha.strftime('%Y-%m-%d') if d.fecha else '',
-                numero_u_pedidas = str(d.cantidad)
-                numero_u_pendientes = str(cantidad_pendiente)
-                numero_u_facturadas = str(d.cantidadfacturada)
+                numero_u_pedidas = int(d.cantidad)
+                numero_u_pendientes = int(cantidad_pendiente)
+                numero_u_facturadas = int(d.cantidadfacturada)
                 datos = [(
                     cliente,
                     nombre_artesano,
@@ -19566,7 +19601,7 @@ def reporte_consulta_facturacion(request):
                 historial_facturacion = HistorialFacturacion.objects.filter(asignacion=d.pk)
                 if historial_facturacion:
                     for historial in historial_facturacion:
-                        cantidad_facturada = historial.cantidad_facturada
+                        cantidad_facturada = int(historial.cantidad_facturada)
 
                         fecha_Facturado = historial.fecha.date().strftime('%d-%m-%Y') if historial.fecha else ''
                         datos = [(

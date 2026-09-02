@@ -137,67 +137,72 @@
                             <div class="box-header">
                                 <!-- Busqueda-->
                                 <div class="row">
-                                   <div class="col-md-6">
-                                           <label>Fecha inicial</label>
-                                          <div class="input-group ">
+                                    <div class="col-md-6">
+                                        <label>Fecha inicial</label>
+                                        <div class="input-group ">
                                             <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
-                                                <input type="date" class="form-control" id="fecha_inicio_input">
-                                          </div>
-                                      </div>
-                                   <div class="col-md-6">
-                                       <label>Fecha final</label>
-                                      <div class="input-group ">
-                                        <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
+                                            <input type="date" class="form-control" id="fecha_inicio_input">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Fecha final</label>
+                                        <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-calendar "></i></span>
                                             <input type="date" class="form-control" id="fecha_fin_input">
-                                      </div>
-                                  </div>
-                                   <div class="col-md-12">
-                                        <br>
+                                        </div>
                                     </div>
-                                   <div class="col-md-6">
-                                       <label>Estado</label>
-                                      <div class="input-group ">
-                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
-                                            <select class="form-control select2" style="width: 100%;" id="estado_input" >
-                                                <option value="T" selected disabled></option>
-                                                      <option value="asignado">asignado</option>
-                                                      <option value="en proceso">en proceso</option>
-                                                      <option value="predistribuido">predistribuido</option>
-                                                      <option value="pendiente">pendiente</option>
-                                                      <option value="completado">completado</option>
-                                                  </select>
-                                      </div>
-                                  </div>
-                                <div class="col-md-6">
-                                    <label for="pedido">Pedido</label>
-                                    <input type="number" class="form-control" id="pedido"
-                                           name="pedido" placeholder="Numero de pedido" value="{{ pedido }}" >
-                                </div>
-                                <div class="col-md-12">
-                                        <br>
-                                    </div>
-                                <div class="col-md-12">
-                                    <label>Empresa</label>
-                                      <div class="input-group ">
-                                        <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
-                                            <select class="form-control select2" style="width: 100%;" id="empresa_input" >
-                                                <option value="T" selected disabled></option>
-                                                      {% for usuario in usuarios %}
-                                                      <option value="{{ usuario.id }}">
-                                                          {{usuario.nombre}}
-                                                      </option>
-                                                      {% endfor %}
-                                                  </select>
-                                      </div>
-                                </div>
-                                      <div class="col-md-12">
-                                           <br>
-                                      </div>
-                                      <div class="col-md-12">
-                                          <br>
-                                      </div>
                                     <div class="col-md-12">
-                                        <button id="busqueda_pedidos_otros_canales" class="btn btn-primary btn-block btn-flat" >
+                                        <br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="pedido">Pedido</label>
+                                        <input type="number" class="form-control" id="pedido"
+                                               name="pedido" placeholder="Numero de pedido" value="{{ pedido }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Pedido Cliente</label>
+                                        <input type="text" class="form-control" id="pedido_cliente"
+                                               name="pedido_cliente" placeholder="Numero de pedido" value="{{ pedido_cliente }}">
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Estado</label>
+                                        <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                            <select class="form-control select2" style="width: 100%;" id="estado_input">
+                                                <option value="T" selected disabled></option>
+                                                <option value="asignado">asignado</option>
+                                                <option value="en proceso">en proceso</option>
+                                                <option value="predistribuido">predistribuido</option>
+                                                <option value="pendiente">pendiente</option>
+                                                <option value="completado">completado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Empresa</label>
+                                        <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-check-square "></i></span>
+                                            <select class="form-control select2" style="width: 100%;"
+                                                    id="empresa_input">
+                                                <option value="T" selected disabled></option>
+                                                {% for usuario in usuarios %}
+                                                <option value="{{ usuario.id }}">
+                                                    {{usuario.nombre}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button id="busqueda_pedidos_otros_canales"
+                                                class="btn btn-primary btn-block btn-flat">
                                             <span class="glyphicon glyphicon-folder-open"></span>
                                             <span class="glyphicon glyphicon-search"></span> Consultar
                                         </button>

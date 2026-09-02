@@ -79,18 +79,25 @@
                                             <br>
                                         </div>
                                         <div class="col-md-6">
-                                            <label>Referencia</label>
-                                            <input type="text" class="form-control" id="referencia"
-                                                   name="referencia" placeholder="Referencia Producto"
-                                                   value="{{ referencia }}">
-                                        </div>
-                                        <div class="col-md-6">
                                             <label for="pedido">Pedido</label>
                                             <input type="number" class="form-control" id="pedido"
                                                    name="pedido" placeholder="Numero de pedido" value="{{ pedido }}">
                                         </div>
+                                        <div class="col-md-6">
+                                            <label>Pedido Cliente</label>
+                                            <input type="text" class="form-control" id="pedido_cliente"
+                                                   name="pedido_cliente" placeholder="Numero de pedido"
+                                                   value="{{ pedido_cliente }}">
+
+                                        </div>
                                         <div class="col-md-12">
                                             <br>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Referencia</label>
+                                            <input type="text" class="form-control" id="referencia"
+                                                   name="referencia" placeholder="Referencia Producto"
+                                                   value="{{ referencia }}">
                                         </div>
                                         <div class="col-md-6">
                                             <label>Empresa</label>
@@ -108,7 +115,10 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <br>
+                                        </div>
+                                        <div class="col-md-12">
                                             <label>U_PLU</label>
                                             <input type="text" class="form-control" id="u_plu"
                                                    name="u_plu" placeholder="U_PLU Producto" value="{{ u_plu }}">
