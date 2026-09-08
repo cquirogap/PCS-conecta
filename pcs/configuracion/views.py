@@ -8372,7 +8372,7 @@ def config_informe_recibo(request):
                     codigo_arancelaria = cuenta['U_HBT1_ARANCEL']
                     if cuenta['PriceList'] == 11: 
                         precioventa = cuenta['Price']
-                    if cuenta['PriceList'] == 2: 
+                    if cuenta['PriceList'] == 2:
                         preciocompra = cuenta['Price']
                 cantidad_pendiente=d.cantidad-d.cantidadrecibo
                 nombre_artesano=d.empresa.nombre
@@ -8382,14 +8382,14 @@ def config_informe_recibo(request):
                 descripcion_articulo=d.num_detalle.nombre
                 numero_pedido = str(d.pk),
                 fecha_pedido = (d.fecha).strftime('%Y-%m-%d'),
-                numero_u_pedidas = str(d.cantidad)
-                numero_u_pendientes = str(cantidad_pendiente)
-                numero_u_entregadas = str(d.cantidadrecibo)
-                valor_c_unidad = str(preciocompra)
-                valor_v_unidad = str(precioventa)
-                valor_c_pedido = str(preciocompra*d.cantidad)
-                valor_c_pendiente = str(preciocompra*cantidad_pendiente)
-                valor_v_pedido = str(precioventa*d.cantidad)
+                numero_u_pedidas = int(d.cantidad)
+                numero_u_pendientes = int(cantidad_pendiente)
+                numero_u_entregadas = int(d.cantidadrecibo)
+                valor_c_unidad = int(preciocompra)
+                valor_v_unidad = int(precioventa)
+                valor_c_pedido = int(preciocompra*d.cantidad)
+                valor_c_pendiente = int(preciocompra*cantidad_pendiente)
+                valor_v_pedido = int(precioventa*d.cantidad)
                 partida_arancelaria = codigo_arancelaria
                 datos = [(
                     nombre_artesano,
@@ -9700,6 +9700,7 @@ def config_excel_pedidos_externos(request):
 
         # Último registro para consecutivo
         ultimo_registro = PedidosOtrosCanales.objects.all().last()
+        consecutivo_ant =1 if ultimo_registro is None else ultimo_registro.num_pedido
         consecutivo = 1 if ultimo_registro is None else (ultimo_registro.num_pedido + 1)
 
         # Campos opcionales desde el Excel
@@ -9717,12 +9718,18 @@ def config_excel_pedidos_externos(request):
             numero_pedido_cliente=nro_pedido,   # Puede ser None
         )
         pedidootros.save()
+        u_plu_list = []
 
         # Recorrer filas desde la 7 (A7, B7, C7, ...)
         for row in sheet.iter_rows(min_row=7, values_only=True):
             u_plu = row[0]
             necesidad = row[1]
             observacion = row[2]
+            proveedor_code = row[3]
+            empresario_plus = False
+            articulo_plus = False
+
+
 
             # Validar cantidad numérica (Py2.7)
             if isinstance(necesidad, (int, float, long)):
@@ -9854,23 +9861,32 @@ def config_excel_pedidos_externos(request):
                                 # )
                                 # detallepedidootros.save()
 
-                            detallepedidootros_plu = DetallesPedidosOtrosCanales_plus(
-                                num_pedido_id=int(consecutivo),
-                                cantidad=necesidad,
-                                u_plu=u_plu,
-                                observaciones=observacion,
-                            )
-                            detallepedidootros_plu.save()
 
-                            # # Más de un resultado → ambigüedad → guardar detalle parcial con PLU
-                            # detallepedidootros = DetallesPedidosOtrosCanales(
-                            #     num_pedido_id=int(consecutivo),
-                            #     cantidad=necesidad,
-                            #     u_plu=u_plu,
-                            #     observaciones=observacion,
-                            # )
-                            # detallepedidootros.save()
+                            u_plu_existe_plus = next((item for item in u_plu_list if item['u_plu'] == u_plu), False)
+                            if u_plu_existe_plus:
+                                num_pedido_existe = u_plu_existe_plus.get('num_pedido_id')
+                                u_plu_existe = u_plu_existe_plus.get('u_plu')
 
+                                detallepedidootros_plu = DetallesPedidosOtrosCanales_plus.objects.filter(num_pedido=num_pedido_existe).first()
+                                a=3
+                            else:
+                                detallepedidootros_plu = DetallesPedidosOtrosCanales_plus(
+                                    num_pedido_id=int(consecutivo),
+                                    cantidad=necesidad,
+                                    u_plu=u_plu,
+                                    observaciones=observacion,
+                                )
+                                detallepedidootros_plu.save()
+                                u_plu_list.append({'u_plu':u_plu, 'num_pedido_id':int(consecutivo)})
+
+                                # # Más de un resultado → ambigüedad → guardar detalle parcial con PLU
+                                # detallepedidootros = DetallesPedidosOtrosCanales(
+                                #     num_pedido_id=int(consecutivo),
+                                #     cantidad=necesidad,
+                                #     u_plu=u_plu,
+                                #     observaciones=observacion,
+                                # )
+                                # detallepedidootros.save()
                     else:
                         # Ya existe al menos un artículo con ese PLU en Portal
                         count_plu = articulos_plu_qs.count()
@@ -9909,37 +9925,91 @@ def config_excel_pedidos_externos(request):
                             asignacion.save()
 
                         else:
-                            for articulo_plu in articulos_plu_qs:
-                                # Validar proveedor
-                                empresario = Empresas.objects.filter(codigo=articulo_plu.proveedorCodigo).first()
-                                if not empresario:
+
+                            if proveedor_code is not None and (not isinstance(proveedor_code, basestring) or proveedor_code.strip() != u''):
+                                empresario_plus = Empresas.objects.filter(codigo=proveedor_code).first()
+                                articulo_plus = MaestroArticulo.objects.filter(u_plu=u_plu, proveedorCodigo=proveedor_code)
+                                if not articulo_plus:
                                     pedidootros.delete()
                                     messages.add_message(
                                         request, messages.ERROR,
-                                        'No se encuentra registrado el proveedor del producto en Portal Conecta'
+                                        'El proveedor con  {} no pertenece al producto {}'.format(proveedor_code, u_plu)
                                     )
                                     return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
 
-                                # Crear detalle completo
-                                # detallepedidootros = DetallesPedidosOtrosCanales(
-                                #     num_pedido_id=int(consecutivo),
-                                #     cantidad=necesidad,
-                                #     nombre=articulo_plu.itemName,
-                                #     referencia=articulo_plu.itemCode,
-                                #     u_plu=articulo_plu.u_plu,
-                                #     observaciones=observacion,
-                                #     empresa=empresario,
-                                #     # articulo=articulo,
-                                # )
-                                # detallepedidootros.save()
+                            else:
 
-                            detallepedidootros_plu = DetallesPedidosOtrosCanales_plus(
-                                num_pedido_id=int(consecutivo),
-                                cantidad=necesidad,
-                                u_plu=u_plu,
-                                observaciones=observacion,
-                            )
-                            detallepedidootros_plu.save()
+                                pedidootros.delete()
+                                messages.add_message(
+                                    request, messages.ERROR,
+                                    'El producto {} no cuenta con el código de empleador registrado en el archivo Excel. Por favor, complete este dato para que el registro pueda ser procesado correctamente.'.format(u_plu)
+                                )
+                                return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+
+
+                            u_plu_existe_plus = next((item for item in u_plu_list if item['u_plu'] == u_plu), False)
+                            if u_plu_existe_plus:
+                                num_pedido_existe = u_plu_existe_plus.get('num_pedido_id')
+                                u_plu_existe = u_plu_existe_plus.get('u_plu')
+
+                                detallepedidootros_plu = DetallesPedidosOtrosCanales_plus.objects.filter(num_pedido=num_pedido_existe).first()
+                                detallepedidootros_plu.cantidad += necesidad
+                                detallepedidootros_plu.save()
+
+                                for articulo in articulo_plus:
+                                    detallepedidootros = DetallesPedidosOtrosCanales(
+                                        num_pedido_id=int(consecutivo),
+                                        cantidad=necesidad,
+                                        nombre=articulo.itemName,
+                                        referencia=articulo.itemCode,
+                                        u_plu=articulo.u_plu,
+                                        observaciones=observacion,
+                                        empresa=empresario_plus,
+                                        multiple=True,
+                                        # articulo=articulo,
+                                    )
+                                    detallepedidootros.save()
+
+
+                                    asignacion = AsignacionPedidosOtrosCanales(
+                                        num_detalle_id=detallepedidootros.id,
+                                        cantidad=necesidad,
+                                        empresa_id=detallepedidootros.empresa.id,
+                                        fecha=hoy
+                                    )
+                                    asignacion.save()
+                            else:
+                                detallepedidootros_plu = DetallesPedidosOtrosCanales_plus(
+                                    num_pedido_id=int(consecutivo),
+                                    cantidad=necesidad,
+                                    u_plu=u_plu,
+                                    observaciones=observacion,
+                                )
+                                detallepedidootros_plu.save()
+                                u_plu_list.append({'u_plu': u_plu, 'num_pedido_id': int(consecutivo)})
+
+                                for articulo in articulo_plus:
+                                    detallepedidootros = DetallesPedidosOtrosCanales(
+                                        num_pedido_id=int(consecutivo),
+                                        cantidad=necesidad,
+                                        nombre=articulo.itemName,
+                                        referencia=articulo.itemCode,
+                                        u_plu=articulo.u_plu,
+                                        observaciones=observacion,
+                                        empresa=empresario_plus,
+                                        multiple=True,
+                                        # articulo=articulo,
+                                    )
+                                    detallepedidootros.save()
+
+                                    asignacion = AsignacionPedidosOtrosCanales(
+                                        num_detalle_id=detallepedidootros.id,
+                                        cantidad=necesidad,
+                                        empresa_id=detallepedidootros.empresa.id,
+                                        fecha=hoy
+                                    )
+                                    asignacion.save()
+
 
                             # Hay múltiples artículos con el mismo PLU → ambigüedad
                             # detallepedidootros = DetallesPedidosOtrosCanales(
@@ -10167,6 +10237,7 @@ def config_plantilla_excel_pedidos_externos(request):
         sheet['A6'] = 'Referencia / EAN'
         sheet['B6'] = 'Cantidad'
         sheet['C6'] = 'Observaciones'
+        sheet['D6'] = 'Código Proveedor'
         sheet['B4'] = 'AAAA/MM/DD'
 
         # Guardar el libro de trabajo en BytesIO
