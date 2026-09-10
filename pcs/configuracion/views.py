@@ -9740,7 +9740,7 @@ def config_excel_pedidos_externos(request):
                         u_plu = u_plu.strip()
 
                     # Buscar en Portal por PLU
-                    articulos_plu_qs = MaestroArticulo.objects.filter(u_plu=u_plu)
+                        articulos_plu_qs = MaestroArticulo.objects.filter(u_plu=u_plu)
 
                     if not articulos_plu_qs.exists():
                         # No está en Portal → consultar SAP
@@ -9841,12 +9841,48 @@ def config_excel_pedidos_externos(request):
 
                                 # Validar proveedor en Portal
                                 empresario = Empresas.objects.filter(codigo=item.get('ProveedorCodigo')).first()
+                                codigo = item.get('ProveedorCodigo')
                                 if not empresario:
-                                    pedidootros.delete()
-                                    messages.add_message(
-                                        request, messages.ERROR,
-                                        'En Portal Conecta no se encuentra registrado el proveedor: '+item.get('ProveedorNombre')+' - '+item.get('ProveedorCodigo')
+                                    config_servicio_registro_empresas_aut(item.get('ProveedorCodigo'))
+                                    url2 = IP_SAP + "SQLQueries('EmpresariosListaConsultas')/List?empresario= '" + codigo + "'"
+
+                                    response = sap_request(url2)
+                                    response = response.text
+                                    response = response.replace('null', ' " " ')
+                                    response = ast.literal_eval(response)
+                                    response = response['value']
+                                    if response == []:
+                                        messages.add_message(request, messages.ERROR,
+                                                             'No se encontro el codigo  ' + str(
+                                                                 codigo) + ' en SAP.')
+
+                                        return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+                                    for datos in response:
+                                        id = datos['CardCode']
+                                        nombre = datos['CardName']
+                                        nit = datos['LicTradNum']
+                                        telefono_emp = datos['Phone1']
+                                        email_empre = datos['E_Mail']
+                                        direccion_empresa = datos['Address']
+                                        ean = datos['U_EAN']
+                                        tipo = datos['CardType']
+                                    if tipo == 'S':
+                                        tipo = 'Empresario'
+                                    else:
+                                        tipo = 'Cadena'
+                                    # Si no existe, es una creación
+                                    empresasr = Empresas(
+                                        nombre=nombre,
+                                        nit=nit,
+                                        telefono=telefono_emp,
+                                        movil=telefono_emp,
+                                        responsable=nombre,
+                                        tipo=tipo,
+                                        email=email_empre,
+                                        di=ean,
+                                        codigo=id,
                                     )
+                                    empresasr.save()
                                     return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
 
                                 # detallepedidootros = DetallesPedidosOtrosCanales(
@@ -9868,7 +9904,7 @@ def config_excel_pedidos_externos(request):
                                 u_plu_existe = u_plu_existe_plus.get('u_plu')
 
                                 detallepedidootros_plu = DetallesPedidosOtrosCanales_plus.objects.filter(num_pedido=num_pedido_existe).first()
-                                a=3
+
                             else:
                                 detallepedidootros_plu = DetallesPedidosOtrosCanales_plus(
                                     num_pedido_id=int(consecutivo),
@@ -9925,20 +9961,110 @@ def config_excel_pedidos_externos(request):
                             asignacion.save()
 
                         else:
-
                             if proveedor_code is not None and (not isinstance(proveedor_code, basestring) or proveedor_code.strip() != u''):
                                 empresario_plus = Empresas.objects.filter(codigo=proveedor_code).first()
                                 articulo_plus = MaestroArticulo.objects.filter(u_plu=u_plu, proveedorCodigo=proveedor_code)
                                 if not articulo_plus:
-                                    pedidootros.delete()
-                                    messages.add_message(
-                                        request, messages.ERROR,
-                                        'El proveedor con  {} no pertenece al producto {}'.format(proveedor_code, u_plu)
+                                    url3 = (
+                                        IP_SAP + "SQLQueries('ProductosOtrosCanalesv1')/List?producto='" + unicode(u_plu) + "'"
                                     )
-                                    return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
 
+                                    raw = sap_request(url3)
+                                    # Parseo robusto del cuerpo (preferir JSON)
+                                    try:
+                                        data_sap = json.loads(raw.text)  # {'value': [...]}
+                                    except ValueError:
+                                        # Fallback si viene como texto tipo dict
+                                        try:
+                                            data_sap = ast.literal_eval(raw.text)
+                                        except Exception:
+                                            data_sap = {}
+
+                                    response_list = data_sap.get('value') or []
+                                    count = len(response_list)
+                                    if count == count_plu:
+                                        pedidootros.delete()
+                                        messages.add_message(
+                                            request, messages.ERROR,
+                                            'El proveedor con  {} no pertenece al producto {}'.format(proveedor_code, u_plu))
+                                        return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+                                    elif count == 0:
+                                        pedidootros.delete()
+                                        messages.add_message(
+                                            request, messages.ERROR,
+                                            'No se encuentra el PLU ' + unicode(u_plu) + ' en el sistema SAP'
+                                        )
+                                        return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+                                    else:
+                                        items = response_list
+                                        for item in items:
+                                            # Ver si ya existe en Portal por itemCode
+                                            articulo = MaestroArticulo.objects.filter(itemCode=item.get('ItemCode'))
+                                            if not articulo:
+                                                maestroarticulo = MaestroArticulo(
+                                                    itemCode=item.get('ItemCode'),
+                                                    codeBars=item.get('CodeBars'),
+                                                    itemName=item.get('ItemName'),
+                                                    proveedorCodigo=item.get('ProveedorCodigo'),
+                                                    proveedorNombre=item.get('ProveedorNombre'),
+                                                    u_plu=item.get('U_PLU'),
+                                                )
+                                                maestroarticulo.save()
+
+                                            # Validar proveedor en Portal
+                                            empresario = Empresas.objects.filter(codigo=item.get('ProveedorCodigo')).first()
+                                            codigo = item.get('ProveedorCodigo')
+                                            if not empresario:
+                                                config_servicio_registro_empresas_aut(item.get('ProveedorCodigo'))
+                                                url2 = IP_SAP + "SQLQueries('EmpresariosListaConsultas')/List?empresario= '" + codigo + "'"
+
+                                                response = sap_request(url2)
+                                                response = response.text
+                                                response = response.replace('null', ' " " ')
+                                                response = ast.literal_eval(response)
+                                                response = response['value']
+                                                if response == []:
+                                                    messages.add_message(request, messages.ERROR,
+                                                                         'No se encontro el codigo  ' + str(
+                                                                             codigo) + ' en SAP.')
+
+                                                    return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
+                                                for datos in response:
+                                                    id = datos['CardCode']
+                                                    nombre = datos['CardName']
+                                                    nit = datos['LicTradNum']
+                                                    telefono_emp = datos['Phone1']
+                                                    email_empre = datos['E_Mail']
+                                                    direccion_empresa = datos['Address']
+                                                    ean = datos['U_EAN']
+                                                    tipo = datos['CardType']
+                                                if tipo == 'S':
+                                                    tipo = 'Empresario'
+                                                else:
+                                                    tipo = 'Cadena'
+                                                # Si no existe, es una creación
+                                                empresasr = Empresas(
+                                                    nombre=nombre,
+                                                    nit=nit,
+                                                    telefono=telefono_emp,
+                                                    movil=telefono_emp,
+                                                    responsable=nombre,
+                                                    tipo=tipo,
+                                                    email=email_empre,
+                                                    di=ean,
+                                                    codigo=id,
+                                                )
+                                                empresasr.save()
+
+                                    articulo_plus = MaestroArticulo.objects.filter(u_plu=u_plu,proveedorCodigo=proveedor_code)
+                                    if not articulo_plus:
+                                        pedidootros.delete()
+                                        messages.add_message(
+                                            request, messages.ERROR,
+                                            'El proveedor con  {} no pertenece al producto {}'.format(proveedor_code,
+                                                                                                      u_plu))
+                                        return HttpResponseRedirect('/configuracion/excel_pedidos_externos/')
                             else:
-
                                 pedidootros.delete()
                                 messages.add_message(
                                     request, messages.ERROR,
@@ -11136,7 +11262,6 @@ def config_usuarios(request):
                                                         })
     else:
         pass
-
 
 
 
