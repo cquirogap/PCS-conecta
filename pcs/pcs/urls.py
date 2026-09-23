@@ -46,6 +46,8 @@ urlpatterns.extend(
         url(r'^pruebacorreo/$', interlocutorc_views.pruebacorreo),
         url(r'^prueba_servicio/(?P<start_date>\d{4}-\d{2}-\d{2})/(?P<end_date>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.MyListView.as_view()),
         url(r'^api/pedidos/(?P<fecha>\d{4}-\d{2}-\d{2})/$', interlocutorc_views.ApiPedidos.as_view(), name="api_pedidos"),
+        url(r'^api/validar_cliente/$', interlocutorc_views.ValidarCliente.as_view(), name='api_validar_cliente'),
+        url(r'^api/validar_entrada_mercancia/$', interlocutorc_views.ValidarEntradaMercancia.as_view(), name='api_validar_entrada_mercancia'),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
         url(r'^configuracion/justificacion/$', configuracion_views.config_justificacion),
