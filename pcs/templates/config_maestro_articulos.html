@@ -1,0 +1,164 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+    <section class="content-header" style="margin-bottom: 10px;">
+      <h1>
+        <a href="/configuracion/maestro_articulo/">Maestro Articulos </a>
+        <small>Configuracion</small>
+      </h1>
+
+
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <br>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                     <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro completado!</h4>{{ message }}
+                     </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Edición Exitosa!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>Registro Borrado!</h4>{{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i>Alerta!</h4>{{ message }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Configuracion</a></li>
+        <li><a href="#">Opciones</a></li>
+      </ol>
+
+
+    </section>
+    <div class="modal fade" id="DocumentoFIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form role="form" action="/configuracion/maestro_articulo/automatico/" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header bg-primary text-white">
+                        <h4 class="modal-title" id="exampleModalLabel">Registrar/Actualizar Automáticamente Maestro Articulos</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>U_plu</label>
+                                <div class="input-group ">
+                                            <span class="input-group-addon"><i class="fa fa-building-o "></i></span>
+                                                <input type="text" class="form-control" id="u_plu"
+                                                name="u_plu" placeholder="u_plu"  required>
+                                          </div>
+                            </div>
+
+                            <div class="col-md-12"><br></div>
+                            <div class="col-md-12"><br></div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <section>
+    <div class="col-md-12">
+          <div class="nav-tabs-custom">
+              <!-- pestañas de el formulario-->
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#opciones" data-toggle="tab">Maestro Articulos</a></li>
+            </ul>
+            {% csrf_token %}
+            <div class="tab-content">
+                <!-- barras de acceso -->
+                <div class="active tab-pane" id="opciones">
+
+                    <br>
+                    <div class="row">
+                         <div class="col-md-2">
+                                <button type="button" data-toggle="modal" data-dismiss="modal"  class="btn btn-primary "
+                                data-target="#DocumentoFIModal">
+                                    <span class='fa  fa-bars'></span> Actualizar Automáticamente</button>
+
+                          </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                  <h3 class="box-title">Opciones</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body table-responsive no-padding">
+                                  <table id="opciones" class="table table-bordered table-hover dataTables">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Nombre</th>
+                                            <th>U_plu</th>
+                                            <th>Nombre Proveedor</th>
+                                            <th>Código Proveedor</th>
+                                            <!--<th>Permisos</th>-->
+
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for maestro_articulo in lista_maestro_articulos %}
+                                            <tr>
+                                                    <td>{{maestro_articulo.itemName}}</td>
+                                                    <td>{{maestro_articulo.u_plu}}</td>
+                                                    <td>{{maestro_articulo.proveedorNombre}}</td>
+                                                    <td>{{maestro_articulo.proveedorCodigo}}</td>
+
+
+<!--                                                <td><center><a class="btn btn-info btn-sm"-->
+<!--                                                       href="/configuracion/maestro_articulo/borrar/{{maestro_articulo.itemCode}}/"-->
+<!--                                                       title="Eliminar ">-->
+<!--                                                    <i class="glyphicon glyphicon-trash"></i>-->
+<!--                                                </a></center></td>-->
+
+
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <!-- /.box-body -->
+                          </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.tab-content -->
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+    </div>
+        <!-- /.col -->
+    </section>
+
+{% endblock %}

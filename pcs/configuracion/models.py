@@ -249,6 +249,8 @@ class MaestroArticulo(models.Model):
     proveedorCodigo = models.CharField(max_length=80,null=True,blank=True)
     proveedorNombre = models.CharField(max_length=150, null=True, blank=True)
     u_plu = models.CharField(max_length=80, null=True,blank=True)
+    nombre_usuario =  models.CharField(max_length=255, null=True, blank=True)
+    #usuario = models.ForeignKey(Usuarios_datos, default=1, on_delete=models.CASCADE,)
 
     def __unicode__(self):
         nombre = self.itemName or u''

@@ -343,6 +343,11 @@ urlpatterns.extend(
         url(r'^registrar/olvidar_contrasena/$', configuracion_views.config_usuarios_olvidar_contrasena),
         url(r'^configuracion/usuarios/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_borrar),
         url(r'^configuracion/usuarios/editar/(?P<id>[-\w]+)/$', configuracion_views.config_usuarios_editar),
+
+        url(r'^configuracion/maestro_articulo/$', configuracion_views.config_maestro_articulos),
+        url(r'^configuracion/maestro_articulo/automatico/$', configuracion_views.config_maestro_articulos_automatico),
+        url(r'^configuracion/maestro_articulo/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_maestro_articulos_borrar),
+
         # Dependencias
         url(r'^configuracion/dependencias/$', configuracion_views.config_dependencias),
         url(r'^configuracion/dependencias/registrar/$', configuracion_views.config_dependencias_registrar),

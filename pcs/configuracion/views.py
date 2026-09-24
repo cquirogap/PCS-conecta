@@ -11264,6 +11264,98 @@ def config_usuarios(request):
         pass
 
 
+def config_maestro_articulos(request):
+    # Render  administracion.html
+    if request.method == 'GET':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        lista_maestro_articulos = MaestroArticulo.objects.all()
+
+        if not current_user.is_staff:
+            return HttpResponseRedirect('/login/')
+
+
+        return render(request, "config_maestro_articulos.html", {'user': current_user,
+                                                          'lista_maestro_articulos': lista_maestro_articulos,
+                                                        'permiso_usuario': usuario_datos,
+                                                        })
+    else:
+        pass
+
+def config_maestro_articulos_automatico(request):
+    if request.method == 'POST':
+        current_user = request.user
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        nombre_usuario = current_user.first_name + ' ' + current_user.last_name
+        hoy = date.today()
+        u_plu = request.POST['u_plu']
+        maestro_articulos_existente = MaestroArticulo.objects.filter(u_plu=u_plu)
+
+        url3 = (IP_SAP + "SQLQueries('ProductosOtrosCanalesv1')/List?producto='"+ unicode(u_plu) + "'")
+
+        raw = sap_request(url3)
+        # Parseo robusto del cuerpo (preferir JSON)
+        try:
+            data_sap = json.loads(raw.text)  # {'value': [...]}
+        except ValueError:
+            # Fallback si viene como texto tipo dict
+            try:
+                data_sap = ast.literal_eval(raw.text)
+            except Exception:
+                data_sap = {}
+
+        response_list = data_sap.get('value') or []
+
+        if response_list:
+            for item in response_list:
+                a =3
+                proveedor = item.get('ProveedorCodigo')
+                maestro_articulos_existente = MaestroArticulo.objects.filter(u_plu=u_plu, proveedorCodigo=proveedor).first() if proveedor != ' ' else False
+
+                if not maestro_articulos_existente:
+                # Crear en Portal con datos de SAP
+                    maestroarticulo = MaestroArticulo(
+                        itemCode=item.get('ItemCode'),
+                        codeBars=item.get('CodeBars'),
+                        itemName=item.get('ItemName'),
+                        proveedorCodigo=item.get('ProveedorCodigo'),
+                        proveedorNombre=item.get('ProveedorNombre'),
+                        u_plu=item.get('U_PLU'),
+                        nombre_usuario = nombre_usuario,
+                    )
+                    maestroarticulo.save()
+                else:
+                    maestro_articulos_existente.codeBars=item.get('codeBars')
+                    maestro_articulos_existente.itemName = item.get('ItemName')
+                    maestro_articulos_existente.nombre_usuario = nombre_usuario,
+
+                    maestro_articulos_existente.save()
+
+            messages.add_message(request, messages.INFO,
+                                 'Se ha actualizado El maestro Articulos con u_plu ' + u_plu + ' satisfactoriamente.')
+            return HttpResponseRedirect('/configuracion/maestro_articulo/')
+
+        else:
+            messages.add_message(request, messages.WARNING, 'No se encontró el código PLU '  + u_plu + ' en SAP. Verifique que el artículo esté registrado correctamente.')
+            return HttpResponseRedirect('/configuracion/maestro_articulo/')
+
+def config_maestro_articulos_borrar(request,id):
+    if request.method == 'GET':
+
+        articulo = MaestroArticulo.objects.get(itemCode=id)
+        usuario_actual = request.user
+        current_user = request.user
+        tiene_relaciones = any(getattr(articulo, rel.get_accessor_name()).exists() for rel in articulo._meta.related_objects)
+
+        if tiene_relaciones:
+            messages.add_message(request, messages.ERROR, 'No es posible eliminar este artículo, ya que se encuentra asociado a otros registros del sistema')
+            return HttpResponseRedirect('/configuracion/maestro_articulo/')
+
+        else:
+            articulo.delete()
+            messages.add_message(request, messages.INFO,'Se ha borrado el Articulo con el u_plu ' + articulo.u_plu + ' satisfactoriamente')
+
+            return HttpResponseRedirect('/configuracion/maestro_articulo/')
 
 
 def procesar_pdfs(request):
