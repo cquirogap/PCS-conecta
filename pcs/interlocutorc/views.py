@@ -11,7 +11,6 @@ from django.http import HttpResponseRedirect
 from interlocutorc.forms import *
 from interlocutorc.models import *
 from configuracion.models import *
-from configuracion.views import sap_request
 import configuracion.views as sap
 from django.core.mail import EmailMessage,EmailMultiAlternatives,send_mail
 from django.template.loader import render_to_string
@@ -245,8 +244,6 @@ def panel_ayuda(request):
     else:
         pass
 
-
-
 def enviar_correos(request):
     if request.method == 'POST':
         fecha_input = request.POST.get('fecha_correos', '')
@@ -382,7 +379,7 @@ class ApiPedidos(APIView):
                 "/List?fecha='" + str(fecha) + "'"
             )
 
-            response = sap_request(url_query)
+            response = sap.sap_request(url_query)
             if response.status_code != 200:
                 return Response(
                     {"error": "Error al consultar pedidos", "detalle": response.text},
@@ -426,6 +423,178 @@ class ApiPedidos(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+
+class ValidarCliente(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        nombre = request.query_params.get('nombre', None)
+        nit = request.query_params.get('nit', None)
+
+        try:
+            cliente = Empresas.objects.filter(nit=nit, nombre=nombre).first()
+            if cliente:
+                return Response({
+                    "success": True,
+                    "data": {
+                        "nombre": cliente.nombre,
+                        "codigo": cliente.codigo,
+                        "nit": cliente.nit,
+                        "tipo": cliente.tipo,
+                    }
+                })
+
+            else:
+
+                url2 = IP_SAP + "SQLQueries('EmpresariosNit')/List?nit= '" + nit + "'"
+
+                response = sap.sap_request(url2)
+                response = response.text
+                response = response.replace('null', ' " " ')
+                response = ast.literal_eval(response)
+                response = response['value']
+                if response == []:
+                    return Response({
+                        "success": False,
+                        "error_code": "CLIENTE_NO_ENCONTRADO",
+                        "message": "No existe un cliente asociado al NIT " + str(nit) + " en SAP"
+                    })
+
+                for datos in response:
+                    id = datos['CardCode']
+                    nombre = datos['CardName']
+                    nit = datos['LicTradNum']
+                    telefono_emp = datos['Phone1']
+                    email_empre = datos['E_Mail']
+                    direccion_empresa = datos['Address']
+                    ean = datos['U_EAN']
+                    tipo = datos['CardType']
+
+                if tipo == 'S':
+                    tipo = 'Empresario'
+                else:
+                    tipo = 'Cadena'
+
+                empresasr = Empresas(
+                    nombre=nombre,
+                    nit=nit,
+                    telefono=telefono_emp,
+                    movil=telefono_emp,
+                    responsable=nombre,
+                    tipo=tipo,
+                    email=email_empre,
+                    edi=ean,
+                    codigo=id,
+                )
+                empresasr.save()
+                return Response({
+                    "success": True,
+                    "data": {
+                        "nombre": empresasr.nombre,
+                        "codigo": empresasr.codigo,
+                        "nit": empresasr.nit,
+                        "tipo": empresasr.tipo,
+                    }
+                })
+
+        except Exception as e:
+            return Response(
+                {"error": "Excepción en ValidarCliente", "detalle": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class ValidarPedido(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        codecliente = request.query_params.get('codecliente', None)
+        pedido = request.query_params.get('pedido', None)
+        try:
+            url2 = IP_SAP + "SQLQueries('ApiConsultaPedido')/List?pedido={}".format(int(pedido))
+
+            response = sap.sap_request(url2)
+            response = response.text
+            response = response.replace('null', ' " " ')
+            response = ast.literal_eval(response)
+            response = response['value']
+            if response == []:
+                return Response({
+                    "success": False,
+                    "error_code": "PEDIDO_NO_SE_ENCONTRO",
+                    "message": "No existe el pedido " + str(pedido) + " en SAP"
+                })
+
+            data = []
+            for datos in response:
+                data.append({
+
+                    'OrdenVenta':datos['OrdenVenta'],
+                    'PedidoCompra':datos['PedidoCompra'],
+                    'FechaPedido':datos['FechaPedido'],
+                    'NombreProveedor':datos['NombreProveedor'],
+                    'CodigoProveedor': datos['CodigoProveedor'],
+                })
+
+            return Response({
+                "success": True,
+                "data": data
+            })
+
+        except Exception as e:
+            return Response(
+                {"error": "Excepción en ValidarPedido", "detalle": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class ValidarEntradaMercancia(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        codecliente = request.query_params.get('codecliente', None)
+        pedido = request.query_params.get('pedido', None)
+        try:
+            url2 = IP_SAP + "SQLQueries('ApiValidarEntMercancia')/List?pedido={}&code_proveedor={}".format(int(pedido),codecliente)
+
+            response = sap.sap_request(url2)
+            response = response.text
+            response = response.replace('null', ' " " ')
+            response = ast.literal_eval(response)
+            response = response['value']
+            if response == []:
+                return Response({
+                    "success": False,
+                    "error_code": "ORDEN_VENTA_NO_ENCONTRADO",
+                    "message": "No existe la orden de venta " + str(pedido) + " en SAP"
+                })
+
+            data = []
+            for datos in response:
+                data.append({
+                    'EntradaMercancia':datos['EntradaMercancia'],
+                    'PedidoCompra':datos['PedidoCompra'],
+                    'ItemCode':datos['ItemCode'],
+                    'codigoEAN':datos['CodigoEAN'],
+                    'cantRecibida':datos['CantRecibida'],
+                    'precio':datos['PrecioRecibida'],
+                })
+
+            return Response({
+                "success": True,
+                "data": data
+            })
+
+
+
+
+        except Exception as e:
+            return Response(
+                {"error": "Excepción en ValidarEntradaMercancia", "detalle": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 def ejecutar_facturas(fecha):
@@ -525,7 +694,6 @@ def ejecutar_facturas(fecha):
             pedido='No Corresponde',
             tipo='credilisto',
         )
-
 
 def pruebacorreos():
     try:
@@ -1622,128 +1790,3 @@ def tarea_correo_pedido_dos(request):
             pedido='No Corresponde',
         )
         errores.save()
-
-# API NIVEL DE SERVICIO
-class ValidarCliente(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        nombre = request.query_params.get('nombre', None)
-        nit = request.query_params.get('nit', None)
-
-        try:
-            cliente = Empresas.objects.filter(nit=nit, nombre=nombre).first()
-            if cliente:
-                return Response({
-                    "success": True,
-                    "data": {
-                        "nombre": cliente.nombre,
-                        "codigo": cliente.codigo,
-                        "nit": cliente.nit,
-                        "tipo": cliente.tipo,
-                    }
-                })
-
-            else:
-
-                url2 = IP_SAP + "SQLQueries('EmpresariosNit')/List?nit= '" + nit + "'"
-
-                response = sap.sap_request(url2)
-                response = response.text
-                response = response.replace('null', ' " " ')
-                response = ast.literal_eval(response)
-                response = response['value']
-                if response == []:
-                    return Response({
-                        "success": False,
-                        "error_code": "CLIENTE_NO_ENCONTRADO",
-                        "message": "No existe un cliente asociado al NIT " + str(nit) + " en SAP"
-                    })
-
-                for datos in response:
-                    id = datos['CardCode']
-                    nombre = datos['CardName']
-                    nit = datos['LicTradNum']
-                    telefono_emp = datos['Phone1']
-                    email_empre = datos['E_Mail']
-                    direccion_empresa = datos['Address']
-                    ean = datos['U_EAN']
-                    tipo = datos['CardType']
-
-                if tipo == 'S':
-                    tipo = 'Empresario'
-                else:
-                    tipo = 'Cadena'
-
-                empresasr = Empresas(
-                    nombre=nombre,
-                    nit=nit,
-                    telefono=telefono_emp,
-                    movil=telefono_emp,
-                    responsable=nombre,
-                    tipo=tipo,
-                    email=email_empre,
-                    edi=ean,
-                    codigo=id,
-                )
-                empresasr.save()
-                return Response({
-                    "success": True,
-                    "data": {
-                        "nombre": empresasr.nombre,
-                        "codigo": empresasr.codigo,
-                        "nit": empresasr.nit,
-                        "tipo": empresasr.tipo,
-                    }
-                })
-
-        except Exception as e:
-            return Response(
-                {"error": "Excepción en ValidarCliente", "detalle": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-class ValidarEntradaMercancia(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        codecliente = request.query_params.get('codecliente', None)
-        orden = request.query_params.get('orden', None)
-        try:
-            url2 = IP_SAP + "SQLQueries('ApiValidarPedidos')/List?ordenVenta={}&codeProveedor={}".format(int(orden),codecliente)
-
-            response = sap.sap_request(url2)
-            response = response.text
-            response = response.replace('null', ' " " ')
-            response = ast.literal_eval(response)
-            response = response['value']
-            if response == []:
-                return Response({
-                    "success": False,
-                    "error_code": "ORDEN_VENTA_NO_ENCONTRADO",
-                    "message": "No existe la orden de venta " + str(orden) + " en SAP"
-                })
-
-            data = []
-            for datos in response:
-                data.append({
-                    'codigoEAN':datos['CodigoEAN'],
-                    'cantRecibida':datos['CantRecibida'],
-                    'precio':datos['PrecioRecibida'],
-                })
-
-            return Response({
-                "success": True,
-                "data": data
-            })
-
-
-
-
-        except Exception as e:
-            return Response(
-                {"error": "Excepción en ValidarEntradaMercancia", "detalle": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
