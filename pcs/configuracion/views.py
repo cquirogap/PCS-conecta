@@ -19488,9 +19488,7 @@ def config_historial_facturacion_borrar(request, id):
         return HttpResponseRedirect('/configuracion/historial_facturacion/')
 def config_historial_facturacion_excel(request):
     if request.method == 'GET':
-        fecha = info.fecha
-        if fecha == None:
-            fecha = ''
+
         current_user = request.user
         nombre = current_user.username
         usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
@@ -19571,6 +19569,9 @@ def config_historial_facturacion_excel(request):
         rows = []
 
         for info in lista_infoc:
+            fecha = info.fecha
+            if fecha == None:
+                fecha = ''
             num_pedido = info.asignacion.num_detalle.num_pedido.num_pedido
             cantidadpedido = info.asignacion.cantidad
             cantidadfacturada = info.cantidad_facturada
