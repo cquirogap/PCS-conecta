@@ -2736,6 +2736,31 @@ $(function () {
     });
 
 
+    $("#busqueda_pedidos_otros_canales_excel_button").click(
+        function (e) {
+            busqueda_pedidos_otros_canales_excel_button()
+        }
+    )
+
+    var busqueda_pedidos_otros_canales_excel_button = function (){
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa_input = $("#empresa_input").val() || "";
+        empresa_input = empresa_input.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+        referencia = $("#referencia").val() || "";
+        referencia = referencia.replace(/\s+/g, '');
+        u_plu = $("#u_plu").val() || "";
+        u_plu = u_plu.replace(/\s+/g, '');
+        fechaHoy = new Date().toISOString().split("T")[0]
+        pedido_cliente = $("#pedido_cliente").val() || "";
+        window.location.href = '/configuracion/orden_empresiario_otroscanales_facturar/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente
+    }
 
     $("#form_facturacion").submit(function (e) {
         var pedidos = {};
@@ -4582,6 +4607,35 @@ $(function () {
         }
     )
 
+    $("#buscar_historial_recepcion_excel_button").click(
+        function (e) {
+            buscar_historial_recepcion_excel_button()
+        }
+    )
+
+    var buscar_historial_recepcion_excel_button = function () {
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa_input = $("#empresa_input").val() || "";
+        empresa_input = empresa_input.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+        codigo = $("#codigo").val() || "";
+        codigo = codigo.replace(/\s+/g, '');
+        referencia = $("#referencia").val() || "";
+        referencia = referencia.replace(/\s+/g, '');
+        u_plu = $("#u_plu").val() || "";
+        u_plu = u_plu.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
+        window.location.href = '/configuracion/historial_recepcion/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&codigo=' + codigo + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente
+
+    }
+
+
     //Detalle de consulta de recepcion
     var busqueda_pedidos_otros_canales_consulta_recepcion = function () {
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
@@ -4759,6 +4813,34 @@ $(function () {
             busqueda_historial_facturacion()
         }
     )
+
+    var busqueda_historial_facturacion_excel_button = function () {
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa_input = $("#empresa_input").val() || "";
+        empresa_input = empresa_input.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+        codigo = $("#codigo").val() || "";
+        codigo = codigo.replace(/\s+/g, '');
+        referencia = $("#referencia").val() || "";
+        referencia = referencia.replace(/\s+/g, '');
+        u_plu = $("#u_plu").val() || "";
+        u_plu = u_plu.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
+        window.location.href = '/configuracion/historial_facturacion/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa_input=' + empresa_input + '&pedido=' + pedido + '&estado=' + estado + '&codigo=' + codigo + '&referencia=' + referencia + '&u_plu=' + u_plu + '&pedido_cliente=' + pedido_cliente
+    }
+
+    $("#busqueda_historial_facturacion_excel_button").click(
+        function (e) {
+            busqueda_historial_facturacion_excel_button()
+        }
+    )
+
     //Detalle de consulta de recepcion
     var busqueda_pedidos_otros_canales_consulta_facturacion = function () {
         var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;

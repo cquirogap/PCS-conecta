@@ -1943,6 +1943,9 @@ def config_ordenes_otroscanales_empresario_facturacion(request):
     else:
         pass
 
+
+
+
 def config_ordenes_otroscanales_empresario_recibo(request):
 
     if request.method == 'GET':
@@ -4364,8 +4367,6 @@ def config_servicio_crediya_lista(request):
         data = {'valor1': desembolso, 'valor2': interes, 'valor3':mitad}
         return JsonResponse(data)
 
-
-
 def config_servicio_credilisto_lista(request):
     # Render  administracion.html
     if request.method == 'GET' and request.is_ajax():
@@ -4391,8 +4392,6 @@ def config_servicio_credilisto_lista(request):
         data = {'valor1': desembolso, 'valor2': interes, 'valor3':mitad,'diferencia':diferencia}
         return JsonResponse(data)
 
-
-
 def config_servicio_codigoregistro_lista(request):
     # Render  administracion.html
     if request.method == 'GET' and request.is_ajax():
@@ -4401,8 +4400,6 @@ def config_servicio_codigoregistro_lista(request):
             config_servicio_codigoregistro_lista(request)
         data = {'valor1': codigo}
         return JsonResponse(data)
-
-
 
 def config_servicio_credilisto_registro(request):
     # Render  administracion.html
@@ -4502,10 +4499,6 @@ def config_servicio_credilisto_registro(request):
 
         return HttpResponseRedirect('/configuracion/servicio_credilisto_registro/')
 
-
-
-
-
 def config_servicio_codigoregistro_registro(request):
     # Render  administracion.html
 
@@ -4536,9 +4529,6 @@ def config_servicio_codigoregistro_registro(request):
                              'Se ha creado el código número ' + str(codigoregistro) + ' satisfactoriamente.')
 
         return HttpResponseRedirect('/configuracion/usuarios/')
-
-
-
 
 def config_servicio_registro_empresas_aut(request):
     # Render  administracion.html
@@ -5008,9 +4998,129 @@ def informacion_pedidos_otros_canales_empresario_facturar(request, ):
         }
 
         return JsonResponse(response_dict)
+    
+def config_ordenes_otroscanales_empresario_facturacion_excel(request):
 
+    if request.method == 'GET':
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa=empresa.empresa.id
 
+        lista_infoc = AsignacionPedidosOtrosCanales.objects.all()
 
+        fecha_inicio = request.GET.get('fecha_inicio') or ''
+        fecha_fin = request.GET.get('fecha_fin') or ''
+        empresa_input = request.GET.get('empresa_input') or ''
+        pedido = request.GET.get('pedido') or ''
+        estado = request.GET.get('estado') or ''
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
+
+        if estado=='enproceso':
+            estado='en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc= lista_infoc.filter(num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(num_detalle__u_plu=u_plu)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(num_detalle__num_pedido__numero_pedido_cliente = pedido_cliente)
+
+        lista_infoc = lista_infoc.exclude(cantidad=F('cantidadfacturada'))
+
+        subtitulo = "Historial_Factura_pedidos"
+
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="LISTA_HISTORIAL_PEDIDOS.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet(subtitulo)
+
+        # Sheet header, first row
+        row_num = 0
+
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+
+        columns = [
+            'PEDIDO',
+            'CLIENTE',
+            'PED',
+            'REC',
+            'REC ANT',
+            'REC TOTAL',
+            'FACT',
+            'U_PLU',
+            'REFERENCIA',
+            'OBSERVACIONES',
+            'EMPRESA',
+        ]
+
+        for col_num in range(len(columns)):
+            cwidth = ws.col(col_num).width
+            if (len(columns[col_num]) * 367) > cwidth:
+                ws.col(col_num).width = (len(columns) * 367)
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+
+        rows = []
+
+        for info in lista_infoc:
+            fecha = info.fecha
+            if fecha == None:
+                fecha = ''
+            cantidad_real = info.cantidad
+            cantidad_pendientes_facturar = info.cantidadrecibo - info.cantidadfacturada
+            
+            
+            num_pedido = info.num_detalle.num_pedido.num_pedido
+            cantidadpedido = cantidad_real
+            cantidadfactura = info.cantidadfacturada
+            cantidadrecibida = info.cantidadrecibo
+            cantidadpendientefacturar =cantidad_pendientes_facturar
+            codigo = info.empresa.codigo
+            fecha = fecha
+            referencia = info.num_detalle.referencia
+            u_plu = info.num_detalle.u_plu
+            nombre = info.num_detalle.nombre
+            observaciones = info.num_detalle.observaciones
+            empresa = info.empresa.nombre
+            cliente = info.num_detalle.num_pedido.empresa.nombre
+
+            datos = [(
+                num_pedido,
+                str(cliente),
+                cantidadpedido,
+                cantidadfactura,
+                cantidadrecibida,
+                cantidadpendientefacturar,
+                u_plu,
+                referencia,
+                nombre,
+                empresa,
+            )]
+            rows.extend(datos)
+
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+
+        wb.save(response)
+        return response
 
 
 def informacion_pedidos_otros_canales_empresario_recibo(request, ):
@@ -19124,6 +19234,124 @@ def config_historial_recepcion_borrar(request, id):
                              'Ups, ocurrió un problema y no fue posible eliminar el registro.' )
 
         return HttpResponseRedirect('/configuracion/historial_recepcion/')
+def config_historial_recepcion_excel(request):
+    if request.method == 'GET':
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa = empresa.empresa.id
+
+        lista_infoc = HistorialRecepcion.objects.all()
+
+        fecha_inicio = request.GET.get('fecha_inicio')
+        fecha_fin = request.GET.get('fecha_fin')
+        empresa_input = request.GET.get('empresa_input')
+        pedido = request.GET.get('pedido')
+        estado = request.GET.get('estado')
+        codigo = request.GET.get('codigo')
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
+
+        if estado == 'enproceso':
+            estado = 'en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(asignacion__empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__u_plu=u_plu)
+        if not codigo == '':
+            lista_infoc = lista_infoc.filter(asignacion__empresa__codigo=codigo)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
+
+        lista_infoc = lista_infoc.order_by('-fecha', '-pk')
+
+        subtitulo ="Historial_Recepcion_pedidos"
+
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="LISTA_HISTORIAL_RECEPCION_PEDIDOS.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet(subtitulo)
+
+
+        # Sheet header, first row
+        row_num = 0
+
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+
+        columns = ['PEDIDO',
+                   'CLIENTE',
+                   'PED',
+                   'REC',
+                   'REC ANT',
+                   'REC TOTAL',
+                   'FACT',
+                   'U_PLU',
+                   'REFERENCIA',
+                   'OBSERVACIONES',
+                   'EMPRESA',
+                   ]
+
+        for col_num in range(len(columns)):
+            cwidth = ws.col(col_num).width
+            if (len(columns[col_num]) * 367) > cwidth:
+                ws.col(col_num).width = (len(columns) * 367)
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+
+        rows = []
+
+        for info in lista_infoc:
+            num_pedido = info.asignacion.num_detalle.num_pedido.num_pedido
+            cantidadpedido = info.asignacion.cantidad
+            cantidadrecibida = info.cantidad_recibida
+            cantidadrecibidaant = info.cantidad_recibida_acumulada
+            cantidadtotales = (info.cantidad_recibida + info.cantidad_recibida_acumulada)
+            cantidadfacturadas = info.cantidad_facturada_acumulada
+            codigo = info.asignacion.empresa.codigo
+            fecha = info.fecha
+            referencia = info.asignacion.num_detalle.referencia
+            u_plu = info.asignacion.num_detalle.u_plu
+            nombre = info.asignacion.num_detalle.nombre
+            observaciones = info.descripcion
+            empresa = info.asignacion.empresa.nombre
+            cliente = info.asignacion.num_detalle.num_pedido.empresa.nombre
+            datos = [(
+                num_pedido,
+                str(cliente),
+                cantidadpedido,
+                cantidadrecibida,
+                cantidadrecibidaant,
+                cantidadtotales,
+                cantidadfacturadas,
+                u_plu,
+                referencia,
+                nombre,
+                empresa
+            )]
+            rows.extend(datos)
+
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+
+        wb.save(response)
+        return response
 
 # Historial de Facturación
 def config_historial_facturacion(request):
@@ -19258,6 +19486,127 @@ def config_historial_facturacion_borrar(request, id):
                              'Ups, ocurrió un problema y no fue posible eliminar el registro.' )
 
         return HttpResponseRedirect('/configuracion/historial_facturacion/')
+def config_historial_facturacion_excel(request):
+    if request.method == 'GET':
+        fecha = info.fecha
+        if fecha == None:
+            fecha = ''
+        current_user = request.user
+        nombre = current_user.username
+        usuario_datos = Usuarios_datos.objects.filter(usuario_id=current_user.id).first()
+        empresa = User.objects.filter(username=nombre).first()
+        empresa = Usuarios_datos.objects.filter(usuario_id=empresa.id).first()
+        empresa=empresa.empresa.id
+
+        lista_infoc = HistorialFacturacion.objects.all()
+
+        fecha_inicio = request.GET.get('fecha_inicio')
+        fecha_fin = request.GET.get('fecha_fin')
+        empresa_input = request.GET.get('empresa_input')
+        pedido = request.GET.get('pedido')
+        estado = request.GET.get('estado')
+        codigo = request.GET.get('codigo')
+        referencia = request.GET.get('referencia') or ''
+        u_plu = request.GET.get('u_plu') or ''
+        pedido_cliente = request.GET.get('pedido_cliente') or ''
+        fecha = fecha
+
+        if estado=='enproceso':
+            estado='en proceso'
+        if not fecha_inicio == '' and not fecha_fin == '':
+            lista_infoc = lista_infoc.filter(fecha__range=[fecha_inicio, fecha_fin])
+        if not empresa_input == '':
+            lista_infoc = lista_infoc.filter(asignacion__empresa_id=empresa_input)
+        if not pedido == '':
+            lista_infoc= lista_infoc.filter(asignacion__num_detalle__num_pedido__num_pedido=pedido)
+        if not estado == '':
+            lista_infoc= lista_infoc.filter(asignacion__num_detalle__num_pedido__estado=estado)
+        if not referencia == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__referencia=referencia)
+        if not u_plu == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__u_plu=u_plu)
+        if not codigo == '':
+            lista_infoc = lista_infoc.filter(asignacion__empresa__codigo=codigo)
+        if not pedido_cliente == '':
+            lista_infoc = lista_infoc.filter(asignacion__num_detalle__num_pedido__numero_pedido_cliente=pedido_cliente)
+
+        lista_infoc = lista_infoc.order_by('-fecha', '-pk')
+
+        subtitulo = "Historial_Facturacion_pedidos"
+
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="LISTA_HISTORIAL_FACTURACION_PEDIDOS.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet(subtitulo)
+
+        # Sheet header, first row
+        row_num = 0
+
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+
+        columns = ['PEDIDO',
+                   'CLIENTE',
+                   'PED',
+                   'REC',
+                   'FAC',
+                   'FAC PEN',
+                   'FAC TOT',
+                   'U_PLU',
+                   'REFERENCIA',
+                   'DESCRIPCION',
+                   'EMPRESA',
+                   ]
+
+        for col_num in range(len(columns)):
+            cwidth = ws.col(col_num).width
+            if (len(columns[col_num]) * 367) > cwidth:
+                ws.col(col_num).width = (len(columns) * 367)
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+
+        rows = []
+
+        for info in lista_infoc:
+            num_pedido = info.asignacion.num_detalle.num_pedido.num_pedido
+            cantidadpedido = info.asignacion.cantidad
+            cantidadfacturada = info.cantidad_facturada
+            cantidadfacturadaant = info.cantidad_pendiente_facturar
+            cantidadfacturadatotal = info.asignacion.cantidad - info.cantidad_pendiente_facturar
+            cantidadrecibida = info.cantidad_recibidas
+            codigo = info.asignacion.empresa.codigo
+            referencia = info.asignacion.num_detalle.referencia,
+            u_plu = info.asignacion.num_detalle.u_plu,
+            nombre = info.asignacion.num_detalle.nombre,
+            empresa = info.asignacion.empresa.nombre,
+            cliente = info.asignacion.num_detalle.num_pedido.empresa.nombre
+
+            datos = [(
+                num_pedido,
+                str(cliente),
+                cantidadpedido,
+                cantidadrecibida,
+                cantidadfacturada,
+                cantidadfacturadaant,
+                cantidadfacturadatotal,
+                u_plu,
+                referencia,
+                nombre,
+                empresa
+            )]
+            rows.extend(datos)
+
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+
+        wb.save(response)
+        return response
+
 
 #Colsulta o Seguimiento de Recepcion
 def config_consulta_recepcion(request):

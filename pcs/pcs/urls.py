@@ -122,6 +122,9 @@ urlpatterns.extend(
         url(r'^configuracion/orden_empresiario_otroscanales/$', configuracion_views.config_ordenes_otroscanales_empresario),
         url(r'^configuracion/solicitud_asignacion/descargar_zip/$', configuracion_views.descargar_pedidos_zip),
         url(r'^configuracion/orden_empresiario_otroscanales_facturar/$', configuracion_views.config_ordenes_otroscanales_empresario_facturacion),
+        url(r'^configuracion/orden_empresiario_otroscanales_facturar/excel_general/$', configuracion_views.config_ordenes_otroscanales_empresario_facturacion_excel),
+
+
         url(r'^configuracion/orden_empresiario_otroscanales_recibo/$', configuracion_views.config_ordenes_otroscanales_empresario_recibo),
         url(r'^configuracion/imagen_empresiario_otroscanales/$', configuracion_views.config_imagen_otroscanales_empresario),
         url(r'^configuracion/imagen_empresiario_otroscanales/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_imagen_otroscanales_empresario_borrar),
@@ -145,12 +148,13 @@ urlpatterns.extend(
         url(r'^configuracion/historial_recepcion/$', configuracion_views.config_historial_recepcion),
         url(r'^configuracion/historial_recepcion/informacion/$',configuracion_views.config_historial_recepcion_solicitud),
         url(r'^configuracion/historial_recepcion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_historial_recepcion_borrar),
+        url(r'^configuracion/historial_recepcion/excel_general/$', configuracion_views.config_historial_recepcion_excel),
 
         # Historial de Facturacion
         url(r'^configuracion/historial_facturacion/$', configuracion_views.config_historial_facturacion),
         url(r'^configuracion/historial_facturacion/informacion/$',configuracion_views.config_historial_facturacion_solicitud),
         url(r'^configuracion/historial_facturacion/borrar/(?P<id>[-\w]+)/$', configuracion_views.config_historial_facturacion_borrar),
-
+        url(r'^configuracion/historial_facturacion/excel_general/$', configuracion_views.config_historial_facturacion_excel),
         # Consulta de la Recepcion
         url(r'^configuracion/consulta_recepcion/$', configuracion_views.config_consulta_recepcion),
         url(r'^configuracion/consulta_recepcion/informacion/$', configuracion_views.informacion_pedidos_otros_canales_consulta_recepcion),
