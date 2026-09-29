@@ -19507,7 +19507,7 @@ def config_historial_facturacion_excel(request):
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
         pedido_cliente = request.GET.get('pedido_cliente') or ''
-        fecha = fecha
+        
 
         if estado=='enproceso':
             estado='en proceso'
