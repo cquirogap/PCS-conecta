@@ -10896,9 +10896,9 @@ def config_enviar_correos_no_enviados(request):
             url3 = IP_SAP + "SQLQueries('ConsultaEmailEmpresa')/List?empresa='" + \
                        variable[3] + "'&dependencia='" + dependencias + "'"
             response2 = sap_request(url3)
-            response2 = ast.literal_eval(response2.text)
+            response2 = response2.json()
             response2 = response2['value']
-            if response2 == []:
+            if response2 == [] or response2[0]['E_MailL'] == None or response2[0]['E_MailL'] == '':
                 errores = HistorialErrorTarea(
                     accion='No se tiene correo asignado al titulo LOGISTICA Y DESPACHOS',
                     fecha=hoy,
