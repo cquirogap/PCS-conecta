@@ -597,6 +597,105 @@ class ValidarEntradaMercancia(APIView):
             )
 
 
+class AvisoDetalle(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        ordencompra = request.query_params.get('ordencompra', None)
+        if not ordencompra:
+            return Response(
+                {
+                    "success": False,
+                    "error_code": "ORDEN_COMPRA_REQUERIDA",
+                    "message": "Debe enviar la orden de compra como parametro"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            url = IP_SAP + "SQLQueries('AvisoReciboDetalle')/List?ordencompra={}".format(ordencompra)
+            response = sap.sap_request(url)
+
+            if response.status_code != 200:
+                return Response(
+                    {
+                        "error": "Error al consultar el detalle del aviso recibo",
+                        "detalle": response.text
+                    },
+                    status=status.HTTP_502_BAD_GATEWAY
+                )
+
+            resultado = json.loads(response.text)
+            filas = resultado.get('value', [])
+
+            if not filas:
+                return Response(
+                    {
+                        "success": False,
+                        "error_code": "ORDEN_COMPRA_NO_ENCONTRADA",
+                        "message": (
+                            "No se encontraron productos para la orden de "
+                            "compra " + ordencompra
+                        )
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            campos = (
+                'referencia',
+                'EAN',
+                'descripcion',
+                'cantidadEnviada',
+                'cantidadPedida',
+                'cantidadAceptada',
+            )
+            productos = []
+
+            for fila in filas:
+                if any(fila.get(campo) in (None, '') for campo in campos):
+                    return Response(
+                        {
+                            "error": "Datos de producto incompletos",
+                            "detalle": (
+                                "La respuesta de SAP no contiene todos los "
+                                "campos requeridos"
+                            )
+                        },
+                        status=status.HTTP_502_BAD_GATEWAY
+                    )
+
+                try:
+                    productos.append({
+                        'referencia': fila['referencia'],
+                        'EAN': fila['EAN'],
+                        'descripcion': fila['descripcion'],
+                        'cantidadEnviada': float(fila['cantidadEnviada']),
+                        'cantidadPedida': float(fila['cantidadPedida']),
+                        'cantidadAceptada': float(fila['cantidadAceptada']),
+                    })
+                except (TypeError, ValueError):
+                    return Response(
+                        {
+                            "error": "Cantidad de producto no válida",
+                            "detalle": (
+                                "SAP devolvió una cantidad que no es numérica"
+                            )
+                        },
+                        status=status.HTTP_502_BAD_GATEWAY
+                    )
+
+            return Response({
+                "ordercompra": ordencompra.replace('U', '').replace('"', '').replace("'", ''),
+                "productos": productos
+            })
+
+        except Exception as e:
+            return Response(
+                {"error": "Excepción en AVISODETALLE", "detalle": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 def ejecutar_facturas(fecha):
     try:
         ahora = datetime.now(pytz.timezone('America/Bogota'))

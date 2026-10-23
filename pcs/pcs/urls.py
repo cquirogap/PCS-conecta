@@ -49,6 +49,7 @@ urlpatterns.extend(
         url(r'^api/validar_cliente/$', interlocutorc_views.ValidarCliente.as_view(), name='api_validar_cliente'),
         url(r'^api/validar_pedido/$', interlocutorc_views.ValidarPedido.as_view(), name='api_validar_pedido'),
         url(r'^api/validar_entrada_mercancia/$', interlocutorc_views.ValidarEntradaMercancia.as_view(), name='api_validar_entrada_mercancia'),
+        url(r'^api/aviso_recibo_detalle/$',interlocutorc_views.AvisoDetalle.as_view(),name='api_avisodetalle'),
         #_______________________________________________ CONFIGURACION _____________________________________________
         #Justificacion
         url(r'^configuracion/justificacion/$', configuracion_views.config_justificacion),
