@@ -535,6 +535,7 @@ class ValidarPedido(APIView):
                     'FechaPedido':datos['FechaPedido'],
                     'NombreProveedor':datos['NombreProveedor'],
                     'CodigoProveedor': datos['CodigoProveedor'],
+                    'OrdenCompra':datos['NumAtCard']
                 })
 
             return Response({
