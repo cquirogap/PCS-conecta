@@ -5057,14 +5057,14 @@ def config_ordenes_otroscanales_empresario_facturacion_excel(request):
             'PEDIDO',
             'CLIENTE',
             'PED',
+            'FAC',
             'REC',
-            'REC ANT',
-            'REC TOTAL',
-            'FACT',
+            'FAC PEN',
             'U_PLU',
             'REFERENCIA',
             'OBSERVACIONES',
             'EMPRESA',
+            'PEDIDO CLIENTE',
         ]
 
         for col_num in range(len(columns)):
@@ -5087,9 +5087,13 @@ def config_ordenes_otroscanales_empresario_facturacion_excel(request):
             
             
             num_pedido = info.num_detalle.num_pedido.num_pedido
+            cliente = info.num_detalle.num_pedido.empresa.nombre
             cantidadpedido = cantidad_real
-            cantidadfactura = info.cantidadfacturada
             cantidadrecibida = info.cantidadrecibo
+
+
+            cantidadfactura = info.cantidadfacturada
+
             cantidadpendientefacturar =cantidad_pendientes_facturar
             codigo = info.empresa.codigo
             fecha = fecha
@@ -5098,7 +5102,8 @@ def config_ordenes_otroscanales_empresario_facturacion_excel(request):
             nombre = info.num_detalle.nombre
             observaciones = info.num_detalle.observaciones
             empresa = info.empresa.nombre
-            cliente = info.num_detalle.num_pedido.empresa.nombre
+
+            pedido_cliente = info.num_detalle.num_pedido.numero_pedido_cliente
 
             datos = [(
                 num_pedido,
@@ -5111,6 +5116,7 @@ def config_ordenes_otroscanales_empresario_facturacion_excel(request):
                 referencia,
                 nombre,
                 empresa,
+                pedido_cliente,
             )]
             rows.extend(datos)
 
@@ -19507,7 +19513,7 @@ def config_historial_facturacion_excel(request):
         referencia = request.GET.get('referencia') or ''
         u_plu = request.GET.get('u_plu') or ''
         pedido_cliente = request.GET.get('pedido_cliente') or ''
-        
+
 
         if estado=='enproceso':
             estado='en proceso'
@@ -19545,6 +19551,7 @@ def config_historial_facturacion_excel(request):
         font_style.font.bold = True
 
         columns = ['PEDIDO',
+                   'PEDIDO_CLIENTE',
                    'CLIENTE',
                    'PED',
                    'REC',
@@ -19584,9 +19591,11 @@ def config_historial_facturacion_excel(request):
             nombre = info.asignacion.num_detalle.nombre,
             empresa = info.asignacion.empresa.nombre,
             cliente = info.asignacion.num_detalle.num_pedido.empresa.nombre
+            pedido_cliente = info.asignacion.num_detalle.num_pedido.numero_pedido_cliente
 
             datos = [(
                 num_pedido,
+                pedido_cliente,
                 str(cliente),
                 cantidadpedido,
                 cantidadrecibida,
