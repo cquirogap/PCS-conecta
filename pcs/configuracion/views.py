@@ -19306,7 +19306,7 @@ def config_historial_recepcion_excel(request):
                    'FACT',
                    'U_PLU',
                    'REFERENCIA',
-                   'OBSERVACIONES',
+                   'DESCRIPCION',
                    'EMPRESA',
                    ]
 
