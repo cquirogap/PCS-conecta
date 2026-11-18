@@ -3869,7 +3869,7 @@ def config_credilisto_consulta_generales(request):
                 response_pagos_efectuados = requests.post(url_pagos_efectuados, headers=headers_pagos_efectuados,
                                                           data=payload_pagos_efectuados, verify=False)
 
-                
+
                 # Verifica el estado de la respuesta
                 if response_pagos_efectuados.status_code == 201:
                     egreso_creado = response_pagos_efectuados.content
@@ -16839,6 +16839,10 @@ def catalogo_productos_detalle(request, form_id):
 
     dato_lista = []
     for datos in response:
+        url5 = IP_SAP + "SQLQueries('ConsultasInventariosStockPSC')/List?numProducto='" + datos['ItemCode'] + "'"
+        response5 = sap_request(url5)
+        response5 = ast.literal_eval(response5.text)
+        response5 = response5['value']
         data_prueba = {
             'n_producto': datos['ItemCode'],
             'nombre': datos['ItemName'],
@@ -16848,6 +16852,7 @@ def catalogo_productos_detalle(request, form_id):
             'art_por_und': datos['SalesItemsPerUnit'],
             'stock': datos['QuantityOnStock'],
             'almacenes':almacenes,
+            'stock_SPE': response5[0]['Stock_PSC'] if response5 else '0'
 
         }
         dato_lista.append(data_prueba)
