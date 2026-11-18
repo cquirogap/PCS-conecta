@@ -3869,6 +3869,7 @@ def config_credilisto_consulta_generales(request):
                 response_pagos_efectuados = requests.post(url_pagos_efectuados, headers=headers_pagos_efectuados,
                                                           data=payload_pagos_efectuados, verify=False)
 
+                
                 # Verifica el estado de la respuesta
                 if response_pagos_efectuados.status_code == 201:
                     egreso_creado = response_pagos_efectuados.content
@@ -16776,10 +16777,15 @@ def config_solicitud_catalogo_productos(request):
         response = response['value']
         dato_lista = []
         for datos in response:
+            url3 = IP_SAP + "SQLQueries('ConsultasInventariosStockPSC')/List?numProducto='" + datos['ItemCode'] + "'"
+            response3 = sap_request(url3)
+            response3 = ast.literal_eval(response3.text)
+            response3 = response3['value']
             data_prueba = {
                 'n_producto': datos['ItemCode'],
                 'nombre': datos['ItemName'],
                 'stock': datos['OnHand'],
+                'stock_SPE': response3[0]['Stock_PSC'] if response3 else '0',
             }
             dato_lista.append(data_prueba)
         return render(request, "config_solicitud_catalogo_productos.html", {'user': current_user,
@@ -16819,10 +16825,12 @@ def catalogo_productos_detalle(request, form_id):
             response3 = response3['value']
             response3 = response3[0]
             response3 = response3['WarehouseName']
+            stock_spe = d['U_PCS_InvSPE'] if d['U_PCS_InvSPE'] is not None else '0'
             data_articulos = {
                 'codigo': d['WarehouseCode'],
                 'nombre': response3,
                 'stock': d['InStock'],
+                'stock_SPE': stock_spe,
                 'compremetido': d['Committed'],
                 'pedido': d['Ordered'],
                 'costo': d['StandardAveragePrice'],
