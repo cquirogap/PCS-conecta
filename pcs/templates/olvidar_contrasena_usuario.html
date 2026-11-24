@@ -14,6 +14,12 @@
     <p class="login-box-msg"><img src="{% static 'dist/img/logo_etet.jpg'%}" width="100%" height="100%"></p>
     <p class="login-box-msg">Restablezca su contraseña</p>
 
+    {% if solicitud_recibida %}
+      <div class="callout callout-info" role="status">
+        Si existe una cuenta asociada, recibirás instrucciones por correo.
+      </div>
+      <a href="{% url 'login' %}">Volver al inicio de sesión</a>
+    {% else %}
     <form action="/registrar/olvidar_contrasena/" method="post">
         {% csrf_token %}
       <b>Ingrese su correo electronico:</b>
@@ -24,11 +30,6 @@
                id="email" name="email"  class="form-control" placeholder="Correo Electronico">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
-      {% if error_user %}
-      <div class="callout callout-danger" style="margin-bottom: 0!important;">
-        {{error_user}}
-      </div>
-      {% endif %}
       <br>
       <div class="row">
         <!-- /.col -->
@@ -38,6 +39,7 @@
         <!-- /.col -->
       </div>
     </form>
+    {% endif %}
   </div>
       </div>
     </div>

@@ -9,6 +9,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import EmailMessage,EmailMultiAlternatives
 from django.http import JsonResponse
+from django.core.exceptions import ValidationError
+from django.forms import EmailField
 from interlocutorc.forms import *
 from interlocutorc.models import *
 from configuracion.models import *
@@ -18,6 +20,7 @@ from django.conf import settings
 from datetime import date, datetime, timedelta
 from datetime import datetime, time
 from collections import defaultdict
+from django.db import transaction
 from django.db.models import Q,Count,Sum,F
 import pandas as pd
 import os
@@ -25,8 +28,9 @@ import sys
 import xlrd
 import requests
 import ast
-import random
-import string
+import logging
+from smtplib import SMTPException
+from socket import error as SocketError
 import json
 import holidays_co
 import base64
@@ -42,6 +46,8 @@ from django.shortcuts import redirect
 from PIL import Image
 from django.core.files.base import ContentFile
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.decorators.http import require_http_methods
+from django.utils.crypto import get_random_string
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 from django.shortcuts import get_object_or_404
@@ -12544,47 +12550,54 @@ def config_usuarios_registrar_externos_comp(request):
 
 
 
+@require_http_methods(['GET', 'POST'])
 def config_usuarios_olvidar_contrasena(request):
-    # Render  administracion.html
     if request.method == 'GET':
+        return render(request, 'olvidar_contrasena_usuario.html', {
+            'solicitud_recibida': request.GET.get('solicitud') == 'recibida',
+        })
 
-        return render(request, "olvidar_contrasena_usuario.html", {
-                                                        })
-    else:
-        email = request.POST['email']
-        if User.objects.filter(email=email).exists():
-            letters = string.ascii_uppercase + string.digits + string.ascii_lowercase
-            palabra = ''
-            for i in range(10):
-                letra = random.choice(letters)
-                palabra = palabra + str(letra)
-            usuario = User.objects.filter(email=email).first()
-            usuario.set_password(palabra)
-            usuario.save()
-            subject, from_email, to = 'CAMBIO DE CONTRASEÑA', 'conectaportalweb@gmail.com', email
-            text_content = ''
+    confirmation = HttpResponseRedirect(request.path + '?solicitud=recibida')
+    try:
+        email = EmailField(max_length=254).clean(request.POST.get('email'))
+    except ValidationError:
+        return confirmation
 
-            html_content = '<h1>¡hola!</h1><br>' \
-                           '<p>Hola, se solicito un restablecimiento de contraseña para tu cuenta ' \
-                           ''+str(email)+' ingresa con la siguiente clave temporal al sistema </p>' \
-                           '<br><center><h2><mark>'+str(palabra)+'</mark></h2></center><br>' \
-                           '<p>si tu no realizaste la solicitud de cambio de contraseña, solo ignora este mensaje</p><br>' \
-                            '<br><p>Saludos,</p><br><p>CONECTA</p>'
+    usuario = User.objects.filter(email=email).first()
+    if usuario is None:
+        return confirmation
 
+    clave_temporal = get_random_string(length=10)
+    subject = 'CAMBIO DE CONTRASEÑA'
+    body = (
+        'Se solicitó un restablecimiento de contraseña para tu cuenta de Conecta. '
+        'Ingresa con esta clave temporal y cámbiala desde tu perfil: {}. '
+        'Si no solicitaste el cambio, comunícate con soporte.'
+    ).format(clave_temporal)
+    message = EmailMultiAlternatives(
+        subject, body, 'conectaportalweb@gmail.com', [usuario.email]
+    )
+    message.attach_alternative(
+        '<h1>Hola</h1><p>Se solicitó un restablecimiento de contraseña para tu cuenta de Conecta.</p>'
+        '<p>Ingresa con esta clave temporal y cámbiala desde tu perfil:</p>'
+        '<p><strong>{}</strong></p>'
+        '<p>Si no solicitaste el cambio, comunícate con soporte.</p>'
+        '<p>Saludos,<br>CONECTA</p>'.format(clave_temporal),
+        'text/html',
+    )
 
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-            msg.attach_alternative(html_content, "text/html")
-            msg.send()
-            messages.add_message(request, messages.INFO,
-                                 'Se ha enviado el correo electronico')
-            return HttpResponseRedirect('/login/')
-        else:
-            error_user = 'Este correo no se encuentra registrado en el sistema'
-            return render(request, "olvidar_contrasena_usuario.html", {
-                'error_user': error_user,
-            })
+    try:
+        with transaction.atomic():
+            usuario.set_password(clave_temporal)
+            usuario.save(update_fields=['password'])
+            if message.send() != 1:
+                raise SMTPException('El servidor no confirmó el envío.')
+    except (SMTPException, SocketError):
+        logging.getLogger(__name__).warning(
+            'No se completó el envío del correo de recuperación.'
+        )
 
-
+    return confirmation
 
 
 def config_usuarios_borrar(request, id):
