@@ -165,7 +165,12 @@ urlpatterns.extend(
         url(r'^configuracion/consulta_facturacion/informacion/$',configuracion_views.informacion_pedidos_otros_canales_consulta_facturacion),
         url(r'^configuracion/consulta_historial_facturacion/detalle/(?P<asignacion_id>\d+)/$',configuracion_views.consulta_facturacion_detalle),
         url(r'^configuracion/consulta_facturacion/excel_general/$', configuracion_views.reporte_consulta_facturacion),
-
+        # Consulta General
+        url(r'^configuracion/consulta_general_productos/$', configuracion_views.config_consulta_general_productos),
+        url(r'^configuracion/consulta_general_productos/informacion/$', configuracion_views.informacion_consulta_general_productos),
+        url(r'^configuracion/consulta_general_productos/excel_general/$', configuracion_views.excel_consulta_general_productos),
+        # general archivo de factura
+        url(r'^configuracion/consulta_archivo_factura/$', configuracion_views.config_consultar_archivo_factura),
         #Registrar crediya y Credilisto
         url(r'^configuracion/documentos_creditos/$', configuracion_views.config_documentos_creditos),
         url(r'^configuracion/registrar_documentos_creditos/$', configuracion_views.config_registro_documentos_creditos),
