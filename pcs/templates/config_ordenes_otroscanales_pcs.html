@@ -12,112 +12,113 @@
       </ol>
     </section>
     <div class="modal fade" id="DocumentoFIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-        <form role="form" action="/configuracion/generacion_facturas/excel_general/" id="miFormulario" method="POST">
-            {% csrf_token %}
-      <div class="modal-header bg-primary text-white">
-        <h4 class="modal-title" id="exampleModalLabel">Informacion Facturacion Exportaciones</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form role="form" action="/configuracion/generacion_facturas/excel_general/" id="miFormulario"
+                  method="POST">
+                {% csrf_token %}
+                <div class="modal-header bg-primary text-white">
+                    <h4 class="modal-title" id="exampleModalLabel">Informacion Facturacion Exportaciones</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <input type="hidden" name="numero_pedidoss" id="numero_pedidoss">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">Puerto de embarque:</label>
+                                <input type="text" class="form-control" id="puerto_embarque"
+                                       name="puerto_embarque" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">País de origen:</label>
+                                <input type="text" class="form-control" id="pais"
+                                       name="pais" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">Puerto destino:</label>
+                                <input type="text" class="form-control" id="puerto_destino"
+                                       name="puerto_destino" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">País destino:</label>
+                                <input type="text" class="form-control" id="pais_destino"
+                                       name="pais_destino" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">Vía / Vía:</label>
+                                <input type="text" class="form-control" id="via"
+                                       name="via" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">Forma de pago:</label>
+                                <input type="text" class="form-control" id="forma_pago"
+                                       name="forma_pago" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">Término de negociación:</label>
+                                <input type="text" class="form-control" id="termino_negociacion"
+                                       name="termino_negociacion" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">Número piezas:</label>
+                                <input type="number" class="form-control" id="numero_piezas"
+                                       name="numero_piezas" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">Peso neto:</label>
+                                <input type="number" class="form-control" id="peso_neto"
+                                       name="peso_neto" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pedido">Peso bruto:</label>
+                                <input type="number" class="form-control" id="peso_bruto"
+                                       name="peso_bruto" required>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Generar</button>
+                </div>
+            </form>
+
+        </div>
       </div>
-            <input type="hidden" name="numero_pedidoss" id="numero_pedidoss">
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">Puerto de embarque:</label>
-                                    <input type="text" class="form-control" id="puerto_embarque"
-                                           name="puerto_embarque"  required >
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">País de origen:</label>
-                                    <input type="text" class="form-control" id="pais"
-                                           name="pais" required >
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">Puerto destino:</label>
-                                    <input type="text" class="form-control" id="puerto_destino"
-                                           name="puerto_destino" required>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">País destino:</label>
-                                    <input type="text" class="form-control" id="pais_destino"
-                                           name="pais_destino"  required>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">Vía / Vía:</label>
-                                    <input type="text" class="form-control" id="via"
-                                           name="via" required >
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">Forma de pago:</label>
-                                    <input type="text" class="form-control" id="forma_pago"
-                                           name="forma_pago"  required>
-            </div>
-          </div>
-        </div>
-          <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">Término de negociación:</label>
-                                    <input type="text" class="form-control" id="termino_negociacion"
-                                           name="termino_negociacion" required>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">Número piezas:</label>
-                                    <input type="number" class="form-control" id="numero_piezas"
-                                           name="numero_piezas" required>
-            </div>
-          </div>
-        </div>
-
-          <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">Peso neto:</label>
-                                    <input type="number" class="form-control" id="peso_neto"
-                                           name="peso_neto"  required>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="pedido">Peso bruto:</label>
-                                    <input type="number" class="form-control" id="peso_bruto"
-                                           name="peso_bruto" required>
-            </div>
-          </div>
-        </div>
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="submit" class="btn btn-primary" >Generar</button>
-      </div>
-        </form>
-
     </div>
-  </div>
-</div>
     <section>
     <div class="col-md-12">
           <div class="nav-tabs-custom">
@@ -254,9 +255,7 @@
                                     </tr>
                                 </tfoot>
                               </table>
-                            <button type="button" class="btn btn-primary mt-3" id="generarSeleccionados" data-toggle="modal" data-target="#DocumentoFIModal">
-    GENERAR FACTURAS SELECCIONADAS
-</button>
+
                             </div>
                             <!-- /.box-body -->
                       </div>

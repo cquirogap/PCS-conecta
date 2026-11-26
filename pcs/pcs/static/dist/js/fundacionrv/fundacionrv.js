@@ -2451,8 +2451,74 @@ $(function () {
             busqueda_pedidos_otros_canales()
         }
     )
+    // Buscar Pedi
+    var busqueda_pedidos_otros_canales_archivo_facturar = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        empresa = $("#empresa_input").val() || "";
+        empresa = empresa.replace(/\s+/g, '');
+        estado = $("#estado_input").val() || "";
+        estado = estado.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+        pedido_cliente = $("#pedido_cliente").val() || "";
+
+        $.ajax({
+            type: "GET",
+            data: {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+            url: '/configuracion/pedidos_otros_canales/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&empresa=' + empresa + '&pedido=' + pedido + '&estado=' + estado + '&pedido_cliente=' + pedido_cliente,
+            dataType: 'json',
+            success: function (data) {
+                // Cargar en tabla
+                casos = data.datos;
+                contador = 1;
+                var lineas = '';
+                var estado = '';
+                var table_body = $("#tabla_buscar_pedidos_generar_archivo_factura tbody")
+                table_body.empty();
+                for (var i = 0; i < casos.length; i++) {
+                    lineas += "<tr>";
+
+                    // Checkbox
+                    lineas += "<td><input type='checkbox' class='pedido-checkbox' value='" + casos[i].num_pedido + "'></td>";
+
+                    // Datos del pedido
+                    lineas += "<td>Pedido #" + casos[i].num_pedido + "</td>";
+                    lineas += "<td>" + (casos[i].num_pedido_CLI || "") + "</td>";
+                    lineas += "<td>" + (casos[i].fecha || "") + "</td>";
+                    lineas += "<td>" + (casos[i].fecha_entrega || "") + "</td>";
+                    lineas += "<td>" + (casos[i].hora || "") + "</td>";
+
+                    // Estado con estilos
+                    if (casos[i].estado === 'en proceso') {
+                        lineas += "<td><span class='label label-info'>" + casos[i].estado + "</span></td>";
+                    } else {
+                        lineas += "<td><span class='label label-primary'>" + casos[i].estado + "</span></td>";
+                    }
+
+                    // Botón de detalles
+
+                    lineas += "</tr>";
+                }
+
+                // Añadir al DOM
+                table_body.append(lineas);
+            }
+        });
+    }
 
 
+    $("#busqueda_pedidos_otros_canales_archivo_facturar").click(
+        function (e) {
+            busqueda_pedidos_otros_canales_archivo_facturar()
+        }
+    )
+
+
+    //
     $(document).ready(function () {
         $("#solicitarCreditoBtn").click(function (event) {
 
@@ -3088,6 +3154,83 @@ $(function () {
         }
     )
 
+    //BUSCAR CONSULTA GENERAL PRODUCTOS
+    var busqueda_consulta_general_productos = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+        referencia = $("#referencia").val() || "";
+        referencia = referencia.replace(/\s+/g, '');
+        u_plu = $("#u_plu").val() || "";
+        u_plu = u_plu.replace(/\s+/g, '');
+
+        $.ajax({
+            type: "GET",
+            data: {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value},
+            url: '/configuracion/consulta_general_productos/informacion/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&pedido=' + pedido  + '&referencia=' + referencia + '&u_plu=' + u_plu,
+            dataType: 'json',
+            success: function (data) {
+                // Cargar en tabla
+                casos = data.datos;
+                contador = 1;
+                var lineas = '';
+                var estado = '';
+                var table_body = $("#tabla_consulta_general_productos tbody")
+                table_body.empty();
+                for (var i = 0; i < casos.length; i++) {
+
+
+                    lineas += "<tr>" +
+                        "<td>" + casos[i].cliente + "</td>" +
+                        "<td>" + casos[i].num_pedido + "</td>" +
+                        "<td>" + casos[i].estado + "</td>" +
+                        "<td>" + casos[i].u_plu + "</td>" +
+                        "<td>" + casos[i].codigo_artesano + "</td>" +
+                        "<td>" + casos[i].numero_u_pedidas + "</td>" +
+                        "<td>" + casos[i].numero_u_pendientes_rec + "</td>" +
+                        "<td>" + casos[i].numero_u_recibidas + "</td>" +
+                        "<td>" + casos[i].numero_u_pendientes_fac + "</td>" +
+                        "<td>" + casos[i].numero_u_facturadas + "</td>" +
+                        "</tr>";
+                }
+                table_body.append(lineas)
+            }
+        });
+    }
+
+    $("#consulta_general_productos_btn").click(
+        function (e) {
+            busqueda_consulta_general_productos()
+        }
+    )
+
+    var consulta_general_productos_excel = function () {
+
+        fecha_inicio = $("#fecha_inicio_input").val() || "";
+        fecha_inicio = fecha_inicio.replace(/\s+/g, '');
+        fecha_fin = $("#fecha_fin_input").val() || "";
+        fecha_fin = fecha_fin.replace(/\s+/g, '');
+        pedido = $("#pedido").val() || "";
+        pedido = pedido.replace(/\s+/g, '');
+        referencia = $("#referencia").val() || "";
+        referencia = referencia.replace(/\s+/g, '');
+        u_plu = $("#u_plu").val() || "";
+        u_plu = u_plu.replace(/\s+/g, '');
+
+
+        window.location.href = '/configuracion/consulta_general_productos/excel_general/?fecha_inicio=' + fecha_inicio + '&fecha_fin=' + fecha_fin + '&pedido=' + pedido + '&referencia=' + referencia + '&u_plu=' + u_plu
+
+    }
+
+    $("#consulta_general_productos_excel_btn").click(
+        function (e) {
+            consulta_general_productos_excel()
+        }
+    )
 
     //BUSCAR CONSOLIDADO EN EXCEL
 
@@ -4932,6 +5075,8 @@ $(function () {
             consulta_facturacion_excel()
         }
     )
+
+
 
 
     // CALENDARIO AGENDA DE TRABAJ
